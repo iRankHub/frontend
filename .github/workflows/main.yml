@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Assign Reviewer
-        uses: pullreminders/assign-reviewer-action@v2
+        uses: pullreminders/assign-reviewer-action@v1.0.4
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           reviewers: "benconte, Josy-coder"
