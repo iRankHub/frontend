@@ -2,7 +2,7 @@
 * @benconte
 
 # Reviewer by email for go files
-*.go benconte201@gmail.com
+*.go benconte201@gmail.com josekecha@keemail.me
 
 # Reviewer by email for js/ts files
 *.ts benconte201@gmail.com
