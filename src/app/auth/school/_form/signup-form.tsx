@@ -32,12 +32,17 @@ import { signIn, useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { countries } from "@/lib/data";
+import { CheckIcon, ChevronsUpDown } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { cn } from "@/lib/utils";
 
 type Inputs = z.infer<typeof schoolSchema>;
 
 const SignupForm = () => {
   const router = useRouter();
   const [isPending, setIsPending] = React.useState(false);
+  const [openCountries, setOpenCountries] = React.useState(false);
   const { toast } = useToast();
   const [activeStep, setActiveStep] = React.useState(1);
   const steps = [1, 2, 3, 4];
@@ -272,23 +277,61 @@ const SignupForm = () => {
                       Choose Country
                       <b className="text-primary font-light"> *</b>
                     </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select country..." />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {countries.map((country) => (
-                          <SelectItem value={country.name} key={country.code}>
-                            {country.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <br />
+                    <FormControl>
+                      <Popover
+                        open={openCountries}
+                        onOpenChange={setOpenCountries}
+                      >
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className={cn(
+                              "w-full justify-between",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value
+                              ? countries.find(
+                                  (country) => country.name === field.value
+                                )?.name
+                              : "Select country..."}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-full p-0">
+                          <Command className="w-full">
+                            <CommandInput placeholder="Search country..." />
+                            <CommandEmpty>School not Found.</CommandEmpty>
+                            <CommandList>
+                              <CommandGroup>
+                                {countries.map((country, index) => (
+                                  <CommandItem
+                                    key={index}
+                                    value={country.name}
+                                    onSelect={() => {
+                                      form.setValue("country", country.name);
+                                      setOpenCountries(false);
+                                    }}
+                                  >
+                                    {country.name}
+                                    <CheckIcon
+                                      className={cn(
+                                        "ml-auto h-4 w-4",
+                                        field.value === country.name
+                                          ? "opacity-100"
+                                          : "opacity-0"
+                                      )}
+                                    />
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -303,7 +346,7 @@ const SignupForm = () => {
                       <b className="text-primary font-light"> *</b>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Riviera High School" {...field} />
+                      <Input placeholder="your province/state" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -319,7 +362,7 @@ const SignupForm = () => {
                       <b className="text-primary font-light"> *</b>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Riviera High School" {...field} />
+                      <Input placeholder="your district" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -342,7 +385,11 @@ const SignupForm = () => {
                   size={"lg"}
                   className="w-full"
                   onClick={async () => {
-                    const formErrors = await validateFormData(["country", "province_state", "district_region"]);
+                    const formErrors = await validateFormData([
+                      "country",
+                      "province_state",
+                      "district_region",
+                    ]);
                     if (formErrors && activeStep < 4) {
                       setActiveStep(activeStep + 1);
                     }
@@ -435,7 +482,11 @@ const SignupForm = () => {
                   size={"lg"}
                   className="w-full"
                   onClick={async () => {
-                    const formErrors = await validateFormData(["contact_person", "contact_person_number", "contact_person_email"]);
+                    const formErrors = await validateFormData([
+                      "contact_person",
+                      "contact_person_number",
+                      "contact_person_email",
+                    ]);
                     if (formErrors && activeStep < 4) {
                       setActiveStep(activeStep + 1);
                     }

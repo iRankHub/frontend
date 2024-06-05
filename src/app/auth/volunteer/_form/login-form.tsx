@@ -166,7 +166,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
           <div className="flex items-center gap-1 justify-center">
             <span className="text-lg text-darkBlue">Don{"'"}t have an account?</span>
             <Link
-              href="/auth/student/signup"
+              href="/auth/volunteer/signup"
               className="text-lg text-blue hover:underline"
             >
               Signup

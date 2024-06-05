@@ -172,7 +172,7 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
               Don{"'"}t have an account?
             </span>
             <Link
-              href="/auth/student/signup"
+              href="/auth/volunteer/signup"
               className="text-lg text-blue hover:underline"
             >
               Signup

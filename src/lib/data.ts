@@ -1,5 +1,5 @@
 /**
- * modifying this file with data different from the database could result in conflits.
+ * modifying this file with data different from the database could result in conflicts.
  * Modify with caution 
  */
 

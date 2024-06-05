@@ -1,8 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
 import SignupForm from "../_form/signup-form";
 
 function Signup() {
@@ -13,7 +11,7 @@ function Signup() {
           <Image src="/static/images/Login-Art.png" alt="Login Art" fill />
         </div>
       </div>
-      <div className="max-w-md mx-auto w-full flex flex-col">
+      <div className="max-w-md mx-auto w-full flex flex-col items-center">
         <div className="relative w-48 h-48">
           <Image src="/static/images/logo-big.png" alt="IDebate Logo" fill />
         </div>
