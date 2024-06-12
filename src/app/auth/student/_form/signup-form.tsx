@@ -69,45 +69,6 @@ const SignupForm = () => {
         </ToastAction>
       ),
     });
-    // setIsPending(true);
-    // try {
-    //   signIn("credentials", {
-    //     ...data,
-    //     redirect: false,
-    //   })
-    //     .then((callback) => {
-    //       if (callback?.error) {
-    //         console.log(callback?.error);
-    //         toast({
-    //           title: "Error",
-    //           description: callback?.error,
-    //           variant: "destructive",
-    //         });
-    //       } else if (!callback?.error && callback?.ok) {
-    //         toast({
-    //           title: "Success",
-    //           description: "Logged in successfully",
-    //         });
-
-    //         router.push("/admin");
-    //       } else {
-    //         console.log(callback?.error);
-    //         toast({
-    //           title: "Error",
-    //           description: "Invalid Credentials",
-    //           variant: "destructive",
-    //         });
-    //       }
-    //     })
-    //     .finally(() => setIsPending(false));
-    // } catch (error) {
-    //   setIsPending(true);
-    //   toast({
-    //     title: "Error",
-    //     description: "Something went wrong. Try again later",
-    //     variant: "destructive",
-    //   });
-    // }
   }
 
   const Step = ({
