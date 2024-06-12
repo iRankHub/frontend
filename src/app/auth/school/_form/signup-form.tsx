@@ -294,8 +294,8 @@ const SignupForm = () => {
                           >
                             {field.value
                               ? countries.find(
-                                  (country) => country.name === field.value
-                                )?.name
+                                (country) => country.name === field.value
+                              )?.name
                               : "Select country..."}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
@@ -584,7 +584,7 @@ const SignupForm = () => {
                       Already have an account?
                     </span>
                     <Link
-                      href="/auth/school/signup"
+                      href="/auth/school/login"
                       className="text-lg text-blue hover:underline"
                     >
                       Login

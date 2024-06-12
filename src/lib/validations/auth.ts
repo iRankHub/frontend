@@ -46,7 +46,7 @@ export const StudentSchema = z.object({
         required_error: "A date of birth is required.",
     }),
     school: z.string().min(2, {
-        message: "gender is required!"
+        message: "School is required!"
     }),
     email: z.string().email(),
     password: z.
