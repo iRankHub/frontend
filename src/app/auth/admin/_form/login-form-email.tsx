@@ -23,6 +23,7 @@ import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { login } from "@/utils/grpc-client";
 
 type Inputs = z.infer<typeof emailLoginSchema>;
 
@@ -44,7 +45,7 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
     },
   });
 
-  function onSubmit(data: Inputs) {
+  async function onSubmit(data: Inputs) {
     toast({
       variant: "success",
       title: "Success Message",

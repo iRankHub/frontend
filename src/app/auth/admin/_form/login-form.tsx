@@ -44,7 +44,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
     },
   });
 
-  function onSubmit(data: Inputs) {
+  async function onSubmit(data: Inputs) {
     toast({
       variant: "success",
       title: "Success Message",

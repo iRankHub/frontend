@@ -23,6 +23,7 @@ import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { login } from "@/utils/grpc-client";
 
 type Inputs = z.infer<typeof emailLoginSchema>;
 
@@ -44,17 +45,37 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
     },
   });
 
-  function onSubmit(data: Inputs) {
-    toast({
-      variant: "success",
-      title: "Success Message",
-      description: "Success Description",
-      action: (
-        <ToastAction altText="Close" className="bg-primary text-white">
-          Close
-        </ToastAction>
-      ),
-    });
+  async function onSubmit(data: Inputs) {
+    try {
+      const response = await login({
+        email: data.email,
+        password: data.password,
+      });
+      console.log("Login successful:", response);
+
+      toast({
+        variant: "success",
+        title: "Success Message",
+        description: "Success Description",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
+      });
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast({
+        variant: "destructive",
+        title: "Fail Message",
+        description: "Something went wrong. Check your credentials",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
+      });
+    }
   }
 
   return (
