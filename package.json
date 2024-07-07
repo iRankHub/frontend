@@ -6,11 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-proto": "protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --proto_path=../backend/internal/grpc/proto --ts_out=./src/lib/grpc/proto --js_out=import_style=commonjs,binary:./src/lib/grpc/proto --grpc-web_out=import_style=typescript,mode=grpcwebtext:./src/lib/grpc/proto ../backend/internal/grpc/proto/auth.proto"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.4.2",
-    "@improbable-eng/grpc-web": "^0.15.0",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-popover": "^1.0.7",

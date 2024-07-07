@@ -1,9 +1,9 @@
 import { Metadata } from "grpc-web";
-import { LoginRequest, SignUpRequest } from "./auth_pb";
-import { AuthServiceClient } from "./AuthServiceClientPb";
-import { grpc } from '@improbable-eng/grpc-web';
+import { AuthServiceClient } from "../lib/grpc/proto/AuthServiceClientPb";
+import { LoginRequest, SignUpRequest } from "@/lib/grpc/proto/auth_pb";
 
-const client = new AuthServiceClient('http://192.168.1.73:10000', null, null);
+const ENVOY_PROXY_URL = 'http://192.168.1.73:10000';
+const client = new AuthServiceClient(ENVOY_PROXY_URL, null, null);
 
 export const signUp = (data: {
     firstName: string;
@@ -21,25 +21,8 @@ export const signUp = (data: {
         request.setUserrole(data.userRole);
         // Set other fields as necessary
 
-        // const metadata = new grpc.Metadata();
-
-        // metadata.set('Access-Control-Allow-Credentials', 'true');
-        // metadata.set('Access-Control-Allow-Origin', '*');
-        // metadata.set('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-        // metadata.set('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-
-        // console.log(metadata);
-
-        // const metadata: Metadata = {
-        //     "ccess-Control-Allow-Credentials": 'true',
-        //     'Access-Control-Allow-Origin': '*',
-        //     'Access-Control-Allow-Methods': 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
-        //     'Access-Control-Allow-Headers': "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-        // }
-
         client.signUp(request, {}, (err, response) => {
             if (err) {
-                console.log(err.message)
                 reject(err);
             } else {
                 resolve(response.toObject());
