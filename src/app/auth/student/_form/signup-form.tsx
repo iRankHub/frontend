@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 
-import { StudentSchema } from "@/lib/validations/auth";
+import { StudentSchema } from "@/lib/validations/auth.schema";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -42,6 +42,8 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { signUp } from "@/utils/grpc-client";
+import { UserRole } from "@/types";
 
 type Inputs = z.infer<typeof StudentSchema>;
 
@@ -57,18 +59,54 @@ const SignupForm = () => {
     resolver: zodResolver(StudentSchema),
   });
 
-  function onSubmit(data: Inputs) {
-    console.log(data);
-    toast({
-      variant: "success",
-      title: "Success Message",
-      description: "Success Description",
-      action: (
-        <ToastAction altText="Close" className="bg-primary text-white">
-          Close
-        </ToastAction>
-      ),
-    });
+  async function onSubmit(data: Inputs) {
+    setIsPending(true);
+
+    // Format the parsed date
+    const formattedDate = format(data.dob, "yyyy-MM-dd");
+    const newData = {
+      ...data,
+      dob: formattedDate,
+    }
+
+    const response = await signUp({
+      email: newData.email,
+      password: newData.password,
+      firstName: newData.firstName,
+      lastName: newData.lastName,
+      dob: newData.dob,
+      userRole: UserRole.STUDENT,
+    })
+      .then((res) => {
+        console.log(res.data);
+        toast({
+          variant: "success",
+          title: "Success Message",
+          description: "Success Description",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description:
+            "Something went wrong. Please check your credentials and try again later",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+      })
+      .finally(() => {
+        setIsPending(false);
+      });
   }
 
   const Step = ({
@@ -354,7 +392,7 @@ const SignupForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="capitalize">
-                      Volunteer Email
+                      Student Email
                       <b className="text-primary font-light"> *</b>
                     </FormLabel>
                     <FormControl>
@@ -408,7 +446,10 @@ const SignupForm = () => {
                   <span className="sr-only">Cancel</span>
                 </Button>
                 <Button variant={"default"} size={"lg"} className="w-full">
-                  Continue
+                  Register
+                  {isPending && (
+                    <div className="w-4 h-4 ml-2 rounded-full animate-spin border-white border-2 border-r-0" />
+                  )}
                   <span className="sr-only">Continue</span>
                 </Button>
               </div>

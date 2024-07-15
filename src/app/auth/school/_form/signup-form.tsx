@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 
-import { schoolSchema } from "@/lib/validations/auth";
+import { schoolSchema } from "@/lib/validations/auth.schema";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -33,9 +33,23 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { countries } from "@/lib/data";
 import { CheckIcon, ChevronsUpDown } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { UserRole } from "@/types";
+import { signUp } from "@/utils/grpc-client";
 
 type Inputs = z.infer<typeof schoolSchema>;
 
@@ -52,18 +66,53 @@ const SignupForm = () => {
     resolver: zodResolver(schoolSchema),
   });
 
-  function onSubmit(data: Inputs) {
-    console.log(data);
-    toast({
-      variant: "success",
-      title: "Success Message",
-      description: "Success Description",
-      action: (
-        <ToastAction altText="Close" className="bg-primary text-white">
-          Close
-        </ToastAction>
-      ),
-    });
+  async function onSubmit(data: Inputs) {
+    setIsPending(true);
+
+    const response = await signUp({
+      firstName: "emma",
+      lastName: "watson",
+      address: "kk",
+      email: data.email,
+      password: data.password,
+      userRole: UserRole.SCHOOL,
+      schoolName: data.name,
+      country: data.country,
+      province: data.province_state,
+      district: data.district_region,
+      contactEmail: data.contact_person_email,
+      schoolType: data.type,
+    })
+      .then((res) => {
+        console.log(res.data);
+        toast({
+          variant: "success",
+          title: "Success Message",
+          description: "Success Description",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description:
+            "Something went wrong. Please check your credentials and try again later",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+      })
+      .finally(() => {
+        setIsPending(false);
+      });
   }
 
   const Step = ({
@@ -255,8 +304,8 @@ const SignupForm = () => {
                           >
                             {field.value
                               ? countries.find(
-                                (country) => country.name === field.value
-                              )?.name
+                                  (country) => country.name === field.value
+                                )?.name
                               : "Select country..."}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>

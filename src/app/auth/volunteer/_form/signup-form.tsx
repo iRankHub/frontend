@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 
-import { volunteerSchema } from "@/lib/validations/auth";
+import { volunteerSchema } from "@/lib/validations/auth.schema";
 import { Button } from "@/components/ui/button";
 import {
   Form,

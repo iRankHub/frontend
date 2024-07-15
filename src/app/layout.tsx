@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Inter, Rubik } from "next/font/google";
+import { Inter, Rubik, Lato, Spline_Sans_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
-const rubik = Rubik({
+const rubik = Lato({
   weight: '400',
   subsets: ['latin']
 })
