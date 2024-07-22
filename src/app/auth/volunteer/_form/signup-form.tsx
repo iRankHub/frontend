@@ -4,7 +4,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import type { z } from "zod";
+import { number, type z } from "zod";
 
 import { volunteerSchema } from "@/lib/validations/auth.schema";
 import { Button } from "@/components/ui/button";
@@ -51,6 +51,8 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { signUp } from "@/utils/grpc-client";
+import { UserRole } from "@/types";
 
 type Inputs = z.infer<typeof volunteerSchema>;
 
@@ -68,18 +70,48 @@ const SignupForm = () => {
     resolver: zodResolver(volunteerSchema),
   });
 
-  function onSubmit(data: Inputs) {
-    console.log(data);
-    toast({
-      variant: "success",
-      title: "Success Message",
-      description: "Success Description",
-      action: (
-        <ToastAction altText="Close" className="bg-primary text-white">
-          Close
-        </ToastAction>
-      ),
-    });
+  async function onSubmit(data: Inputs) {
+    await signUp({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password,
+      userRole: UserRole.VOLUNTEER,
+      dob: format(data.dob, 'yyyy-MM-dd'),
+      graduationYear: parseInt(data.graduation_year),
+      roleInterestedIn: "Mentor",
+    })
+      .then((res) => {
+        toast({
+          variant: "success",
+          title: "Success Message",
+          description: "Success Description",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+        form.reset();
+        router.push("/auth/school/login")
+      })
+      .catch((err) => {
+        console.error(err.message);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description:
+            "Something went wrong. Please check your credentials and try again later",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+      })
+      .finally(() => {
+        setIsPending(false);
+      });
   }
 
   const Step = ({

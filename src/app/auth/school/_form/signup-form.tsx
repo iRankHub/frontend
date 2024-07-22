@@ -69,7 +69,7 @@ const SignupForm = () => {
   async function onSubmit(data: Inputs) {
     setIsPending(true);
 
-    const response = await signUp({
+    await signUp({
       firstName: "emma",
       lastName: "watson",
       address: "kk",
@@ -84,7 +84,6 @@ const SignupForm = () => {
       schoolType: data.type,
     })
       .then((res) => {
-        console.log(res.data);
         toast({
           variant: "success",
           title: "Success Message",
@@ -95,9 +94,11 @@ const SignupForm = () => {
             </ToastAction>
           ),
         });
+        form.reset();
+        router.push("/auth/school/login")
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.message);
         toast({
           variant: "destructive",
           title: "Error",
@@ -267,7 +268,7 @@ const SignupForm = () => {
                     Already have an account?
                   </span>
                   <Link
-                    href="/auth/student/signup"
+                    href="/auth/school/signup"
                     className="text-lg text-blue hover:underline"
                   >
                     Login
@@ -415,7 +416,7 @@ const SignupForm = () => {
                     Already have an account?
                   </span>
                   <Link
-                    href="/auth/student/signup"
+                    href="/auth/school/signup"
                     className="text-lg text-blue hover:underline"
                   >
                     Login
