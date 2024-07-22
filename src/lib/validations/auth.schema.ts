@@ -83,7 +83,7 @@ export const StudentSchema = z.object({
 export const schoolSchema = z.object({
     name: z.string().min(2, {
         message: "name too short"
-    }).max(30, {
+    }).max(200, {
         message: "name too long"
     }),
     type: z.string({

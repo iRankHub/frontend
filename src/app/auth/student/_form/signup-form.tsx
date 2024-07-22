@@ -69,16 +69,17 @@ const SignupForm = () => {
       dob: formattedDate,
     }
 
-    const response = await signUp({
-      email: newData.email,
-      password: newData.password,
-      firstName: newData.firstName,
-      lastName: newData.lastName,
-      dob: newData.dob,
+    await signUp({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password,
       userRole: UserRole.STUDENT,
+      dob: format(data.dob, 'yyyy-MM-dd'),
+      grade: "Grade-4",
+      schoolId: 1,
     })
       .then((res) => {
-        console.log(res.data);
         toast({
           variant: "success",
           title: "Success Message",
@@ -89,9 +90,11 @@ const SignupForm = () => {
             </ToastAction>
           ),
         });
+        form.reset();
+        router.push("/auth/school/login")
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.message);
         toast({
           variant: "destructive",
           title: "Error",
