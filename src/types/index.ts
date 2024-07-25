@@ -4,3 +4,14 @@ export enum UserRole {
     VOLUNTEER = "volunteer",
     ADMIN = "administrator"
 }
+
+export interface LoginResponse {
+    token: string;
+    userid: string;
+    success: boolean;
+    status: string;
+    message: string;
+    requirePasswordReset: string;
+    requireTwoFactor: string;
+    userrole: "school" | "student" | "volunteer" | "admin"
+}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Rubik, Lato, Spline_Sans_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { AuthContext } from "@/context/authcontext";
 
 const rubik = Lato({
   weight: '400',
@@ -19,11 +20,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={rubik.className}>
-        <main className="min-h-screen h-full">{children}</main>
-        <Toaster /> 
-      </body>
-    </html>
+    <AuthContext>
+      <html lang="en">
+        <body className={rubik.className}>
+          <main className="min-h-screen h-full">{children}</main>
+          <Toaster />
+        </body>
+      </html>
+    </AuthContext>
   );
 }
