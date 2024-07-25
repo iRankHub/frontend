@@ -49,7 +49,7 @@ import {
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { UserRole } from "@/types";
-import { signUp } from "@/utils/grpc-client";
+import { signUp } from "@/utils/grpc/auth";
 
 type Inputs = z.infer<typeof schoolSchema>;
 
@@ -305,8 +305,8 @@ const SignupForm = () => {
                           >
                             {field.value
                               ? countries.find(
-                                  (country) => country.name === field.value
-                                )?.name
+                                (country) => country.name === field.value
+                              )?.name
                               : "Select country..."}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>

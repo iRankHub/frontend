@@ -7,6 +7,11 @@ Download the latest `protoc` binaries for your OS from the [Protocol Buffers Git
 1. Extract the downloaded zip file.
 2. Add the `bin` directory to your system PATH.
 
+```sh
+    # on linux
+    sudo apt install protobuf-compiler
+```
+
 ## 2. Install Go Protocol Buffers Plugins
 
 Open a terminal and navigate to your Go backend project directory.

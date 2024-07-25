@@ -42,8 +42,8 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { signUp } from "@/utils/grpc-client";
 import { UserRole } from "@/types";
+import { signUp } from "@/utils/grpc/auth";
 
 type Inputs = z.infer<typeof StudentSchema>;
 
