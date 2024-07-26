@@ -10,9 +10,9 @@ import dynamic from 'next/dynamic'
 // ProgressView contains the recharts chart. There is a bug in the library so we have to use dynamic to avoid hydration errors
 // This will be reviewed later on
 const ProgressView = dynamic(
-    () => import('@/components/organisms/students/dashboard/tournaments/overview/week-winners/progress-view'),
-    { ssr: false }
-  )
+  () => import('@/components/organisms/students/dashboard/tournaments/overview/week-winners/progress-view'),
+  { ssr: false }
+)
 
 const spline_sans_mono = Spline_Sans_Mono({
   weight: '400',

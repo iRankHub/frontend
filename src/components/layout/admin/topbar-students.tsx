@@ -56,11 +56,11 @@ function TopBarStudents() {
       </div>
       <div className="flex items-center px-5 gap-5">
         <div
-          className="flex items-center gap-1 bg-[#D9D9D9]/35 rounded-full border border-border overflow-hidden px-2 w-64 h-8 cursor-text"
+          className="flex items-center bg-white rounded-md border border-border overflow-hidden px-2 w-64 h-10 cursor-text"
           onClick={() => setOpen(!open)}
         >
           <Icons.search size={15} className="text-muted-foreground" />
-          <span className="text-sm text-muted-foreground">Search</span>
+          <Input type="search" placeholder="Search" className="text-sm text-muted-foreground bg-white outline-none border-none ring-0" />
         </div>
         <CommandDialog open={open} onOpenChange={setOpen}>
           <CommandInput placeholder="Type a command or search..." />
