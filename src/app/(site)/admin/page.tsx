@@ -1,10 +1,11 @@
+import Dashboard from '@/components/pages/admin/dashboard'
 import React from 'react'
 
-type Props = {}
-
-function page({ }: Props) {
+function page() {
   return (
-    <div>page</div>
+    <div className='w-full'>
+      <Dashboard />
+    </div>
   )
 }
 

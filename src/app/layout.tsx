@@ -3,6 +3,7 @@ import { Inter, Rubik, Lato, Spline_Sans_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthContext } from "@/context/authcontext";
+import AppStateProvider from "@/context/global-context";
 
 const rubik = Lato({
   weight: '400',
@@ -20,13 +21,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AuthContext>
+    <AppStateProvider>
       <html lang="en">
         <body className={rubik.className}>
           <main className="min-h-screen h-full">{children}</main>
           <Toaster />
         </body>
       </html>
-    </AuthContext>
+    </AppStateProvider>
   );
 }
