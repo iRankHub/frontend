@@ -43,6 +43,7 @@ const config = {
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
+          text: "hsl(var(--text-muted-foreground))",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
@@ -55,6 +56,10 @@ const config = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-text))",
         },
       },
       borderRadius: {

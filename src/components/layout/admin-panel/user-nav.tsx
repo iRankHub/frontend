@@ -30,11 +30,11 @@ export function UserNav() {
           <TooltipTrigger asChild>
             <DropdownMenuTrigger asChild>
               <Button
-                variant="link"
-                className="relative rounded-full border-none p-2"
+                variant="ghost"
+                className="relative border-none p-2"
               >
-                <div className="hidden md:flex flex-col items-end">
-                  <h3 className="text-sm text-[#212B36] capitalize leading-4">
+                <div className="hidden md:flex flex-col items-end mr-2">
+                  <h3 className="text-sm text-[#212B36] dark:text-foreground capitalize leading-4">
                     Thomas Anree
                   </h3>
                   <span className="text-xs text-[#637381]">Admin</span>
