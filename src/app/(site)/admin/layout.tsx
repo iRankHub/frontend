@@ -1,5 +1,4 @@
-import SidebarStudent from "@/components/layout/admin/sidebar";
-import TopBar from "@/components/layout/admin/topbar";
+import AdminPanelLayout from "@/components/layout/admin-panel/admin-panel-layout";
 import React from "react";
 
 function page({
@@ -8,13 +7,9 @@ function page({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen bg-[#FAF9F9]">
-      <SidebarStudent />
-      <TopBar />
-      <main className="min-h-screen h-full">
-        {children}
-      </main>
-    </div>
+    <AdminPanelLayout>
+      <div className="min-h-screen">{children}</div>
+    </AdminPanelLayout>
   );
 }
 

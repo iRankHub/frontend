@@ -4,11 +4,12 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthContext } from "@/context/authcontext";
 import AppStateProvider from "@/context/global-context";
+import { ThemeProvider } from "@/providers/theme-provider";
 
 const rubik = Lato({
-  weight: '400',
-  subsets: ['latin']
-})
+  weight: "400",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "iRankHub",
@@ -21,13 +22,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AppStateProvider>
-      <html lang="en">
-        <body className={rubik.className}>
+    <html lang="en">
+      <body className={rubik.className}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <main className="min-h-screen h-full">{children}</main>
           <Toaster />
-        </body>
-      </html>
-    </AppStateProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

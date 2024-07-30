@@ -13,9 +13,9 @@ const MaxWidthWrapper = ({
   return (
     <div
       className={cn(
-        "p-5 max-w-[calc(100vw-20rem)] ml-80 mt-20",
+        "p-5 max-w-[calc(100vw_-_288px)] ml-72 mt-20",
         className,
-        !sidebarOpen && "ml-[106px]"
+        !sidebarOpen && "ml-1"
       )}
     >
       {children}
