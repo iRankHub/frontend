@@ -1,5 +1,5 @@
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
-import Leagues from "@/components/pages/admin/tournaments/leagues/leagues";
+import Formats from "@/components/pages/admin/tournaments/formats/formats";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,11 +11,11 @@ import {
 import { Slash } from "lucide-react";
 import React from "react";
 
-function page() {
+function page({}) {
   return (
     <ContentLayout title="format">
       <div className="w-full flex items-center justify-between gap-5">
-        <h3 className="text-lg text-primary font-semibold">Debate Leagues</h3>
+        <h3 className="text-lg text-primary font-semibold">Tournament Formats</h3>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -41,13 +41,12 @@ function page() {
             </BreadcrumbSeparator>
             <BreadcrumbItem>
               <BreadcrumbPage className="text-primary">
-                Leagues
+                Create
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <Leagues />
     </ContentLayout>
   );
 }

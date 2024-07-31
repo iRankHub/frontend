@@ -30,12 +30,11 @@ function page({}) {
               <Slash className="-rotate-12" />
             </BreadcrumbSeparator>
             <BreadcrumbItem>
-              <BreadcrumbLink
-                href="/admin/dashboard"
+              <BreadcrumbPage
                 className="text-muted-foreground"
               >
                 Tournament
-              </BreadcrumbLink>
+              </BreadcrumbPage>
             </BreadcrumbItem>
             <BreadcrumbSeparator>
               <Slash className="-rotate-12" />

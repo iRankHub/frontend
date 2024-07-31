@@ -20,6 +20,8 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import SidePanel, { Panelheader } from "./side-panel";
+import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 
 interface NavbarProps {
   title: string;
@@ -27,7 +29,6 @@ interface NavbarProps {
 
 export function Navbar({ title }: NavbarProps) {
   const sidebar = useStore(useSidebarToggle, (state) => state);
-  const { setTheme, theme } = useTheme();
   return (
     <header className="sticky top-0 z-10 w-full bg-background/95 shadow backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:shadow-secondary">
       <div className="mx-4 sm:mx-8 flex h-14 items-center gap-10">
@@ -52,17 +53,40 @@ export function Navbar({ title }: NavbarProps) {
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
                   <DropdownMenuTrigger asChild>
-                    <Button
-                      className="rounded-full w-8 h-8 bg-background"
-                      variant="outline"
-                      size="icon"
-                      onClick={() =>
-                        setTheme(theme === "dark" ? "light" : "dark")
-                      }
-                    >
-                      <Icons.bell className="w-[1.2rem] h-[1.2rem] text-muted-foreground m-1" />
-                      <span className="sr-only">Notifications</span>
-                    </Button>
+                    <Sheet>
+                      <SheetTrigger>
+                        <Button
+                          className="relative rounded-full w-8 h-8 bg-background cursor-pointer"
+                          variant="outline"
+                          size="icon"
+                        >
+                          <sup className="bg-primary w-3.5 h-3.5 grid items-center absolute rounded-full text-[10px] font-bold top-0.5 -right-1.5 text-white">
+                            5
+                          </sup>
+                          <Icons.bell className="w-[1.2rem] h-[1.2rem] text-muted-foreground m-1" />
+                          <span className="sr-only">Notifications</span>
+                        </Button>
+                      </SheetTrigger>
+                      <SidePanel>
+                        <Panelheader>
+                          <div className="w-full h-12 flex flex-row items-center justify-between px-3 pb-2">
+                            <div className="flex items-center gap-2">
+                              <h3 className="text- font-bold">Notifications</h3>
+                              <span className="w-5 h-5 bg-primary rounded-full text-sm flex items-center justify-center text-white font-bold">
+                                2
+                              </span>
+                            </div>
+                            <Button
+                              type="button"
+                              variant={"link"}
+                              className="text-sm"
+                            >
+                              Mark all as read
+                            </Button>
+                          </div>
+                        </Panelheader>
+                      </SidePanel>
+                    </Sheet>
                   </DropdownMenuTrigger>
                 </TooltipTrigger>
                 <TooltipContent side="bottom">Notifications</TooltipContent>
