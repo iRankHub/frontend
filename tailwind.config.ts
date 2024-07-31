@@ -27,6 +27,7 @@ const config = {
         blue: "hsl(var(--blue))",
         darkBlue: "hsl(var(--dark-blue))",
         green: "hsl(var(--green))",
+        brown: "hsl(var(--brown))",
         purple: "hsl(var(--purple))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -43,6 +44,7 @@ const config = {
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
+          text: "hsl(var(--text-muted-foreground))",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
@@ -55,6 +57,10 @@ const config = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-text))",
         },
       },
       borderRadius: {

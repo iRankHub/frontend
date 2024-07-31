@@ -1,5 +1,6 @@
-import { LoginRequest, SignUpRequest } from "@/lib/grpc/proto/authentication/auth_pb";
+import { LoginRequest, LoginResponse, SignUpRequest } from "@/lib/grpc/proto/authentication/auth_pb";
 import { client } from "./grpc-client";
+import { ClientReadableStream } from "grpc-web";
 
 export const signUp = (data: {
     firstName?: string;
@@ -43,8 +44,10 @@ export const signUp = (data: {
 
         client.signUp(request, {}, (err, response) => {
             if (err) {
+                console.log(err);
                 reject(err);
             } else {
+                console.log(err);
                 resolve(response.toObject());
             }
         });
@@ -56,7 +59,7 @@ export const login = (
         email: string;
         password: string;
     }
-) => {
+): Promise<LoginResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new LoginRequest();
         request.setEmailOrId(data.email);

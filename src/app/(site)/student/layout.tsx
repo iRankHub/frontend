@@ -1,5 +1,5 @@
-import SidebarStudent from "../../../components/layout/sidebar";
-import TopBarStudents from "../../../components/layout/topbar-students";
+import SidebarStudent from "../../../components/layout/students/sidebar";
+import TopBarStudents from "../../../components/layout/students/topbar-students";
 
 function layout({
   children,
