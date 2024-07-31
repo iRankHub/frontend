@@ -37,83 +37,83 @@ import {
         groupLabel: "",
         menus: [
           {
-            href: "/dashboard",
+            href: "/admin/dashboard",
             label: "Dashboard",
-            active: pathname.includes("/dashboard"),
+            active: pathname.includes("/admin/dashboard"),
             icon: LayoutGrid,
             submenus: []
           },
           {
-            href: "/dashboard/inbox",
+            href: "/admin/dashboard/inbox",
             label: "Inbox",
-            active: pathname.includes("/dashboard/inbox"),
+            active: pathname.includes("/admin/dashboard/inbox"),
             icon: InboxIcon,
             submenus: []
           },
           {
-            href: "/dashboard/tournaments",
+            href: "/admin/dashboard/tournaments",
             label: "Tournaments",
-            active: pathname.includes("/dashboard/tournaments"),
+            active: pathname.includes("/admin/dashboard/tournaments"),
             icon: Sheet,
             submenus: [
               {
-                href: "/dashboard/tournaments/formats",
+                href: "/admin/dashboard/tournaments/formats",
                 label: "Formats",
                 active: pathname === "/formats"
               },
               {
-                href: "/dashboard/tournaments/leagues",
+                href: "/admin/dashboard/tournaments/leagues",
                 label: "Leagues",
                 active: pathname === "/leagues"
               },
               {
-                href: "/dashboard/tournaments/create",
+                href: "/admin/dashboard/tournaments/create",
                 label: "Create Tournament",
                 active: pathname === "/create"
               },
               {
-                href: "/dashboard/tournaments/list",
+                href: "/admin/dashboard/tournaments/list",
                 label: "List Tournaments",
                 active: pathname === "/list"
               },
             ]
           },
           {
-            href: "/dashboard/users",
+            href: "/admin/dashboard/users",
             label: "Users",
-            active: pathname.includes("/dashboard/users"),
+            active: pathname.includes("/admin/dashboard/users"),
             icon: Users,
             submenus: []
           },
           {
-            href: "/dashboard/logistics",
+            href: "/admin/dashboard/logistics",
             label: "Logistics",
-            active: pathname.includes("/dashboard/logistics"),
+            active: pathname.includes("/admin/dashboard/logistics"),
             icon: Sheet,
             submenus: [
               {
-                href: "/dashboard/logistics/billings",
+                href: "/admin/dashboard/logistics/billings",
                 label: "Billings",
                 active: pathname === "/billings"
               },
               {
-                href: "/dashboard/logistics/orders",
+                href: "/admin/dashboard/logistics/orders",
                 label: "Mission Orders",
                 active: pathname === "/orders"
               },
             ]
           },
           {
-            href: "/dashboard/reports",
+            href: "/admin/dashboard/reports",
             label: "Reporting & Analytics",
-            active: pathname.includes("/dashboard/reports"),
+            active: pathname.includes("/admin/dashboard/reports"),
             icon: File,
             submenus: []
           },
           {
-            href: "/dashboard/archives",
+            href: "/admin/dashboard/archives",
             label: "Archives",
-            active: pathname.includes("/dashboard/archives"),
+            active: pathname.includes("/admin/dashboard/archives"),
             icon: ArchiveIcon,
             submenus: []
           },

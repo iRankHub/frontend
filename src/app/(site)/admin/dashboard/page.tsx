@@ -9,15 +9,15 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Slash } from "lucide-react";
 import React from "react";
-import Overview from "./_components/overview";
-import UserCategoryOverview from "./_components/user-category-overview";
+import Overview from "@/components/pages/admin/dashboard/overview";
+import UserCategoryOverview from "@/components/pages/admin/dashboard/user-category-overview";
 import dynamic from "next/dynamic";
-import SystemMonitor from "./_components/system-monitor";
+import SystemMonitor from "@/components/pages/admin/dashboard/system-monitor";
 
 // ProgressView contains the recharts chart. There is a bug in the library so we have to use dynamic to avoid hydration errors
 // This will be reviewed later on
 const TournamentInsights = dynamic(
-  () => import('./_components/tournament-insights'),
+  () => import('@/components/pages/admin/dashboard/tournament-insights'),
   { ssr: false }
 )
 
