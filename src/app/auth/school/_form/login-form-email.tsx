@@ -47,52 +47,52 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
 
   async function onSubmit(data: Inputs) {
     setIsPending(true);
-    try {
-      const response = await login({ ...data });
+    // try {
+    const response = await login({ ...data });
 
-      if (response) {
-        await signIn("credentials", {
-          redirect: false,
-          userid: response.userid,
-          token: response.token,
-          userrole: response.userrole,
-        })
-          .then((callback) => {
-            if (callback?.error) {
-              console.log(callback?.error);
-              toast({
-                title: "Error",
-                description: callback?.error,
-                variant: "destructive",
-              });
-            } else if (!callback?.error && callback?.ok) {
-              toast({
-                title: "Success",
-                description: "Logged in successfully",
-                variant: "success",
-              });
-              form.reset();
-
-              router.push("/student")
-            } else {
-              console.log(callback?.error);
-              toast({
-                title: "Error",
-                description: "Invalid Credentials",
-                variant: "destructive",
-              });
-            }
-          })
-          .finally(() => setIsPending(false));
-      }
-    } catch (error) {
-      setIsPending(true);
-      toast({
-        title: "Error",
-        description: "Something went wrong. Try again later",
-        variant: "destructive",
-      });
-    }
+    //   if (response) {
+    //     await signIn("credentials", {
+    //       redirect: false,
+    //       userid: response.userid,
+    //       token: response.token,
+    //       userrole: response.userrole,
+    //     })
+    //       .then((callback) => {
+    //         if (callback?.error) {
+    //           console.log(callback?.error);
+    //           toast({
+    //             title: "Error",
+    //             description: callback?.error,
+    //             variant: "destructive",
+    //           });
+    //         } else if (!callback?.error && callback?.ok) {
+    //           toast({
+    //             title: "Success",
+    //             description: "Logged in successfully",
+    //             variant: "success",
+    //           });
+    //           form.reset();
+    //
+    //           router.push("/student")
+    //         } else {
+    //           console.log(callback?.error);
+    //           toast({
+    //             title: "Error",
+    //             description: "Invalid Credentials",
+    //             variant: "destructive",
+    //           });
+    //         }
+    //       })
+    //       .finally(() => setIsPending(false));
+    //   }
+    // } catch (error) {
+    //   setIsPending(true);
+    //   toast({
+    //     title: "Error",
+    //     description: "Something went wrong. Try again later",
+    //     variant: "destructive",
+    //   });
+    // }
   }
 
   return (
