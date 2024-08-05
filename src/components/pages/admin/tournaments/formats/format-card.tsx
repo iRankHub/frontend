@@ -147,9 +147,11 @@ function FormatCard({}: Props) {
                   />
                 </div>
 
-                <Button type="submit" size={"sm"} className="w-36 ml-auto">
-                  Save Changes
-                </Button>
+                {isEdit && (
+                  <Button type="submit" size={"sm"} className="w-36 ml-auto">
+                    Save Changes
+                  </Button>
+                )}
               </form>
             </SidePanel>
           </Sheet>

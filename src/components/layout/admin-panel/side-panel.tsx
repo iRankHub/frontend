@@ -13,22 +13,26 @@ import React from "react";
 type Props = {
   children: React.ReactNode;
   className?: string;
+  side?: "top" | "right" | "left" | "bottom";
 };
 
 export const Panelheader = ({ children, className }: Props) => (
-  <SheetHeader className={cn(
-    "w-full h-14 border-b border-muted shadow grid items-center px-4",
-    className
-  )}>
+  <SheetHeader
+    className={cn(
+      "w-full h-14 border-b border-muted shadow grid items-center px-4",
+      className
+    )}
+  >
     {children}
   </SheetHeader>
 );
 
-function SidePanel({ children }: Props) {
+function SidePanel({ children, className, side }: Props) {
   return (
     <SheetContent
-      className="h-[calc(100vh_-_56px)] top-[57px] p-0"
+      className={cn("h-[calc(100vh_-_56px)] top-[57px] p-0", className)}
       isOverlayVisible={false}
+      side={side}
     >
       {children}
     </SheetContent>
