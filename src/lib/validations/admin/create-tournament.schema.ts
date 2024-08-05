@@ -1,17 +1,17 @@
 import * as z from "zod"
 
 export const createTournamentSchema = z.object({
-    id: z.string().min(5, {
-        message: "User ID too short"
-    }).max(100),
-    password: z.
-        string()
-        .min(8, {
-            message: "Password must be atleast 8 characters long"
-        })
-        .max(100)
-        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/, {
-            message:
-                "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
-        }),
+    startDate: z.date(),
+    startTime: z.date(),
+    endDate: z.date(),
+    endTime: z.date(),
+    location: z.string().min(3, { message: "location must be atleast 3 characters" }),
+    coordinator: z.string().min(1, { message: "a coordinator is required" }),
+    fees_currency: z.string(),
+    fees: z.string(),
+    format: z.string().min(1, { message: "format is required" }),
+    preliminaries_start_from: z.string(),
+    preliminaries_end_at: z.string(),
+    no_of_judges: z.string(),
+    no_of_elimination_judges: z.string(),
 })

@@ -5,11 +5,12 @@ import TournamentForm from "./tournament-form";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import Leagues from "./Leagues";
 import LeaguesMobile from "./leagues-mobile";
+import { TournamentMenu } from "../../create/tournament-menu";
 
-function CreateTournament() {
+function EditTournament() {
   return (
     <div className="mt-7 grid grid-cols-3 gap-5 relative">
-      <Leagues />
+      <TournamentMenu />
       <div className="col-span-3 lg:col-span-2 bg-background min-h-full rounded-md border border-gray-200 pb-4">
         <TournamentForm />
       </div>
@@ -29,4 +30,4 @@ function CreateTournament() {
   );
 }
 
-export default CreateTournament;
+export default EditTournament;

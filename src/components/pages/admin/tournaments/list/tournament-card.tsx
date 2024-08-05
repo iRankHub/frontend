@@ -65,7 +65,7 @@ function TournamentCard() {
                   variant={"link"}
                   className="w-full justify-start text-foreground hover:no-underline"
                 >
-                  <Link className="no-underline" href={"#"}>
+                  <Link className="no-underline" href={"/admin/tournaments/list/fsfdsfsfsdfdfs"}>
                     Go To Tournament
                   </Link>
                 </Button>
