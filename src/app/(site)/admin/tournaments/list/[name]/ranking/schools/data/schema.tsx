@@ -1,11 +1,12 @@
 import { z } from "zod"
 
 export const taskSchema = z.object({
-  id: z.string(),
+  place: z.string(),
   names: z.string(),
-  status: z.string(),
-  category: z.string(),
-  action: z.string(),
+  schools: z.string(),
+  points: z.string(),
+  wins: z.string(),
+  rank: z.string(),
 })
 
 export type Task = z.infer<typeof taskSchema>
