@@ -1,5 +1,5 @@
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
-import TournamentForm from "@/components/pages/admin/tournaments/create/tournament-form";
+import Elimination from "@/components/pages/admin/tournaments/list/tournament-name/ballots/elimination";
 import TournamentMenuWrapper from "@/components/pages/admin/tournaments/list/tournament-name/tournament-menu-wrapper";
 import {
   Breadcrumb,
@@ -63,7 +63,7 @@ function page({ params }: Iparms) {
         </Breadcrumb>
       </div>
       <TournamentMenuWrapper>
-        <TournamentForm />
+        <Elimination />
       </TournamentMenuWrapper>
     </ContentLayout>
   );

@@ -1,18 +1,25 @@
-import { Icons } from "@/components/icons";
-import { Button } from "@/components/ui/button";
 import React from "react";
-import TournamentForm from "./tournament-form";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
-import Leagues from "./Leagues";
 import LeaguesMobile from "./leagues-mobile";
-import { TournamentMenu } from "../../create/tournament-menu";
+import { TournamentMenu } from "./tournament-menu";
+import { Button } from "@/components/ui/button";
+import { Icons } from "@/components/icons";
+import { cn } from "@/lib/utils";
 
-function EditTournament() {
+type Props = {
+  children: React.ReactNode;
+  className?: string;
+};
+
+function TournamentMenuWrapper({ children, className }: Props) {
   return (
-    <div className="mt-7 grid grid-cols-3 gap-5 relative">
+    <div className={cn(
+        "mt-7 grid grid-cols-3 gap-5 relative",
+        className
+    )}>
       <TournamentMenu />
       <div className="col-span-3 lg:col-span-2 bg-background min-h-full rounded-md border border-gray-200 pb-4">
-        <TournamentForm />
+        {children}
       </div>
       <Sheet>
         <SheetTrigger>
@@ -30,4 +37,4 @@ function EditTournament() {
   );
 }
 
-export default EditTournament;
+export default TournamentMenuWrapper;

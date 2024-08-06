@@ -22,17 +22,17 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 60 9.1% 97.8%;
     --border: 0, 0%, 79%;
-    --b: 0, 0%, 79%;
+    --info: 221, 83%, 53%;
     --input: 214, 32%, 91%;
     --ring: 24.6 95% 53.1%;
     --radius: 0.5rem;
     --blue: 227, 82%, 52%;
     --dark-blue: 227, 28%, 27%;
-    --green: 140, 100%, 27%;
     --purple: 230, 54%, 62%;
     --success: 163, 94%, 24%;
     --success-text: 163, 94%, 24%;
     --success-light: 140, 52%, 55%;
+    --success-border: 160, 84%, 39%;
     --brown: 26, 32%, 48%;
   }
 
@@ -59,6 +59,7 @@
     --success: 163, 94%, 24%;
     --success-text: 163, 94%, 24%;
     --brown: 26, 32%, 48%;
+    --info: 221, 83%, 53%;
   }
 }
 

@@ -77,6 +77,7 @@ import {
     Wallet,
     X,
     Mail,
+    MailX,
     type XIcon as LucideIcon,
     type LucideProps,
 } from "lucide-react"
@@ -94,6 +95,7 @@ export const Icons = {
     sun: SunMedium,
     moon: Moon,
     mail: Mail,
+    mailx: MailX,
     bell: Bell,
     star: Star,
     smile: Smile,

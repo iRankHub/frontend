@@ -22,11 +22,11 @@ const config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+        info: "hsl(var(--info))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         blue: "hsl(var(--blue))",
         darkBlue: "hsl(var(--dark-blue))",
-        green: "hsl(var(--green))",
         brown: "hsl(var(--brown))",
         purple: "hsl(var(--purple))",
         primary: {
@@ -62,6 +62,7 @@ const config = {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-text))",
           light: "hsl(var(--success-light))",
+          border: "hsl(var(--success-border))",
         },
       },
       borderRadius: {
