@@ -1,5 +1,5 @@
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
-import TournamentForm from "@/components/pages/admin/tournaments/create/tournament-form";
+import Preliminaries from "@/components/pages/admin/tournaments/list/tournament-name/pairings/prelims";
 import TournamentMenuWrapper from "@/components/pages/admin/tournaments/list/tournament-name/tournament-menu-wrapper";
 import {
   Breadcrumb,
@@ -63,7 +63,7 @@ function page({ params }: Iparms) {
         </Breadcrumb>
       </div>
       <TournamentMenuWrapper>
-        <TournamentForm />
+        <Preliminaries />
       </TournamentMenuWrapper>
     </ContentLayout>
   );

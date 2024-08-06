@@ -15,3 +15,9 @@ export interface LoginResponse {
     requireTwoFactor: string;
     userrole: "school" | "student" | "volunteer" | "admin"
 }
+
+export interface Iparms {
+    params: {
+        name: string;
+    };
+}

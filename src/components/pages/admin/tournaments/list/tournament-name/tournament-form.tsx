@@ -53,8 +53,8 @@ function TournamentForm({}: Props) {
 
   return (
     <div className="p-5">
-      <div className="w-full bg-brown rounded-md h-60 p-5 flex items-end">
-        <div className="flex-1">
+      <div className="w-full bg-brown rounded-md h-60 p-5 flex flex-col md:flex-row justify-end md:items-end">
+        <div className="mb-3 md:mb-0 md:flex-1">
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-1 text-sm text-white font-medium">
               <Icons.calendar className="w-3.5 h-3.5 text-white" />
@@ -605,8 +605,8 @@ function TournamentForm({}: Props) {
                 <span className="sr-only">Cancel</span>
               </Button>
               <Button type="button" variant={"default"} className="w-full">
-                Create Tournament
-                <span className="sr-only">Create Tournament</span>
+                Update Tournament
+                <span className="sr-only">Update Tournament</span>
               </Button>
             </div>
           </form>

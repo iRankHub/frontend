@@ -7,7 +7,6 @@ import { useStore } from "zustand";
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
 import { SidebarToggle } from "./sidebar-toggle";
 import { Command, CommandInput } from "@/components/ui/command";
-import { useTheme } from "next-themes";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +21,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import SidePanel, { Panelheader } from "./side-panel";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
+import { Inter } from "next/font/google";
+import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Badge } from "lucide-react";
 
 interface NavbarProps {
   title: string;
@@ -85,6 +88,7 @@ export function Navbar({ title }: NavbarProps) {
                             </Button>
                           </div>
                         </Panelheader>
+                        <div className="w-full h-[calc(100%_-_70px)] p-5 flex flex-col"></div>
                       </SidePanel>
                     </Sheet>
                   </DropdownMenuTrigger>

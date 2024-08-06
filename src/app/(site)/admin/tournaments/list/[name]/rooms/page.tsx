@@ -1,5 +1,5 @@
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
-import TournamentForm from "@/components/pages/admin/tournaments/create/tournament-form";
+import Rooms from "@/components/pages/admin/tournaments/list/tournament-name/rooms/room";
 import TournamentMenuWrapper from "@/components/pages/admin/tournaments/list/tournament-name/tournament-menu-wrapper";
 import {
   Breadcrumb,
@@ -14,11 +14,11 @@ import { Slash } from "lucide-react";
 import React from "react";
 
 function page({ params }: Iparms) {
-  const { name: routeName } = params;
+  const { name: tournamentName } = params;
   return (
     <ContentLayout title="format">
-      <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-5">
-        <h3 className="text-lg text-primary font-bold">Tournament Name</h3>
+      <div className="w-full flex items-center justify-between gap-5">
+        <h3 className="text-2xl text-primary font-bold">{tournamentName}</h3>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -56,14 +56,14 @@ function page({ params }: Iparms) {
             </BreadcrumbSeparator>
             <BreadcrumbItem>
               <BreadcrumbPage className="text-primary text-base">
-                {routeName}
+                {tournamentName}
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
       <TournamentMenuWrapper>
-        <TournamentForm />
+        <Rooms />
       </TournamentMenuWrapper>
     </ContentLayout>
   );
