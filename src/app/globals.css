@@ -33,6 +33,7 @@
     --success-text: 163, 94%, 24%;
     --success-light: 140, 52%, 55%;
     --success-border: 160, 84%, 39%;
+    --success-green: 126, 93%, 36%;
     --brown: 26, 32%, 48%;
   }
 
@@ -60,6 +61,7 @@
     --success-text: 163, 94%, 24%;
     --brown: 26, 32%, 48%;
     --info: 221, 83%, 53%;
+    --success-green: 126, 93%, 36%;
   }
 }
 

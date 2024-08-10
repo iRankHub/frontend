@@ -10,13 +10,13 @@ import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
 import {
   Collapsible,
   CollapsibleContent,
-  CollapsibleTrigger
+  CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-  TooltipProvider
+  TooltipProvider,
 } from "@/components/ui/tooltip";
 import {
   DropdownMenu,
@@ -24,7 +24,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuSeparator
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 type Submenu = {
@@ -46,7 +46,7 @@ export function CollapseMenuButton({
   label,
   active,
   submenus,
-  isOpen
+  isOpen,
 }: CollapseMenuButtonProps) {
   const isSubmenuActive = submenus.some((submenu) => submenu.active);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(isSubmenuActive);
@@ -64,21 +64,25 @@ export function CollapseMenuButton({
         <Button
           variant={active ? "secondary" : "ghost"}
           className={cn(
-            "w-full justify-start h-10 mb-1 text-background font-bold",
+            "w-full justify-start h-10 mb-1 text-background font-bold group",
             active && "bg-[#F5AE73] hover:bg-[#F5AE73]"
           )}
         >
           <div className="w-full items-center flex justify-between">
             <div className="flex items-center">
               <span className="mr-4">
-                <Icon size={18} />
+                <Icon
+                  size={18}
+                  className={cn(!active && "group-hover:text-primary")}
+                />
               </span>
               <p
                 className={cn(
                   "max-w-[150px] truncate",
                   isOpen
                     ? "translate-x-0 opacity-100"
-                    : "-translate-x-96 opacity-0"
+                    : "-translate-x-96 opacity-0",
+                  !active && "group-hover:text-primary"
                 )}
               >
                 {label}
@@ -94,7 +98,10 @@ export function CollapseMenuButton({
             >
               <ChevronDown
                 size={18}
-                className="transition-transform duration-200"
+                className={cn(
+                  "transition-transform duration-200",
+                  !active && "group-hover:text-primary"
+                )}
               />
             </div>
           </div>
@@ -106,21 +113,25 @@ export function CollapseMenuButton({
             key={index}
             variant={active ? "secondary" : "ghost"}
             className={cn(
-              "w-full justify-start h-10 mb-1 text-background font-bold",
+              "w-full justify-start h-10 mb-1 text-background font-bold group",
               active && "bg-[#F5AE73] hover:bg-[#F5AE73]"
             )}
             asChild
           >
             <Link href={href}>
               <span className="mr-4 ml-2">
-                <Dot size={18} />
+                <Dot
+                  size={18}
+                  className={cn(!active && "group-hover:text-primary")}
+                />
               </span>
               <p
                 className={cn(
                   "max-w-[170px] truncate",
                   isOpen
                     ? "translate-x-0 opacity-100"
-                    : "-translate-x-96 opacity-0"
+                    : "-translate-x-96 opacity-0",
+                  !active && "group-hover:text-primary"
                 )}
               >
                 {label}
@@ -139,7 +150,7 @@ export function CollapseMenuButton({
               <Button
                 variant={active ? "secondary" : "ghost"}
                 className={cn(
-                  "w-full justify-start h-10 mb-1 text-background font-bold",
+                  "w-full justify-start h-10 mb-1 text-background font-bold group",
                   active && "bg-[#F5AE73] hover:bg-[#F5AE73]"
                 )}
               >
@@ -151,7 +162,8 @@ export function CollapseMenuButton({
                     <p
                       className={cn(
                         "max-w-[200px] truncate",
-                        isOpen === false ? "opacity-0" : "opacity-100"
+                        isOpen === false ? "opacity-0" : "opacity-100",
+                        !active && "group-hover:text-primary"
                       )}
                     >
                       {label}

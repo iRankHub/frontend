@@ -136,10 +136,13 @@ export const columns: ColumnDef<Task>[] = [
       return (
         <div className="flex items-center space-x-1">
           <Button type="button" variant={"secondary"} size={"icon"} className="bg-transparent w-6 h-6 p-1 m-0">
-            <Icons.mailx className="w-4 h-4 text-success-border" />
+            <Icons.mailResend className="w-6 h-6 text-info" />
           </Button>
           <Button type="button" variant={"secondary"} size={"icon"} className="bg-transparent w-6 h-6 p-1 m-0">
-            <Icons.mailx className="w-4 h-4 text-destructive" />
+            <Icons.mailx className="w-6 h-6 text-success-border" />
+          </Button>
+          <Button type="button" variant={"secondary"} size={"icon"} className="bg-transparent w-6 h-6 p-1 m-0">
+            <Icons.mailx className="w-6 h-6 text-destructive" />
           </Button>
         </div>
       );

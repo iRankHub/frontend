@@ -133,11 +133,11 @@ export const columns: ColumnDef<Task>[] = [
                       className="text-foreground placeholder:text-muted-foreground"
                     />
                   </div>
-                  <h3 className="uppercase text-xs mb-2 text-muted-foreground font-semibold">
+                  <h3 className="uppercase text-xs my-5 text-muted-foreground font-semibold">
                     preliminary
                   </h3>
                   <div className="flex items-center gap-8 flex-wrap">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
                       <span className="text-sm font-semibold text-foreground">
                         Round 1
                       </span>

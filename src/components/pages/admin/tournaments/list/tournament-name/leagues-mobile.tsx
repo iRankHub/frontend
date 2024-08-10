@@ -51,7 +51,7 @@ function LeaguesMobile({}: Props) {
     <SidePanel>
       <Panelheader>
         <div className="w-full h-12 flex flex-row items-center justify-between px-3 pb-2">
-          <h3 className="text-sm font-bold">Pages</h3>
+          <h3 className="text-sm font-bold">Tournament Menu</h3>
         </div>
       </Panelheader>
       <div className="w-full p-3">

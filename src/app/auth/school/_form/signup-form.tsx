@@ -47,9 +47,8 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 import { UserRole } from "@/types";
-import { signUp } from "@/utils/grpc/auth";
+import { signUp } from "@/core/authentication/auth";
 
 type Inputs = z.infer<typeof schoolSchema>;
 
@@ -70,9 +69,9 @@ const SignupForm = () => {
     setIsPending(true);
 
     await signUp({
-      firstName: "emma",
-      lastName: "watson",
-      address: "kk",
+      firstName: data.contact_person_firstname,
+      lastName: data.contact_person_lastname,
+      address: data.address,
       email: data.email,
       password: data.password,
       userRole: UserRole.SCHOOL,
@@ -95,7 +94,7 @@ const SignupForm = () => {
           ),
         });
         form.reset();
-        router.push("/auth/school/login")
+        router.push("/auth/school/login");
       })
       .catch((err) => {
         console.error(err.message);
@@ -128,7 +127,7 @@ const SignupForm = () => {
         <span className="text-xs capitalize">step {number.toString()}</span>
         <div className="flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 text-xs">
           {isActive || number < activeStep ? (
-            <div className="w-4 h-4 bg-green rounded-full flex items-center justify-center">
+            <div className="w-4 h-4 bg-success-green rounded-full flex items-center justify-center">
               {number !== activeStep && (
                 <Icons.check className="w-4 h-4 text-white" />
               )}
@@ -235,6 +234,21 @@ const SignupForm = () => {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="capitalize">
+                      School Address<b className="text-primary font-light"> *</b>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="kk 4234st" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <div className="flex items-center gap-5">
                 <Button
                   type="button"
@@ -250,9 +264,9 @@ const SignupForm = () => {
                   type="button"
                   variant={"default"}
                   size={"lg"}
-                  className="w-full"
+                  className="w-full hover:bg-primary"
                   onClick={async () => {
-                    const formErrors = await validateFormData(["name", "type"]);
+                    const formErrors = await validateFormData(["name", "type", "address"]);
                     if (formErrors && activeStep < 4) {
                       setActiveStep(activeStep + 1);
                     }
@@ -305,8 +319,8 @@ const SignupForm = () => {
                           >
                             {field.value
                               ? countries.find(
-                                (country) => country.name === field.value
-                              )?.name
+                                  (country) => country.name === field.value
+                                )?.name
                               : "Select country..."}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
@@ -394,7 +408,7 @@ const SignupForm = () => {
                   type="button"
                   variant={"default"}
                   size={"lg"}
-                  className="w-full"
+                  className="w-full hover:bg-primary"
                   onClick={async () => {
                     const formErrors = await validateFormData([
                       "country",
@@ -427,22 +441,40 @@ const SignupForm = () => {
           )}
           {activeStep === 3 && (
             <>
-              <FormField
-                control={form.control}
-                name="contact_person"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="capitalize">
-                      Contact Person Name
-                      <b className="text-primary font-light"> *</b>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder="Emma" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex items-center gap-2">
+                <FormField
+                  control={form.control}
+                  name="contact_person_firstname"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel className="capitalize">
+                        Contact Person First Name
+                        <b className="text-primary font-light"> *</b>
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder="Emma" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="contact_person_lastname"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel className="capitalize">
+                        Contact Person Last Name
+                        <b className="text-primary font-light"> *</b>
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder="darsen" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
                 control={form.control}
                 name="contact_person_number"
@@ -491,7 +523,7 @@ const SignupForm = () => {
                   type="button"
                   variant={"default"}
                   size={"lg"}
-                  className="w-full"
+                  className="w-full hover:bg-primary"
                   onClick={async () => {
                     const formErrors = await validateFormData([
                       "contact_person",
@@ -583,8 +615,15 @@ const SignupForm = () => {
                   Back
                   <span className="sr-only">Cancel</span>
                 </Button>
-                <Button variant={"default"} size={"lg"} className="w-full">
+                <Button
+                  variant={"default"}
+                  size={"lg"}
+                  className="w-full hover:bg-primary"
+                >
                   Continue
+                  {isPending && (
+                    <div className="ml-2 w-3.5 h-3.5 rounded-full border-2 border-background border-r-0 animate-spin" />
+                  )}
                   <span className="sr-only">Continue</span>
                 </Button>
               </div>

@@ -136,18 +136,32 @@ export function getTournamentMenuList(
           icon: BarChart,
           submenus: [
             {
-              href: `/admin/tournaments/list/${routeName}/ranking/preliminaries`,
-              label: "Preliminaries",
+              href: `/admin/tournaments/list/${routeName}/ranking/speakers`,
+              label: "Speakers",
               active:
                 pathname ===
-                `/admin/tournaments/list/${routeName}/ranking/preliminaries`,
+                `/admin/tournaments/list/${routeName}/ranking/speakers`,
             },
             {
-              href: `/admin/tournaments/list/${routeName}/ranking/elimination`,
-              label: "Elimination",
+              href: `/admin/tournaments/list/${routeName}/ranking/teams`,
+              label: "Teams",
               active:
                 pathname ===
-                `/admin/tournaments/list/${routeName}/ranking/elimination`,
+                `/admin/tournaments/list/${routeName}/ranking/teams`,
+            },
+            {
+              href: `/admin/tournaments/list/${routeName}/ranking/schools`,
+              label: "Schools",
+              active:
+                pathname ===
+                `/admin/tournaments/list/${routeName}/ranking/schools`,
+            },
+            {
+              href: `/admin/tournaments/list/${routeName}/ranking/volunteers`,
+              label: "Volunteers",
+              active:
+                pathname ===
+                `/admin/tournaments/list/${routeName}/ranking/volunteers`,
             },
           ],
         },

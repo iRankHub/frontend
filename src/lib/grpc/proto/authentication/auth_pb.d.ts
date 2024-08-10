@@ -2,6 +2,148 @@ import * as jspb from 'google-protobuf'
 
 
 
+export class BatchImportUsersRequest extends jspb.Message {
+  getUsersList(): Array<UserData>;
+  setUsersList(value: Array<UserData>): BatchImportUsersRequest;
+  clearUsersList(): BatchImportUsersRequest;
+  addUsers(value?: UserData, index?: number): UserData;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): BatchImportUsersRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: BatchImportUsersRequest): BatchImportUsersRequest.AsObject;
+  static serializeBinaryToWriter(message: BatchImportUsersRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): BatchImportUsersRequest;
+  static deserializeBinaryFromReader(message: BatchImportUsersRequest, reader: jspb.BinaryReader): BatchImportUsersRequest;
+}
+
+export namespace BatchImportUsersRequest {
+  export type AsObject = {
+    usersList: Array<UserData.AsObject>,
+  }
+}
+
+export class UserData extends jspb.Message {
+  getFirstname(): string;
+  setFirstname(value: string): UserData;
+
+  getLastname(): string;
+  setLastname(value: string): UserData;
+
+  getEmail(): string;
+  setEmail(value: string): UserData;
+
+  getUserrole(): string;
+  setUserrole(value: string): UserData;
+
+  getDateofbirth(): string;
+  setDateofbirth(value: string): UserData;
+
+  getSchoolid(): number;
+  setSchoolid(value: number): UserData;
+
+  getSchoolname(): string;
+  setSchoolname(value: string): UserData;
+
+  getAddress(): string;
+  setAddress(value: string): UserData;
+
+  getCountry(): string;
+  setCountry(value: string): UserData;
+
+  getProvince(): string;
+  setProvince(value: string): UserData;
+
+  getDistrict(): string;
+  setDistrict(value: string): UserData;
+
+  getSchooltype(): string;
+  setSchooltype(value: string): UserData;
+
+  getContactemail(): string;
+  setContactemail(value: string): UserData;
+
+  getGraduationyear(): number;
+  setGraduationyear(value: number): UserData;
+
+  getRoleinterestedin(): string;
+  setRoleinterestedin(value: string): UserData;
+
+  getSafeguardingcertificate(): boolean;
+  setSafeguardingcertificate(value: boolean): UserData;
+
+  getGrade(): string;
+  setGrade(value: string): UserData;
+
+  getHasinternship(): boolean;
+  setHasinternship(value: boolean): UserData;
+
+  getIsenrolledinuniversity(): boolean;
+  setIsenrolledinuniversity(value: boolean): UserData;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UserData.AsObject;
+  static toObject(includeInstance: boolean, msg: UserData): UserData.AsObject;
+  static serializeBinaryToWriter(message: UserData, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UserData;
+  static deserializeBinaryFromReader(message: UserData, reader: jspb.BinaryReader): UserData;
+}
+
+export namespace UserData {
+  export type AsObject = {
+    firstname: string,
+    lastname: string,
+    email: string,
+    userrole: string,
+    dateofbirth: string,
+    schoolid: number,
+    schoolname: string,
+    address: string,
+    country: string,
+    province: string,
+    district: string,
+    schooltype: string,
+    contactemail: string,
+    graduationyear: number,
+    roleinterestedin: string,
+    safeguardingcertificate: boolean,
+    grade: string,
+    hasinternship: boolean,
+    isenrolledinuniversity: boolean,
+  }
+}
+
+export class BatchImportUsersResponse extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): BatchImportUsersResponse;
+
+  getMessage(): string;
+  setMessage(value: string): BatchImportUsersResponse;
+
+  getImportedcount(): number;
+  setImportedcount(value: number): BatchImportUsersResponse;
+
+  getFailedemailsList(): Array<string>;
+  setFailedemailsList(value: Array<string>): BatchImportUsersResponse;
+  clearFailedemailsList(): BatchImportUsersResponse;
+  addFailedemails(value: string, index?: number): BatchImportUsersResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): BatchImportUsersResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: BatchImportUsersResponse): BatchImportUsersResponse.AsObject;
+  static serializeBinaryToWriter(message: BatchImportUsersResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): BatchImportUsersResponse;
+  static deserializeBinaryFromReader(message: BatchImportUsersResponse, reader: jspb.BinaryReader): BatchImportUsersResponse;
+}
+
+export namespace BatchImportUsersResponse {
+  export type AsObject = {
+    success: boolean,
+    message: string,
+    importedcount: number,
+    failedemailsList: Array<string>,
+  }
+}
+
 export class SignUpRequest extends jspb.Message {
   getFirstname(): string;
   setFirstname(value: string): SignUpRequest;
@@ -69,6 +211,12 @@ export class SignUpRequest extends jspb.Message {
   getGrade(): string;
   setGrade(value: string): SignUpRequest;
 
+  getHasinternship(): boolean;
+  setHasinternship(value: boolean): SignUpRequest;
+
+  getIsenrolledinuniversity(): boolean;
+  setIsenrolledinuniversity(value: boolean): SignUpRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SignUpRequest.AsObject;
   static toObject(includeInstance: boolean, msg: SignUpRequest): SignUpRequest.AsObject;
@@ -101,6 +249,8 @@ export namespace SignUpRequest {
     roleinterestedin: string,
     safeguardingcertificate: boolean,
     grade: string,
+    hasinternship: boolean,
+    isenrolledinuniversity: boolean,
   }
 }
 

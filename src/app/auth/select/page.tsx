@@ -77,7 +77,7 @@ const Page = () => {
             </h3>
           </div>
         </div>
-        <Button disabled={selected === null} variant={"default"} size={"lg"} className="w-52 mt-10 hover:bg-primary/90" onClick={handlePress}>
+        <Button disabled={selected === null} variant={"default"} size={"lg"} className="w-52 mt-10 hover:bg-primary" onClick={handlePress}>
           Continue
           <span className="sr-only">Continue</span>
         </Button>

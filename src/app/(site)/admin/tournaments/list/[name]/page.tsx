@@ -1,3 +1,4 @@
+"use client";
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
 import TournamentForm from "@/components/pages/admin/tournaments/create/tournament-form";
 import TournamentMenuWrapper from "@/components/pages/admin/tournaments/list/tournament-name/tournament-menu-wrapper";
@@ -9,12 +10,22 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Roles } from "@/stores/auth/auth.store";
+import { withAuth } from "@/stores/auth/middleware.store";
 import { Iparms } from "@/types";
 import { Slash } from "lucide-react";
 import React from "react";
 
-function page({ params }: Iparms) {
+const page = withAuth(
+  ({ params }: Iparms) => {
+    return <Page params={params} />;
+  },
+  [Roles.ADMIN]
+);
+
+function Page({ params }: Iparms) {
   const { name: routeName } = params;
+  console.log(routeName)
   return (
     <ContentLayout title="format">
       <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-5">

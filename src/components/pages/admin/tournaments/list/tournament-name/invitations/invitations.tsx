@@ -18,7 +18,7 @@ type Props = {};
 
 function Invitations({}: Props) {
   return (
-    <div className="w-full rounded-md overflow-hidden border border-muted">
+    <div className="w-full rounded-md overflow-hidden">
       <div className="flex items-center justify-between flex-wrap gap-5 p-5 py-4 bg-brown">
         <form action="#" className="flex items-center gap-3">
           <Input

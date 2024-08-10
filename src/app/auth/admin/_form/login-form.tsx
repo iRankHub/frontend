@@ -23,6 +23,8 @@ import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
+import { login } from "@/core/authentication/auth";
 
 type Inputs = z.infer<typeof loginSchema>;
 
@@ -34,6 +36,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
   const router = useRouter();
   const [isPending, setIsPending] = React.useState(false);
   const { toast } = useToast();
+  const { login: authLogin } = useUserStore((state) => state);
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -45,12 +48,49 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
   });
 
   async function onSubmit(data: Inputs) {
-    toast({
-      variant: "success",
-      title: "Success Message",
-      description: "Success Description",
-      action: <ToastAction altText="Close" className="bg-primary text-white">Close</ToastAction>,
-    })
+    setIsPending(true);
+    await login({ emailOrId: data.id, password: data.password })
+      .then((res) => {
+        toast({
+          variant: "success",
+          title: "Success Message",
+          description: "Success Description",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+        form.reset();
+
+        const role = Roles.ADMIN;
+        const user: AuthStateUser = {
+          userId: res.userid,
+          token: res.token,
+          status: "idle",
+          requiredPasswordReset: res.requirePasswordReset,
+          requireTwoFactor: res.requireTwoFactor,
+        };
+        authLogin(user, role);
+        router.push("/admin/dashboard");
+      })
+      .catch((err) => {
+        console.error(err.message);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description:
+            "Something went wrong. Please check your credentials and try again later",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+      })
+      .finally(() => {
+        setIsPending(false);
+      });
   }
 
   return (
@@ -125,7 +165,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
             Sign in with Email
           </Button>
           <div className="flex items-center gap-1 justify-center">
-            <span className="text-lg text-darkBlue">Don{"'"}t have an account?</span>
+            <span className="text-lg text-darkBlue">
+              Don{"'"}t have an account?
+            </span>
             <Link
               href="/auth/student/signup"
               className="text-lg text-blue hover:underline"

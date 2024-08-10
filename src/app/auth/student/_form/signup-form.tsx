@@ -34,7 +34,6 @@ import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
 import { PasswordInput } from "@/components/ui/password-Input";
 import Link from "next/link";
-import { signIn, useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { countries } from "@/lib/data";
@@ -43,7 +42,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { UserRole } from "@/types";
-import { signUp } from "@/utils/grpc/auth";
+import { signUp } from "@/core/authentication/auth";
 
 type Inputs = z.infer<typeof StudentSchema>;
 
@@ -61,13 +60,6 @@ const SignupForm = () => {
 
   async function onSubmit(data: Inputs) {
     setIsPending(true);
-
-    // Format the parsed date
-    const formattedDate = format(data.dob, "yyyy-MM-dd");
-    const newData = {
-      ...data,
-      dob: formattedDate,
-    }
 
     await signUp({
       firstName: data.firstName,
@@ -229,7 +221,7 @@ const SignupForm = () => {
                   type="button"
                   variant={"default"}
                   size={"lg"}
-                  className="w-full"
+                  className="w-full hover:bg-primary"
                   onClick={async () => {
                     const formErrors = await validateFormData([
                       "firstName",
@@ -357,7 +349,7 @@ const SignupForm = () => {
                   type="button"
                   variant={"default"}
                   size={"lg"}
-                  className="w-full"
+                  className="w-full hover:bg-primary"
                   onClick={async () => {
                     const formErrors = await validateFormData([
                       "dob",

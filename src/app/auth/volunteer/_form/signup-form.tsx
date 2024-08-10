@@ -51,8 +51,8 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { signUp } from "@/utils/grpc-client";
 import { UserRole } from "@/types";
+import { signUp } from "@/core/authentication/auth";
 
 type Inputs = z.infer<typeof volunteerSchema>;
 
@@ -77,9 +77,12 @@ const SignupForm = () => {
       email: data.email,
       password: data.password,
       userRole: UserRole.VOLUNTEER,
-      dob: format(data.dob, 'yyyy-MM-dd'),
+      dob: format(data.dob, "yyyy-MM-dd"),
       graduationYear: parseInt(data.graduation_year),
       roleInterestedIn: "Mentor",
+      hasInternship: true,
+      isEnrolledInUniversity: true,
+      safeguardingCertificate: true,
     })
       .then((res) => {
         toast({
@@ -93,7 +96,7 @@ const SignupForm = () => {
           ),
         });
         form.reset();
-        router.push("/auth/school/login")
+        router.push("/auth/school/login");
       })
       .catch((err) => {
         console.error(err.message);
@@ -126,7 +129,7 @@ const SignupForm = () => {
         <span className="text-xs capitalize">step {number.toString()}</span>
         <div className="flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 text-xs">
           {isActive || number < activeStep ? (
-            <div className="w-4 h-4 bg-green rounded-full flex items-center justify-center">
+            <div className="w-4 h-4 bg-success-green rounded-full flex items-center justify-center">
               {number !== activeStep && (
                 <Icons.check className="w-4 h-4 text-white" />
               )}
@@ -195,7 +198,7 @@ const SignupForm = () => {
                       First Name<b className="text-primary font-light"> *</b>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Riviera High School" {...field} />
+                      <Input placeholder="emma" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -210,7 +213,7 @@ const SignupForm = () => {
                       Last Name<b className="text-primary font-light"> *</b>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Riviera High School" {...field} />
+                      <Input placeholder="desca" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -310,7 +313,7 @@ const SignupForm = () => {
                   type="button"
                   variant={"default"}
                   size={"lg"}
-                  className="w-full"
+                  className="w-full hover:bg-primary"
                   onClick={async () => {
                     const formErrors = await validateFormData([
                       "firstName",
@@ -370,8 +373,8 @@ const SignupForm = () => {
                           >
                             {field.value
                               ? countries.find(
-                                (country) => country.name === field.value
-                              )?.name
+                                  (country) => country.name === field.value
+                                )?.name
                               : "Select country..."}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
@@ -387,10 +390,7 @@ const SignupForm = () => {
                                     key={index}
                                     value={country.name}
                                     onSelect={() => {
-                                      form.setValue(
-                                        "country",
-                                        country.name
-                                      );
+                                      form.setValue("country", country.name);
                                       setOpenCountries(false);
                                     }}
                                   >
@@ -478,7 +478,7 @@ const SignupForm = () => {
                   type="button"
                   variant={"default"}
                   size={"lg"}
-                  className="w-full"
+                  className="w-full hover:bg-primary"
                   onClick={async () => {
                     const formErrors = await validateFormData([
                       "nationality",
@@ -605,7 +605,7 @@ const SignupForm = () => {
                   type="button"
                   variant={"default"}
                   size={"lg"}
-                  className="w-full"
+                  className="w-full hover:bg-primary"
                   onClick={async () => {
                     const formErrors = await validateFormData([
                       "secondary_school",
@@ -697,8 +697,15 @@ const SignupForm = () => {
                   Back
                   <span className="sr-only">Cancel</span>
                 </Button>
-                <Button variant={"default"} size={"lg"} className="w-full">
+                <Button
+                  variant={"default"}
+                  size={"lg"}
+                  className="w-full hover:bg-primary"
+                >
                   Continue
+                  {isPending && (
+                    <div className="ml-2 w-3.5 h-3.5 rounded-full border-2 border-background border-r-0 animate-spin" />
+                  )}
                   <span className="sr-only">Continue</span>
                 </Button>
               </div>

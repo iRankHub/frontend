@@ -17,7 +17,7 @@ export function TournamentMenu() {
   const menuList = getTournamentMenuList(pathname, routeName);
   const [isOpen] = useState(true);
   return (
-    <div className="hidden lg:inline w-full">
+    <div className="hidden lg:inline w-full max-w-sm">
       <div className="flex items-center gap-3 mt-2 h-auto">
         <Command className="rounded-md w-full border">
           <CommandInput
