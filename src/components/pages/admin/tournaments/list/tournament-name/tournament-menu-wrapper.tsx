@@ -14,11 +14,11 @@ type Props = {
 function TournamentMenuWrapper({ children, className }: Props) {
   return (
     <div className={cn(
-        "mt-7 grid grid-cols-3 gap-5 relative",
+        "mt-7 flex gap-5 relative",
         className
     )}>
       <TournamentMenu />
-      <div className="col-span-3 lg:col-span-2 bg-background min-h-full rounded-md border border-gray-200 pb-4">
+      <div className="bg-background w-full min-h-full rounded-md border border-gray-200 pb-4">
         {children}
       </div>
       <Sheet>
@@ -28,7 +28,7 @@ function TournamentMenuWrapper({ children, className }: Props) {
             size={"icon"}
             className="flex lg:hidden fixed right-5 bottom-5 bg-primary rounded-full cursor-pointer z-50 hover:bg-primary"
           >
-            <Icons.add className="text-white w-5 h-5 md:w-8 md:h-8" />
+            <Icons.menuRight className="text-white w-5 h-5 md:w-8 md:h-8" />
           </Button>
         </SheetTrigger>
         <LeaguesMobile />

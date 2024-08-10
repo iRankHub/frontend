@@ -63,6 +63,7 @@ const config = {
           foreground: "hsl(var(--success-text))",
           light: "hsl(var(--success-light))",
           border: "hsl(var(--success-border))",
+          green: "hsl(var(--success-green))",
         },
       },
       borderRadius: {

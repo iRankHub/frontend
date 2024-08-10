@@ -19,9 +19,8 @@ function Speakers({}: Props) {
           type="button"
           className="border border-dashed border-white text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground group"
         >
-          <Icons.addCircle className="text-white w-3.5 h-3.5 group-hover:text-foreground" />
-          Room
-          <span className="sr-only">Room</span>
+          Activate
+          <span className="sr-only">Activate</span>
         </Button>
       </div>
       <div className="w-full bg-background p-8 px-5">
@@ -80,7 +79,9 @@ const WinnerCard = () => {
         </div>
       </CardContent>
       <CardFooter className="p-2 w-full">
-        <Button size="sm" className="w-full hover:bg-primary">Bravo!</Button>
+        <Button size="sm" className="w-full hover:bg-primary">
+          Bravo!
+        </Button>
       </CardFooter>
     </Card>
   );

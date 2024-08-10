@@ -1,3 +1,4 @@
+'use client'
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
 import Formats from "@/components/pages/admin/tournaments/formats/formats";
 import {
@@ -8,10 +9,16 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Roles } from "@/stores/auth/auth.store";
+import { withAuth } from "@/stores/auth/middleware.store";
 import { Slash } from "lucide-react";
 import React from "react";
 
-function page({}) {
+const page = withAuth(() => {
+  return <Page />
+}, [Roles.ADMIN]);
+
+function Page({}) {
   return (
     <ContentLayout title="format">
       <div className="w-full flex items-center justify-between gap-5">

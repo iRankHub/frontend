@@ -21,10 +21,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import SidePanel, { Panelheader } from "./side-panel";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
-import { Inter } from "next/font/google";
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { Badge } from "lucide-react";
 
 interface NavbarProps {
   title: string;
@@ -34,8 +30,8 @@ export function Navbar({ title }: NavbarProps) {
   const sidebar = useStore(useSidebarToggle, (state) => state);
   return (
     <header className="sticky top-0 z-10 w-full bg-background/95 shadow backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:shadow-secondary">
-      <div className="mx-4 sm:mx-8 flex h-14 items-center gap-10">
-        <div className="flex items-center space-x-4">
+      <div className="mx-4 flex h-14 items-center gap-10">
+        <div className="flex items-center gap-4">
           <SheetMenu />
           <SidebarToggle
             isOpen={sidebar?.isOpen}
@@ -55,7 +51,7 @@ export function Navbar({ title }: NavbarProps) {
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
-                  <DropdownMenuTrigger asChild>
+                  <DropdownMenuTrigger asChild> 
                     <Sheet>
                       <SheetTrigger>
                         <Button

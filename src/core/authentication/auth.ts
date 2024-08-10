@@ -1,12 +1,10 @@
 import { LoginRequest, LoginResponse, SignUpRequest } from "@/lib/grpc/proto/authentication/auth_pb";
-import { client } from "./grpc-client";
-import { ClientReadableStream } from "grpc-web";
+import { authClient } from "../grpc-clients";
 
 export const signUp = (data: {
     firstName?: string;
     lastName?: string;
     email: string;
-    contactEmail?: string;
     password: string;
     userRole: string;
     dob?: string,
@@ -20,8 +18,13 @@ export const signUp = (data: {
     schoolId?: number;
     address?: string;
     grade?: string;
+    contactEmail?: string;
+    hasInternship?: boolean;
+    isEnrolledInUniversity?: boolean;
+    safeguardingCertificate?: boolean;
 }) => {
     return new Promise((resolve, reject) => {
+        console.log(data)
         const request = new SignUpRequest();
         request.setFirstname(data.firstName ?? "");
         request.setLastname(data.lastName ?? "");
@@ -40,9 +43,13 @@ export const signUp = (data: {
         request.setProvince(data.province ?? "")
         request.setGrade(data.grade ?? "")
         request.setSchoolid(data.schoolId ?? 0)
+        request.setHasinternship(data.hasInternship ?? false)
+        request.setIsenrolledinuniversity(data.isEnrolledInUniversity ?? false)
+        request.setSafeguardingcertificate(data.safeguardingCertificate ?? false)
+
         // Set other fields as necessary
 
-        client.signUp(request, {}, (err, response) => {
+        authClient.signUp(request, {}, (err, response) => {
             if (err) {
                 console.log(err);
                 reject(err);
@@ -56,16 +63,16 @@ export const signUp = (data: {
 
 export const login = (
     data: {
-        email: string;
+        emailOrId: string;
         password: string;
     }
 ): Promise<LoginResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new LoginRequest();
-        request.setEmailOrId(data.email);
+        request.setEmailOrId(data.emailOrId);
         request.setPassword(data.password)
 
-        client.login(request, {}, (err, response) => {
+        authClient.login(request, {}, (err, response) => {
             if (err) {
                 reject(err);
             } else {

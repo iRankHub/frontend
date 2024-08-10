@@ -27,6 +27,17 @@ export const Panelheader = ({ children, className }: Props) => (
   </SheetHeader>
 );
 
+export const PanelBody = ({ children, className }: Props) => (
+  <SheetHeader
+    className={cn(
+      "w-full !h-[calc(100%_-_56px)] overflow-hidden border-b border-muted shadow grid items-center px-4",
+      className
+    )}
+  >
+    {children}
+  </SheetHeader>
+);
+
 function SidePanel({ children, className, side }: Props) {
   return (
     <SheetContent

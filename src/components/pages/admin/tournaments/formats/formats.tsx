@@ -1,12 +1,11 @@
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FormatCard from "./format-card";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -14,8 +13,90 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useUserStore } from "@/stores/auth/auth.store";
+import {
+  createTournamentFormat,
+  tournamentFormats,
+} from "@/core/tournament/formats";
+import {
+  ListTournamentFormatsResponse,
+  TournamentFormat,
+} from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import { createTournamentFormatSchema } from "@/lib/validations/admin/create-tournament-format.schema";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+type TournamentFormatInput = z.infer<typeof createTournamentFormatSchema>;
 
 function Formats({}) {
+  const [formats, setFormats] = useState<TournamentFormat.AsObject[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const { user } = useUserStore((state) => state);
+
+  const form = useForm<TournamentFormatInput>({
+    resolver: zodResolver(createTournamentFormatSchema),
+    defaultValues: {
+      description: "",
+      format_name: "",
+    },
+  });
+
+  const createFormat = async (data: TournamentFormatInput) => {
+    if (!user) return;
+
+    const options = {
+      token: user.token,
+      format_name: data.format_name,
+      description: data.description,
+      speakers_per_team: Number(data.speakers_per_team),
+    };
+
+    setLoading(true);
+    await createTournamentFormat({ ...options })
+      .then((res) => {
+        setLoading(false);
+        form.reset();
+        setFormats((prev) => [
+          ...prev,
+          res.format as TournamentFormat.AsObject,
+        ]);
+        setDialogOpen(false);
+      })
+      .catch((err) => {
+        console.error(err.message);
+        setLoading(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (!user) return;
+    const data = {
+      page_size: 10,
+      page_token: 0,
+      token: user.token,
+    };
+    tournamentFormats({ ...data })
+      .then((res) => {
+        console.log(res.formatsList);
+        setFormats(res.formatsList);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, [user]);
   return (
     <div className="w-full mt-5 rounded-md overflow-hidden border border-muted">
       <div className="flex items-center justify-between flex-wrap gap-5 p-5 bg-brown">
@@ -33,7 +114,7 @@ function Formats({}) {
             Speakers
           </Button>
         </form>
-        <Dialog>
+        <Dialog onOpenChange={setDialogOpen} open={dialogOpen}>
           <DialogTrigger>
             <Button
               type="button"
@@ -50,60 +131,93 @@ function Formats({}) {
               </DialogTitle>
             </DialogHeader>
             <div className="grid gap-3">
-              <div className="w-full">
-                <Label htmlFor="name" className="text-sm">
-                  Format Name
-                </Label>
-                <Input
-                  id="name"
-                  placeholder="Pedro Duarte"
-                  className="col-span-3 mt-1 text-muted-foreground"
-                />
-              </div>
-              <div className="w-full">
-                <Label htmlFor="name" className="text-sm">
-                  Format Description
-                </Label>
-                <Textarea
-                  name="description"
-                  placeholder="Type your message here."
-                  className="col-span-3 mt-1 text-muted-foreground"
-                />
-              </div>
-              <div className="w-full">
-                <Label htmlFor="name" className="text-sm capitalize">
-                  Speakers per debate
-                </Label>
-                <Input
-                  id="name"
-                  placeholder="3 speakers"
-                  className="col-span-3 mt-1 text-muted-foreground"
-                />
-              </div>
+              <Form {...form}>
+                <form
+                  onSubmit={(...args) =>
+                    void form.handleSubmit(createFormat)(...args)
+                  }
+                >
+                  <FormField
+                    control={form.control}
+                    name="format_name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-darkBlue">
+                          Format Name
+                          <b className="text-primary font-light"> *</b>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Eg. World Schools Debate"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-darkBlue">
+                          Description
+                          <b className="text-primary font-light"> *</b>
+                        </FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Type your message here."
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="speakers_per_team"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-darkBlue">
+                          Speakers per team
+                          <b className="text-primary font-light"> *</b>
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="3 speakers" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <DialogFooter className="w-full mt-3">
+                    <Button
+                      type="submit"
+                      size={"sm"}
+                      className="w-full hover:bg-primary"
+                    >
+                      Create Format
+                      {loading && (
+                        <Icons.spinner
+                          className="mr-2 h-4 w-4 animate-spin"
+                          aria-hidden="true"
+                        />
+                      )}
+                      <div className="sr-only">Create Format</div>
+                    </Button>
+                  </DialogFooter>
+                </form>
+              </Form>
             </div>
-            <DialogFooter className="w-full">
-              <Button type="submit" size={"sm"} className="w-full">Create Format</Button>
-            </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
       <div className="w-full bg-background p-8 grid">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-10">
-          <FormatCard />
-          <FormatCard />
-          <FormatCard />
-          <FormatCard />
-          <FormatCard />
-          <FormatCard />
-          <FormatCard />
-          <FormatCard />
-          <FormatCard />
-          <FormatCard />
-          <FormatCard />
-          <FormatCard />
-          <FormatCard />
-          <FormatCard />
-          <FormatCard />
+          {formats.map((format) => (
+            <FormatCard key={format.formatId} format={format} setFormats={setFormats} />
+          ))}
         </div>
         <Button
           type="button"

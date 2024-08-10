@@ -92,9 +92,13 @@ export const schoolSchema = z.object({
     country: z.string().min(2, {
         message: "country name can't be 2 characters"
     }),
+    address: z.string().min(1),
     province_state: z.string().min(1),
     district_region: z.string().min(1),
-    contact_person: z.string().min(3, {
+    contact_person_firstname: z.string().min(3, {
+        message: "Name too short!"
+    }),
+    contact_person_lastname: z.string().min(3, {
         message: "Name too short!"
     }),
     contact_person_number: z.string().refine(validator.isMobilePhone),
@@ -144,12 +148,6 @@ export const volunteerSchema = z.object({
     dob: z.date({
         required_error: "A date of birth is required.",
     }),
-    // dob: z.string().refine((dob) => {
-    //     const age = calculateAge(dob);
-    //     return age >= 10;
-    // }, {
-    //     message: 'You must be at least 10 years old to create an account',
-    // }),
     gender: z.string().min(2, {
         message: "gender is required!"
     }),

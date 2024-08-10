@@ -20,10 +20,10 @@ import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
 import { PasswordInput } from "@/components/ui/password-Input";
 import Link from "next/link";
-import { signIn, useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { login } from "@/utils/grpc/auth";
+import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
+import { login } from "@/core/authentication/auth";
 
 type Inputs = z.infer<typeof emailLoginSchema>;
 
@@ -35,6 +35,7 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
   const router = useRouter();
   const [isPending, setIsPending] = React.useState(false);
   const { toast } = useToast();
+  const { login: authLogin } = useUserStore((state) => state);
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -47,52 +48,48 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
 
   async function onSubmit(data: Inputs) {
     setIsPending(true);
-    // try {
-    const response = await login({ ...data });
+    await login({ emailOrId: data.email, password: data.password })
+      .then((res) => {
+        toast({
+          variant: "success",
+          title: "Success Message",
+          description: "Success Description",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+        form.reset();
 
-    //   if (response) {
-    //     await signIn("credentials", {
-    //       redirect: false,
-    //       userid: response.userid,
-    //       token: response.token,
-    //       userrole: response.userrole,
-    //     })
-    //       .then((callback) => {
-    //         if (callback?.error) {
-    //           console.log(callback?.error);
-    //           toast({
-    //             title: "Error",
-    //             description: callback?.error,
-    //             variant: "destructive",
-    //           });
-    //         } else if (!callback?.error && callback?.ok) {
-    //           toast({
-    //             title: "Success",
-    //             description: "Logged in successfully",
-    //             variant: "success",
-    //           });
-    //           form.reset();
-    //
-    //           router.push("/student")
-    //         } else {
-    //           console.log(callback?.error);
-    //           toast({
-    //             title: "Error",
-    //             description: "Invalid Credentials",
-    //             variant: "destructive",
-    //           });
-    //         }
-    //       })
-    //       .finally(() => setIsPending(false));
-    //   }
-    // } catch (error) {
-    //   setIsPending(true);
-    //   toast({
-    //     title: "Error",
-    //     description: "Something went wrong. Try again later",
-    //     variant: "destructive",
-    //   });
-    // }
+        const role = Roles.SCHOOL;
+        const user: AuthStateUser = {
+          userId: res.userid,
+          token: res.token,
+          status: "idle",
+          requiredPasswordReset: res.requirePasswordReset,
+          requireTwoFactor: res.requireTwoFactor,
+        }
+        authLogin(user, role);
+        router.push("/schools/dashboard");
+      })
+      .catch((err) => {
+        console.error(err.message);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description:
+            "Something went wrong. Please check your credentials and try again later",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+      })
+      .finally(() => {
+        setIsPending(false);
+      });
   }
 
   return (
@@ -139,7 +136,12 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
             Forgot password?
           </Link>
         </div>
-        <Button disabled={isPending} variant={"default"} size={"lg"}>
+        <Button
+          disabled={isPending}
+          variant={"default"}
+          size={"lg"}
+          className="hover:bg-primary"
+        >
           {isPending && (
             <Icons.spinner
               className="mr-2 h-4 w-4 animate-spin"

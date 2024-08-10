@@ -23,7 +23,7 @@ import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { login } from "@/utils/grpc/auth";
+import { login } from "@/core/authentication/auth";
 
 type Inputs = z.infer<typeof emailLoginSchema>;
 
@@ -48,7 +48,7 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
   async function onSubmit(data: Inputs) {
     try {
       const response = await login({
-        email: data.email,
+        emailOrId: data.email,
         password: data.password,
       });
       console.log("Login successful:", response);

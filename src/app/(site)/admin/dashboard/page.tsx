@@ -1,3 +1,5 @@
+'use client'
+
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
 import {
   Breadcrumb,
@@ -13,6 +15,8 @@ import Overview from "@/components/pages/admin/dashboard/overview";
 import UserCategoryOverview from "@/components/pages/admin/dashboard/user-category-overview";
 import dynamic from "next/dynamic";
 import SystemMonitor from "@/components/pages/admin/dashboard/system-monitor";
+import { withAuth } from "@/stores/auth/middleware.store";
+import { Roles } from "@/stores/auth/auth.store";
 
 // ProgressView contains the recharts chart. There is a bug in the library so we have to use dynamic to avoid hydration errors
 // This will be reviewed later on
@@ -21,7 +25,11 @@ const TournamentInsights = dynamic(
   { ssr: false }
 )
 
-function page() {
+const page = withAuth(() => {
+  return <Dashboard />
+}, [Roles.ADMIN]);
+
+function Dashboard() {
   return (
     <ContentLayout title="dashboard">
       <header>
