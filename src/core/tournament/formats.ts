@@ -6,6 +6,7 @@ import {
   ListTournamentFormatsRequest,
   ListTournamentFormatsResponse,
   UpdateTournamentFormatRequest,
+  UpdateTournamentFormatResponse,
 } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { tournamentClient } from "../grpc-clients";
 import {
@@ -69,7 +70,7 @@ export const updateTournamentFormat = async ({
   format_name,
   speakers_per_team,
   token,
-}: UpdateTournamentFormat): Promise<CreateTournamentFormatResponse.AsObject> => {
+}: UpdateTournamentFormat): Promise<UpdateTournamentFormatResponse.AsObject> => {
   return new Promise((resolve, reject) => {
     const request = new UpdateTournamentFormatRequest();
     request.setFormatId(format_id);

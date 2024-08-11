@@ -14,12 +14,17 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
+import { deleteTournament } from "@/core/tournament/list";
+import { Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { cn } from "@/lib/utils";
+import { useUserStore } from "@/stores/auth/auth.store";
+import { DeleteTournamentType } from "@/types/tournaments/tournament";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import React from "react";
@@ -29,7 +34,72 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-function TournamentCard() {
+interface TournamentCardProps {
+  tournament: Tournament.AsObject;
+  setTournaments: React.Dispatch<React.SetStateAction<Tournament.AsObject[]>>;
+}
+
+function TournamentCard({ setTournaments, tournament }: TournamentCardProps) {
+  const { user } = useUserStore((state) => state);
+  const [deleteLoading, setDeleteLoading] = React.useState(false);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const { toast } = useToast();
+
+  const handleDeleteTournament = async () => {
+    if (!user) return;
+
+    const options: DeleteTournamentType = {
+      tournament_id: tournament.tournamentId,
+      token: user.token,
+    };
+
+    setDeleteLoading(true);
+    await deleteTournament({
+      ...options,
+    })
+      .then((res) => {
+        if (res.success) {
+          setTournaments((prev) => {
+            const index = prev.findIndex(
+              (tourn) => tourn.tournamentId === tournament.tournamentId
+            );
+
+            if (index === -1) return prev;
+            prev.splice(index, 1);
+            return [...prev];
+          });
+          setDialogOpen(false);
+          toast({
+            variant: "success",
+            title: "Success",
+            description: res.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: res.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err.message);
+        setDeleteLoading(false);
+      })
+      .finally(() => {
+        setDeleteLoading(false);
+      });
+  };
   return (
     <Card className="p-3">
       <div className="flex items-center justify-between gap-5">
@@ -43,10 +113,10 @@ function TournamentCard() {
             </div>
           </Button>
           <h3 className={cn("text-sm font-medium", inter.className)}>
-            Name of Tournament
+            {tournament.name}
           </h3>
         </div>
-        <Dialog>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Button
@@ -65,7 +135,10 @@ function TournamentCard() {
                   variant={"link"}
                   className="w-full justify-start text-foreground hover:no-underline"
                 >
-                  <Link className="no-underline" href={"/admin/tournaments/list/fsfdsfsfsdfdfs"}>
+                  <Link
+                    className="no-underline"
+                    href={`/admin/tournaments/list/${tournament.tournamentId}`}
+                  >
                     Go To Tournament
                   </Link>
                 </Button>
@@ -109,8 +182,16 @@ function TournamentCard() {
                 size={"sm"}
                 variant={"destructive"}
                 className="max-w-32"
+                onClick={handleDeleteTournament}
               >
                 Delete
+                {deleteLoading && (
+                  <Icons.spinner
+                    className="mr-2 h-4 w-4 animate-spin"
+                    aria-hidden="true"
+                  />
+                )}
+                <span className="sr-only">Delete</span>
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -127,14 +208,16 @@ function TournamentCard() {
           <div className="flex flex-col">
             <span className="text-xs font-medium text-muted-text">Date</span>
             <small className="text-secondary-foreground text-xs font-medium">
-              12/12/2022 - 13/12/2002
+              {tournament.startDate} - {tournament.endDate}
             </small>
           </div>
         </div>
         <Separator />
         <div className="flex items-center gap-4 justify-between mt-3">
           <div className="flex flex-col">
-            <span className="text-xs font-medium text-primary">RWF 10000</span>
+            <span className="text-xs font-medium text-primary">
+              RWF {tournament.tournamentFee}
+            </span>
             <small className="text-secondary-foreground text-xs font-medium">
               Tournament Fees
             </small>

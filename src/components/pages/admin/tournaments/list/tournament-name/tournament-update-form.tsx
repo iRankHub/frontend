@@ -15,9 +15,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import FileUpload from "./file-upload";
-import { createTournamentSchema } from "@/lib/validations/admin/tournaments/create-tournament.schema";
+import { UpdateTournamentSchema } from "@/lib/validations/admin/tournaments/create-tournament.schema";
 import {
   Popover,
   PopoverContent,
@@ -34,7 +42,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  League,
+  Tournament,
   TournamentFormat,
 } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
@@ -42,51 +50,73 @@ import { tournamentFormats } from "@/core/tournament/formats";
 import { School } from "@/lib/grpc/proto/user_management/users_pb";
 import { getSchools } from "@/core/users/get-schools";
 import { createTournament } from "@/core/tournament/create-tournament";
-import { CreateTournamentType } from "@/types/tournaments/tournament";
+import {
+  CreateTournamentType,
+  DeleteTournamentType,
+  UpdateTournamentType,
+} from "@/types/tournaments/tournament";
 import { TimePicker } from "@/components/ui/time-picker";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import { deleteTournament, updateTournament } from "@/core/tournament/list";
+import { useRouter } from "next/navigation";
 
 type Props = {
-  selectedLeague: League.AsObject | null;
+  tournament: Tournament.AsObject;
 };
 
-type Inputs = z.infer<typeof createTournamentSchema>;
+type Inputs = z.infer<typeof UpdateTournamentSchema>;
 
-function TournamentForm({ selectedLeague }: Props) {
+function TournamentUpdateForm({ tournament }: Props) {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [formats, setFormats] = useState<TournamentFormat.AsObject[]>([]);
   const [venues, setVenues] = useState<School.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
   const [loading, setLoading] = useState<boolean>(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const router = useRouter();
   const { toast } = useToast();
+
+  const formatStartDate = (): string => {
+    // format return from api: 2023-07-15 09:00
+    // parse to local format: 2023-07-15T09:00:00
+    const [date, time] = tournament.startDate.split(" ");
+
+    const fullDate = `${date}T${time}:00`;
+    return fullDate;
+  };
+
+  const formatEndDate = (): string => {
+    // format return from api: 2023-07-15 09:00
+    // parse to local format: 2023-07-15T09:00:00
+    const [date, time] = tournament.endDate.split(" ");
+
+    const fullDate = `${date}T${time}:00`;
+    return fullDate;
+  };
 
   // react-hook-form
   const form = useForm<Inputs>({
-    resolver: zodResolver(createTournamentSchema),
+    resolver: zodResolver(UpdateTournamentSchema),
     defaultValues: {
       fees_currency: "rwf",
-      fees: 0,
+      fees: String(tournament.tournamentFee),
+      format: String(tournament.formatId),
+      location: tournament.location,
+      name: tournament.name,
+      no_of_elimination_judges: String(tournament.judgesPerDebateElimination),
+      no_of_judges: String(tournament.judgesPerDebatePreliminary),
+      preliminaries_end_at: String(tournament.numberOfEliminationRounds),
+      preliminaries_start_from: String(tournament.numberOfPreliminaryRounds),
+      startDate: new Date(formatStartDate()),
+      startTime: new Date(formatStartDate()),
+      endDate: new Date(formatEndDate()),
+      endTime: new Date(formatEndDate()),
     },
   });
 
   async function onSubmit(data: Inputs) {
     if (!user) return;
-
-    // check if a league is selected
-    if (!selectedLeague) {
-      toast({
-        variant: "destructive",
-        title: "League not selected",
-        description:
-          "Please select a league before creating a tournament.",
-        action: (
-          <ToastAction altText="Close" className="bg-primary text-white">
-            Close
-          </ToastAction>
-        ),
-      });
-      return;
-    }
 
     const modifiedStartDate = (): string => {
       // expected format: 2023-07-15 09:00
@@ -112,15 +142,16 @@ function TournamentForm({ selectedLeague }: Props) {
       return formattedDate;
     };
 
-    const options: CreateTournamentType = {
+    const options: UpdateTournamentType = {
+      tournament_id: tournament.tournamentId,
       token: user.token,
-      coordinator_id: 10,
       start_date: modifiedStartDate(),
       end_date: modifiedEndDate(),
       format_id: Number(data.format),
+      coordinator_id: tournament.coordinatorId,
       judges_per_debate_elimination: Number(data.no_of_elimination_judges),
       judges_per_debate_preliminary: Number(data.no_of_judges),
-      league_id: Number(selectedLeague?.leagueId || 0),
+      league_id: tournament.leagueId,
       location: data.location,
       name: data.name,
       number_of_elimination_rounds: Number(data.preliminaries_end_at),
@@ -129,10 +160,9 @@ function TournamentForm({ selectedLeague }: Props) {
     };
 
     setLoading(true);
-    await createTournament({ ...options })
+    await updateTournament({ ...options })
       .then(() => {
         setLoading(false);
-        form.reset();
 
         toast({
           variant: "success",
@@ -147,12 +177,71 @@ function TournamentForm({ selectedLeague }: Props) {
       })
       .catch((err) => {
         console.error(err.message);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description:
+            "An error occurred while updating tournament. Please try again",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
         setLoading(false);
       })
       .finally(() => {
         setLoading(false);
       });
   }
+
+  const handleDeleteTournament = async () => {
+    if (!user) return;
+
+    const options: DeleteTournamentType = {
+      tournament_id: tournament.tournamentId,
+      token: user.token,
+    };
+
+    setDeleteLoading(true);
+    await deleteTournament({
+      ...options,
+    })
+      .then((res) => {
+        if (res.success) {
+          toast({
+            variant: "success",
+            title: "Success",
+            description: res.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+
+          router.push("/admin/tournaments/list");
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: res.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err.message);
+        setDeleteLoading(false);
+      })
+      .finally(() => {
+        setDeleteLoading(false);
+      });
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -214,9 +303,10 @@ function TournamentForm({ selectedLeague }: Props) {
                     <FormControl>
                       <Input
                         placeholder="Your Tournament Name"
-                        className="text-white placeholder:text-white text-xl font-bold w-72 mt-1 bg-transparent outline-none border-none focus-visible:outline-none focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 p-0"
+                        className="text-white placeholder:text-white text-xl font-bold w-72 mt-1 bg-transparent outline-none border-none focus-visible:outline-none focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 p-0 disabled:opacity-100"
                         value={field.value}
                         onChange={field.onChange}
+                        disabled={!isEditing}
                       />
                     </FormControl>
                     <FormMessage className="font-bold" />
@@ -228,6 +318,7 @@ function TournamentForm({ selectedLeague }: Props) {
               <Dialog>
                 <DialogTrigger>
                   <Button
+                    type="button"
                     className="rounded-full w-8 h-8 bg-primary cursor-pointer"
                     size="icon"
                   >
@@ -238,19 +329,67 @@ function TournamentForm({ selectedLeague }: Props) {
                 <FileUpload />
               </Dialog>
               <Button
-                className="rounded-full w-8 h-8 bg-primary cursor-pointer"
+                type="button"
+                className={cn(
+                  "rounded-full w-8 h-8 bg-primary cursor-pointer",
+                  isEditing && "hidden"
+                )}
                 size="icon"
+                onClick={() => setIsEditing(true)}
               >
                 <Icons.pencilLine className="w-[1rem] h-[1rem] text-white m-1" />
                 <span className="sr-only">Edit</span>
               </Button>
-              <Button
-                className="rounded-full w-8 h-8 bg-primary cursor-pointer"
-                size="icon"
-              >
-                <Trash2 className="w-[1rem] h-[1rem] text-white m-1" />
-                <span className="sr-only">Delete</span>
-              </Button>
+              <Dialog>
+                <DialogTrigger>
+                  <Button
+                    type="button"
+                    className="rounded-full w-8 h-8 bg-primary cursor-pointer"
+                    size="icon"
+                  >
+                    <Trash2 className="w-[1rem] h-[1rem] text-white m-1" />
+                    <span className="sr-only">Delete</span>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle className="text-base">
+                      Are you absolutely sure?
+                    </DialogTitle>
+                    <DialogDescription className="text-sm text-muted-foreground">
+                      This action cannot be undone. This will permanently delete
+                      this tournament format and remove all related data from
+                      our servers.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter className="w-full justify-end">
+                    <Button
+                      type="submit"
+                      size={"sm"}
+                      variant={"outline"}
+                      className="max-w-32"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      size={"sm"}
+                      variant={"destructive"}
+                      className="max-w-32"
+                      onClick={handleDeleteTournament}
+                    >
+                      Delete
+                      {deleteLoading && (
+                        <Icons.spinner
+                          className="mr-2 h-4 w-4 animate-spin"
+                          aria-hidden="true"
+                        />
+                      )}
+                      <span className="sr-only">Delete</span>
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
           <div className="mt-10 w-full">
@@ -273,9 +412,10 @@ function TournamentForm({ selectedLeague }: Props) {
                             <Button
                               variant={"outline"}
                               className={cn(
-                                "w-full justify-start text-left font-normal",
+                                "w-full justify-start text-left font-normal disabled:opacity-100",
                                 !field.value && "text-muted-foreground"
                               )}
+                              disabled={!isEditing}
                             >
                               <CalendarIcon className="mr-2 h-4 w-4" />
                               {field.value ? (
@@ -291,6 +431,9 @@ function TournamentForm({ selectedLeague }: Props) {
                               selected={field.value}
                               onSelect={field.onChange}
                               initialFocus
+                              fromDate={new Date()}
+                              toDate={new Date(form.watch("endDate"))}
+                              disabled={!isEditing}
                             />
                           </PopoverContent>
                         </Popover>
@@ -313,9 +456,10 @@ function TournamentForm({ selectedLeague }: Props) {
                             <Button
                               variant={"outline"}
                               className={cn(
-                                "w-full justify-start text-left font-normal",
+                                "w-full justify-start text-left font-normal disabled:opacity-100",
                                 !field.value && "text-muted-foreground"
                               )}
+                              disabled={!isEditing}
                             >
                               <CalendarIcon className="mr-2 h-4 w-4" />
                               {field.value ? (
@@ -331,6 +475,8 @@ function TournamentForm({ selectedLeague }: Props) {
                               selected={field.value}
                               onSelect={field.onChange}
                               initialFocus
+                              fromDate={new Date(form.watch("startDate"))}
+                              disabled={!isEditing}
                             />
                           </PopoverContent>
                         </Popover>
@@ -344,7 +490,7 @@ function TournamentForm({ selectedLeague }: Props) {
                     control={form.control}
                     name="startTime"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="w-full">
                         <FormLabel className="text-foreground font-medium">
                           Start Time
                           <b className="text-primary font-light"> *</b>
@@ -355,9 +501,10 @@ function TournamentForm({ selectedLeague }: Props) {
                               <Button
                                 variant={"outline"}
                                 className={cn(
-                                  "w-full justify-start text-left font-normal",
+                                  "w-full justify-start text-left font-normal disabled:opacity-100",
                                   !field.value && "text-muted-foreground"
                                 )}
+                                disabled={!isEditing}
                               >
                                 <Clock className="mr-2 h-4 w-4" />
                                 {field.value ? (
@@ -383,19 +530,20 @@ function TournamentForm({ selectedLeague }: Props) {
                     control={form.control}
                     name="endTime"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="w-full">
                         <FormLabel className="text-foreground font-medium">
                           End Time<b className="text-primary font-light"> *</b>
                         </FormLabel>
                         <FormControl>
                           <Popover>
-                            <PopoverTrigger asChild>
+                            <PopoverTrigger asChild className="w-full">
                               <Button
                                 variant={"outline"}
                                 className={cn(
-                                  "w-full justify-start text-left font-normal",
+                                  "w-full justify-start text-left font-normal disabled:opacity-100 disabled:cursor-not-allowed",
                                   !field.value && "text-muted-foreground"
                                 )}
+                                disabled={!isEditing}
                               >
                                 <Clock className="mr-2 h-4 w-4" />
                                 {field.value ? (
@@ -436,10 +584,11 @@ function TournamentForm({ selectedLeague }: Props) {
                         >
                           <SelectTrigger
                             className={cn(
-                              "w-full text-muted-foreground",
+                              "w-full text-muted-foreground disabled:opacity-100",
                               field.value && "text-foreground"
                             )}
                             iconType={"location"}
+                            disabled={!isEditing}
                           >
                             <SelectValue placeholder="Choose a venue" />
                           </SelectTrigger>
@@ -475,10 +624,11 @@ function TournamentForm({ selectedLeague }: Props) {
                         >
                           <SelectTrigger
                             className={cn(
-                              "w-full text-muted-foreground",
+                              "w-full text-muted-foreground disabled:opacity-100",
                               field.value && "text-foreground"
                             )}
                             iconType={"collapsible"}
+                            disabled={!isEditing}
                           >
                             <SelectValue placeholder="Choose a venue" />
                           </SelectTrigger>
@@ -510,10 +660,11 @@ function TournamentForm({ selectedLeague }: Props) {
                             >
                               <SelectTrigger
                                 className={cn(
-                                  "w-full text-muted-foreground",
+                                  "w-full text-muted-foreground disabled:opacity-100",
                                   field.value && "text-foreground"
                                 )}
                                 iconType={"collapsible"}
+                                disabled={!isEditing}
                               >
                                 <SelectValue placeholder="choose a value" />
                               </SelectTrigger>
@@ -536,9 +687,10 @@ function TournamentForm({ selectedLeague }: Props) {
                           <FormControl>
                             <Input
                               placeholder="50000"
-                              value={field.value}
+                              value={Number(field.value)}
+                              className="disabled:opacity-100"
                               onChange={field.onChange}
-                              type="number"
+                              disabled={!isEditing}
                             />
                           </FormControl>
                           <FormMessage />
@@ -568,10 +720,11 @@ function TournamentForm({ selectedLeague }: Props) {
                         >
                           <SelectTrigger
                             className={cn(
-                              "w-full text-muted-foreground",
+                              "w-full text-muted-foreground disabled:opacity-100",
                               field.value && "text-foreground"
                             )}
                             iconType={"collapsible"}
+                            disabled={!isEditing}
                           >
                             <SelectValue placeholder="choose..." />
                           </SelectTrigger>
@@ -607,10 +760,11 @@ function TournamentForm({ selectedLeague }: Props) {
                         >
                           <SelectTrigger
                             className={cn(
-                              "w-full text-muted-foreground",
+                              "w-full text-muted-foreground disabled:opacity-100",
                               field.value && "text-foreground"
                             )}
                             iconType={"collapsible"}
+                            disabled={!isEditing}
                           >
                             <SelectValue placeholder="choose..." />
                           </SelectTrigger>
@@ -641,10 +795,11 @@ function TournamentForm({ selectedLeague }: Props) {
                         >
                           <SelectTrigger
                             className={cn(
-                              "w-full text-muted-foreground",
+                              "w-full text-muted-foreground disabled:opacity-100",
                               field.value && "text-foreground"
                             )}
                             iconType={"collapsible"}
+                            disabled={!isEditing}
                           >
                             <SelectValue placeholder="choose..." />
                           </SelectTrigger>
@@ -677,10 +832,11 @@ function TournamentForm({ selectedLeague }: Props) {
                         >
                           <SelectTrigger
                             className={cn(
-                              "w-full text-muted-foreground",
+                              "w-full text-muted-foreground disabled:opacity-100",
                               field.value && "text-foreground"
                             )}
                             iconType={"collapsible"}
+                            disabled={!isEditing}
                           >
                             <SelectValue placeholder="choose..." />
                           </SelectTrigger>
@@ -711,10 +867,11 @@ function TournamentForm({ selectedLeague }: Props) {
                         >
                           <SelectTrigger
                             className={cn(
-                              "w-full text-muted-foreground",
+                              "w-full text-muted-foreground disabled:opacity-100",
                               field.value && "text-foreground"
                             )}
                             iconType={"collapsible"}
+                            disabled={!isEditing}
                           >
                             <SelectValue placeholder="choose..." />
                           </SelectTrigger>
@@ -731,26 +888,33 @@ function TournamentForm({ selectedLeague }: Props) {
                 />
               </div>
 
-              <div className="flex items-center justify-between mt-5 gap-3">
-                <Button type="button" variant={"outline"} className="w-full">
-                  Cancel
-                  <span className="sr-only">Cancel</span>
-                </Button>
-                <Button
-                  type="submit"
-                  variant={"default"}
-                  className="w-full hover:bg-primary"
-                >
-                  Create Tournament
-                  {loading && (
-                    <Icons.spinner
-                      className="mr-2 h-4 w-4 animate-spin"
-                      aria-hidden="true"
-                    />
-                  )}
-                  <span className="sr-only">Create Tournament</span>
-                </Button>
-              </div>
+              {isEditing && (
+                <div className="flex items-center justify-between mt-5 gap-3">
+                  <Button
+                    type="button"
+                    variant={"outline"}
+                    className="w-full"
+                    onClick={() => setIsEditing(false)}
+                  >
+                    Cancel
+                    <span className="sr-only">Cancel</span>
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant={"default"}
+                    className="w-full hover:bg-primary"
+                  >
+                    Update Tournament
+                    {loading && (
+                      <Icons.spinner
+                        className="mr-2 h-4 w-4 animate-spin"
+                        aria-hidden="true"
+                      />
+                    )}
+                    <span className="sr-only">Update Tournament</span>
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </form>
@@ -759,4 +923,4 @@ function TournamentForm({ selectedLeague }: Props) {
   );
 }
 
-export default TournamentForm;
+export default TournamentUpdateForm;

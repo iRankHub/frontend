@@ -63,16 +63,29 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
         });
         form.reset();
 
-        const role = Roles.ADMIN;
-        const user: AuthStateUser = {
-          userId: res.userid,
-          token: res.token,
-          status: "idle",
-          requiredPasswordReset: res.requirePasswordReset,
-          requireTwoFactor: res.requireTwoFactor,
-        };
-        authLogin(user, role);
-        router.push("/admin/dashboard");
+        if (res.userrole === "admin") {
+          const role = Roles.ADMIN;
+          const user: AuthStateUser = {
+            userId: res.userid,
+            token: res.token,
+            status: "idle",
+            requiredPasswordReset: res.requirePasswordReset,
+            requireTwoFactor: res.requireTwoFactor,
+          };
+          authLogin(user, role);
+          router.push("/admin/dashboard");
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Access Denied. Please login as an admin",
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        }
       })
       .catch((err) => {
         console.error(err.message);

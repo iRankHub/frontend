@@ -3,19 +3,17 @@
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LeagueCard from "./league-card";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -31,10 +29,91 @@ import {
   MultiSelectorList,
   MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
+import { useUserStore } from "@/stores/auth/auth.store";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { createTournamentLeagueSchema } from "@/lib/validations/admin/tournaments/create-tournament-leagues.schema";
+import {
+  createTournamentLeague,
+  tournamentLeagues,
+} from "@/core/tournament/leagues";
+import { CreateTournamentLeague } from "@/types/tournaments/tournament-leagues";
+import {
+  League,
+  LeagueType,
+} from "@/lib/grpc/proto/tournament_management/tournament_pb";
+
+type TournamentLeagueInput = z.infer<typeof createTournamentLeagueSchema>;
 
 function Leagues({}) {
   const [provinces, setProvinces] = useState<string[]>([]);
   const [districts, setDistricts] = useState<string[]>([]);
+  const [leagues, setLeagues] = useState<League.AsObject[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const { user } = useUserStore((state) => state);
+
+  const form = useForm<TournamentLeagueInput>({
+    resolver: zodResolver(createTournamentLeagueSchema),
+  });
+
+  // const createLeague = async (data: TournamentLeagueInput) => {
+  //   if (!user) return;
+
+  //   const getLeagueType = (type: string) => {
+  //     if (type === "local") {
+  //       return LeagueType.LOCAL;
+  //     } else {
+  //       return LeagueType.INTERNATIONAL;
+  //     }
+  //   };
+
+  //   const options = {
+  //     token: user.token,
+  //     name: data.name,
+  //     league_type: getLeagueType(data.league_type),
+  //     local_details: {
+  //       districts: ["in occaecat velit"],
+  //       provinces: [
+  //         "culpa ullamco eiusmod Excepteur adipisicing",
+  //         "enim",
+  //         "nostrud Lorem officia veniam enim",
+  //       ],
+  //     },
+  //   };
+
+  //   setLoading(true);
+  //   await createTournamentLeague({ ...options })
+  //     .then((res) => {
+  //       setLoading(false);
+  //       form.reset();
+  //       setDialogOpen(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err.message);
+  //       setLoading(false);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
+  //     });
+  // };
+
+  useEffect(() => {
+    if (!user) return;
+    const data = {
+      page_size: 10,
+      page_token: 0,
+      token: user.token,
+    };
+    tournamentLeagues({ ...data })
+      .then((res) => {
+        setLeagues(res.leaguesList);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, [user]);
   return (
     <div className="w-full mt-5 rounded-md overflow-hidden border border-muted">
       <div className="flex items-center justify-between flex-wrap gap-5 p-5 bg-brown">
@@ -102,7 +181,10 @@ function Leagues({}) {
                   className="flex-1"
                 >
                   <MultiSelectorTrigger>
-                    <MultiSelectorInput placeholder="Select your province" className="placeholder:text-muted-text" />
+                    <MultiSelectorInput
+                      placeholder="Select your province"
+                      className="placeholder:text-muted-text"
+                    />
                   </MultiSelectorTrigger>
                   <MultiSelectorContent>
                     <MultiSelectorList>
@@ -110,10 +192,10 @@ function Leagues({}) {
                         South
                       </MultiSelectorItem>
                       <MultiSelectorItem value={"East"}>East</MultiSelectorItem>
-                      <MultiSelectorItem value={"Kigali"}>Kigali City</MultiSelectorItem>
-                      <MultiSelectorItem value={"West"}>
-                        West
+                      <MultiSelectorItem value={"Kigali"}>
+                        Kigali City
                       </MultiSelectorItem>
+                      <MultiSelectorItem value={"West"}>West</MultiSelectorItem>
                     </MultiSelectorList>
                   </MultiSelectorContent>
                 </MultiSelector>
@@ -129,14 +211,19 @@ function Leagues({}) {
                   className="flex-1"
                 >
                   <MultiSelectorTrigger>
-                    <MultiSelectorInput placeholder="Select your district" className="placeholder:text-muted-text" />
+                    <MultiSelectorInput
+                      placeholder="Select your district"
+                      className="placeholder:text-muted-text"
+                    />
                   </MultiSelectorTrigger>
                   <MultiSelectorContent>
                     <MultiSelectorList>
                       <MultiSelectorItem value={"Rulindo"}>
                         Rulindo
                       </MultiSelectorItem>
-                      <MultiSelectorItem value={"Nyanza"}>Nyanza</MultiSelectorItem>
+                      <MultiSelectorItem value={"Nyanza"}>
+                        Nyanza
+                      </MultiSelectorItem>
                       <MultiSelectorItem value={"Kicukiro"}>
                         Kicukiro
                       </MultiSelectorItem>
@@ -148,6 +235,13 @@ function Leagues({}) {
             <DialogFooter className="w-full">
               <Button type="submit" size={"sm"} className="w-full">
                 Create League
+                {loading && (
+                  <Icons.spinner
+                    className="mr-2 h-4 w-4 animate-spin"
+                    aria-hidden="true"
+                  />
+                )}
+                <div className="sr-only">Create League</div>
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -155,25 +249,18 @@ function Leagues({}) {
       </div>
       <div className="w-full bg-background p-8 grid">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-10">
-          <LeagueCard />
-          <LeagueCard />
-          <LeagueCard />
-          <LeagueCard />
-          <LeagueCard />
-          <LeagueCard />
-          <LeagueCard />
-          <LeagueCard />
-          <LeagueCard />
-          <LeagueCard />
-          <LeagueCard />
-          <LeagueCard />
-          <LeagueCard />
-          <LeagueCard />
-          <LeagueCard />
+          {leagues.map((league) => (
+            <LeagueCard
+              key={league.leagueId}
+              league={league}
+              setLeagues={setLeagues}
+            />
+          ))}
         </div>
         <Button
           type="button"
-          className="ring-0 border-none outline-none text-primary mt-10 p-0 bg-primary/80 underline"
+          size={"sm"}
+          className="max-w-auto mx-auto ring-0 border-none outline-none text-primary dark:text-white mt-10 bg-transparent underline"
         >
           Load More
         </Button>

@@ -1,40 +1,31 @@
-"use client";
-
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  MultiSelector,
-  MultiSelectorContent,
-  MultiSelectorInput,
-  MultiSelectorItem,
-  MultiSelectorList,
-  MultiSelectorTrigger,
-} from "@/components/ui/multi-select";
 import TournamentCard from "./tournament-card";
+import { useEffect, useState } from "react";
+import { tournamentsList } from "@/core/tournament/list";
+import { useUserStore } from "@/stores/auth/auth.store";
+import { Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 
 function Tournaments({}) {
-  const [provinces, setProvinces] = useState<string[]>([]);
-  const [districts, setDistricts] = useState<string[]>([]);
+  const [tournaments, setTournaments] = useState<Tournament.AsObject[]>([]);
+  const { user } = useUserStore((state) => state);
+
+  useEffect(() => {
+    if (!user) return;
+    const data = {
+      page_size: 10,
+      page_token: 0,
+      token: user.token,
+    };
+    tournamentsList({ ...data })
+      .then((res) => {
+        setTournaments(res.tournamentsList);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, [user]);
   return (
     <div className="w-full mt-5 rounded-md overflow-hidden border border-muted">
       <div className="flex items-center justify-between flex-wrap gap-5 p-5 bg-brown">
@@ -59,145 +50,17 @@ function Tournaments({}) {
             Coordinator
           </Button>
         </form>
-        <Dialog>
-          <DialogTrigger>
-            <Button
-              type="button"
-              className="text-white gap-2 text-sm font-semibold h-8 hover:bg-white hover:text-foreground group"
-            >
-              <Icons.add className="text-white w-3.5 h-3.5 group-hover:text-foreground" />
-              Add New Tournament
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle className="text-base">Create League</DialogTitle>
-            </DialogHeader>
-            <div className="grid gap-3">
-              <div className="w-full flex items-center gap-3">
-                <Label htmlFor="name" className="text-sm min-w-[80px]">
-                  League Name
-                </Label>
-                <Input
-                  id="name"
-                  placeholder="E.g: Kigali Debate League"
-                  className="flex-1 mt-1 h-9 placeholder:text-muted-text"
-                />
-              </div>
-              <div className="w-full flex items-center gap-3">
-                <Label htmlFor="type" className="text-sm min-w-[80px]">
-                  League Type
-                </Label>
-                <Select name="type">
-                  <SelectTrigger className="flex-1">
-                    <SelectValue placeholder="choose type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="local">Local</SelectItem>
-                    <SelectItem value="international">International</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="w-full flex items-center gap-3">
-                <Label htmlFor="type" className="text-sm min-w-[80px]">
-                  Province(s)
-                </Label>
-                <MultiSelector
-                  values={provinces}
-                  onValuesChange={setProvinces}
-                  loop
-                  className="flex-1"
-                >
-                  <MultiSelectorTrigger>
-                    <MultiSelectorInput
-                      placeholder="Select your province"
-                      className="placeholder:text-muted-text"
-                    />
-                  </MultiSelectorTrigger>
-                  <MultiSelectorContent>
-                    <MultiSelectorList>
-                      <MultiSelectorItem value={"South"}>
-                        South
-                      </MultiSelectorItem>
-                      <MultiSelectorItem value={"East"}>East</MultiSelectorItem>
-                      <MultiSelectorItem value={"Kigali"}>
-                        Kigali City
-                      </MultiSelectorItem>
-                      <MultiSelectorItem value={"West"}>West</MultiSelectorItem>
-                    </MultiSelectorList>
-                  </MultiSelectorContent>
-                </MultiSelector>
-              </div>
-              <div className="w-full flex items-center gap-3">
-                <Label htmlFor="type" className="text-sm min-w-[80px]">
-                  District(s)
-                </Label>
-                <MultiSelector
-                  values={districts}
-                  onValuesChange={setDistricts}
-                  loop
-                  className="flex-1"
-                >
-                  <MultiSelectorTrigger>
-                    <MultiSelectorInput
-                      placeholder="Select your district"
-                      className="placeholder:text-muted-text"
-                    />
-                  </MultiSelectorTrigger>
-                  <MultiSelectorContent>
-                    <MultiSelectorList>
-                      <MultiSelectorItem value={"Rulindo"}>
-                        Rulindo
-                      </MultiSelectorItem>
-                      <MultiSelectorItem value={"Nyanza"}>
-                        Nyanza
-                      </MultiSelectorItem>
-                      <MultiSelectorItem value={"Kicukiro"}>
-                        Kicukiro
-                      </MultiSelectorItem>
-                    </MultiSelectorList>
-                  </MultiSelectorContent>
-                </MultiSelector>
-              </div>
-            </div>
-            <DialogFooter className="w-full">
-              <Button type="submit" size={"sm"} className="w-full">
-                Create League
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
       </div>
       <div className="w-full bg-background p-8 grid">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
-          <TournamentCard />
+          {tournaments.map((tournament, index) => (
+            <TournamentCard key={index} tournament={tournament} setTournaments={setTournaments} />
+          ))}
         </div>
         <Button
           type="button"
-          className="ring-0 border-none outline-none text-primary mt-10 p-0 bg-primary/80 underline"
+          size={"sm"}
+          className="max-w-auto mx-auto ring-0 border-none outline-none text-primary dark:text-white mt-10 bg-transparent underline"
         >
           Load More
         </Button>

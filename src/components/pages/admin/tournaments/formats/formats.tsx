@@ -19,10 +19,9 @@ import {
   tournamentFormats,
 } from "@/core/tournament/formats";
 import {
-  ListTournamentFormatsResponse,
   TournamentFormat,
 } from "@/lib/grpc/proto/tournament_management/tournament_pb";
-import { createTournamentFormatSchema } from "@/lib/validations/admin/create-tournament-format.schema";
+import { createTournamentFormatSchema } from "@/lib/validations/admin/tournaments/create-tournament-format.schema";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,6 +33,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 type TournamentFormatInput = z.infer<typeof createTournamentFormatSchema>;
 
@@ -42,6 +43,7 @@ function Formats({}) {
   const [loading, setLoading] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const { user } = useUserStore((state) => state);
+  const { toast } = useToast();
 
   const form = useForm<TournamentFormatInput>({
     resolver: zodResolver(createTournamentFormatSchema),
@@ -71,10 +73,29 @@ function Formats({}) {
           res.format as TournamentFormat.AsObject,
         ]);
         setDialogOpen(false);
+        toast({
+          variant: "success",
+          title: "Success",
+          description: "Tournament format created successfully",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
       })
       .catch((err) => {
-        console.error(err.message);
         setLoading(false);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: err.message,
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
       })
       .finally(() => {
         setLoading(false);
@@ -90,7 +111,6 @@ function Formats({}) {
     };
     tournamentFormats({ ...data })
       .then((res) => {
-        console.log(res.formatsList);
         setFormats(res.formatsList);
       })
       .catch((err) => {
@@ -221,7 +241,8 @@ function Formats({}) {
         </div>
         <Button
           type="button"
-          className="ring-0 border-none outline-none text-primary mt-10 p-0 bg-primary/80 underline"
+          size={"sm"}
+          className="max-w-auto mx-auto ring-0 border-none outline-none text-primary dark:text-white mt-10 bg-transparent underline"
         >
           Load More
         </Button>
