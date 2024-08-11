@@ -28,17 +28,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { createTournamentFormatSchema } from "@/lib/validations/admin/create-tournament-format.schema";
+import { createTournamentFormatSchema } from "@/lib/validations/admin/tournaments/create-tournament-format.schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useUserStore } from "@/stores/auth/auth.store";
-import {
-  deleteTournamentFormat,
-  updateTournamentFormat,
-} from "@/core/tournament/formats";
 import { ToastAction } from "@/components/ui/toast";
-import { toast } from "@/components/ui/use-toast";
+import { deleteTournamentFormat, updateTournamentFormat } from "@/core/tournament/formats";
+import { useToast } from "@/components/ui/use-toast";
 
 interface FormatCardProps {
   format: TournamentFormat.AsObject;
@@ -55,6 +52,7 @@ function FormatCard({ format, setFormats }: FormatCardProps) {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [sheetOpen, setSheetOpen] = React.useState(false);
   const { user } = useUserStore((state) => state);
+  const { toast } = useToast();
 
   const form = useForm<TournamentFormatInput>({
     resolver: zodResolver(createTournamentFormatSchema),

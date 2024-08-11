@@ -33,34 +33,201 @@ import {
 } from "@/components/ui/select";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
+import { ToastAction } from "@/components/ui/toast";
+import { toast } from "@/components/ui/use-toast";
+import {
+  deleteTournamentLeague,
+  updateTournamentLeague,
+} from "@/core/tournament/leagues";
+import { League, LeagueType } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { cn } from "@/lib/utils";
+import { createTournamentLeagueSchema } from "@/lib/validations/admin/tournaments/create-tournament-leagues.schema";
+import { useUserStore } from "@/stores/auth/auth.store";
+import {
+  DeleteTournamentLeague,
+  UpdateTournamentLeague,
+} from "@/types/tournaments/tournament-leagues";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import React from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-type Props = {};
+type Props = {
+  league: League.AsObject;
+  setLeagues: React.Dispatch<React.SetStateAction<League.AsObject[]>>;
+};
 
-function LeagueCard({}: Props) {
+type TournamentLeagueInput = z.infer<typeof createTournamentLeagueSchema>;
+
+function LeagueCard({ league, setLeagues }: Props) {
   const [isEdit, setIsEdit] = React.useState(false);
   const [isDelete, setIsDelete] = React.useState(false);
   const [provinces, setProvinces] = React.useState<string[]>([]);
   const [districts, setDistricts] = React.useState<string[]>([]);
+  const leagues = JSON.parse(league.details);
+  const [loading, setLoading] = React.useState(false);
+  const [deleteLoading, setDeleteLoading] = React.useState(false);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [sheetOpen, setSheetOpen] = React.useState(false);
+  const { user } = useUserStore((state) => state);
+
+  const leagueType = () => {
+    switch (league.leagueType) {
+      case 0:
+        return "Local";
+      case 1:
+        return "International";
+      default:
+        return "Local";
+    }
+  };
+
+  const form = useForm<TournamentLeagueInput>({
+    resolver: zodResolver(createTournamentLeagueSchema),
+    defaultValues: {
+      name: league.name,
+      league_type: leagueType(),
+      district: leagues.districts,
+      province: leagues.provinces,
+    },
+  });
+
+  const updateFormat = async (data: TournamentLeagueInput) => {
+    if (!user) return;
+
+    const getLeagueType = (type: string) => {
+      if (type === "local") {
+        return LeagueType.LOCAL;
+      } else {
+        return LeagueType.INTERNATIONAL;
+      }
+    };
+
+    const options = {
+      league_id: league.leagueId,
+      token: user.token,
+      name: data.name,
+      league_type: getLeagueType(data.league_type),
+      local_details: {
+        districts: ["in occaecat velit"],
+        provinces: [
+          "culpa ullamco eiusmod Excepteur adipisicing",
+          "enim",
+          "nostrud Lorem officia veniam enim",
+        ],
+      },
+    };
+
+    // setLoading(true);
+    // await updateTournamentLeague({ ...options })
+    //   .then((res) => {
+    //     setLoading(false);
+    //     form.reset();
+    //     setLeagues((prev) => {
+    //       const index = prev.findIndex(
+    //         (leag) => leag.leagueId === res.league?.leagueId
+    //       );
+    //       if (index === -1) return prev;
+    //       prev[index] = res.league as League.AsObject;
+    //       return [...prev];
+    //     });
+    //     setIsEdit(false);
+    //     form.setValue("description", res.format?.description || "");
+    //     form.setValue("format_name", res.format?.formatName || "");
+    //     form.setValue(
+    //       "speakers_per_team",
+    //       String(res.format?.speakersPerTeam) || "0"
+    //     );
+    //   })
+    //   .catch((err) => {
+    //     console.error(err.message);
+    //     setLoading(false);
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
+  };
+
+  const deleteFormat = async () => {
+    if (!user) return;
+
+    const options: DeleteTournamentLeague = {
+      league_id: league.leagueId,
+      token: user.token,
+    };
+
+    setDeleteLoading(true);
+    await deleteTournamentLeague({
+      ...options,
+    })
+      .then((res) => {
+        if (res.success) {
+          setLeagues((prev) => {
+            const index = prev.findIndex(
+              (lg) => lg.leagueId === league.leagueId
+            );
+
+            if (index === -1) return prev;
+            prev.splice(index, 1);
+            return [...prev];
+          });
+          setIsDelete(false);
+          setDialogOpen(false);
+          setSheetOpen(false);
+          toast({
+            variant: "success",
+            title: "Success",
+            description: res.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: res.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err.message);
+        setDeleteLoading(false);
+      })
+      .finally(() => {
+        setDeleteLoading(false);
+      });
+  };
+
   return (
     <>
       <div className="w-full border rounded-md border-gray-200 p-3 flex flex-col gap-4 cursor-pointer hover:shadow-lg">
         <div className="flex items-center justify-between gap-3">
-          <h3 className="text-sm text-muted-foreground">Design Review</h3>
+          <h3 className="text-sm text-muted-foreground">{league.name}</h3>
           <Badge variant="outline" className="rounded-md bg-primary text-white">
-            International
+            {leagueType()}
           </Badge>
         </div>
         <div className="flex items-end gap-4 justify-between">
           <div className="flex items-center gap-3">
             <div className="flex flex-col gap-1 justify-end">
-              <span className="text-muted-text text-sm">21</span>
+              <span className="text-muted-text text-sm">
+                {leagues.continents.length}
+              </span>
               <p className="text-sm">Province(s)</p>
             </div>
             <div className="flex flex-col gap-1 justify-end">
-              <span className="text-muted-text text-sm">21</span>
+              <span className="text-muted-text text-sm">
+                {leagues.countries.length}
+              </span>
               <p className="text-sm">District(s)</p>
             </div>
           </div>
@@ -68,7 +235,9 @@ function LeagueCard({}: Props) {
             onOpenChange={() => {
               setIsEdit(false);
               setIsDelete(false);
+              setSheetOpen(!sheetOpen);
             }}
+            open={sheetOpen}
           >
             <SheetTrigger>
               <Icons.expand className="w-3.5 h-3.5 text-primary" />
@@ -76,7 +245,9 @@ function LeagueCard({}: Props) {
             <SidePanel>
               <Panelheader>
                 <div className="flex items-center gap-1">
-                  <h3 className="text-sm font-bold">Kigali Debate League</h3>
+                  <h3 className="text-sm font-bold">
+                    {league.name}
+                  </h3>
                   {!isEdit && (
                     <Button
                       type="button"
@@ -94,7 +265,9 @@ function LeagueCard({}: Props) {
                     onOpenChange={() => {
                       setIsEdit(false);
                       setIsDelete(false);
+                      setDialogOpen(!dialogOpen);
                     }}
+                    open={dialogOpen}
                   >
                     <DialogTrigger className="mt-0.5">
                       {!isDelete && (
@@ -136,8 +309,16 @@ function LeagueCard({}: Props) {
                           size={"sm"}
                           variant={"destructive"}
                           className="max-w-32"
+                          onClick={deleteFormat}
                         >
                           Delete
+                          {deleteLoading && (
+                            <Icons.spinner
+                              className="mr-2 h-4 w-4 animate-spin"
+                              aria-hidden="true"
+                            />
+                          )}
+                          <span className="sr-only">Delete</span>
                         </Button>
                       </DialogFooter>
                     </DialogContent>
@@ -155,7 +336,7 @@ function LeagueCard({}: Props) {
                   <Input
                     id="name"
                     placeholder="E.g: Kigali Debate League"
-                    className="flex-1 mt-1 h-9 placeholder:text-muted-text"
+                    className="flex-1 mt-1 h-9 placeholder:text-muted-text disabled:opacity-100"
                     disabled={!isEdit}
                   />
                 </div>
@@ -167,7 +348,7 @@ function LeagueCard({}: Props) {
                     League Type
                   </Label>
                   <Select name="type" disabled={!isEdit}>
-                    <SelectTrigger className="flex-1">
+                    <SelectTrigger className="flex-1 disabled:opacity-100">
                       <SelectValue placeholder="choose type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -191,13 +372,15 @@ function LeagueCard({}: Props) {
                     loop
                     className="flex-1"
                   >
-                    <MultiSelectorTrigger className={cn(
-                      "border-gray-300 rounded-md",
-                      !isEdit && "cursor-not-allowed"
-                    )}>
+                    <MultiSelectorTrigger
+                      className={cn(
+                        "border-gray-300 rounded-md",
+                        !isEdit && "cursor-not-allowed"
+                      )}
+                    >
                       <MultiSelectorInput
                         placeholder="Select your province"
-                        className="placeholder:text-muted-text disabled:cursor-not-allowed"
+                        className="placeholder:text-muted-text disabled:cursor-not-allowed disabled:opacity-100"
                         disabled={!isEdit}
                       />
                     </MultiSelectorTrigger>
@@ -232,13 +415,15 @@ function LeagueCard({}: Props) {
                     loop
                     className="flex-1"
                   >
-                    <MultiSelectorTrigger className={cn(
-                      "border-gray-300 rounded-md",
-                      !isEdit && "cursor-not-allowed"
-                    )}>
+                    <MultiSelectorTrigger
+                      className={cn(
+                        "border-gray-300 rounded-md",
+                        !isEdit && "cursor-not-allowed"
+                      )}
+                    >
                       <MultiSelectorInput
                         placeholder="Select your district"
-                        className="placeholder:text-muted-text disabled:cursor-not-allowed"
+                        className="placeholder:text-muted-text disabled:cursor-not-allowed disabled:opacity-100"
                         disabled={!isEdit}
                       />
                     </MultiSelectorTrigger>

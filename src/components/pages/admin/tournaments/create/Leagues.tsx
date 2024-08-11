@@ -1,5 +1,3 @@
-'use client'
-
 import React from "react";
 import {
   Select,
@@ -16,9 +14,7 @@ import {
   MultiSelectorList,
   MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
-import SidePanel, {
-  Panelheader,
-} from "@/components/layout/admin-panel/side-panel";
+import { v4 as uuidv4 } from "uuid";
 import { Command, CommandInput } from "@/components/ui/command";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
@@ -35,19 +31,26 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
+import { League } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 
 const inter = Inter({
   weight: "600",
   subsets: ["latin"],
 });
 
-type Props = {};
+type Props = {
+  leagues: League.AsObject[];
+  selectedLeague: League.AsObject | null;
+  setSelectedLeague: React.Dispatch<
+    React.SetStateAction<League.AsObject | null>
+  >;
+};
 
-function Leagues({}: Props) {
+function Leagues({ leagues, setSelectedLeague, selectedLeague }: Props) {
   const [provinces, setProvinces] = React.useState<string[]>([]);
   const [districts, setDistricts] = React.useState<string[]>([]);
   return (
-    <div className="hidden lg:inline w-full">
+    <div className="hidden xl:inline w-full max-w-sm">
       <h3
         className={cn(
           "text-foreground font-semibold text-2xl tracking-wider",
@@ -178,27 +181,11 @@ function Leagues({}: Props) {
         </p>
         <ScrollArea className="w-full h-[calc(100vh_-_300px)]">
           <div className="px-2">
-            <League title="League 1" subTitle="Local" />
-            <League title="League 2" subTitle="International" />
-            <League title="League 3" subTitle="Local" />
-            <League title="League 4" subTitle="Local" />
-            <League title="League 5" subTitle="International" />
-            <League title="League 6" subTitle="International" />
-            <League title="League 7" subTitle="International" />
-            <League title="League 8" subTitle="International" />
-            <League title="League 9" subTitle="Local" />
-            <League title="League 10" subTitle="International" />
-            <League title="League 11" subTitle="International" />
-            <League title="League 12" subTitle="Local" />
-            <League title="League 13" subTitle="Local" />
-            <League title="League 14" subTitle="Local" />
-            <League title="League 15" subTitle="Local" />
-            <League title="League 16" subTitle="International" />
-            <League title="League 17" subTitle="International" />
-            <League title="League 18" subTitle="Local" />
-            <League title="League 19" subTitle="International" />
-            <League title="League 20" subTitle="Local" />
-            <League title="League 21" subTitle="International" />
+            {leagues.map((league) => (
+              <div key={uuidv4()} onClick={() => setSelectedLeague(league)}>
+                <LeagueCard league={league} selectedLeague={selectedLeague} />
+              </div>
+            ))}
           </div>
         </ScrollArea>
       </div>
@@ -207,19 +194,44 @@ function Leagues({}: Props) {
 }
 
 interface LeaguProps {
-  title: string;
-  subTitle: string;
+  league: League.AsObject;
+  selectedLeague: League.AsObject | null;
 }
-export const League = ({ subTitle, title }: LeaguProps) => {
+export const LeagueCard = ({ league, selectedLeague }: LeaguProps) => {
+  const leagueType = () => {
+    switch (league.leagueType) {
+      case 0:
+        return "Local";
+      case 1:
+        return "International";
+      default:
+        return "Local";
+    }
+  };
   return (
-    <div className="w-full flex flex-col mt-4">
-      <span className="text-sm text-foreground font-medium leading-tight p-0 m-0">
-        {title}
+    <Button
+      type="button"
+      variant={
+        selectedLeague?.leagueId === league.leagueId ? "default" : "ghost"
+      }
+      className={cn(
+        "w-full flex flex-col mt-4 items-start",
+        selectedLeague?.leagueId === league.leagueId && "hover:bg-primary"
+      )}
+    >
+      <span className={cn(
+        "text-sm text-foreground font-medium leading-tight p-0 m-0",
+        selectedLeague?.leagueId === league.leagueId && "text-white"
+      )}>
+        {league.name}
       </span>
-      <span className="text-xs text-muted-foreground p-0 m-0 leading-tight">
-        {subTitle}
+      <span className={cn(
+        "text-xs text-muted-foreground p-0 m-0 leading-tight",
+        selectedLeague?.leagueId === league.leagueId && "text-white"
+      )}>
+        {leagueType()}
       </span>
-    </div>
+    </Button>
   );
 };
 

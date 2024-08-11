@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/tooltip";
 import { getMenuList } from "@/lib/utils/menu-list";
 import { CollapseMenuButton } from "./collapse-menu-button";
+import { useUserStore } from "@/stores/auth/auth.store";
 
 interface MenuProps {
   isOpen: boolean | undefined;
@@ -23,6 +24,7 @@ interface MenuProps {
 export function Menu({ isOpen }: MenuProps) {
   const pathname = usePathname();
   const menuList = getMenuList(pathname);
+  const { logout } = useUserStore((state) => state);
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
@@ -97,7 +99,7 @@ export function Menu({ isOpen }: MenuProps) {
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
                   <Button
-                    onClick={() => {}}
+                    onClick={logout}
                     variant="outline"
                     className="w-full justify-center h-10 mt-5 group"
                   >

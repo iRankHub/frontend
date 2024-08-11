@@ -26,7 +26,7 @@ function TournamentMenuWrapper({ children, className }: Props) {
           <Button
             type="button"
             size={"icon"}
-            className="flex lg:hidden fixed right-5 bottom-5 bg-primary rounded-full cursor-pointer z-50 hover:bg-primary"
+            className="flex xl:hidden fixed right-5 bottom-5 bg-primary rounded-full cursor-pointer z-50 hover:bg-primary"
           >
             <Icons.menuRight className="text-white w-5 h-5 md:w-8 md:h-8" />
           </Button>
