@@ -1,3 +1,277 @@
+export const rankings = [
+  {
+    "place": "4",
+    "names": "Bideri Alec",
+    "schools": "Green Hills Academy",
+    "points": "200",
+    "wins": "3",
+    "rank": "1"
+  },
+  {
+    "place": "5",
+    "names": "Bideri Alec",
+    "schools": "Green Hills Academy",
+    "points": "200",
+    "wins": "3",
+    "rank": "1"
+  },
+  {
+    "place": "6",
+    "names": "Bideri Alec",
+    "schools": "Green Hills Academy",
+    "points": "200",
+    "wins": "3",
+    "rank": "1"
+  },
+  {
+    "place": "7",
+    "names": "Bideri Alec",
+    "schools": "Green Hills Academy",
+    "points": "200",
+    "wins": "3",
+    "rank": "1"
+  },
+  {
+    "place": "8",
+    "names": "Bideri Alec",
+    "schools": "Green Hills Academy",
+    "points": "200",
+    "wins": "3",
+    "rank": "1"
+  },
+  {
+    "place": "9",
+    "names": "Bideri Alec",
+    "schools": "Green Hills Academy",
+    "points": "200",
+    "wins": "3",
+    "rank": "1"
+  },
+  {
+    "place": "10",
+    "names": "Bideri Alec",
+    "schools": "Green Hills Academy",
+    "points": "200",
+    "wins": "3",
+    "rank": "1"
+  },
+  {
+    "place": "11",
+    "names": "Bideri Alec",
+    "schools": "Green Hills Academy",
+    "points": "200",
+    "wins": "3",
+    "rank": "1"
+  },
+]
+
+export const pairingsPreliminaries = [
+  {
+    "proposition": "Green Hills Team 1",
+    "oposition": "Hope Haven Team 1",
+    "room": "room 1",
+  },
+  {
+    "proposition": "Green Hills Team 2",
+    "oposition": "Mary Hills Team 2",
+    "room": "room 2",
+  },
+  {
+    "proposition": "Green Hills Team 3",
+    "oposition": "Boston High Team 3",
+    "room": "room 3",
+  },
+]
+
+export const ballotPreliminaries = [
+  {
+    "head_judge": "Mukamana Anonciatha",
+    "status": "Recorded",
+    "room": "room 1",
+  },
+  {
+    "head_judge": "Aline Karame",
+    "status": "Not Yet",
+    "room": "room 2",
+  },
+  {
+    "head_judge": "Alice Gahondo",
+    "status": "Recorded",
+    "room": "room 3",
+  },
+]
+
+export const ballotElimination = [
+  {
+    "head_judge": "Mukamana Anonciatha",
+    "status": "Recorded",
+    "room": "room 1",
+  },
+  {
+    "head_judge": "Aline Karame",
+    "status": "Not Yet",
+    "room": "room 2",
+  },
+  {
+    "head_judge": "Alice Gahondo",
+    "status": "Recorded",
+    "room": "room 3",
+  },
+]
+
+export const teams = [
+  {
+    "id": "USA-IL-123442",
+    "school": "Green Hills",
+    "no_of_teams": "3",
+    "no_of_speakers": "9",
+  },
+  {
+    "id": "USA-IL-123442",
+    "school": "College Saint Andres",
+    "no_of_teams": "3",
+    "no_of_speakers": "9",
+  },
+  {
+    "id": "USA-IL-123442",
+    "school": "College Saint Andres",
+    "no_of_teams": "3",
+    "no_of_speakers": "9",
+  },
+  {
+    "id": "USA-IL-123442",
+    "school": "College Saint Andres",
+    "no_of_teams": "3",
+    "no_of_speakers": "9",
+  },
+  {
+    "id": "USA-IL-123442",
+    "school": "Rusumo High School",
+    "no_of_teams": "3",
+    "no_of_speakers": "9",
+  },
+  {
+    "id": "USA-IL-123442",
+    "school": "Rusumo High School",
+    "no_of_teams": "3",
+    "no_of_speakers": "9",
+  },
+]
+
+export const rooms = [
+  {
+    "names": "Room 1",
+    "preliminary": "occupied",
+    "action": "documentation",
+    "elimination": "occupied"
+  },
+  {
+    "names": "Room 1",
+    "preliminary": "occupied",
+    "action": "documentation",
+    "elimination": "occupied"
+  },
+  {
+    "names": "Room 1",
+    "preliminary": "occupied",
+    "action": "bug",
+    "elimination": "Available"
+  },
+  {
+    "names": "Room 1",
+    "preliminary": "occupied",
+    "action": "feature",
+    "elimination": "occupied"
+  },
+  {
+    "names": "Room 1",
+    "preliminary": "occupied",
+    "action": "feature",
+    "elimination": "occupied"
+  },
+  {
+    "names": "Room 1",
+    "preliminary": "occupied",
+    "action": "bug",
+    "elimination": "Available"
+  },
+  {
+    "names": "Room 1",
+    "preliminary": "occupied",
+    "action": "feature",
+    "elimination": "Available"
+  },
+  {
+    "names": "Room 1",
+    "preliminary": "occupied",
+    "action": "feature",
+    "elimination": "occupied"
+  },
+  {
+    "names": "Room 1",
+    "preliminary": "occupied",
+    "action": "feature",
+    "elimination": "low"
+  },
+  {
+    "names": "Room 1",
+    "preliminary": "occupied",
+    "action": "documentation",
+    "elimination": "Available"
+  },
+  {
+    "names": "Room 1",
+    "preliminary": "occupied",
+    "action": "documentation",
+    "elimination": "occupied"
+  },
+  {
+    "names": "Room 1",
+    "preliminary": "occupied",
+    "action": "documentation",
+    "elimination": "occupied"
+  },
+  {
+    "names": "Room 1",
+    "preliminary": "occupied",
+    "action": "bug",
+    "elimination": "occupied"
+  },
+  {
+    "names": "Room 1",
+    "preliminary": "occupied",
+    "action": "bug",
+    "elimination": "Available"
+  },
+]
+
+export const judgesTasks = [
+  {
+    "id": "VOL00001",
+    "names": "Bideri Alec",
+    "preliminary": "3",
+    "elimination": "None"
+  },
+  {
+    "id": "VOL00001",
+    "names": "Baho Joselyto",
+    "preliminary": "3",
+    "elimination": "2"
+  },
+  {
+    "id": "VOL00001",
+    "names": "Baho Joselyto",
+    "preliminary": "3",
+    "elimination": "2"
+  },
+  {
+    "id": "VOL00001",
+    "names": "Baho Joselyto",
+    "preliminary": "3",
+    "elimination": "None"
+  },
+]
+
 export const tasks = [
     {
       "id": "TASK-8782",

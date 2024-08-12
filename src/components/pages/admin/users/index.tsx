@@ -13,8 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import React, { useEffect, useState } from "react";
-import { DataTable } from "@/app/(site)/admin/users/_components/data-table";
-import { columns } from "@/app/(site)/admin/users/_components/columns";
+import { columns } from "./columns";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Sheet } from "@/components/ui/sheet";
@@ -28,8 +27,8 @@ import FileUpload from "./file-upload";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { getSchools } from "@/core/users/schools";
 import { GetSchoolsType } from "@/types/user_management/schools";
-import { School } from "@/lib/grpc/proto/user_management/users_pb";
 import { useUsersStore } from "@/stores/admin/users/users.store";
+import { DataTable } from "@/components/tables/data-table";
 
 function Users() {
   const [selected, setSelected] = React.useState<

@@ -1,19 +1,11 @@
-import { columns } from "@/app/(site)/admin/tournaments/list/[name]/pairings/preliminaries/_components/columns";
-import { DataTable } from "@/app/(site)/admin/tournaments/list/[name]/pairings/preliminaries/_components/data-table";
-import { tasks } from "@/app/(site)/admin/tournaments/list/[name]/pairings/preliminaries/data/tasks";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from "react";
+import { columns } from "./columns";
+import { DataTable } from "@/components/tables/data-table";
+import { pairingsPreliminaries } from "@/components/tables/data/tasks";
 
 type Props = {};
 
@@ -45,13 +37,13 @@ function Preliminaries({}: Props) {
             <TabsTrigger value="round 3" className="px-5">Round 3</TabsTrigger>
           </TabsList>
           <TabsContent value="round 1">
-            <DataTable data={tasks} columns={columns} />
+            <DataTable data={pairingsPreliminaries} columns={columns} />
           </TabsContent>
           <TabsContent value="round 2">
-            <DataTable data={tasks} columns={columns} />
+            <DataTable data={pairingsPreliminaries} columns={columns} />
           </TabsContent>
           <TabsContent value="round 3">
-            <DataTable data={tasks} columns={columns} />
+            <DataTable data={pairingsPreliminaries} columns={columns} />
           </TabsContent>
         </Tabs>
       </div>
