@@ -88,8 +88,6 @@ function LeagueCard({ league, setLeagues }: Props) {
     defaultValues: {
       name: league.name,
       league_type: leagueType(),
-      district: leagues.districts,
-      province: leagues.provinces,
     },
   });
 
@@ -220,13 +218,13 @@ function LeagueCard({ league, setLeagues }: Props) {
           <div className="flex items-center gap-3">
             <div className="flex flex-col gap-1 justify-end">
               <span className="text-muted-text text-sm">
-                {leagues.continents.length}
+                {leagueType() === "Local" ? leagues.provinces.length : leagues.continents.length}
               </span>
               <p className="text-sm">Province(s)</p>
             </div>
             <div className="flex flex-col gap-1 justify-end">
               <span className="text-muted-text text-sm">
-                {leagues.countries.length}
+                {leagueType() === "Local" ? leagues.districts.length : leagues.countries.length}
               </span>
               <p className="text-sm">District(s)</p>
             </div>

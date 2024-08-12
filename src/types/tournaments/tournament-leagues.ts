@@ -9,7 +9,7 @@ export interface ListTournamentLeagues {
 export interface CreateTournamentLeague {
     name: string;
     league_type: LeagueType;
-    local_details: LocalDetails;
+    local_details: LocalDetails.AsObject;
     token: string;
 }
 

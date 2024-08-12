@@ -12,13 +12,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DataTable } from "@/app/(site)/admin/users/_components/data-table";
-import { tasks } from "@/app/(site)/admin/users/data/tasks";
 import { columns } from "@/app/(site)/admin/users/_components/columns";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { Sheet, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet } from "@/components/ui/sheet";
 import SidePanel, {
   Panelheader,
 } from "@/components/layout/admin-panel/side-panel";
@@ -26,15 +25,36 @@ import CreateStudentAccount from "./create-student-account";
 import CreateSchoolAccount from "./create-school-account";
 import CreateVolunteerAccount from "./create-volunteer-account";
 import FileUpload from "./file-upload";
+import { useUserStore } from "@/stores/auth/auth.store";
+import { getSchools } from "@/core/users/schools";
+import { GetSchoolsType } from "@/types/user_management/schools";
+import { School } from "@/lib/grpc/proto/user_management/users_pb";
+import { useUsersStore } from "@/stores/admin/users/users.store";
 
-type Props = {};
-
-function Users({}: Props) {
+function Users() {
   const [selected, setSelected] = React.useState<
     "school" | "student" | "volunteer" | null
   >(null);
   const [dialogOpen, setDialogOpen] = useState<boolean>();
   const [sheetOpen, setSheetOpen] = useState<boolean>();
+  const { user } = useUserStore((state) => state);
+  const { users, setUsers } = useUsersStore((state) => state);
+
+  useEffect(() => {
+    if (!user) return;
+    const options: GetSchoolsType = {
+      pageSize: 10,
+      page: 1,
+      token: user.token,
+    };
+    getSchools({ ...options })
+      .then((res) => {
+        setUsers(res.schoolsList);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, [user]);
   return (
     <div className="w-full rounded-md overflow-hidden border border-muted">
       <div className="flex items-center justify-between flex-wrap gap-3 p-5 py-4 bg-brown">
@@ -52,30 +72,15 @@ function Users({}: Props) {
             Category
             <span className="sr-only">Category</span>
           </Button>
-          <Dialog>
-            <DialogTrigger>
-              <Button
-                type="button"
-                variant={"default"}
-                className="border border-dashed border-white gap-2 h-8 font-medium hover:bg-white hover:text-foreground group text-sm items-center"
-              >
-                <Icons.addCircle className="text-white w-3.5 h-3.5 group-hover:text-foreground" />
-                Status
-                <span className="sr-only">Status</span>
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle className="text-base">Create League</DialogTitle>
-              </DialogHeader>
-              <div className="grid gap-3"></div>
-              <DialogFooter className="w-full">
-                <Button type="submit" size={"sm"} className="w-full">
-                  Create League
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <Button
+            type="button"
+            variant={"default"}
+            className="border border-dashed border-white gap-2 h-8 font-medium hover:bg-white hover:text-foreground group text-sm items-center"
+          >
+            <Icons.addCircle className="text-white w-3.5 h-3.5 group-hover:text-foreground" />
+            Status
+            <span className="sr-only">Status</span>
+          </Button>
         </form>
         <div className="flex items-center gap-1">
           <Sheet onOpenChange={setSheetOpen} open={sheetOpen}>
@@ -207,7 +212,7 @@ function Users({}: Props) {
         </div>
       </div>
       <div className="w-full bg-background p-8 px-5">
-        <DataTable data={tasks} columns={columns} />
+        <DataTable data={users} columns={columns} />
       </div>
     </div>
   );

@@ -43,6 +43,16 @@ import {
   League,
   LeagueType,
 } from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 type TournamentLeagueInput = z.infer<typeof createTournamentLeagueSchema>;
 
@@ -51,53 +61,88 @@ function Leagues({}) {
   const [districts, setDistricts] = useState<string[]>([]);
   const [leagues, setLeagues] = useState<League.AsObject[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const { user } = useUserStore((state) => state);
+  const { toast } = useToast();
 
   const form = useForm<TournamentLeagueInput>({
     resolver: zodResolver(createTournamentLeagueSchema),
   });
 
-  // const createLeague = async (data: TournamentLeagueInput) => {
-  //   if (!user) return;
+  const createLeague = async (data: TournamentLeagueInput) => {
+    if (!user) return;
 
-  //   const getLeagueType = (type: string) => {
-  //     if (type === "local") {
-  //       return LeagueType.LOCAL;
-  //     } else {
-  //       return LeagueType.INTERNATIONAL;
-  //     }
-  //   };
+    if (provinces.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please select at least one province",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
+      });
+      return;
+    }
 
-  //   const options = {
-  //     token: user.token,
-  //     name: data.name,
-  //     league_type: getLeagueType(data.league_type),
-  //     local_details: {
-  //       districts: ["in occaecat velit"],
-  //       provinces: [
-  //         "culpa ullamco eiusmod Excepteur adipisicing",
-  //         "enim",
-  //         "nostrud Lorem officia veniam enim",
-  //       ],
-  //     },
-  //   };
+    if (districts.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please select at least one district",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
+      });
+      return;
+    }
 
-  //   setLoading(true);
-  //   await createTournamentLeague({ ...options })
-  //     .then((res) => {
-  //       setLoading(false);
-  //       form.reset();
-  //       setDialogOpen(false);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err.message);
-  //       setLoading(false);
-  //     })
-  //     .finally(() => {
-  //       setLoading(false);
-  //     });
-  // };
+    const getLeagueType = (type: string) => {
+      if (type === "local") {
+        return LeagueType.LOCAL;
+      } else {
+        return LeagueType.INTERNATIONAL;
+      }
+    };
+
+    const options: CreateTournamentLeague = {
+      token: user.token,
+      name: data.name,
+      league_type: getLeagueType(data.league_type),
+      local_details: {
+        districtsList: districts,
+        provincesList: provinces,
+      },
+    };
+
+    setLoading(true);
+    await createTournamentLeague({ ...options })
+      .then((res) => {
+        setLoading(false);
+        // form.reset();
+        toast({
+          variant: "success",
+          title: "Success",
+          description: "League created successfully",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+        console.log(res.league);
+        // setDialogOpen(false);
+      })
+      .catch((err) => {
+        console.error(err.message);
+        setLoading(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -145,105 +190,146 @@ function Leagues({}) {
             <DialogHeader>
               <DialogTitle className="text-base">Create League</DialogTitle>
             </DialogHeader>
-            <div className="grid gap-3">
-              <div className="w-full flex items-center gap-3">
-                <Label htmlFor="name" className="text-sm min-w-[80px]">
-                  League Name
-                </Label>
-                <Input
-                  id="name"
-                  placeholder="E.g: Kigali Debate League"
-                  className="flex-1 mt-1 h-9 placeholder:text-muted-text"
-                />
-              </div>
-              <div className="w-full flex items-center gap-3">
-                <Label htmlFor="type" className="text-sm min-w-[80px]">
-                  League Type
-                </Label>
-                <Select name="type">
-                  <SelectTrigger className="flex-1">
-                    <SelectValue placeholder="choose type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="local">Local</SelectItem>
-                    <SelectItem value="international">International</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="w-full flex items-center gap-3">
-                <Label htmlFor="type" className="text-sm min-w-[80px]">
-                  Province(s)
-                </Label>
-                <MultiSelector
-                  values={provinces}
-                  onValuesChange={setProvinces}
-                  loop
-                  className="flex-1"
-                >
-                  <MultiSelectorTrigger>
-                    <MultiSelectorInput
-                      placeholder="Select your province"
-                      className="placeholder:text-muted-text"
-                    />
-                  </MultiSelectorTrigger>
-                  <MultiSelectorContent>
-                    <MultiSelectorList>
-                      <MultiSelectorItem value={"South"}>
-                        South
-                      </MultiSelectorItem>
-                      <MultiSelectorItem value={"East"}>East</MultiSelectorItem>
-                      <MultiSelectorItem value={"Kigali"}>
-                        Kigali City
-                      </MultiSelectorItem>
-                      <MultiSelectorItem value={"West"}>West</MultiSelectorItem>
-                    </MultiSelectorList>
-                  </MultiSelectorContent>
-                </MultiSelector>
-              </div>
-              <div className="w-full flex items-center gap-3">
-                <Label htmlFor="type" className="text-sm min-w-[80px]">
-                  District(s)
-                </Label>
-                <MultiSelector
-                  values={districts}
-                  onValuesChange={setDistricts}
-                  loop
-                  className="flex-1"
-                >
-                  <MultiSelectorTrigger>
-                    <MultiSelectorInput
-                      placeholder="Select your district"
-                      className="placeholder:text-muted-text"
-                    />
-                  </MultiSelectorTrigger>
-                  <MultiSelectorContent>
-                    <MultiSelectorList>
-                      <MultiSelectorItem value={"Rulindo"}>
-                        Rulindo
-                      </MultiSelectorItem>
-                      <MultiSelectorItem value={"Nyanza"}>
-                        Nyanza
-                      </MultiSelectorItem>
-                      <MultiSelectorItem value={"Kicukiro"}>
-                        Kicukiro
-                      </MultiSelectorItem>
-                    </MultiSelectorList>
-                  </MultiSelectorContent>
-                </MultiSelector>
-              </div>
-            </div>
-            <DialogFooter className="w-full">
-              <Button type="submit" size={"sm"} className="w-full">
-                Create League
-                {loading && (
-                  <Icons.spinner
-                    className="mr-2 h-4 w-4 animate-spin"
-                    aria-hidden="true"
+            <Form {...form}>
+              <form
+                className="max-w-md w-full grid gap-4"
+                onSubmit={(...args) =>
+                  void form.handleSubmit(createLeague)(...args)
+                }
+              >
+                <div className="grid gap-3">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem className="w-full flex items-center gap-3">
+                        <FormLabel className="mt-2 text-darkBlue">
+                          League Name
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="E.g: Kigali Debate League"
+                            className="flex-1 placeholder:text-muted-text"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                )}
-                <div className="sr-only">Create League</div>
-              </Button>
-            </DialogFooter>
+                  <FormField
+                    control={form.control}
+                    name="league_type"
+                    render={({ field }) => (
+                      <FormItem className="w-full flex items-center gap-3">
+                        <FormLabel className="mt-2 text-darkBlue">
+                          League Type
+                        </FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="flex-1">
+                              <SelectValue placeholder="Select a school type..." />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="local">Local</SelectItem>
+                            <SelectItem value="international">
+                              International
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="w-full flex items-center gap-3">
+                    <Label htmlFor="type" className="text-sm min-w-[80px]">
+                      Province(s)
+                    </Label>
+                    <MultiSelector
+                      values={provinces}
+                      onValuesChange={setProvinces}
+                      loop
+                      className="flex-1"
+                    >
+                      <MultiSelectorTrigger>
+                        <MultiSelectorInput
+                          placeholder="Select your province"
+                          className="placeholder:text-muted-text"
+                        />
+                      </MultiSelectorTrigger>
+                      <MultiSelectorContent>
+                        <MultiSelectorList>
+                          <MultiSelectorItem value={"South"}>
+                            South
+                          </MultiSelectorItem>
+                          <MultiSelectorItem value={"East"}>
+                            East
+                          </MultiSelectorItem>
+                          <MultiSelectorItem value={"Kigali"}>
+                            Kigali City
+                          </MultiSelectorItem>
+                          <MultiSelectorItem value={"West"}>
+                            West
+                          </MultiSelectorItem>
+                        </MultiSelectorList>
+                      </MultiSelectorContent>
+                    </MultiSelector>
+                  </div>
+                  <div className="w-full flex items-center gap-3">
+                    <Label htmlFor="type" className="text-sm min-w-[80px]">
+                      District(s)
+                    </Label>
+                    <MultiSelector
+                      values={districts}
+                      onValuesChange={setDistricts}
+                      loop
+                      className="flex-1"
+                    >
+                      <MultiSelectorTrigger>
+                        <MultiSelectorInput
+                          placeholder="Select your district"
+                          className="placeholder:text-muted-text"
+                        />
+                      </MultiSelectorTrigger>
+                      <MultiSelectorContent>
+                        <MultiSelectorList>
+                          <MultiSelectorItem value={"Rulindo"}>
+                            Rulindo
+                          </MultiSelectorItem>
+                          <MultiSelectorItem value={"Nyanza"}>
+                            Nyanza
+                          </MultiSelectorItem>
+                          <MultiSelectorItem value={"Kicukiro"}>
+                            Kicukiro
+                          </MultiSelectorItem>
+                        </MultiSelectorList>
+                      </MultiSelectorContent>
+                    </MultiSelector>
+                  </div>
+                </div>
+                <DialogFooter className="w-full">
+                  <Button
+                    type="submit"
+                    size={"sm"}
+                    className="w-full hover:bg-primary"
+                  >
+                    Create League
+                    {loading && (
+                      <Icons.spinner
+                        className="mr-2 h-4 w-4 animate-spin"
+                        aria-hidden="true"
+                      />
+                    )}
+                    <div className="sr-only">Create League</div>
+                  </Button>
+                </DialogFooter>
+              </form>
+            </Form>
           </DialogContent>
         </Dialog>
       </div>

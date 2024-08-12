@@ -40,12 +40,12 @@ import {
 import { useUserStore } from "@/stores/auth/auth.store";
 import { tournamentFormats } from "@/core/tournament/formats";
 import { School } from "@/lib/grpc/proto/user_management/users_pb";
-import { getSchools } from "@/core/users/get-schools";
 import { createTournament } from "@/core/tournament/create-tournament";
 import { CreateTournamentType } from "@/types/tournaments/tournament";
 import { TimePicker } from "@/components/ui/time-picker";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import { getSchools } from "@/core/users/schools";
 
 type Props = {
   selectedLeague: League.AsObject | null;

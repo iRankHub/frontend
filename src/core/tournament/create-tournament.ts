@@ -32,7 +32,7 @@ export const createTournament = async ({
         request.setStartDate(start_date);
         request.setTournamentFee(tournament_fee);
         request.setToken(token);
-
+        
         tournamentClient.createTournament(request, {}, (err, response) => {
             if (err) {
                 console.log(err);

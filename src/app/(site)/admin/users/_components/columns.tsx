@@ -27,13 +27,20 @@ import SidePanel, {
 } from "@/components/layout/admin-panel/side-panel";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
+import { School } from "@/lib/grpc/proto/user_management/users_pb";
+import { useUserStore } from "@/stores/auth/auth.store";
+import { useToast } from "@/components/ui/use-toast";
+import { deactivateUser } from "@/core/users/users";
+import { DeactivateUser } from "@/types/user_management/users";
+import { ToastAction } from "@/components/ui/toast";
+import { useUsersStore } from "@/stores/admin/users/users.store";
 
 const inter = Inter({
   weight: "700",
   subsets: ["latin"],
 });
 
-export const columns: ColumnDef<Task>[] = [
+export const columns: ColumnDef<School.AsObject>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -59,16 +66,18 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "id",
+    accessorKey: "schoolid",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="IDebate ID" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
+    cell: ({ row }) => (
+      <div className="w-[80px]">{row.getValue("schoolid")}</div>
+    ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "names",
+    accessorKey: "name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Names" />
     ),
@@ -76,7 +85,7 @@ export const columns: ColumnDef<Task>[] = [
       return (
         <div className="flex space-x-2">
           <span className="max-w-[200px] truncate font-medium">
-            {row.getValue("names")}
+            {row.getValue("name")}
           </span>
         </div>
       );
@@ -84,7 +93,7 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "emails",
+    accessorKey: "schoolemail",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Emails" />
     ),
@@ -92,7 +101,7 @@ export const columns: ColumnDef<Task>[] = [
       return (
         <div className="flex space-x-2">
           <span className={cn("max-w-[200px] truncate", inter)}>
-            {row.getValue("emails")}
+            {row.getValue("schoolemail")}
           </span>
         </div>
       );
@@ -175,14 +184,70 @@ export const columns: ColumnDef<Task>[] = [
       <DataTableColumnHeader column={column} title="Actions" />
     ),
     cell: ({ row }) => {
-      return <Options />;
+      return <Options userid={row.getValue("schoolid")} />;
     },
     enableHiding: false,
   },
 ];
 
-const Options = () => {
+const Options = ({ userid }: { userid: number }) => {
   const [open, setOpen] = useState<boolean>(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const { user } = useUserStore((state) => state);
+  const { deleteUser: deleteUserInStore, users } = useUsersStore(
+    (state) => state
+  );
+  const { toast } = useToast();
+
+  const handleDeleteUser = async () => {
+    if (!user) return;
+
+    const options: DeactivateUser = {
+      userID: Number(userid),
+      token: user.token,
+    };
+
+    setDeleteLoading(true);
+    await deactivateUser({
+      ...options,
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.success) {
+          setOpen(false);
+          deleteUserInStore(userid);
+          toast({
+            variant: "success",
+            title: "Success",
+            description: res.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: res.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err.message);
+        setDeleteLoading(false);
+      })
+      .finally(() => {
+        setDeleteLoading(false);
+      });
+  };
+
   return (
     <div className="flex items-center space-x-1">
       <Dialog onOpenChange={setOpen} open={open}>
@@ -255,25 +320,27 @@ const Options = () => {
             </DialogTitle>
             <DialogDescription className="text-sm text-muted-foreground">
               This action cannot be undone. This will permanently delete this
-              tournament format and remove all related data from our servers.
+              user and remove all related data from our servers.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="w-full justify-end">
             <Button
-              type="submit"
+              type="button"
               size={"sm"}
               variant={"outline"}
               className="max-w-32"
             >
               Cancel
+              <span className="sr-only">Cancel</span>
             </Button>
             <Button
-              type="submit"
+              type="button"
               size={"sm"}
               variant={"destructive"}
               className="max-w-32"
             >
               Delete
+              <span className="sr-only">Delete</span>
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -304,25 +371,34 @@ const Options = () => {
             </DialogTitle>
             <DialogDescription className="text-sm text-muted-foreground">
               This action cannot be undone. This will permanently delete this
-              tournament format and remove all related data from our servers.
+              user and remove all related data from our servers.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="w-full justify-end">
             <Button
-              type="submit"
+              type="button"
               size={"sm"}
               variant={"outline"}
               className="max-w-32"
             >
               Cancel
+              <span className="sr-only">Cancel</span>
             </Button>
             <Button
-              type="submit"
+              type="button"
               size={"sm"}
               variant={"destructive"}
               className="max-w-32"
+              onClick={handleDeleteUser}
             >
               Delete
+              {deleteLoading && (
+                <Icons.spinner
+                  className="mr-2 h-4 w-4 animate-spin"
+                  aria-hidden="true"
+                />
+              )}
+              <span className="sr-only">Delete</span>
             </Button>
           </DialogFooter>
         </DialogContent>
