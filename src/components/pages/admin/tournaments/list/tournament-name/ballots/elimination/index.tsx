@@ -1,11 +1,11 @@
-import { columns } from "@/app/(site)/admin/tournaments/list/[name]/ballots/elimination/_components/columns";
-import { DataTable } from "@/app/(site)/admin/tournaments/list/[name]/ballots/elimination/_components/data-table";
-import { tasks } from "@/app/(site)/admin/tournaments/list/[name]/ballots/elimination/data/tasks";
 import { Icons } from "@/components/icons";
+import { ballotElimination } from "@/components/tables/data/tasks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from "react";
+import { columns } from "./columns";
+import { DataTable } from "@/components/tables/data-table";
 
 type Props = {};
 
@@ -32,18 +32,24 @@ function Elimination({}: Props) {
       <div className="w-full bg-background p-5">
         <Tabs defaultValue="round 1">
           <TabsList className="mb-3">
-            <TabsTrigger value="round 1" className="px-5">Quater-Finals</TabsTrigger>
-            <TabsTrigger value="round 2" className="px-5">Semi-Finals</TabsTrigger>
-            <TabsTrigger value="round 3" className="px-5">Finals</TabsTrigger>
+            <TabsTrigger value="round 1" className="px-5">
+              Quater-Finals
+            </TabsTrigger>
+            <TabsTrigger value="round 2" className="px-5">
+              Semi-Finals
+            </TabsTrigger>
+            <TabsTrigger value="round 3" className="px-5">
+              Finals
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="round 1">
-            <DataTable data={tasks} columns={columns} />
+            <DataTable data={ballotElimination} columns={columns} />
           </TabsContent>
           <TabsContent value="round 2">
-            <DataTable data={tasks} columns={columns} />
+            <DataTable data={ballotElimination} columns={columns} />
           </TabsContent>
           <TabsContent value="round 3">
-            <DataTable data={tasks} columns={columns} />
+            <DataTable data={ballotElimination} columns={columns} />
           </TabsContent>
         </Tabs>
       </div>

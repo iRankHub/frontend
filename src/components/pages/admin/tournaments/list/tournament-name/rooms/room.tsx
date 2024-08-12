@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import React from "react";
-import { DataTable } from "@/app/(site)/admin/tournaments/list/[name]/rooms/_components/data-table";
-import { tasks } from "@/app/(site)/admin/tournaments/list/[name]/rooms/data/tasks";
-import { columns } from "@/app/(site)/admin/tournaments/list/[name]/rooms/_components/columns";
+import { rooms } from "@/components/tables/data/tasks";
+import { columns } from "./columns";
+import { DataTable } from "@/components/tables/data-table";
 
 type Props = {};
 
@@ -61,7 +61,7 @@ function Rooms({}: Props) {
         </form>
       </div>
       <div className="w-full bg-background p-8 px-5">
-        <DataTable data={tasks} columns={columns} />
+        <DataTable data={rooms} columns={columns} />
       </div>
     </div>
   );

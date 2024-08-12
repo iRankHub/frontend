@@ -1,18 +1,10 @@
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import React from "react";
-import { DataTable } from "@/app/(site)/admin/tournaments/list/[name]/judges/_components/data-table";
-import { tasks } from "@/app/(site)/admin/tournaments/list/[name]/judges/data/tasks";
-import { columns } from "@/app/(site)/admin/tournaments/list/[name]/judges/_components/columns";
+import { columns } from "./columns";
+import { judgesTasks } from "@/components/tables/data/tasks";
+import { DataTable } from "@/components/tables/data-table";
 
 type Props = {};
 
@@ -37,7 +29,7 @@ function Judges({}: Props) {
         </form>
       </div>
       <div className="w-full bg-background p-8 px-5">
-        <DataTable data={tasks} columns={columns} />
+        <DataTable data={judgesTasks} columns={columns} />
       </div>
     </div>
   );

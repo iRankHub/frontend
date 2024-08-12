@@ -1,10 +1,10 @@
-import { columns } from "@/app/(site)/admin/tournaments/list/[name]/teams/_components/columns";
-import { DataTable } from "@/app/(site)/admin/tournaments/list/[name]/teams/_components/data-table";
-import { tasks } from "@/app/(site)/admin/tournaments/list/[name]/teams/data/tasks";
 import { Icons } from "@/components/icons";
+import { DataTable } from "@/components/tables/data-table";
+import { teams } from "@/components/tables/data/tasks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React from "react";
+import { columns } from "./columns";
 
 type Props = {};
 
@@ -39,7 +39,7 @@ function Teams({}: Props) {
         </div>
       </div>
       <div className="w-full bg-background p-5">
-        <DataTable data={tasks} columns={columns} />
+        <DataTable data={teams} columns={columns} />
       </div>
     </div>
   );

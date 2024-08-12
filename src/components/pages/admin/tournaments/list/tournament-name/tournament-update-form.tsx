@@ -48,10 +48,8 @@ import {
 import { useUserStore } from "@/stores/auth/auth.store";
 import { tournamentFormats } from "@/core/tournament/formats";
 import { School } from "@/lib/grpc/proto/user_management/users_pb";
-import { getSchools } from "@/core/users/get-schools";
-import { createTournament } from "@/core/tournament/create-tournament";
+import { getSchools } from "@/core/users/schools";
 import {
-  CreateTournamentType,
   DeleteTournamentType,
   UpdateTournamentType,
 } from "@/types/tournaments/tournament";

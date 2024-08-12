@@ -19,7 +19,7 @@ const page = withAuth(() => {
   return <Page />
 }, [Roles.ADMIN]);
 
-function Page({}) {
+function Page() {
   return (
     <ContentLayout title="format">
       <div className="w-full flex items-center justify-between gap-5">

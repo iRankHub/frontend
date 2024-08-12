@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import React from "react";
-import { DataTable } from "@/app/(site)/admin/tournaments/list/[name]/invitations/_components/data-table";
-import { tasks } from "@/app/(site)/admin/tournaments/list/[name]/invitations/data/tasks";
-import { columns } from "@/app/(site)/admin/tournaments/list/[name]/invitations/_components/columns";
+import { columns } from "./columns";
+import { DataTable } from "@/components/tables/data-table";
+import { tasks } from "@/components/tables/data/tasks";
 
 type Props = {};
 

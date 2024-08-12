@@ -6,6 +6,7 @@ import {
     DeleteLeagueResponse,
     ListLeaguesRequest,
     ListLeaguesResponse,
+    LocalDetails,
     UpdateLeagueRequest,
     UpdateLeagueResponse
 } from "@/lib/grpc/proto/tournament_management/tournament_pb";
@@ -49,8 +50,16 @@ export const createTournamentLeague = async ({
         const request = new CreateLeagueRequest();
         request.setName(name);
         request.setLeagueType(league_type);
-        request.setLocalDetails(local_details);
         request.setToken(token);
+
+        const localDetails = new LocalDetails();
+        local_details.districtsList.forEach((district) => {
+            localDetails.addDistricts(district);
+        });
+        local_details.provincesList.forEach((province) => {
+            localDetails.addProvinces(province);
+        });
+        request.setLocalDetails(localDetails);
 
         tournamentClient.createLeague(request, {}, (err, response) => {
             if (err) {

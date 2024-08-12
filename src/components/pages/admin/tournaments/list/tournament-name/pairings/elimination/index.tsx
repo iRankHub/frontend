@@ -1,17 +1,17 @@
+import { columns } from "@/app/(site)/admin/tournaments/list/[name]/pairings/preliminaries/_components/columns";
+import { DataTable } from "@/app/(site)/admin/tournaments/list/[name]/pairings/preliminaries/_components/data-table";
+import { tasks } from "@/app/(site)/admin/tournaments/list/[name]/pairings/preliminaries/data/tasks";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from "react";
-import { columns } from "./columns";
-import { DataTable } from "@/components/tables/data-table";
-import { ballotPreliminaries } from "@/components/tables/data/tasks";
 
 type Props = {};
 
 function Preliminaries({}: Props) {
   return (
-    <div className="w-full rounded-md overflow-hidden">
+    <div className="w-full rounded-md overflow-hidden border border-muted">
       <div className="flex items-center justify-between flex-wrap gap-5 p-5 py-4 bg-brown">
         <form action="#" className="flex items-center gap-3">
           <Input
@@ -37,13 +37,13 @@ function Preliminaries({}: Props) {
             <TabsTrigger value="round 3" className="px-5">Round 3</TabsTrigger>
           </TabsList>
           <TabsContent value="round 1">
-            <DataTable data={ballotPreliminaries} columns={columns} />
+            <DataTable data={tasks} columns={columns} />
           </TabsContent>
           <TabsContent value="round 2">
-            <DataTable data={ballotPreliminaries} columns={columns} />
+            <DataTable data={tasks} columns={columns} />
           </TabsContent>
           <TabsContent value="round 3">
-            <DataTable data={ballotPreliminaries} columns={columns} />
+            <DataTable data={tasks} columns={columns} />
           </TabsContent>
         </Tabs>
       </div>

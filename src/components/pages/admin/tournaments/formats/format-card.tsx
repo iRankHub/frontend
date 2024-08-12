@@ -48,9 +48,9 @@ function FormatCard({ format, setFormats }: FormatCardProps) {
   const [isEdit, setIsEdit] = React.useState(false);
   const [isDelete, setIsDelete] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  const [deleteLoading, setDeleteLoading] = React.useState(false);
-  const [dialogOpen, setDialogOpen] = React.useState(false);
   const [sheetOpen, setSheetOpen] = React.useState(false);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [deleteLoading, setDeleteLoading] = React.useState(false);
   const { user } = useUserStore((state) => state);
   const { toast } = useToast();
 
