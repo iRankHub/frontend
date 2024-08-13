@@ -28,7 +28,6 @@ import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
 import { PasswordInput } from "@/components/ui/password-Input";
 import Link from "next/link";
-import { signIn, useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { countries } from "@/lib/data";
@@ -49,6 +48,8 @@ import {
 import { cn } from "@/lib/utils";
 import { UserRole } from "@/types";
 import { signUp } from "@/core/authentication/auth";
+// @ts-ignore
+import { Provinces, Districts } from "rwanda";
 
 type Inputs = z.infer<typeof schoolSchema>;
 
@@ -58,6 +59,10 @@ const SignupForm = () => {
   const [openCountries, setOpenCountries] = React.useState(false);
   const { toast } = useToast();
   const [activeStep, setActiveStep] = React.useState(1);
+  const [provinces, setProvinces] = React.useState<string[]>(Provinces());
+  const [districts, setDisctricts] = React.useState<string[]>(Districts());
+  const [provinceState, setProvinceState] = React.useState("");
+  const [districtRegion, setDistrictRegion] = React.useState("");
   const steps = [1, 2, 3, 4];
 
   // react-hook-form
@@ -240,7 +245,8 @@ const SignupForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="capitalize">
-                      School Address<b className="text-primary font-light"> *</b>
+                      School Address
+                      <b className="text-primary font-light"> *</b>
                     </FormLabel>
                     <FormControl>
                       <Input placeholder="kk 4234st" {...field} />
@@ -266,7 +272,11 @@ const SignupForm = () => {
                   size={"lg"}
                   className="w-full hover:bg-primary"
                   onClick={async () => {
-                    const formErrors = await validateFormData(["name", "type", "address"]);
+                    const formErrors = await validateFormData([
+                      "name",
+                      "type",
+                      "address",
+                    ]);
                     if (formErrors && activeStep < 4) {
                       setActiveStep(activeStep + 1);
                     }
@@ -328,7 +338,7 @@ const SignupForm = () => {
                         <PopoverContent className="w-full p-0">
                           <Command className="w-full">
                             <CommandInput placeholder="Search country..." />
-                            <CommandEmpty>School not Found.</CommandEmpty>
+                            <CommandEmpty>Country not Found.</CommandEmpty>
                             <CommandList>
                               <CommandGroup>
                                 {countries.map((country, index) => (
@@ -366,12 +376,60 @@ const SignupForm = () => {
                 name="province_state"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="capitalize">
+                    <FormLabel>
                       Province/State
                       <b className="text-primary font-light"> *</b>
                     </FormLabel>
+                    <br />
                     <FormControl>
-                      <Input placeholder="your province/state" {...field} />
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className={cn(
+                              "w-full justify-between",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value
+                              ? provinces.find(
+                                  (province) => province === field.value
+                                )
+                              : "Select province/state..."}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-full p-0">
+                          <Command className="w-full">
+                            <CommandInput placeholder="Search province..." />
+                            <CommandEmpty>Province not Found.</CommandEmpty>
+                            <CommandList>
+                              <CommandGroup>
+                                {provinces.map((province, index) => (
+                                  <CommandItem
+                                    key={index}
+                                    value={province}
+                                    onSelect={() => {
+                                      form.setValue("province_state", province);
+                                    }}
+                                  >
+                                    {province}
+                                    <CheckIcon
+                                      className={cn(
+                                        "ml-auto h-4 w-4",
+                                        field.value === province
+                                          ? "opacity-100"
+                                          : "opacity-0"
+                                      )}
+                                    />
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -382,12 +440,60 @@ const SignupForm = () => {
                 name="district_region"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="capitalize">
-                      District/Region
+                    <FormLabel>
+                    District/Region
                       <b className="text-primary font-light"> *</b>
                     </FormLabel>
+                    <br />
                     <FormControl>
-                      <Input placeholder="your district" {...field} />
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className={cn(
+                              "w-full justify-between",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value
+                              ? districts.find(
+                                  (district) => district === field.value
+                                )
+                              : "Select province/state..."}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-full p-0">
+                          <Command className="w-full">
+                            <CommandInput placeholder="Search province..." />
+                            <CommandEmpty>District/Region not Found.</CommandEmpty>
+                            <CommandList>
+                              <CommandGroup>
+                                {districts.map((district, index) => (
+                                  <CommandItem
+                                    key={index}
+                                    value={district}
+                                    onSelect={() => {
+                                      form.setValue("district_region", district);
+                                    }}
+                                  >
+                                    {district}
+                                    <CheckIcon
+                                      className={cn(
+                                        "ml-auto h-4 w-4",
+                                        field.value === district
+                                          ? "opacity-100"
+                                          : "opacity-0"
+                                      )}
+                                    />
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
