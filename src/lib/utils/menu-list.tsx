@@ -90,9 +90,9 @@ import {
                 active: pathname === "/billings"
               },
               {
-                href: "/admin/logistics/orders",
+                href: "/admin/logistics/mission",
                 label: "Mission Orders",
-                active: pathname === "/orders"
+                active: pathname === "/mission"
               },
             ]
           },

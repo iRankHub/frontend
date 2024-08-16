@@ -7,12 +7,12 @@ import * as pb_1 from "google-protobuf";
 import * as grpc_1 from "@grpc/grpc-js";
 export namespace auth {
     export class BatchImportUsersRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             users?: UserData[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("users" in data && data.users != undefined) {
                     this.users = data.users;
@@ -74,7 +74,7 @@ export namespace auth {
         }
     }
     export class UserData extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             firstName?: string;
             lastName?: string;
@@ -97,7 +97,7 @@ export namespace auth {
             isEnrolledInUniversity?: boolean;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("firstName" in data && data.firstName != undefined) {
                     this.firstName = data.firstName;
@@ -555,7 +555,7 @@ export namespace auth {
         }
     }
     export class BatchImportUsersResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
@@ -563,7 +563,7 @@ export namespace auth {
             failedEmails?: string[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [4], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [4], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -691,7 +691,7 @@ export namespace auth {
         }
     }
     export class SignUpRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             firstName?: string;
             lastName?: string;
@@ -719,7 +719,7 @@ export namespace auth {
             isEnrolledInUniversity?: boolean;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("firstName" in data && data.firstName != undefined) {
                     this.firstName = data.firstName;
@@ -1287,14 +1287,14 @@ export namespace auth {
         }
     }
     export class SignUpResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
             status?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -1400,13 +1400,13 @@ export namespace auth {
         }
     }
     export class LoginRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             email_or_id?: string;
             password?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("email_or_id" in data && data.email_or_id != undefined) {
                     this.email_or_id = data.email_or_id;
@@ -1490,7 +1490,7 @@ export namespace auth {
         }
     }
     export class LoginResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             token?: string;
@@ -1502,7 +1502,7 @@ export namespace auth {
             status?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -1718,12 +1718,12 @@ export namespace auth {
         }
     }
     export class GenerateTwoFactorOTPRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             email?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("email" in data && data.email != undefined) {
                     this.email = data.email;
@@ -1785,13 +1785,13 @@ export namespace auth {
         }
     }
     export class GenerateTwoFactorOTPResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -1875,13 +1875,13 @@ export namespace auth {
         }
     }
     export class VerifyTwoFactorRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             email?: string;
             code?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("email" in data && data.email != undefined) {
                     this.email = data.email;
@@ -1965,12 +1965,12 @@ export namespace auth {
         }
     }
     export class PasswordResetRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             email?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("email" in data && data.email != undefined) {
                     this.email = data.email;
@@ -2032,12 +2032,12 @@ export namespace auth {
         }
     }
     export class PasswordResetResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -2099,13 +2099,13 @@ export namespace auth {
         }
     }
     export class ResetPasswordRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             newPassword?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -2189,12 +2189,12 @@ export namespace auth {
         }
     }
     export class ResetPasswordResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -2256,13 +2256,13 @@ export namespace auth {
         }
     }
     export class BeginWebAuthnRegistrationRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             userID?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -2346,12 +2346,12 @@ export namespace auth {
         }
     }
     export class BeginWebAuthnRegistrationResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             options?: Uint8Array;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("options" in data && data.options != undefined) {
                     this.options = data.options;
@@ -2413,14 +2413,14 @@ export namespace auth {
         }
     }
     export class FinishWebAuthnRegistrationRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             userID?: number;
             credential?: Uint8Array;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -2526,12 +2526,12 @@ export namespace auth {
         }
     }
     export class FinishWebAuthnRegistrationResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -2593,12 +2593,12 @@ export namespace auth {
         }
     }
     export class BeginWebAuthnLoginRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             email?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("email" in data && data.email != undefined) {
                     this.email = data.email;
@@ -2660,12 +2660,12 @@ export namespace auth {
         }
     }
     export class BeginWebAuthnLoginResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             options?: Uint8Array;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("options" in data && data.options != undefined) {
                     this.options = data.options;
@@ -2727,13 +2727,13 @@ export namespace auth {
         }
     }
     export class FinishWebAuthnLoginRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             email?: string;
             credential?: Uint8Array;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("email" in data && data.email != undefined) {
                     this.email = data.email;
@@ -2817,13 +2817,13 @@ export namespace auth {
         }
     }
     export class FinishWebAuthnLoginResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -2907,13 +2907,13 @@ export namespace auth {
         }
     }
     export class LogoutRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             userID?: number;
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("userID" in data && data.userID != undefined) {
                     this.userID = data.userID;
@@ -2997,13 +2997,13 @@ export namespace auth {
         }
     }
     export class LogoutResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
+        one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;

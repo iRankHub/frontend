@@ -2,13 +2,13 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { priorities, rooms } from "../data/data";
-import { Task } from "../data/schema";
-import { DataTableColumnHeader } from "./data-table-column-header";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
+import { Task } from "@/components/tables/data/schema";
+import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
+import { rooms } from "@/components/tables/data/data";
 
 export const columns: ColumnDef<Task>[] = [
   {

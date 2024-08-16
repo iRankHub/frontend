@@ -42,6 +42,24 @@ export const statuses = [
   },
 ];
 
+export const billingsStatuses = [
+  {
+    value: "paid",
+    label: "Paid",
+    icon: QuestionMarkCircledIcon,
+  },
+  {
+    value: "sponsored",
+    label: "Sponsored",
+    icon: CircleIcon,
+  },
+  {
+    value: "pending",
+    label: "Pending",
+    icon: StopwatchIcon,
+  },
+];
+
 export const priorities = [
   {
     label: "Low",

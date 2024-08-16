@@ -20,7 +20,6 @@ import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
 import { PasswordInput } from "@/components/ui/password-Input";
 import Link from "next/link";
-import { signIn, useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
@@ -28,11 +27,7 @@ import { login } from "@/core/authentication/auth";
 
 type Inputs = z.infer<typeof emailLoginSchema>;
 
-interface LoginFormEmailProps {
-  handleChange: () => void;
-}
-
-const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
+const LoginFormEmail = () => {
   const router = useRouter();
   const [isPending, setIsPending] = React.useState(false);
   const { toast } = useToast();
@@ -178,35 +173,6 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
           Continue
           <span className="sr-only">Continue</span>
         </Button>
-        <div className="w-full flex flex-col justify-center gap-4 mt-4">
-          <div className="flex items-center">
-            <div className="w-full border-t border-darkBlue"></div>
-            <div className="text-darkBlue text-base px-3 py-1">OR</div>
-            <div className="w-full border-t border-darkBlue"></div>
-          </div>
-
-          <Button
-            type="button"
-            variant={"ghost"}
-            size={"lg"}
-            className="text-darkBlue bg-[#F3F9FA] hover:bg-[#F3F9FA]"
-            onClick={handleChange}
-          >
-            <Icons.mail className="h-4 w-4 mx-4" aria-hidden="true" />
-            Sign in with Admin ID
-          </Button>
-          <div className="flex items-center gap-1 justify-center">
-            <span className="text-lg text-darkBlue">
-              Don{"'"}t have an account?
-            </span>
-            <Link
-              href="/auth/student/signup"
-              className="text-lg text-blue hover:underline"
-            >
-              Signup
-            </Link>
-          </div>
-        </div>
       </form>
     </Form>
   );

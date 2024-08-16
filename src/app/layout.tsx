@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Rubik, Lato, Spline_Sans_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { AuthContext } from "@/context/authcontext";
-import AppStateProvider from "@/context/global-context";
 import { ThemeProvider } from "@/providers/theme-provider";
 
 const rubik = Lato({

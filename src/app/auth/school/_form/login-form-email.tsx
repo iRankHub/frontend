@@ -50,28 +50,41 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
     setIsPending(true);
     await login({ emailOrId: data.email, password: data.password })
       .then((res) => {
-        toast({
-          variant: "success",
-          title: "Success Message",
-          description: "Success Description",
-          action: (
-            <ToastAction altText="Close" className="bg-primary text-white">
-              Close
-            </ToastAction>
-          ),
-        });
-        form.reset();
+        if (res.success) {
+          toast({
+            variant: "success",
+            title: "Success Message",
+            description: "Success Description",
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+          form.reset();
 
-        const role = Roles.SCHOOL;
-        const user: AuthStateUser = {
-          userId: res.userid,
-          token: res.token,
-          status: "idle",
-          requiredPasswordReset: res.requirePasswordReset,
-          requireTwoFactor: res.requireTwoFactor,
+          const role = Roles.SCHOOL;
+          const user: AuthStateUser = {
+            userId: res.userid,
+            token: res.token,
+            status: "idle",
+            requiredPasswordReset: res.requirePasswordReset,
+            requireTwoFactor: res.requireTwoFactor,
+          };
+          authLogin(user, role);
+          router.push("/schools/dashboard");
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: res.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
         }
-        authLogin(user, role);
-        router.push("/schools/dashboard");
       })
       .catch((err) => {
         console.error(err.message);

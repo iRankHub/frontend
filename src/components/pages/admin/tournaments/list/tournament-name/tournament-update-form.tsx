@@ -233,7 +233,6 @@ function TournamentUpdateForm({ tournament }: Props) {
         }
       })
       .catch((err) => {
-        console.error(err.message);
         setDeleteLoading(false);
       })
       .finally(() => {
@@ -317,10 +316,10 @@ function TournamentUpdateForm({ tournament }: Props) {
                 <DialogTrigger>
                   <Button
                     type="button"
-                    className="rounded-full w-8 h-8 bg-primary cursor-pointer"
+                    className="rounded-full w-8 h-8 bg-primary cursor-pointer hover:bg-background group"
                     size="icon"
                   >
-                    <Icons.imagePlus className="w-[1rem] h-[1rem] text-white m-1" />
+                    <Icons.imagePlus className="w-[1rem] h-[1rem] text-white m-1 group-hover:text-primary" />
                     <span className="sr-only">Image</span>
                   </Button>
                 </DialogTrigger>
@@ -329,23 +328,23 @@ function TournamentUpdateForm({ tournament }: Props) {
               <Button
                 type="button"
                 className={cn(
-                  "rounded-full w-8 h-8 bg-primary cursor-pointer",
+                  "rounded-full w-8 h-8 bg-primary cursor-pointer hover:bg-background group",
                   isEditing && "hidden"
                 )}
                 size="icon"
                 onClick={() => setIsEditing(true)}
               >
-                <Icons.pencilLine className="w-[1rem] h-[1rem] text-white m-1" />
+                <Icons.pencilLine className="w-[1rem] h-[1rem] text-white m-1 group-hover:text-primary" />
                 <span className="sr-only">Edit</span>
               </Button>
               <Dialog>
                 <DialogTrigger>
                   <Button
                     type="button"
-                    className="rounded-full w-8 h-8 bg-primary cursor-pointer"
+                    className="rounded-full w-8 h-8 bg-primary cursor-pointer hover:bg-background group"
                     size="icon"
                   >
-                    <Trash2 className="w-[1rem] h-[1rem] text-white m-1" />
+                    <Trash2 className="w-[1rem] h-[1rem] text-white m-1 group-hover:text-primary" />
                     <span className="sr-only">Delete</span>
                   </Button>
                 </DialogTrigger>
