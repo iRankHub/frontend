@@ -20,6 +20,8 @@ import {
 import { Card } from "@/components/ui/card";
 import { Teams } from "@/components/tables/data/schema";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
+import React from "react";
+
 
 const inter = Inter({
   weight: "600",
@@ -30,7 +32,11 @@ export const columns: ColumnDef<Teams>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="School ID" className="justify-center" />
+      <DataTableColumnHeader
+        column={column}
+        title="School ID"
+        className="justify-center"
+      />
     ),
     cell: ({ row }) => (
       <div className="w-full">
@@ -65,7 +71,11 @@ export const columns: ColumnDef<Teams>[] = [
   {
     accessorKey: "no_of_teams",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="No. of Teams" className="justify-center" />
+      <DataTableColumnHeader
+        column={column}
+        title="No. of Teams"
+        className="justify-center"
+      />
     ),
     cell: ({ row }) => {
       return (
@@ -81,7 +91,11 @@ export const columns: ColumnDef<Teams>[] = [
   {
     accessorKey: "no_of_speakers",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="No. of Speakers" className="justify-center" />
+      <DataTableColumnHeader
+        column={column}
+        title="No. of Speakers"
+        className="justify-center"
+      />
     ),
     cell: ({ row }) => {
       return (
@@ -133,7 +147,7 @@ export const columns: ColumnDef<Teams>[] = [
                         Green Hills
                       </h3>
                       <Badge className="bg-primary hover:bg-primary text-sm text-white">
-                      {row.getValue("id")}
+                        {row.getValue("id")}
                       </Badge>
                     </div>
                     <p
@@ -149,10 +163,6 @@ export const columns: ColumnDef<Teams>[] = [
                   <Team />
                   <Team />
                 </div>
-                <Button>
-                  Continue
-                  <span className="sr-only">Continue</span>
-                </Button>
               </div>
             </SidePanel>
           </Sheet>
@@ -176,8 +186,12 @@ const Team = () => {
       <CollapsibleContent className="py-3 w-full">
         <div className="flex items-center justify-between gap-3">
           <Card className="w-full px-4 py-5">
-            <p className="text-foreground text-sm mb-2">Speaker 1: Bideri Alec</p>
-            <p className="text-foreground text-sm mb-2">Speaker 2: Iman Koulibally</p>
+            <p className="text-foreground text-sm mb-2">
+              Speaker 1: Bideri Alec
+            </p>
+            <p className="text-foreground text-sm mb-2">
+              Speaker 2: Iman Koulibally
+            </p>
             <p className="text-foreground text-sm mb-2">Speaker 3: Joselyto</p>
           </Card>
         </div>

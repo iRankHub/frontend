@@ -113,7 +113,7 @@ function TournamentForm({ selectedLeague }: Props) {
 
     const options: CreateTournamentType = {
       token: user.token,
-      coordinator_id: 10,
+      coordinator_id: 3,
       start_date: modifiedStartDate(),
       end_date: modifiedEndDate(),
       format_id: Number(data.format),
@@ -146,6 +146,16 @@ function TournamentForm({ selectedLeague }: Props) {
       })
       .catch((err) => {
         console.error(err.message);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "An error occurred while creating the tournament.",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
         setLoading(false);
       })
       .finally(() => {

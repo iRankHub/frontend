@@ -1,7 +1,7 @@
 'use client'
-import { ContentLayout } from "@/components/layout/students-panel/content-layout";
-import Preliminaries from "@/components/pages/students/tournaments/tournament-name/ballots/prelims";
-import TournamentMenuWrapper from "@/components/pages/students/tournaments/tournament-name/tournament-menu-wrapper";
+import { ContentLayout } from "@/components/layout/schools-panel/content-layout";
+import Preliminaries from "@/components/pages/schools/tournaments/tournament-name/ballots/prelims";
+import TournamentMenuWrapper from "@/components/pages/schools/tournaments/tournament-name/tournament-menu-wrapper";
 import {
   Breadcrumb,
   BreadcrumbItem,

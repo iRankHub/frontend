@@ -1,7 +1,7 @@
 "use client";
-import { ContentLayout } from "@/components/layout/students-panel/content-layout";
-import TournamentUpdateForm from "@/components/pages/students/tournaments/tournament-name/tournament-update-form";
-import TournamentMenuWrapper from "@/components/pages/students/tournaments/tournament-name/tournament-menu-wrapper";
+import { ContentLayout } from "@/components/layout/schools-panel/content-layout";
+import TournamentUpdateForm from "@/components/pages/schools/tournaments/tournament-name/tournament-update-form";
+import TournamentMenuWrapper from "@/components/pages/schools/tournaments/tournament-name/tournament-menu-wrapper";
 import {
   Breadcrumb,
   BreadcrumbItem,

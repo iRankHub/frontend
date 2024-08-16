@@ -11,13 +11,13 @@ export namespace tournament_management {
         international = 1
     }
     export class LocalDetails extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             provinces?: string[];
             districts?: string[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1, 2], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1, 2], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("provinces" in data && data.provinces != undefined) {
                     this.provinces = data.provinces;
@@ -101,13 +101,13 @@ export namespace tournament_management {
         }
     }
     export class InternationalDetails extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             continents?: string[];
             countries?: string[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1, 2], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1, 2], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("continents" in data && data.continents != undefined) {
                     this.continents = data.continents;
@@ -191,7 +191,7 @@ export namespace tournament_management {
         }
     }
     export class League extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             league_id?: number;
             name?: string;
@@ -199,7 +199,7 @@ export namespace tournament_management {
             details?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("league_id" in data && data.league_id != undefined) {
                     this.league_id = data.league_id;
@@ -327,7 +327,7 @@ export namespace tournament_management {
         }
     }
     export class TournamentFormat extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             format_id?: number;
             format_name?: string;
@@ -335,7 +335,7 @@ export namespace tournament_management {
             speakers_per_team?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("format_id" in data && data.format_id != undefined) {
                     this.format_id = data.format_id;
@@ -463,7 +463,7 @@ export namespace tournament_management {
         }
     }
     export class Tournament extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             tournament_id?: number;
             name?: string;
@@ -478,9 +478,10 @@ export namespace tournament_management {
             judges_per_debate_preliminary?: number;
             judges_per_debate_elimination?: number;
             tournament_fee?: number;
+            image_url?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("tournament_id" in data && data.tournament_id != undefined) {
                     this.tournament_id = data.tournament_id;
@@ -520,6 +521,9 @@ export namespace tournament_management {
                 }
                 if ("tournament_fee" in data && data.tournament_fee != undefined) {
                     this.tournament_fee = data.tournament_fee;
+                }
+                if ("image_url" in data && data.image_url != undefined) {
+                    this.image_url = data.image_url;
                 }
             }
         }
@@ -601,6 +605,12 @@ export namespace tournament_management {
         set tournament_fee(value: number) {
             pb_1.Message.setField(this, 13, value);
         }
+        get image_url() {
+            return pb_1.Message.getFieldWithDefault(this, 14, "") as string;
+        }
+        set image_url(value: string) {
+            pb_1.Message.setField(this, 14, value);
+        }
         static fromObject(data: {
             tournament_id?: number;
             name?: string;
@@ -615,6 +625,7 @@ export namespace tournament_management {
             judges_per_debate_preliminary?: number;
             judges_per_debate_elimination?: number;
             tournament_fee?: number;
+            image_url?: string;
         }): Tournament {
             const message = new Tournament({});
             if (data.tournament_id != null) {
@@ -656,6 +667,9 @@ export namespace tournament_management {
             if (data.tournament_fee != null) {
                 message.tournament_fee = data.tournament_fee;
             }
+            if (data.image_url != null) {
+                message.image_url = data.image_url;
+            }
             return message;
         }
         toObject() {
@@ -673,6 +687,7 @@ export namespace tournament_management {
                 judges_per_debate_preliminary?: number;
                 judges_per_debate_elimination?: number;
                 tournament_fee?: number;
+                image_url?: string;
             } = {};
             if (this.tournament_id != null) {
                 data.tournament_id = this.tournament_id;
@@ -713,6 +728,9 @@ export namespace tournament_management {
             if (this.tournament_fee != null) {
                 data.tournament_fee = this.tournament_fee;
             }
+            if (this.image_url != null) {
+                data.image_url = this.image_url;
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -745,6 +763,8 @@ export namespace tournament_management {
                 writer.writeInt32(12, this.judges_per_debate_elimination);
             if (this.tournament_fee != 0)
                 writer.writeDouble(13, this.tournament_fee);
+            if (this.image_url.length)
+                writer.writeString(14, this.image_url);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -793,6 +813,9 @@ export namespace tournament_management {
                     case 13:
                         message.tournament_fee = reader.readDouble();
                         break;
+                    case 14:
+                        message.image_url = reader.readString();
+                        break;
                     default: reader.skipField();
                 }
             }
@@ -806,7 +829,7 @@ export namespace tournament_management {
         }
     }
     export class CreateLeagueRequest extends pb_1.Message {
-        one_of_decls: number[][] = [[3, 4]];
+        #one_of_decls: number[][] = [[3, 4]];
         constructor(data?: any[] | ({
             name?: string;
             league_type?: LeagueType;
@@ -819,7 +842,7 @@ export namespace tournament_management {
             international_details?: InternationalDetails;
         })))) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("name" in data && data.name != undefined) {
                     this.name = data.name;
@@ -854,7 +877,7 @@ export namespace tournament_management {
             return pb_1.Message.getWrapperField(this, LocalDetails, 3) as LocalDetails;
         }
         set local_details(value: LocalDetails) {
-            pb_1.Message.setOneofWrapperField(this, 3, this.one_of_decls[0], value);
+            pb_1.Message.setOneofWrapperField(this, 3, this.#one_of_decls[0], value);
         }
         get has_local_details() {
             return pb_1.Message.getField(this, 3) != null;
@@ -863,7 +886,7 @@ export namespace tournament_management {
             return pb_1.Message.getWrapperField(this, InternationalDetails, 4) as InternationalDetails;
         }
         set international_details(value: InternationalDetails) {
-            pb_1.Message.setOneofWrapperField(this, 4, this.one_of_decls[0], value);
+            pb_1.Message.setOneofWrapperField(this, 4, this.#one_of_decls[0], value);
         }
         get has_international_details() {
             return pb_1.Message.getField(this, 4) != null;
@@ -985,13 +1008,13 @@ export namespace tournament_management {
         }
     }
     export class GetLeagueRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             league_id?: number;
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("league_id" in data && data.league_id != undefined) {
                     this.league_id = data.league_id;
@@ -1075,14 +1098,14 @@ export namespace tournament_management {
         }
     }
     export class ListLeaguesRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             page_size?: number;
             page_token?: number;
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("page_size" in data && data.page_size != undefined) {
                     this.page_size = data.page_size;
@@ -1188,7 +1211,7 @@ export namespace tournament_management {
         }
     }
     export class UpdateLeagueRequest extends pb_1.Message {
-        one_of_decls: number[][] = [[4, 5]];
+        #one_of_decls: number[][] = [[4, 5]];
         constructor(data?: any[] | ({
             league_id?: number;
             name?: string;
@@ -1202,7 +1225,7 @@ export namespace tournament_management {
             international_details?: InternationalDetails;
         })))) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("league_id" in data && data.league_id != undefined) {
                     this.league_id = data.league_id;
@@ -1246,7 +1269,7 @@ export namespace tournament_management {
             return pb_1.Message.getWrapperField(this, LocalDetails, 4) as LocalDetails;
         }
         set local_details(value: LocalDetails) {
-            pb_1.Message.setOneofWrapperField(this, 4, this.one_of_decls[0], value);
+            pb_1.Message.setOneofWrapperField(this, 4, this.#one_of_decls[0], value);
         }
         get has_local_details() {
             return pb_1.Message.getField(this, 4) != null;
@@ -1255,7 +1278,7 @@ export namespace tournament_management {
             return pb_1.Message.getWrapperField(this, InternationalDetails, 5) as InternationalDetails;
         }
         set international_details(value: InternationalDetails) {
-            pb_1.Message.setOneofWrapperField(this, 5, this.one_of_decls[0], value);
+            pb_1.Message.setOneofWrapperField(this, 5, this.#one_of_decls[0], value);
         }
         get has_international_details() {
             return pb_1.Message.getField(this, 5) != null;
@@ -1390,13 +1413,13 @@ export namespace tournament_management {
         }
     }
     export class DeleteLeagueRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             league_id?: number;
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("league_id" in data && data.league_id != undefined) {
                     this.league_id = data.league_id;
@@ -1480,7 +1503,7 @@ export namespace tournament_management {
         }
     }
     export class CreateTournamentFormatRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             format_name?: string;
             description?: string;
@@ -1488,7 +1511,7 @@ export namespace tournament_management {
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("format_name" in data && data.format_name != undefined) {
                     this.format_name = data.format_name;
@@ -1616,13 +1639,13 @@ export namespace tournament_management {
         }
     }
     export class GetTournamentFormatRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             format_id?: number;
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("format_id" in data && data.format_id != undefined) {
                     this.format_id = data.format_id;
@@ -1706,14 +1729,14 @@ export namespace tournament_management {
         }
     }
     export class ListTournamentFormatsRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             page_size?: number;
             page_token?: number;
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("page_size" in data && data.page_size != undefined) {
                     this.page_size = data.page_size;
@@ -1819,7 +1842,7 @@ export namespace tournament_management {
         }
     }
     export class UpdateTournamentFormatRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             format_id?: number;
             format_name?: string;
@@ -1828,7 +1851,7 @@ export namespace tournament_management {
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("format_id" in data && data.format_id != undefined) {
                     this.format_id = data.format_id;
@@ -1978,13 +2001,13 @@ export namespace tournament_management {
         }
     }
     export class DeleteTournamentFormatRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             format_id?: number;
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("format_id" in data && data.format_id != undefined) {
                     this.format_id = data.format_id;
@@ -2068,7 +2091,7 @@ export namespace tournament_management {
         }
     }
     export class CreateTournamentRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             name?: string;
             start_date?: string;
@@ -2083,9 +2106,10 @@ export namespace tournament_management {
             judges_per_debate_elimination?: number;
             tournament_fee?: number;
             token?: string;
+            image_url?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("name" in data && data.name != undefined) {
                     this.name = data.name;
@@ -2125,6 +2149,9 @@ export namespace tournament_management {
                 }
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
+                }
+                if ("image_url" in data && data.image_url != undefined) {
+                    this.image_url = data.image_url;
                 }
             }
         }
@@ -2206,6 +2233,12 @@ export namespace tournament_management {
         set token(value: string) {
             pb_1.Message.setField(this, 13, value);
         }
+        get image_url() {
+            return pb_1.Message.getFieldWithDefault(this, 14, "") as string;
+        }
+        set image_url(value: string) {
+            pb_1.Message.setField(this, 14, value);
+        }
         static fromObject(data: {
             name?: string;
             start_date?: string;
@@ -2220,6 +2253,7 @@ export namespace tournament_management {
             judges_per_debate_elimination?: number;
             tournament_fee?: number;
             token?: string;
+            image_url?: string;
         }): CreateTournamentRequest {
             const message = new CreateTournamentRequest({});
             if (data.name != null) {
@@ -2261,6 +2295,9 @@ export namespace tournament_management {
             if (data.token != null) {
                 message.token = data.token;
             }
+            if (data.image_url != null) {
+                message.image_url = data.image_url;
+            }
             return message;
         }
         toObject() {
@@ -2278,6 +2315,7 @@ export namespace tournament_management {
                 judges_per_debate_elimination?: number;
                 tournament_fee?: number;
                 token?: string;
+                image_url?: string;
             } = {};
             if (this.name != null) {
                 data.name = this.name;
@@ -2318,6 +2356,9 @@ export namespace tournament_management {
             if (this.token != null) {
                 data.token = this.token;
             }
+            if (this.image_url != null) {
+                data.image_url = this.image_url;
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -2350,6 +2391,8 @@ export namespace tournament_management {
                 writer.writeDouble(12, this.tournament_fee);
             if (this.token.length)
                 writer.writeString(13, this.token);
+            if (this.image_url.length)
+                writer.writeString(14, this.image_url);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -2398,6 +2441,9 @@ export namespace tournament_management {
                     case 13:
                         message.token = reader.readString();
                         break;
+                    case 14:
+                        message.image_url = reader.readString();
+                        break;
                     default: reader.skipField();
                 }
             }
@@ -2411,13 +2457,13 @@ export namespace tournament_management {
         }
     }
     export class GetTournamentRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             tournament_id?: number;
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("tournament_id" in data && data.tournament_id != undefined) {
                     this.tournament_id = data.tournament_id;
@@ -2501,14 +2547,14 @@ export namespace tournament_management {
         }
     }
     export class ListTournamentsRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             page_size?: number;
             page_token?: number;
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("page_size" in data && data.page_size != undefined) {
                     this.page_size = data.page_size;
@@ -2614,7 +2660,7 @@ export namespace tournament_management {
         }
     }
     export class UpdateTournamentRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             tournament_id?: number;
             name?: string;
@@ -2630,9 +2676,10 @@ export namespace tournament_management {
             judges_per_debate_elimination?: number;
             tournament_fee?: number;
             token?: string;
+            image_url?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("tournament_id" in data && data.tournament_id != undefined) {
                     this.tournament_id = data.tournament_id;
@@ -2675,6 +2722,9 @@ export namespace tournament_management {
                 }
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
+                }
+                if ("image_url" in data && data.image_url != undefined) {
+                    this.image_url = data.image_url;
                 }
             }
         }
@@ -2762,6 +2812,12 @@ export namespace tournament_management {
         set token(value: string) {
             pb_1.Message.setField(this, 14, value);
         }
+        get image_url() {
+            return pb_1.Message.getFieldWithDefault(this, 15, "") as string;
+        }
+        set image_url(value: string) {
+            pb_1.Message.setField(this, 15, value);
+        }
         static fromObject(data: {
             tournament_id?: number;
             name?: string;
@@ -2777,6 +2833,7 @@ export namespace tournament_management {
             judges_per_debate_elimination?: number;
             tournament_fee?: number;
             token?: string;
+            image_url?: string;
         }): UpdateTournamentRequest {
             const message = new UpdateTournamentRequest({});
             if (data.tournament_id != null) {
@@ -2821,6 +2878,9 @@ export namespace tournament_management {
             if (data.token != null) {
                 message.token = data.token;
             }
+            if (data.image_url != null) {
+                message.image_url = data.image_url;
+            }
             return message;
         }
         toObject() {
@@ -2839,6 +2899,7 @@ export namespace tournament_management {
                 judges_per_debate_elimination?: number;
                 tournament_fee?: number;
                 token?: string;
+                image_url?: string;
             } = {};
             if (this.tournament_id != null) {
                 data.tournament_id = this.tournament_id;
@@ -2882,6 +2943,9 @@ export namespace tournament_management {
             if (this.token != null) {
                 data.token = this.token;
             }
+            if (this.image_url != null) {
+                data.image_url = this.image_url;
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -2916,6 +2980,8 @@ export namespace tournament_management {
                 writer.writeDouble(13, this.tournament_fee);
             if (this.token.length)
                 writer.writeString(14, this.token);
+            if (this.image_url.length)
+                writer.writeString(15, this.image_url);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -2967,6 +3033,9 @@ export namespace tournament_management {
                     case 14:
                         message.token = reader.readString();
                         break;
+                    case 15:
+                        message.image_url = reader.readString();
+                        break;
                     default: reader.skipField();
                 }
             }
@@ -2980,13 +3049,13 @@ export namespace tournament_management {
         }
     }
     export class DeleteTournamentRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             tournament_id?: number;
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("tournament_id" in data && data.tournament_id != undefined) {
                     this.tournament_id = data.tournament_id;
@@ -3070,12 +3139,12 @@ export namespace tournament_management {
         }
     }
     export class CreateLeagueResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             league?: League;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("league" in data && data.league != undefined) {
                     this.league = data.league;
@@ -3140,12 +3209,12 @@ export namespace tournament_management {
         }
     }
     export class GetLeagueResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             league?: League;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("league" in data && data.league != undefined) {
                     this.league = data.league;
@@ -3210,13 +3279,13 @@ export namespace tournament_management {
         }
     }
     export class ListLeaguesResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             leagues?: League[];
             next_page_token?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("leagues" in data && data.leagues != undefined) {
                     this.leagues = data.leagues;
@@ -3300,12 +3369,12 @@ export namespace tournament_management {
         }
     }
     export class UpdateLeagueResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             league?: League;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("league" in data && data.league != undefined) {
                     this.league = data.league;
@@ -3370,13 +3439,13 @@ export namespace tournament_management {
         }
     }
     export class DeleteLeagueResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -3460,12 +3529,12 @@ export namespace tournament_management {
         }
     }
     export class CreateTournamentFormatResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             format?: TournamentFormat;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("format" in data && data.format != undefined) {
                     this.format = data.format;
@@ -3530,12 +3599,12 @@ export namespace tournament_management {
         }
     }
     export class GetTournamentFormatResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             format?: TournamentFormat;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("format" in data && data.format != undefined) {
                     this.format = data.format;
@@ -3600,13 +3669,13 @@ export namespace tournament_management {
         }
     }
     export class ListTournamentFormatsResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             formats?: TournamentFormat[];
             next_page_token?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("formats" in data && data.formats != undefined) {
                     this.formats = data.formats;
@@ -3690,12 +3759,12 @@ export namespace tournament_management {
         }
     }
     export class UpdateTournamentFormatResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             format?: TournamentFormat;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("format" in data && data.format != undefined) {
                     this.format = data.format;
@@ -3760,13 +3829,13 @@ export namespace tournament_management {
         }
     }
     export class DeleteTournamentFormatResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -3850,13 +3919,13 @@ export namespace tournament_management {
         }
     }
     export class CreateTournamentResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             tournament?: Tournament;
             invitation_ids?: number[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("tournament" in data && data.tournament != undefined) {
                     this.tournament = data.tournament;
@@ -3943,12 +4012,12 @@ export namespace tournament_management {
         }
     }
     export class GetTournamentResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             tournament?: Tournament;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("tournament" in data && data.tournament != undefined) {
                     this.tournament = data.tournament;
@@ -4013,13 +4082,13 @@ export namespace tournament_management {
         }
     }
     export class ListTournamentsResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             tournaments?: Tournament[];
             next_page_token?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("tournaments" in data && data.tournaments != undefined) {
                     this.tournaments = data.tournaments;
@@ -4103,12 +4172,12 @@ export namespace tournament_management {
         }
     }
     export class UpdateTournamentResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             tournament?: Tournament;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("tournament" in data && data.tournament != undefined) {
                     this.tournament = data.tournament;
@@ -4173,13 +4242,13 @@ export namespace tournament_management {
         }
     }
     export class DeleteTournamentResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -4263,13 +4332,13 @@ export namespace tournament_management {
         }
     }
     export class AcceptInvitationRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             invitation_id?: number;
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("invitation_id" in data && data.invitation_id != undefined) {
                     this.invitation_id = data.invitation_id;
@@ -4353,13 +4422,13 @@ export namespace tournament_management {
         }
     }
     export class AcceptInvitationResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -4443,13 +4512,13 @@ export namespace tournament_management {
         }
     }
     export class DeclineInvitationRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             invitation_id?: number;
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("invitation_id" in data && data.invitation_id != undefined) {
                     this.invitation_id = data.invitation_id;
@@ -4533,13 +4602,13 @@ export namespace tournament_management {
         }
     }
     export class DeclineInvitationResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -4623,13 +4692,13 @@ export namespace tournament_management {
         }
     }
     export class GetInvitationStatusRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             invitation_id?: number;
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("invitation_id" in data && data.invitation_id != undefined) {
                     this.invitation_id = data.invitation_id;
@@ -4713,12 +4782,12 @@ export namespace tournament_management {
         }
     }
     export class GetInvitationStatusResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             status?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("status" in data && data.status != undefined) {
                     this.status = data.status;
@@ -4780,13 +4849,13 @@ export namespace tournament_management {
         }
     }
     export class ResendInvitationRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             invitation_id?: number;
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("invitation_id" in data && data.invitation_id != undefined) {
                     this.invitation_id = data.invitation_id;
@@ -4870,13 +4939,13 @@ export namespace tournament_management {
         }
     }
     export class ResendInvitationResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -4960,13 +5029,13 @@ export namespace tournament_management {
         }
     }
     export class BulkResendInvitationsRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             invitation_ids?: number[];
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("invitation_ids" in data && data.invitation_ids != undefined) {
                     this.invitation_ids = data.invitation_ids;
@@ -5050,13 +5119,13 @@ export namespace tournament_management {
         }
     }
     export class BulkResendInvitationsResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -5140,12 +5209,12 @@ export namespace tournament_management {
         }
     }
     export class GetInvitationsByUserRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -5207,14 +5276,14 @@ export namespace tournament_management {
         }
     }
     export class Invitation extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             invitation_id?: number;
             tournament_id?: number;
             status?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("invitation_id" in data && data.invitation_id != undefined) {
                     this.invitation_id = data.invitation_id;
@@ -5320,12 +5389,12 @@ export namespace tournament_management {
         }
     }
     export class GetInvitationsByUserResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             invitations?: Invitation[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("invitations" in data && data.invitations != undefined) {
                     this.invitations = data.invitations;
@@ -5387,13 +5456,13 @@ export namespace tournament_management {
         }
     }
     export class BulkAcceptInvitationsRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             invitation_ids?: number[];
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("invitation_ids" in data && data.invitation_ids != undefined) {
                     this.invitation_ids = data.invitation_ids;
@@ -5477,13 +5546,13 @@ export namespace tournament_management {
         }
     }
     export class BulkAcceptInvitationsResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -5567,13 +5636,13 @@ export namespace tournament_management {
         }
     }
     export class BulkDeclineInvitationsRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             invitation_ids?: number[];
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("invitation_ids" in data && data.invitation_ids != undefined) {
                     this.invitation_ids = data.invitation_ids;
@@ -5657,13 +5726,13 @@ export namespace tournament_management {
         }
     }
     export class BulkDeclineInvitationsResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -5747,12 +5816,12 @@ export namespace tournament_management {
         }
     }
     export class GetAllInvitationsRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -5814,12 +5883,12 @@ export namespace tournament_management {
         }
     }
     export class GetAllInvitationsResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             invitations?: Invitation[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("invitations" in data && data.invitations != undefined) {
                     this.invitations = data.invitations;

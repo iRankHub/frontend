@@ -727,5 +727,134 @@ export class UserManagementServiceClient {
     this.methodDescriptorGetVolunteers);
   }
 
+  methodDescriptorGetAllUsers = new grpcWeb.MethodDescriptor(
+    '/user_management.UserManagementService/GetAllUsers',
+    grpcWeb.MethodType.UNARY,
+    user_management_users_pb.GetAllUsersRequest,
+    user_management_users_pb.GetAllUsersResponse,
+    (request: user_management_users_pb.GetAllUsersRequest) => {
+      return request.serializeBinary();
+    },
+    user_management_users_pb.GetAllUsersResponse.deserializeBinary
+  );
+
+  getAllUsers(
+    request: user_management_users_pb.GetAllUsersRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<user_management_users_pb.GetAllUsersResponse>;
+
+  getAllUsers(
+    request: user_management_users_pb.GetAllUsersRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.GetAllUsersResponse) => void): grpcWeb.ClientReadableStream<user_management_users_pb.GetAllUsersResponse>;
+
+  getAllUsers(
+    request: user_management_users_pb.GetAllUsersRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.GetAllUsersResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/user_management.UserManagementService/GetAllUsers',
+        request,
+        metadata || {},
+        this.methodDescriptorGetAllUsers,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/user_management.UserManagementService/GetAllUsers',
+    request,
+    metadata || {},
+    this.methodDescriptorGetAllUsers);
+  }
+
+  methodDescriptorGetVolunteersAndAdmins = new grpcWeb.MethodDescriptor(
+    '/user_management.UserManagementService/GetVolunteersAndAdmins',
+    grpcWeb.MethodType.UNARY,
+    user_management_users_pb.GetVolunteersAndAdminsRequest,
+    user_management_users_pb.GetVolunteersAndAdminsResponse,
+    (request: user_management_users_pb.GetVolunteersAndAdminsRequest) => {
+      return request.serializeBinary();
+    },
+    user_management_users_pb.GetVolunteersAndAdminsResponse.deserializeBinary
+  );
+
+  getVolunteersAndAdmins(
+    request: user_management_users_pb.GetVolunteersAndAdminsRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<user_management_users_pb.GetVolunteersAndAdminsResponse>;
+
+  getVolunteersAndAdmins(
+    request: user_management_users_pb.GetVolunteersAndAdminsRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.GetVolunteersAndAdminsResponse) => void): grpcWeb.ClientReadableStream<user_management_users_pb.GetVolunteersAndAdminsResponse>;
+
+  getVolunteersAndAdmins(
+    request: user_management_users_pb.GetVolunteersAndAdminsRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.GetVolunteersAndAdminsResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/user_management.UserManagementService/GetVolunteersAndAdmins',
+        request,
+        metadata || {},
+        this.methodDescriptorGetVolunteersAndAdmins,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/user_management.UserManagementService/GetVolunteersAndAdmins',
+    request,
+    metadata || {},
+    this.methodDescriptorGetVolunteersAndAdmins);
+  }
+
+  methodDescriptorGetSchoolsNoAuth = new grpcWeb.MethodDescriptor(
+    '/user_management.UserManagementService/GetSchoolsNoAuth',
+    grpcWeb.MethodType.UNARY,
+    user_management_users_pb.GetSchoolsNoAuthRequest,
+    user_management_users_pb.GetSchoolsNoAuthResponse,
+    (request: user_management_users_pb.GetSchoolsNoAuthRequest) => {
+      return request.serializeBinary();
+    },
+    user_management_users_pb.GetSchoolsNoAuthResponse.deserializeBinary
+  );
+
+  getSchoolsNoAuth(
+    request: user_management_users_pb.GetSchoolsNoAuthRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<user_management_users_pb.GetSchoolsNoAuthResponse>;
+
+  getSchoolsNoAuth(
+    request: user_management_users_pb.GetSchoolsNoAuthRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.GetSchoolsNoAuthResponse) => void): grpcWeb.ClientReadableStream<user_management_users_pb.GetSchoolsNoAuthResponse>;
+
+  getSchoolsNoAuth(
+    request: user_management_users_pb.GetSchoolsNoAuthRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.GetSchoolsNoAuthResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/user_management.UserManagementService/GetSchoolsNoAuth',
+        request,
+        metadata || {},
+        this.methodDescriptorGetSchoolsNoAuth,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/user_management.UserManagementService/GetSchoolsNoAuth',
+    request,
+    metadata || {},
+    this.methodDescriptorGetSchoolsNoAuth);
+  }
+
 }
 

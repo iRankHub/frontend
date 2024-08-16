@@ -759,7 +759,8 @@ proto.auth.UserData.toObject = function(includeInstance, msg) {
     safeguardingcertificate: jspb.Message.getBooleanFieldWithDefault(msg, 16, false),
     grade: jspb.Message.getFieldWithDefault(msg, 17, ""),
     hasinternship: jspb.Message.getBooleanFieldWithDefault(msg, 18, false),
-    isenrolledinuniversity: jspb.Message.getBooleanFieldWithDefault(msg, 19, false)
+    isenrolledinuniversity: jspb.Message.getBooleanFieldWithDefault(msg, 19, false),
+    gender: jspb.Message.getFieldWithDefault(msg, 20, "")
   };
 
   if (includeInstance) {
@@ -871,6 +872,10 @@ proto.auth.UserData.deserializeBinaryFromReader = function(msg, reader) {
     case 19:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setIsenrolledinuniversity(value);
+      break;
+    case 20:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setGender(value);
       break;
     default:
       reader.skipField();
@@ -1031,6 +1036,13 @@ proto.auth.UserData.serializeBinaryToWriter = function(message, writer) {
   if (f) {
     writer.writeBool(
       19,
+      f
+    );
+  }
+  f = message.getGender();
+  if (f.length > 0) {
+    writer.writeString(
+      20,
       f
     );
   }
@@ -1379,6 +1391,24 @@ proto.auth.UserData.prototype.setIsenrolledinuniversity = function(value) {
 };
 
 
+/**
+ * optional string gender = 20;
+ * @return {string}
+ */
+proto.auth.UserData.prototype.getGender = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 20, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.auth.UserData} returns this
+ */
+proto.auth.UserData.prototype.setGender = function(value) {
+  return jspb.Message.setProto3StringField(this, 20, value);
+};
+
+
 
 /**
  * List of repeated fields within this message type.
@@ -1680,7 +1710,8 @@ proto.auth.SignUpRequest.toObject = function(includeInstance, msg) {
     safeguardingcertificate: jspb.Message.getBooleanFieldWithDefault(msg, 21, false),
     grade: jspb.Message.getFieldWithDefault(msg, 22, ""),
     hasinternship: jspb.Message.getBooleanFieldWithDefault(msg, 23, false),
-    isenrolledinuniversity: jspb.Message.getBooleanFieldWithDefault(msg, 24, false)
+    isenrolledinuniversity: jspb.Message.getBooleanFieldWithDefault(msg, 24, false),
+    gender: jspb.Message.getFieldWithDefault(msg, 25, "")
   };
 
   if (includeInstance) {
@@ -1812,6 +1843,10 @@ proto.auth.SignUpRequest.deserializeBinaryFromReader = function(msg, reader) {
     case 24:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setIsenrolledinuniversity(value);
+      break;
+    case 25:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setGender(value);
       break;
     default:
       reader.skipField();
@@ -2007,6 +2042,13 @@ proto.auth.SignUpRequest.serializeBinaryToWriter = function(message, writer) {
   if (f) {
     writer.writeBool(
       24,
+      f
+    );
+  }
+  f = message.getGender();
+  if (f.length > 0) {
+    writer.writeString(
+      25,
       f
     );
   }
@@ -2442,6 +2484,24 @@ proto.auth.SignUpRequest.prototype.getIsenrolledinuniversity = function() {
  */
 proto.auth.SignUpRequest.prototype.setIsenrolledinuniversity = function(value) {
   return jspb.Message.setProto3BooleanField(this, 24, value);
+};
+
+
+/**
+ * optional string gender = 25;
+ * @return {string}
+ */
+proto.auth.SignUpRequest.prototype.getGender = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 25, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.auth.SignUpRequest} returns this
+ */
+proto.auth.SignUpRequest.prototype.setGender = function(value) {
+  return jspb.Message.setProto3StringField(this, 25, value);
 };
 
 

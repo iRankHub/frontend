@@ -1,6 +1,6 @@
 'use client'
 import { ContentLayout } from "@/components/layout/schools-panel/content-layout";
-import Invitations from "@/components/pages/schools/tournaments/tournament-name/invitations/invitations";
+import Teams from "@/components/pages/schools/tournaments/tournament-name/teams/add-team";
 import TournamentMenuWrapper from "@/components/pages/schools/tournaments/tournament-name/tournament-menu-wrapper";
 import {
   Breadcrumb,
@@ -24,11 +24,11 @@ const page = withAuth(
 );
 
 function Page({ params }: Iparms) {
-  const { name: tournamentName } = params;
+  const { name: routeName } = params;
   return (
     <ContentLayout title="format">
-      <div className="w-full flex items-center justify-between gap-5">
-        <h3 className="text-2xl text-primary font-bold">{tournamentName}</h3>
+      <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-5">
+        <h3 className="text-lg text-primary font-bold">Tournament Name</h3>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -66,14 +66,14 @@ function Page({ params }: Iparms) {
             </BreadcrumbSeparator>
             <BreadcrumbItem>
               <BreadcrumbPage className="text-primary text-base">
-                {tournamentName}
+                {routeName}
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
       <TournamentMenuWrapper>
-        <Invitations />
+        <Teams />
       </TournamentMenuWrapper>
     </ContentLayout>
   );

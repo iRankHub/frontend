@@ -80,6 +80,9 @@ export class UserData extends jspb.Message {
   getIsenrolledinuniversity(): boolean;
   setIsenrolledinuniversity(value: boolean): UserData;
 
+  getGender(): string;
+  setGender(value: string): UserData;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UserData.AsObject;
   static toObject(includeInstance: boolean, msg: UserData): UserData.AsObject;
@@ -109,6 +112,7 @@ export namespace UserData {
     grade: string,
     hasinternship: boolean,
     isenrolledinuniversity: boolean,
+    gender: string,
   }
 }
 
@@ -217,6 +221,9 @@ export class SignUpRequest extends jspb.Message {
   getIsenrolledinuniversity(): boolean;
   setIsenrolledinuniversity(value: boolean): SignUpRequest;
 
+  getGender(): string;
+  setGender(value: string): SignUpRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SignUpRequest.AsObject;
   static toObject(includeInstance: boolean, msg: SignUpRequest): SignUpRequest.AsObject;
@@ -251,6 +258,7 @@ export namespace SignUpRequest {
     grade: string,
     hasinternship: boolean,
     isenrolledinuniversity: boolean,
+    gender: string,
   }
 }
 
