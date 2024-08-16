@@ -22,6 +22,7 @@ export const signUp = (data: {
     hasInternship?: boolean;
     isEnrolledInUniversity?: boolean;
     safeguardingCertificate?: boolean;
+    gender?: string;
 }) => {
     return new Promise((resolve, reject) => {
         console.log(data)
@@ -46,7 +47,7 @@ export const signUp = (data: {
         request.setHasinternship(data.hasInternship ?? false)
         request.setIsenrolledinuniversity(data.isEnrolledInUniversity ?? false)
         request.setSafeguardingcertificate(data.safeguardingCertificate ?? false)
-
+        request.setGender(data.gender ?? "male")
         // Set other fields as necessary
 
         authClient.signUp(request, {}, (err, response) => {

@@ -154,6 +154,9 @@ export class Tournament extends jspb.Message {
   getTournamentFee(): number;
   setTournamentFee(value: number): Tournament;
 
+  getImageUrl(): string;
+  setImageUrl(value: string): Tournament;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Tournament.AsObject;
   static toObject(includeInstance: boolean, msg: Tournament): Tournament.AsObject;
@@ -177,6 +180,7 @@ export namespace Tournament {
     judgesPerDebatePreliminary: number,
     judgesPerDebateElimination: number,
     tournamentFee: number,
+    imageUrl: string,
   }
 }
 
@@ -520,6 +524,9 @@ export class CreateTournamentRequest extends jspb.Message {
   getToken(): string;
   setToken(value: string): CreateTournamentRequest;
 
+  getImageUrl(): string;
+  setImageUrl(value: string): CreateTournamentRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateTournamentRequest.AsObject;
   static toObject(includeInstance: boolean, msg: CreateTournamentRequest): CreateTournamentRequest.AsObject;
@@ -543,6 +550,7 @@ export namespace CreateTournamentRequest {
     judgesPerDebateElimination: number,
     tournamentFee: number,
     token: string,
+    imageUrl: string,
   }
 }
 
@@ -637,6 +645,9 @@ export class UpdateTournamentRequest extends jspb.Message {
   getToken(): string;
   setToken(value: string): UpdateTournamentRequest;
 
+  getImageUrl(): string;
+  setImageUrl(value: string): UpdateTournamentRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UpdateTournamentRequest.AsObject;
   static toObject(includeInstance: boolean, msg: UpdateTournamentRequest): UpdateTournamentRequest.AsObject;
@@ -661,6 +672,7 @@ export namespace UpdateTournamentRequest {
     judgesPerDebateElimination: number,
     tournamentFee: number,
     token: string,
+    imageUrl: string,
   }
 }
 

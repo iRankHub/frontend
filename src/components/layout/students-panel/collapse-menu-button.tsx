@@ -109,8 +109,8 @@ export function CollapseMenuButton({
             key={index}
             variant={active ? "secondary" : "ghost"}
             className={cn(
-              "w-full justify-start h-10 mb-1 text-foreground group",
-              active && "bg-[#F5AE73] hover:bg-[#F5AE73]"
+              "w-full justify-start h-10 mb-1 text-foreground group hover:bg-input",
+              active && "bg-input hover:bg-input"
             )}
             asChild
           >
@@ -118,7 +118,6 @@ export function CollapseMenuButton({
               <span className="mr-4 ml-2">
                 <Dot
                   size={18}
-                  className={cn(!active && "group-hover:text-primary")}
                 />
               </span>
               <p
@@ -126,8 +125,7 @@ export function CollapseMenuButton({
                   "max-w-[170px] truncate",
                   isOpen
                     ? "translate-x-0 opacity-100"
-                    : "-translate-x-96 opacity-0",
-                  !active && "group-hover:text-primary"
+                    : "-translate-x-96 opacity-0"
                 )}
               >
                 {label}
@@ -147,7 +145,7 @@ export function CollapseMenuButton({
                 variant={active ? "secondary" : "ghost"}
                 className={cn(
                   "w-full justify-start h-10 mb-1 text-background font-bold group",
-                  active && "bg-[#F5AE73] hover:bg-[#F5AE73]"
+                  active && "bg-input"
                 )}
               >
                 <div className="w-full items-center flex justify-between">

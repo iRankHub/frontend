@@ -40,6 +40,56 @@ export namespace GetPendingUsersResponse {
   }
 }
 
+export class GetAllUsersRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): GetAllUsersRequest;
+
+  getPage(): number;
+  setPage(value: number): GetAllUsersRequest;
+
+  getPagesize(): number;
+  setPagesize(value: number): GetAllUsersRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAllUsersRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAllUsersRequest): GetAllUsersRequest.AsObject;
+  static serializeBinaryToWriter(message: GetAllUsersRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAllUsersRequest;
+  static deserializeBinaryFromReader(message: GetAllUsersRequest, reader: jspb.BinaryReader): GetAllUsersRequest;
+}
+
+export namespace GetAllUsersRequest {
+  export type AsObject = {
+    token: string,
+    page: number,
+    pagesize: number,
+  }
+}
+
+export class GetAllUsersResponse extends jspb.Message {
+  getUsersList(): Array<UserSummary>;
+  setUsersList(value: Array<UserSummary>): GetAllUsersResponse;
+  clearUsersList(): GetAllUsersResponse;
+  addUsers(value?: UserSummary, index?: number): UserSummary;
+
+  getTotalcount(): number;
+  setTotalcount(value: number): GetAllUsersResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAllUsersResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAllUsersResponse): GetAllUsersResponse.AsObject;
+  static serializeBinaryToWriter(message: GetAllUsersResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAllUsersResponse;
+  static deserializeBinaryFromReader(message: GetAllUsersResponse, reader: jspb.BinaryReader): GetAllUsersResponse;
+}
+
+export namespace GetAllUsersResponse {
+  export type AsObject = {
+    usersList: Array<UserSummary.AsObject>,
+    totalcount: number,
+  }
+}
+
 export class UserSummary extends jspb.Message {
   getUserid(): number;
   setUserid(value: number): UserSummary;
@@ -56,6 +106,9 @@ export class UserSummary extends jspb.Message {
   getSignupdate(): string;
   setSignupdate(value: string): UserSummary;
 
+  getGender(): string;
+  setGender(value: string): UserSummary;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UserSummary.AsObject;
   static toObject(includeInstance: boolean, msg: UserSummary): UserSummary.AsObject;
@@ -71,6 +124,7 @@ export namespace UserSummary {
     email: string,
     userrole: string,
     signupdate: string,
+    gender: string,
   }
 }
 
@@ -152,6 +206,9 @@ export class UserDetails extends jspb.Message {
   hasVolunteerdetails(): boolean;
   clearVolunteerdetails(): UserDetails;
 
+  getGender(): string;
+  setGender(value: string): UserDetails;
+
   getRoleSpecificDetailsCase(): UserDetails.RoleSpecificDetailsCase;
 
   serializeBinary(): Uint8Array;
@@ -173,6 +230,7 @@ export namespace UserDetails {
     studentdetails?: StudentDetails.AsObject,
     schooldetails?: SchoolDetails.AsObject,
     volunteerdetails?: VolunteerDetails.AsObject,
+    gender: string,
   }
 
   export enum RoleSpecificDetailsCase { 
@@ -198,6 +256,9 @@ export class UserProfile extends jspb.Message {
   getProfilepicture_asB64(): string;
   setProfilepicture(value: Uint8Array | string): UserProfile;
 
+  getGender(): string;
+  setGender(value: string): UserProfile;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UserProfile.AsObject;
   static toObject(includeInstance: boolean, msg: UserProfile): UserProfile.AsObject;
@@ -212,6 +273,7 @@ export namespace UserProfile {
     phone: string,
     bio: string,
     profilepicture: Uint8Array | string,
+    gender: string,
   }
 }
 
@@ -588,6 +650,9 @@ export class UpdateUserProfileRequest extends jspb.Message {
   getProfilepicture_asB64(): string;
   setProfilepicture(value: Uint8Array | string): UpdateUserProfileRequest;
 
+  getGender(): string;
+  setGender(value: string): UpdateUserProfileRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UpdateUserProfileRequest.AsObject;
   static toObject(includeInstance: boolean, msg: UpdateUserProfileRequest): UpdateUserProfileRequest.AsObject;
@@ -606,6 +671,7 @@ export namespace UpdateUserProfileRequest {
     phone: string,
     bio: string,
     profilepicture: Uint8Array | string,
+    gender: string,
   }
 }
 
@@ -1156,6 +1222,102 @@ export namespace Volunteer {
     graduateyear: number,
     safeguardcertificate: boolean,
     email: string,
+  }
+}
+
+export class GetVolunteersAndAdminsRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): GetVolunteersAndAdminsRequest;
+
+  getPage(): number;
+  setPage(value: number): GetVolunteersAndAdminsRequest;
+
+  getPagesize(): number;
+  setPagesize(value: number): GetVolunteersAndAdminsRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetVolunteersAndAdminsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetVolunteersAndAdminsRequest): GetVolunteersAndAdminsRequest.AsObject;
+  static serializeBinaryToWriter(message: GetVolunteersAndAdminsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetVolunteersAndAdminsRequest;
+  static deserializeBinaryFromReader(message: GetVolunteersAndAdminsRequest, reader: jspb.BinaryReader): GetVolunteersAndAdminsRequest;
+}
+
+export namespace GetVolunteersAndAdminsRequest {
+  export type AsObject = {
+    token: string,
+    page: number,
+    pagesize: number,
+  }
+}
+
+export class GetVolunteersAndAdminsResponse extends jspb.Message {
+  getUsersList(): Array<UserSummary>;
+  setUsersList(value: Array<UserSummary>): GetVolunteersAndAdminsResponse;
+  clearUsersList(): GetVolunteersAndAdminsResponse;
+  addUsers(value?: UserSummary, index?: number): UserSummary;
+
+  getTotalcount(): number;
+  setTotalcount(value: number): GetVolunteersAndAdminsResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetVolunteersAndAdminsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetVolunteersAndAdminsResponse): GetVolunteersAndAdminsResponse.AsObject;
+  static serializeBinaryToWriter(message: GetVolunteersAndAdminsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetVolunteersAndAdminsResponse;
+  static deserializeBinaryFromReader(message: GetVolunteersAndAdminsResponse, reader: jspb.BinaryReader): GetVolunteersAndAdminsResponse;
+}
+
+export namespace GetVolunteersAndAdminsResponse {
+  export type AsObject = {
+    usersList: Array<UserSummary.AsObject>,
+    totalcount: number,
+  }
+}
+
+export class GetSchoolsNoAuthRequest extends jspb.Message {
+  getPage(): number;
+  setPage(value: number): GetSchoolsNoAuthRequest;
+
+  getPagesize(): number;
+  setPagesize(value: number): GetSchoolsNoAuthRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetSchoolsNoAuthRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetSchoolsNoAuthRequest): GetSchoolsNoAuthRequest.AsObject;
+  static serializeBinaryToWriter(message: GetSchoolsNoAuthRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetSchoolsNoAuthRequest;
+  static deserializeBinaryFromReader(message: GetSchoolsNoAuthRequest, reader: jspb.BinaryReader): GetSchoolsNoAuthRequest;
+}
+
+export namespace GetSchoolsNoAuthRequest {
+  export type AsObject = {
+    page: number,
+    pagesize: number,
+  }
+}
+
+export class GetSchoolsNoAuthResponse extends jspb.Message {
+  getSchoolsList(): Array<School>;
+  setSchoolsList(value: Array<School>): GetSchoolsNoAuthResponse;
+  clearSchoolsList(): GetSchoolsNoAuthResponse;
+  addSchools(value?: School, index?: number): School;
+
+  getTotalcount(): number;
+  setTotalcount(value: number): GetSchoolsNoAuthResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetSchoolsNoAuthResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetSchoolsNoAuthResponse): GetSchoolsNoAuthResponse.AsObject;
+  static serializeBinaryToWriter(message: GetSchoolsNoAuthResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetSchoolsNoAuthResponse;
+  static deserializeBinaryFromReader(message: GetSchoolsNoAuthResponse, reader: jspb.BinaryReader): GetSchoolsNoAuthResponse;
+}
+
+export namespace GetSchoolsNoAuthResponse {
+  export type AsObject = {
+    schoolsList: Array<School.AsObject>,
+    totalcount: number,
   }
 }
 

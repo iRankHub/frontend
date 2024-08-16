@@ -48,8 +48,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
 
   async function onSubmit(data: Inputs) {
     setIsPending(true);
+    console.log("hello");
     await login({ emailOrId: data.id, password: data.password })
       .then((res) => {
+        console.log(res);
         toast({
           variant: "success",
           title: "Success Message",

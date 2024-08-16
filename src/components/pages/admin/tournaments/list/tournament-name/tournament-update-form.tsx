@@ -165,7 +165,7 @@ function TournamentUpdateForm({ tournament }: Props) {
         toast({
           variant: "success",
           title: "Success",
-          description: "Tournament created successfully",
+          description: "Tournament updated successfully",
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close

@@ -7,12 +7,12 @@ import * as pb_1 from "google-protobuf";
 import * as grpc_1 from "@grpc/grpc-js";
 export namespace user_management {
     export class GetPendingUsersRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -74,12 +74,12 @@ export namespace user_management {
         }
     }
     export class GetPendingUsersResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             users?: UserSummary[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("users" in data && data.users != undefined) {
                     this.users = data.users;
@@ -140,17 +140,221 @@ export namespace user_management {
             return GetPendingUsersResponse.deserialize(bytes);
         }
     }
+    export class GetAllUsersRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            token?: string;
+            page?: number;
+            pageSize?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+                if ("page" in data && data.page != undefined) {
+                    this.page = data.page;
+                }
+                if ("pageSize" in data && data.pageSize != undefined) {
+                    this.pageSize = data.pageSize;
+                }
+            }
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get page() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set page(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get pageSize() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set pageSize(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        static fromObject(data: {
+            token?: string;
+            page?: number;
+            pageSize?: number;
+        }): GetAllUsersRequest {
+            const message = new GetAllUsersRequest({});
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            if (data.page != null) {
+                message.page = data.page;
+            }
+            if (data.pageSize != null) {
+                message.pageSize = data.pageSize;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                token?: string;
+                page?: number;
+                pageSize?: number;
+            } = {};
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            if (this.page != null) {
+                data.page = this.page;
+            }
+            if (this.pageSize != null) {
+                data.pageSize = this.pageSize;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.token.length)
+                writer.writeString(1, this.token);
+            if (this.page != 0)
+                writer.writeInt32(2, this.page);
+            if (this.pageSize != 0)
+                writer.writeInt32(3, this.pageSize);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetAllUsersRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetAllUsersRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.token = reader.readString();
+                        break;
+                    case 2:
+                        message.page = reader.readInt32();
+                        break;
+                    case 3:
+                        message.pageSize = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetAllUsersRequest {
+            return GetAllUsersRequest.deserialize(bytes);
+        }
+    }
+    export class GetAllUsersResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            users?: UserSummary[];
+            totalCount?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("users" in data && data.users != undefined) {
+                    this.users = data.users;
+                }
+                if ("totalCount" in data && data.totalCount != undefined) {
+                    this.totalCount = data.totalCount;
+                }
+            }
+        }
+        get users() {
+            return pb_1.Message.getRepeatedWrapperField(this, UserSummary, 1) as UserSummary[];
+        }
+        set users(value: UserSummary[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        get totalCount() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set totalCount(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            users?: ReturnType<typeof UserSummary.prototype.toObject>[];
+            totalCount?: number;
+        }): GetAllUsersResponse {
+            const message = new GetAllUsersResponse({});
+            if (data.users != null) {
+                message.users = data.users.map(item => UserSummary.fromObject(item));
+            }
+            if (data.totalCount != null) {
+                message.totalCount = data.totalCount;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                users?: ReturnType<typeof UserSummary.prototype.toObject>[];
+                totalCount?: number;
+            } = {};
+            if (this.users != null) {
+                data.users = this.users.map((item: UserSummary) => item.toObject());
+            }
+            if (this.totalCount != null) {
+                data.totalCount = this.totalCount;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.users.length)
+                writer.writeRepeatedMessage(1, this.users, (item: UserSummary) => item.serialize(writer));
+            if (this.totalCount != 0)
+                writer.writeInt32(2, this.totalCount);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetAllUsersResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetAllUsersResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.users, () => pb_1.Message.addToRepeatedWrapperField(message, 1, UserSummary.deserialize(reader), UserSummary));
+                        break;
+                    case 2:
+                        message.totalCount = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetAllUsersResponse {
+            return GetAllUsersResponse.deserialize(bytes);
+        }
+    }
     export class UserSummary extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             userID?: number;
             name?: string;
             email?: string;
             userRole?: string;
             signUpDate?: string;
+            gender?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("userID" in data && data.userID != undefined) {
                     this.userID = data.userID;
@@ -166,6 +370,9 @@ export namespace user_management {
                 }
                 if ("signUpDate" in data && data.signUpDate != undefined) {
                     this.signUpDate = data.signUpDate;
+                }
+                if ("gender" in data && data.gender != undefined) {
+                    this.gender = data.gender;
                 }
             }
         }
@@ -199,12 +406,19 @@ export namespace user_management {
         set signUpDate(value: string) {
             pb_1.Message.setField(this, 5, value);
         }
+        get gender() {
+            return pb_1.Message.getFieldWithDefault(this, 6, "") as string;
+        }
+        set gender(value: string) {
+            pb_1.Message.setField(this, 6, value);
+        }
         static fromObject(data: {
             userID?: number;
             name?: string;
             email?: string;
             userRole?: string;
             signUpDate?: string;
+            gender?: string;
         }): UserSummary {
             const message = new UserSummary({});
             if (data.userID != null) {
@@ -222,6 +436,9 @@ export namespace user_management {
             if (data.signUpDate != null) {
                 message.signUpDate = data.signUpDate;
             }
+            if (data.gender != null) {
+                message.gender = data.gender;
+            }
             return message;
         }
         toObject() {
@@ -231,6 +448,7 @@ export namespace user_management {
                 email?: string;
                 userRole?: string;
                 signUpDate?: string;
+                gender?: string;
             } = {};
             if (this.userID != null) {
                 data.userID = this.userID;
@@ -246,6 +464,9 @@ export namespace user_management {
             }
             if (this.signUpDate != null) {
                 data.signUpDate = this.signUpDate;
+            }
+            if (this.gender != null) {
+                data.gender = this.gender;
             }
             return data;
         }
@@ -263,6 +484,8 @@ export namespace user_management {
                 writer.writeString(4, this.userRole);
             if (this.signUpDate.length)
                 writer.writeString(5, this.signUpDate);
+            if (this.gender.length)
+                writer.writeString(6, this.gender);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -287,6 +510,9 @@ export namespace user_management {
                     case 5:
                         message.signUpDate = reader.readString();
                         break;
+                    case 6:
+                        message.gender = reader.readString();
+                        break;
                     default: reader.skipField();
                 }
             }
@@ -300,13 +526,13 @@ export namespace user_management {
         }
     }
     export class GetUserDetailsRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             userID?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -390,12 +616,12 @@ export namespace user_management {
         }
     }
     export class GetUserDetailsResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             user?: UserDetails;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("user" in data && data.user != undefined) {
                     this.user = data.user;
@@ -460,7 +686,7 @@ export namespace user_management {
         }
     }
     export class UserDetails extends pb_1.Message {
-        one_of_decls: number[][] = [[7, 8, 9]];
+        #one_of_decls: number[][] = [[7, 8, 9]];
         constructor(data?: any[] | ({
             userID?: number;
             name?: string;
@@ -468,6 +694,7 @@ export namespace user_management {
             userRole?: string;
             signUpDate?: string;
             profile?: UserProfile;
+            gender?: string;
         } & (({
             studentDetails?: StudentDetails;
             schoolDetails?: never;
@@ -482,7 +709,7 @@ export namespace user_management {
             volunteerDetails?: VolunteerDetails;
         })))) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("userID" in data && data.userID != undefined) {
                     this.userID = data.userID;
@@ -510,6 +737,9 @@ export namespace user_management {
                 }
                 if ("volunteerDetails" in data && data.volunteerDetails != undefined) {
                     this.volunteerDetails = data.volunteerDetails;
+                }
+                if ("gender" in data && data.gender != undefined) {
+                    this.gender = data.gender;
                 }
             }
         }
@@ -556,7 +786,7 @@ export namespace user_management {
             return pb_1.Message.getWrapperField(this, StudentDetails, 7) as StudentDetails;
         }
         set studentDetails(value: StudentDetails) {
-            pb_1.Message.setOneofWrapperField(this, 7, this.one_of_decls[0], value);
+            pb_1.Message.setOneofWrapperField(this, 7, this.#one_of_decls[0], value);
         }
         get has_studentDetails() {
             return pb_1.Message.getField(this, 7) != null;
@@ -565,7 +795,7 @@ export namespace user_management {
             return pb_1.Message.getWrapperField(this, SchoolDetails, 8) as SchoolDetails;
         }
         set schoolDetails(value: SchoolDetails) {
-            pb_1.Message.setOneofWrapperField(this, 8, this.one_of_decls[0], value);
+            pb_1.Message.setOneofWrapperField(this, 8, this.#one_of_decls[0], value);
         }
         get has_schoolDetails() {
             return pb_1.Message.getField(this, 8) != null;
@@ -574,10 +804,16 @@ export namespace user_management {
             return pb_1.Message.getWrapperField(this, VolunteerDetails, 9) as VolunteerDetails;
         }
         set volunteerDetails(value: VolunteerDetails) {
-            pb_1.Message.setOneofWrapperField(this, 9, this.one_of_decls[0], value);
+            pb_1.Message.setOneofWrapperField(this, 9, this.#one_of_decls[0], value);
         }
         get has_volunteerDetails() {
             return pb_1.Message.getField(this, 9) != null;
+        }
+        get gender() {
+            return pb_1.Message.getFieldWithDefault(this, 10, "") as string;
+        }
+        set gender(value: string) {
+            pb_1.Message.setField(this, 10, value);
         }
         get role_specific_details() {
             const cases: {
@@ -600,6 +836,7 @@ export namespace user_management {
             studentDetails?: ReturnType<typeof StudentDetails.prototype.toObject>;
             schoolDetails?: ReturnType<typeof SchoolDetails.prototype.toObject>;
             volunteerDetails?: ReturnType<typeof VolunteerDetails.prototype.toObject>;
+            gender?: string;
         }): UserDetails {
             const message = new UserDetails({});
             if (data.userID != null) {
@@ -629,6 +866,9 @@ export namespace user_management {
             if (data.volunteerDetails != null) {
                 message.volunteerDetails = VolunteerDetails.fromObject(data.volunteerDetails);
             }
+            if (data.gender != null) {
+                message.gender = data.gender;
+            }
             return message;
         }
         toObject() {
@@ -642,6 +882,7 @@ export namespace user_management {
                 studentDetails?: ReturnType<typeof StudentDetails.prototype.toObject>;
                 schoolDetails?: ReturnType<typeof SchoolDetails.prototype.toObject>;
                 volunteerDetails?: ReturnType<typeof VolunteerDetails.prototype.toObject>;
+                gender?: string;
             } = {};
             if (this.userID != null) {
                 data.userID = this.userID;
@@ -670,6 +911,9 @@ export namespace user_management {
             if (this.volunteerDetails != null) {
                 data.volunteerDetails = this.volunteerDetails.toObject();
             }
+            if (this.gender != null) {
+                data.gender = this.gender;
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -694,6 +938,8 @@ export namespace user_management {
                 writer.writeMessage(8, this.schoolDetails, () => this.schoolDetails.serialize(writer));
             if (this.has_volunteerDetails)
                 writer.writeMessage(9, this.volunteerDetails, () => this.volunteerDetails.serialize(writer));
+            if (this.gender.length)
+                writer.writeString(10, this.gender);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -730,6 +976,9 @@ export namespace user_management {
                     case 9:
                         reader.readMessage(message.volunteerDetails, () => message.volunteerDetails = VolunteerDetails.deserialize(reader));
                         break;
+                    case 10:
+                        message.gender = reader.readString();
+                        break;
                     default: reader.skipField();
                 }
             }
@@ -743,15 +992,16 @@ export namespace user_management {
         }
     }
     export class UserProfile extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             address?: string;
             phone?: string;
             bio?: string;
             profilePicture?: Uint8Array;
+            gender?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("address" in data && data.address != undefined) {
                     this.address = data.address;
@@ -764,6 +1014,9 @@ export namespace user_management {
                 }
                 if ("profilePicture" in data && data.profilePicture != undefined) {
                     this.profilePicture = data.profilePicture;
+                }
+                if ("gender" in data && data.gender != undefined) {
+                    this.gender = data.gender;
                 }
             }
         }
@@ -791,11 +1044,18 @@ export namespace user_management {
         set profilePicture(value: Uint8Array) {
             pb_1.Message.setField(this, 4, value);
         }
+        get gender() {
+            return pb_1.Message.getFieldWithDefault(this, 5, "") as string;
+        }
+        set gender(value: string) {
+            pb_1.Message.setField(this, 5, value);
+        }
         static fromObject(data: {
             address?: string;
             phone?: string;
             bio?: string;
             profilePicture?: Uint8Array;
+            gender?: string;
         }): UserProfile {
             const message = new UserProfile({});
             if (data.address != null) {
@@ -810,6 +1070,9 @@ export namespace user_management {
             if (data.profilePicture != null) {
                 message.profilePicture = data.profilePicture;
             }
+            if (data.gender != null) {
+                message.gender = data.gender;
+            }
             return message;
         }
         toObject() {
@@ -818,6 +1081,7 @@ export namespace user_management {
                 phone?: string;
                 bio?: string;
                 profilePicture?: Uint8Array;
+                gender?: string;
             } = {};
             if (this.address != null) {
                 data.address = this.address;
@@ -830,6 +1094,9 @@ export namespace user_management {
             }
             if (this.profilePicture != null) {
                 data.profilePicture = this.profilePicture;
+            }
+            if (this.gender != null) {
+                data.gender = this.gender;
             }
             return data;
         }
@@ -845,6 +1112,8 @@ export namespace user_management {
                 writer.writeString(3, this.bio);
             if (this.profilePicture.length)
                 writer.writeBytes(4, this.profilePicture);
+            if (this.gender.length)
+                writer.writeString(5, this.gender);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -866,6 +1135,9 @@ export namespace user_management {
                     case 4:
                         message.profilePicture = reader.readBytes();
                         break;
+                    case 5:
+                        message.gender = reader.readString();
+                        break;
                     default: reader.skipField();
                 }
             }
@@ -879,7 +1151,7 @@ export namespace user_management {
         }
     }
     export class StudentDetails extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             grade?: string;
             dateOfBirth?: string;
@@ -887,7 +1159,7 @@ export namespace user_management {
             schoolName?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("grade" in data && data.grade != undefined) {
                     this.grade = data.grade;
@@ -1015,7 +1287,7 @@ export namespace user_management {
         }
     }
     export class SchoolDetails extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             address?: string;
             country?: string;
@@ -1026,7 +1298,7 @@ export namespace user_management {
             contactPersonNumber?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("address" in data && data.address != undefined) {
                     this.address = data.address;
@@ -1220,7 +1492,7 @@ export namespace user_management {
         }
     }
     export class VolunteerDetails extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             dateOfBirth?: string;
             graduationYear?: number;
@@ -1228,7 +1500,7 @@ export namespace user_management {
             safeguardingCertificate?: boolean;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("dateOfBirth" in data && data.dateOfBirth != undefined) {
                     this.dateOfBirth = data.dateOfBirth;
@@ -1356,13 +1628,13 @@ export namespace user_management {
         }
     }
     export class ApproveUserRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             userID?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -1446,13 +1718,13 @@ export namespace user_management {
         }
     }
     export class ApproveUserResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -1536,13 +1808,13 @@ export namespace user_management {
         }
     }
     export class RejectUserRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             userID?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -1626,13 +1898,13 @@ export namespace user_management {
         }
     }
     export class RejectUserResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -1716,13 +1988,13 @@ export namespace user_management {
         }
     }
     export class ApproveUsersRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             userIDs?: number[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -1806,14 +2078,14 @@ export namespace user_management {
         }
     }
     export class ApproveUsersResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
             failedUserIDs?: number[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -1919,13 +2191,13 @@ export namespace user_management {
         }
     }
     export class RejectUsersRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             userIDs?: number[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -2009,14 +2281,14 @@ export namespace user_management {
         }
     }
     export class RejectUsersResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
             failedUserIDs?: number[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -2122,13 +2394,13 @@ export namespace user_management {
         }
     }
     export class DeleteUsersRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             userIDs?: number[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -2212,14 +2484,14 @@ export namespace user_management {
         }
     }
     export class DeleteUsersResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
             failedUserIDs?: number[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -2325,7 +2597,7 @@ export namespace user_management {
         }
     }
     export class UpdateUserProfileRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             userID?: number;
@@ -2335,9 +2607,10 @@ export namespace user_management {
             phone?: string;
             bio?: string;
             profilePicture?: Uint8Array;
+            gender?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -2362,6 +2635,9 @@ export namespace user_management {
                 }
                 if ("profilePicture" in data && data.profilePicture != undefined) {
                     this.profilePicture = data.profilePicture;
+                }
+                if ("gender" in data && data.gender != undefined) {
+                    this.gender = data.gender;
                 }
             }
         }
@@ -2413,6 +2689,12 @@ export namespace user_management {
         set profilePicture(value: Uint8Array) {
             pb_1.Message.setField(this, 8, value);
         }
+        get gender() {
+            return pb_1.Message.getFieldWithDefault(this, 9, "") as string;
+        }
+        set gender(value: string) {
+            pb_1.Message.setField(this, 9, value);
+        }
         static fromObject(data: {
             token?: string;
             userID?: number;
@@ -2422,6 +2704,7 @@ export namespace user_management {
             phone?: string;
             bio?: string;
             profilePicture?: Uint8Array;
+            gender?: string;
         }): UpdateUserProfileRequest {
             const message = new UpdateUserProfileRequest({});
             if (data.token != null) {
@@ -2448,6 +2731,9 @@ export namespace user_management {
             if (data.profilePicture != null) {
                 message.profilePicture = data.profilePicture;
             }
+            if (data.gender != null) {
+                message.gender = data.gender;
+            }
             return message;
         }
         toObject() {
@@ -2460,6 +2746,7 @@ export namespace user_management {
                 phone?: string;
                 bio?: string;
                 profilePicture?: Uint8Array;
+                gender?: string;
             } = {};
             if (this.token != null) {
                 data.token = this.token;
@@ -2485,6 +2772,9 @@ export namespace user_management {
             if (this.profilePicture != null) {
                 data.profilePicture = this.profilePicture;
             }
+            if (this.gender != null) {
+                data.gender = this.gender;
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -2507,6 +2797,8 @@ export namespace user_management {
                 writer.writeString(7, this.bio);
             if (this.profilePicture.length)
                 writer.writeBytes(8, this.profilePicture);
+            if (this.gender.length)
+                writer.writeString(9, this.gender);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -2540,6 +2832,9 @@ export namespace user_management {
                     case 8:
                         message.profilePicture = reader.readBytes();
                         break;
+                    case 9:
+                        message.gender = reader.readString();
+                        break;
                     default: reader.skipField();
                 }
             }
@@ -2553,13 +2848,13 @@ export namespace user_management {
         }
     }
     export class UpdateUserProfileResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -2643,13 +2938,13 @@ export namespace user_management {
         }
     }
     export class DeleteUserProfileRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             userID?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -2733,13 +3028,13 @@ export namespace user_management {
         }
     }
     export class DeleteUserProfileResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -2823,13 +3118,13 @@ export namespace user_management {
         }
     }
     export class DeactivateAccountRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             userID?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -2913,13 +3208,13 @@ export namespace user_management {
         }
     }
     export class DeactivateAccountResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -3003,13 +3298,13 @@ export namespace user_management {
         }
     }
     export class ReactivateAccountRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             userID?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -3093,13 +3388,13 @@ export namespace user_management {
         }
     }
     export class ReactivateAccountResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
             message?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("success" in data && data.success != undefined) {
                     this.success = data.success;
@@ -3183,13 +3478,13 @@ export namespace user_management {
         }
     }
     export class GetAccountStatusRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             userID?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -3273,12 +3568,12 @@ export namespace user_management {
         }
     }
     export class GetAccountStatusResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             status?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("status" in data && data.status != undefined) {
                     this.status = data.status;
@@ -3340,12 +3635,12 @@ export namespace user_management {
         }
     }
     export class GetCountriesRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -3407,12 +3702,12 @@ export namespace user_management {
         }
     }
     export class GetCountriesResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             countries?: Country[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("countries" in data && data.countries != undefined) {
                     this.countries = data.countries;
@@ -3474,13 +3769,13 @@ export namespace user_management {
         }
     }
     export class Country extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             name?: string;
             code?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("name" in data && data.name != undefined) {
                     this.name = data.name;
@@ -3564,14 +3859,14 @@ export namespace user_management {
         }
     }
     export class GetSchoolsRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             page?: number;
             pageSize?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -3677,13 +3972,13 @@ export namespace user_management {
         }
     }
     export class GetSchoolsResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             schools?: School[];
             totalCount?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("schools" in data && data.schools != undefined) {
                     this.schools = data.schools;
@@ -3767,7 +4062,7 @@ export namespace user_management {
         }
     }
     export class School extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             schoolID?: number;
             name?: string;
@@ -3781,7 +4076,7 @@ export namespace user_management {
             schoolEmail?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("schoolID" in data && data.schoolID != undefined) {
                     this.schoolID = data.schoolID;
@@ -4041,14 +4336,14 @@ export namespace user_management {
         }
     }
     export class GetStudentsRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             page?: number;
             pageSize?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -4154,13 +4449,13 @@ export namespace user_management {
         }
     }
     export class GetStudentsResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             students?: Student[];
             totalCount?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("students" in data && data.students != undefined) {
                     this.students = data.students;
@@ -4244,7 +4539,7 @@ export namespace user_management {
         }
     }
     export class Student extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             studentID?: number;
             firstName?: string;
@@ -4256,7 +4551,7 @@ export namespace user_management {
             schoolName?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("studentID" in data && data.studentID != undefined) {
                     this.studentID = data.studentID;
@@ -4472,14 +4767,14 @@ export namespace user_management {
         }
     }
     export class GetVolunteersRequest extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             token?: string;
             page?: number;
             pageSize?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -4585,13 +4880,13 @@ export namespace user_management {
         }
     }
     export class GetVolunteersResponse extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             volunteers?: Volunteer[];
             totalCount?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("volunteers" in data && data.volunteers != undefined) {
                     this.volunteers = data.volunteers;
@@ -4675,7 +4970,7 @@ export namespace user_management {
         }
     }
     export class Volunteer extends pb_1.Message {
-        one_of_decls: number[][] = [];
+        #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             volunteerID?: number;
             firstName?: string;
@@ -4687,7 +4982,7 @@ export namespace user_management {
             email?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("volunteerID" in data && data.volunteerID != undefined) {
                     this.volunteerID = data.volunteerID;
@@ -4902,6 +5197,389 @@ export namespace user_management {
             return Volunteer.deserialize(bytes);
         }
     }
+    export class GetVolunteersAndAdminsRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            token?: string;
+            page?: number;
+            pageSize?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+                if ("page" in data && data.page != undefined) {
+                    this.page = data.page;
+                }
+                if ("pageSize" in data && data.pageSize != undefined) {
+                    this.pageSize = data.pageSize;
+                }
+            }
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get page() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set page(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get pageSize() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set pageSize(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        static fromObject(data: {
+            token?: string;
+            page?: number;
+            pageSize?: number;
+        }): GetVolunteersAndAdminsRequest {
+            const message = new GetVolunteersAndAdminsRequest({});
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            if (data.page != null) {
+                message.page = data.page;
+            }
+            if (data.pageSize != null) {
+                message.pageSize = data.pageSize;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                token?: string;
+                page?: number;
+                pageSize?: number;
+            } = {};
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            if (this.page != null) {
+                data.page = this.page;
+            }
+            if (this.pageSize != null) {
+                data.pageSize = this.pageSize;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.token.length)
+                writer.writeString(1, this.token);
+            if (this.page != 0)
+                writer.writeInt32(2, this.page);
+            if (this.pageSize != 0)
+                writer.writeInt32(3, this.pageSize);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetVolunteersAndAdminsRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetVolunteersAndAdminsRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.token = reader.readString();
+                        break;
+                    case 2:
+                        message.page = reader.readInt32();
+                        break;
+                    case 3:
+                        message.pageSize = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetVolunteersAndAdminsRequest {
+            return GetVolunteersAndAdminsRequest.deserialize(bytes);
+        }
+    }
+    export class GetVolunteersAndAdminsResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            users?: UserSummary[];
+            totalCount?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("users" in data && data.users != undefined) {
+                    this.users = data.users;
+                }
+                if ("totalCount" in data && data.totalCount != undefined) {
+                    this.totalCount = data.totalCount;
+                }
+            }
+        }
+        get users() {
+            return pb_1.Message.getRepeatedWrapperField(this, UserSummary, 1) as UserSummary[];
+        }
+        set users(value: UserSummary[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        get totalCount() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set totalCount(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            users?: ReturnType<typeof UserSummary.prototype.toObject>[];
+            totalCount?: number;
+        }): GetVolunteersAndAdminsResponse {
+            const message = new GetVolunteersAndAdminsResponse({});
+            if (data.users != null) {
+                message.users = data.users.map(item => UserSummary.fromObject(item));
+            }
+            if (data.totalCount != null) {
+                message.totalCount = data.totalCount;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                users?: ReturnType<typeof UserSummary.prototype.toObject>[];
+                totalCount?: number;
+            } = {};
+            if (this.users != null) {
+                data.users = this.users.map((item: UserSummary) => item.toObject());
+            }
+            if (this.totalCount != null) {
+                data.totalCount = this.totalCount;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.users.length)
+                writer.writeRepeatedMessage(1, this.users, (item: UserSummary) => item.serialize(writer));
+            if (this.totalCount != 0)
+                writer.writeInt32(2, this.totalCount);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetVolunteersAndAdminsResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetVolunteersAndAdminsResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.users, () => pb_1.Message.addToRepeatedWrapperField(message, 1, UserSummary.deserialize(reader), UserSummary));
+                        break;
+                    case 2:
+                        message.totalCount = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetVolunteersAndAdminsResponse {
+            return GetVolunteersAndAdminsResponse.deserialize(bytes);
+        }
+    }
+    export class GetSchoolsNoAuthRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            page?: number;
+            pageSize?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("page" in data && data.page != undefined) {
+                    this.page = data.page;
+                }
+                if ("pageSize" in data && data.pageSize != undefined) {
+                    this.pageSize = data.pageSize;
+                }
+            }
+        }
+        get page() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set page(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get pageSize() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set pageSize(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            page?: number;
+            pageSize?: number;
+        }): GetSchoolsNoAuthRequest {
+            const message = new GetSchoolsNoAuthRequest({});
+            if (data.page != null) {
+                message.page = data.page;
+            }
+            if (data.pageSize != null) {
+                message.pageSize = data.pageSize;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                page?: number;
+                pageSize?: number;
+            } = {};
+            if (this.page != null) {
+                data.page = this.page;
+            }
+            if (this.pageSize != null) {
+                data.pageSize = this.pageSize;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.page != 0)
+                writer.writeInt32(1, this.page);
+            if (this.pageSize != 0)
+                writer.writeInt32(2, this.pageSize);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetSchoolsNoAuthRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetSchoolsNoAuthRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.page = reader.readInt32();
+                        break;
+                    case 2:
+                        message.pageSize = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetSchoolsNoAuthRequest {
+            return GetSchoolsNoAuthRequest.deserialize(bytes);
+        }
+    }
+    export class GetSchoolsNoAuthResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            schools?: School[];
+            totalCount?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("schools" in data && data.schools != undefined) {
+                    this.schools = data.schools;
+                }
+                if ("totalCount" in data && data.totalCount != undefined) {
+                    this.totalCount = data.totalCount;
+                }
+            }
+        }
+        get schools() {
+            return pb_1.Message.getRepeatedWrapperField(this, School, 1) as School[];
+        }
+        set schools(value: School[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        get totalCount() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set totalCount(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            schools?: ReturnType<typeof School.prototype.toObject>[];
+            totalCount?: number;
+        }): GetSchoolsNoAuthResponse {
+            const message = new GetSchoolsNoAuthResponse({});
+            if (data.schools != null) {
+                message.schools = data.schools.map(item => School.fromObject(item));
+            }
+            if (data.totalCount != null) {
+                message.totalCount = data.totalCount;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                schools?: ReturnType<typeof School.prototype.toObject>[];
+                totalCount?: number;
+            } = {};
+            if (this.schools != null) {
+                data.schools = this.schools.map((item: School) => item.toObject());
+            }
+            if (this.totalCount != null) {
+                data.totalCount = this.totalCount;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.schools.length)
+                writer.writeRepeatedMessage(1, this.schools, (item: School) => item.serialize(writer));
+            if (this.totalCount != 0)
+                writer.writeInt32(2, this.totalCount);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetSchoolsNoAuthResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetSchoolsNoAuthResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.schools, () => pb_1.Message.addToRepeatedWrapperField(message, 1, School.deserialize(reader), School));
+                        break;
+                    case 2:
+                        message.totalCount = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetSchoolsNoAuthResponse {
+            return GetSchoolsNoAuthResponse.deserialize(bytes);
+        }
+    }
     interface GrpcUnaryServiceInterface<P, R> {
         (message: P, metadata: grpc_1.Metadata, options: grpc_1.CallOptions, callback: grpc_1.requestCallback<R>): grpc_1.ClientUnaryCall;
         (message: P, metadata: grpc_1.Metadata, callback: grpc_1.requestCallback<R>): grpc_1.ClientUnaryCall;
@@ -5071,6 +5749,33 @@ export namespace user_management {
                 requestDeserialize: (bytes: Buffer) => GetVolunteersRequest.deserialize(new Uint8Array(bytes)),
                 responseSerialize: (message: GetVolunteersResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => GetVolunteersResponse.deserialize(new Uint8Array(bytes))
+            },
+            GetAllUsers: {
+                path: "/user_management.UserManagementService/GetAllUsers",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GetAllUsersRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetAllUsersRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: GetAllUsersResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => GetAllUsersResponse.deserialize(new Uint8Array(bytes))
+            },
+            GetVolunteersAndAdmins: {
+                path: "/user_management.UserManagementService/GetVolunteersAndAdmins",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GetVolunteersAndAdminsRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetVolunteersAndAdminsRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: GetVolunteersAndAdminsResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => GetVolunteersAndAdminsResponse.deserialize(new Uint8Array(bytes))
+            },
+            GetSchoolsNoAuth: {
+                path: "/user_management.UserManagementService/GetSchoolsNoAuth",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GetSchoolsNoAuthRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetSchoolsNoAuthRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: GetSchoolsNoAuthResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => GetSchoolsNoAuthResponse.deserialize(new Uint8Array(bytes))
             }
         };
         [method: string]: grpc_1.UntypedHandleCall;
@@ -5090,6 +5795,9 @@ export namespace user_management {
         abstract GetSchools(call: grpc_1.ServerUnaryCall<GetSchoolsRequest, GetSchoolsResponse>, callback: grpc_1.sendUnaryData<GetSchoolsResponse>): void;
         abstract GetStudents(call: grpc_1.ServerUnaryCall<GetStudentsRequest, GetStudentsResponse>, callback: grpc_1.sendUnaryData<GetStudentsResponse>): void;
         abstract GetVolunteers(call: grpc_1.ServerUnaryCall<GetVolunteersRequest, GetVolunteersResponse>, callback: grpc_1.sendUnaryData<GetVolunteersResponse>): void;
+        abstract GetAllUsers(call: grpc_1.ServerUnaryCall<GetAllUsersRequest, GetAllUsersResponse>, callback: grpc_1.sendUnaryData<GetAllUsersResponse>): void;
+        abstract GetVolunteersAndAdmins(call: grpc_1.ServerUnaryCall<GetVolunteersAndAdminsRequest, GetVolunteersAndAdminsResponse>, callback: grpc_1.sendUnaryData<GetVolunteersAndAdminsResponse>): void;
+        abstract GetSchoolsNoAuth(call: grpc_1.ServerUnaryCall<GetSchoolsNoAuthRequest, GetSchoolsNoAuthResponse>, callback: grpc_1.sendUnaryData<GetSchoolsNoAuthResponse>): void;
     }
     export class UserManagementServiceClient extends grpc_1.makeGenericClientConstructor(UnimplementedUserManagementServiceService.definition, "UserManagementService", {}) {
         constructor(address: string, credentials: grpc_1.ChannelCredentials, options?: Partial<grpc_1.ChannelOptions>) {
@@ -5142,6 +5850,15 @@ export namespace user_management {
         };
         GetVolunteers: GrpcUnaryServiceInterface<GetVolunteersRequest, GetVolunteersResponse> = (message: GetVolunteersRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetVolunteersResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetVolunteersResponse>, callback?: grpc_1.requestCallback<GetVolunteersResponse>): grpc_1.ClientUnaryCall => {
             return super.GetVolunteers(message, metadata, options, callback);
+        };
+        GetAllUsers: GrpcUnaryServiceInterface<GetAllUsersRequest, GetAllUsersResponse> = (message: GetAllUsersRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetAllUsersResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetAllUsersResponse>, callback?: grpc_1.requestCallback<GetAllUsersResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetAllUsers(message, metadata, options, callback);
+        };
+        GetVolunteersAndAdmins: GrpcUnaryServiceInterface<GetVolunteersAndAdminsRequest, GetVolunteersAndAdminsResponse> = (message: GetVolunteersAndAdminsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetVolunteersAndAdminsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetVolunteersAndAdminsResponse>, callback?: grpc_1.requestCallback<GetVolunteersAndAdminsResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetVolunteersAndAdmins(message, metadata, options, callback);
+        };
+        GetSchoolsNoAuth: GrpcUnaryServiceInterface<GetSchoolsNoAuthRequest, GetSchoolsNoAuthResponse> = (message: GetSchoolsNoAuthRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetSchoolsNoAuthResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetSchoolsNoAuthResponse>, callback?: grpc_1.requestCallback<GetSchoolsNoAuthResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetSchoolsNoAuth(message, metadata, options, callback);
         };
     }
 }

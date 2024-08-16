@@ -218,13 +218,13 @@ function LeagueCard({ league, setLeagues }: Props) {
           <div className="flex items-center gap-3">
             <div className="flex flex-col gap-1 justify-end">
               <span className="text-muted-text text-sm">
-                {leagueType() === "Local" ? leagues.provinces.length : leagues.continents.length}
+                {leagueType() === "Local" ? JSON.parse(league.details).districts.length : JSON.parse(league.details).provinces.length}
               </span>
               <p className="text-sm">Province(s)</p>
             </div>
             <div className="flex flex-col gap-1 justify-end">
               <span className="text-muted-text text-sm">
-                {leagueType() === "Local" ? leagues.districts.length : leagues.countries.length}
+                {leagueType() === "Local" ? JSON.parse(league.details).districts.length : JSON.parse(league.details).provinces.length}
               </span>
               <p className="text-sm">District(s)</p>
             </div>

@@ -6,10 +6,10 @@ import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { getTournamentMenuList } from "@/lib/utils/tournament-menu-list";
 import { useState } from "react";
 import { Command, CommandInput } from "@/components/ui/command";
 import { CollapseMenuButton } from "@/components/layout/students-panel/collapse-menu-button";
+import { getTournamentMenuList } from "@/lib/utils/schools/tournament-menu-list";
 
 export function TournamentMenu() {
   const pathname = usePathname();

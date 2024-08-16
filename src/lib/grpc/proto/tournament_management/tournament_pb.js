@@ -2106,7 +2106,8 @@ proto.tournament_management.Tournament.toObject = function(includeInstance, msg)
     numberOfEliminationRounds: jspb.Message.getFieldWithDefault(msg, 10, 0),
     judgesPerDebatePreliminary: jspb.Message.getFieldWithDefault(msg, 11, 0),
     judgesPerDebateElimination: jspb.Message.getFieldWithDefault(msg, 12, 0),
-    tournamentFee: jspb.Message.getFloatingPointFieldWithDefault(msg, 13, 0.0)
+    tournamentFee: jspb.Message.getFloatingPointFieldWithDefault(msg, 13, 0.0),
+    imageUrl: jspb.Message.getFieldWithDefault(msg, 14, "")
   };
 
   if (includeInstance) {
@@ -2194,6 +2195,10 @@ proto.tournament_management.Tournament.deserializeBinaryFromReader = function(ms
     case 13:
       var value = /** @type {number} */ (reader.readDouble());
       msg.setTournamentFee(value);
+      break;
+    case 14:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setImageUrl(value);
       break;
     default:
       reader.skipField();
@@ -2312,6 +2317,13 @@ proto.tournament_management.Tournament.serializeBinaryToWriter = function(messag
   if (f !== 0.0) {
     writer.writeDouble(
       13,
+      f
+    );
+  }
+  f = message.getImageUrl();
+  if (f.length > 0) {
+    writer.writeString(
+      14,
       f
     );
   }
@@ -2549,6 +2561,24 @@ proto.tournament_management.Tournament.prototype.getTournamentFee = function() {
  */
 proto.tournament_management.Tournament.prototype.setTournamentFee = function(value) {
   return jspb.Message.setProto3FloatField(this, 13, value);
+};
+
+
+/**
+ * optional string image_url = 14;
+ * @return {string}
+ */
+proto.tournament_management.Tournament.prototype.getImageUrl = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 14, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.Tournament} returns this
+ */
+proto.tournament_management.Tournament.prototype.setImageUrl = function(value) {
+  return jspb.Message.setProto3StringField(this, 14, value);
 };
 
 
@@ -4752,7 +4782,8 @@ proto.tournament_management.CreateTournamentRequest.toObject = function(includeI
     judgesPerDebatePreliminary: jspb.Message.getFieldWithDefault(msg, 10, 0),
     judgesPerDebateElimination: jspb.Message.getFieldWithDefault(msg, 11, 0),
     tournamentFee: jspb.Message.getFloatingPointFieldWithDefault(msg, 12, 0.0),
-    token: jspb.Message.getFieldWithDefault(msg, 13, "")
+    token: jspb.Message.getFieldWithDefault(msg, 13, ""),
+    imageUrl: jspb.Message.getFieldWithDefault(msg, 14, "")
   };
 
   if (includeInstance) {
@@ -4840,6 +4871,10 @@ proto.tournament_management.CreateTournamentRequest.deserializeBinaryFromReader 
     case 13:
       var value = /** @type {string} */ (reader.readString());
       msg.setToken(value);
+      break;
+    case 14:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setImageUrl(value);
       break;
     default:
       reader.skipField();
@@ -4958,6 +4993,13 @@ proto.tournament_management.CreateTournamentRequest.serializeBinaryToWriter = fu
   if (f.length > 0) {
     writer.writeString(
       13,
+      f
+    );
+  }
+  f = message.getImageUrl();
+  if (f.length > 0) {
+    writer.writeString(
+      14,
       f
     );
   }
@@ -5195,6 +5237,24 @@ proto.tournament_management.CreateTournamentRequest.prototype.getToken = functio
  */
 proto.tournament_management.CreateTournamentRequest.prototype.setToken = function(value) {
   return jspb.Message.setProto3StringField(this, 13, value);
+};
+
+
+/**
+ * optional string image_url = 14;
+ * @return {string}
+ */
+proto.tournament_management.CreateTournamentRequest.prototype.getImageUrl = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 14, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.CreateTournamentRequest} returns this
+ */
+proto.tournament_management.CreateTournamentRequest.prototype.setImageUrl = function(value) {
+  return jspb.Message.setProto3StringField(this, 14, value);
 };
 
 
@@ -5593,7 +5653,8 @@ proto.tournament_management.UpdateTournamentRequest.toObject = function(includeI
     judgesPerDebatePreliminary: jspb.Message.getFieldWithDefault(msg, 11, 0),
     judgesPerDebateElimination: jspb.Message.getFieldWithDefault(msg, 12, 0),
     tournamentFee: jspb.Message.getFloatingPointFieldWithDefault(msg, 13, 0.0),
-    token: jspb.Message.getFieldWithDefault(msg, 14, "")
+    token: jspb.Message.getFieldWithDefault(msg, 14, ""),
+    imageUrl: jspb.Message.getFieldWithDefault(msg, 15, "")
   };
 
   if (includeInstance) {
@@ -5685,6 +5746,10 @@ proto.tournament_management.UpdateTournamentRequest.deserializeBinaryFromReader 
     case 14:
       var value = /** @type {string} */ (reader.readString());
       msg.setToken(value);
+      break;
+    case 15:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setImageUrl(value);
       break;
     default:
       reader.skipField();
@@ -5810,6 +5875,13 @@ proto.tournament_management.UpdateTournamentRequest.serializeBinaryToWriter = fu
   if (f.length > 0) {
     writer.writeString(
       14,
+      f
+    );
+  }
+  f = message.getImageUrl();
+  if (f.length > 0) {
+    writer.writeString(
+      15,
       f
     );
   }
@@ -6065,6 +6137,24 @@ proto.tournament_management.UpdateTournamentRequest.prototype.getToken = functio
  */
 proto.tournament_management.UpdateTournamentRequest.prototype.setToken = function(value) {
   return jspb.Message.setProto3StringField(this, 14, value);
+};
+
+
+/**
+ * optional string image_url = 15;
+ * @return {string}
+ */
+proto.tournament_management.UpdateTournamentRequest.prototype.getImageUrl = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 15, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.UpdateTournamentRequest} returns this
+ */
+proto.tournament_management.UpdateTournamentRequest.prototype.setImageUrl = function(value) {
+  return jspb.Message.setProto3StringField(this, 15, value);
 };
 
 
