@@ -304,9 +304,16 @@ const Options = ({ userid }: { userid: number }) => {
                   onClick={() => setOpen(!open)}
                 >
                   Reject
+                  <span className="sr-only">Reject</span>
                 </Button>
-                <Button type="button" size={"sm"} variant={"default"}>
+                <Button
+                  type="button"
+                  size={"sm"}
+                  variant={"default"}
+                  className="w-full hover:bg-primary"
+                >
                   Accept
+                  <span className="sr-only">Accept</span>
                 </Button>
               </div>
             </PanelBody>

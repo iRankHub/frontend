@@ -9,7 +9,7 @@ export const createTournamentSchema = z.object({
     location: z.string().min(1, { message: "location must be atleast 3 characters" }),
     coordinator: z.string().min(1, { message: "a coordinator is required" }),
     fees_currency: z.string(),
-    fees: z.number(),
+    fees: z.string(),
     format: z.string().min(1, { message: "format is required" }),
     preliminaries_start_from: z.string(),
     preliminaries_end_at: z.string(),

@@ -20,9 +20,10 @@ import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
 import { PasswordInput } from "@/components/ui/password-Input";
 import Link from "next/link";
-import { signIn, useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { login } from "@/core/authentication/auth";
+import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
 
 type Inputs = z.infer<typeof emailLoginSchema>;
 
@@ -34,6 +35,7 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
   const router = useRouter();
   const [isPending, setIsPending] = React.useState(false);
   const { toast } = useToast();
+  const { login: authLogin } = useUserStore((state) => state);
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -44,17 +46,76 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
     },
   });
 
-  function onSubmit(data: Inputs) {
-    toast({
-      variant: "success",
-      title: "Success Message",
-      description: "Success Description",
-      action: (
-        <ToastAction altText="Close" className="bg-primary text-white">
-          Close
-        </ToastAction>
-      ),
-    });
+  async function onSubmit(data: Inputs) {
+    try {
+      await login({ emailOrId: data.email, password: data.password })
+        .then((res) => {
+          if (res.success) {
+            toast({
+              variant: "success",
+              title: "Success",
+              description: res.message,
+              action: (
+                <ToastAction altText="Close" className="bg-primary text-white">
+                  Close
+                </ToastAction>
+              ),
+            });
+            form.reset();
+
+            const role = Roles.VOLUNTEER;
+            const user: AuthStateUser = {
+              userId: res.userid,
+              token: res.token,
+              status: "idle",
+              requiredPasswordReset: res.requirePasswordReset,
+              requireTwoFactor: res.requireTwoFactor,
+            };
+            authLogin(user, role);
+            router.push("/volunteer/dashboard");
+          } else {
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: res.message,
+              action: (
+                <ToastAction altText="Close" className="bg-primary text-white">
+                  Close
+                </ToastAction>
+              ),
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err.message);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description:
+              "Something went wrong. Please check your credentials and try again later",
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        })
+        .finally(() => {
+          setIsPending(false);
+        });
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast({
+        variant: "destructive",
+        title: "Fail Message",
+        description: "Something went wrong. Check your credentials",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
+      });
+    }
   }
 
   return (
@@ -69,7 +130,7 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-darkBlue">
-              Volunteer Email<b className="text-primary font-light"> *</b>
+                Volunteer Email<b className="text-primary font-light"> *</b>
               </FormLabel>
               <FormControl>
                 <Input placeholder="ava.wright@gmail.com" {...field} />

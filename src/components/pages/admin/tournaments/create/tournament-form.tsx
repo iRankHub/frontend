@@ -65,7 +65,6 @@ function TournamentForm({ selectedLeague }: Props) {
     resolver: zodResolver(createTournamentSchema),
     defaultValues: {
       fees_currency: "rwf",
-      fees: 0,
     },
   });
 
@@ -237,20 +236,13 @@ function TournamentForm({ selectedLeague }: Props) {
                 </DialogTrigger>
                 <FileUpload />
               </Dialog>
-              <Button
-                className="rounded-full w-8 h-8 bg-primary cursor-pointer"
-                size="icon"
-              >
-                <Icons.pencilLine className="w-[1rem] h-[1rem] text-white m-1" />
-                <span className="sr-only">Edit</span>
-              </Button>
-              <Button
+              {/* <Button
                 className="rounded-full w-8 h-8 bg-primary cursor-pointer"
                 size="icon"
               >
                 <Trash2 className="w-[1rem] h-[1rem] text-white m-1" />
                 <span className="sr-only">Delete</span>
-              </Button>
+              </Button> */}
             </div>
           </div>
           <div className="mt-10 w-full">
@@ -538,7 +530,6 @@ function TournamentForm({ selectedLeague }: Props) {
                               placeholder="50000"
                               value={field.value}
                               onChange={field.onChange}
-                              type="number"
                             />
                           </FormControl>
                           <FormMessage />

@@ -64,6 +64,20 @@ export const rankingsSchema = z.object({
   rank: z.string(),
 })
 
+export const billingsSchema = z.object({
+  id: z.string(),
+  names: z.string(),
+  teams: z.string(),
+  status: z.string(),
+})
+
+// students schemas
+export const invitationsStudents = z.object({
+  id: z.string(),
+  reason: z.string(),
+  date: z.string(),
+})
+
 export type Task = z.infer<typeof taskSchema>
 export type Judges = z.infer<typeof judgesSchema>
 export type Invitation = z.infer<typeof invitationSchema>
@@ -73,3 +87,7 @@ export type BallotElimination = z.infer<typeof ballotEliminationSchema>
 export type BallotPreliminaries = z.infer<typeof ballotPreliminariesSchema>
 export type PairingsPreliminaries = z.infer<typeof pairingsPreliminariesSchema>
 export type Rankings = z.infer<typeof rankingsSchema>
+export type Billings = z.infer<typeof billingsSchema>
+
+// students type schemas
+export type InvitationsStudents = z.infer<typeof invitationsStudents>
