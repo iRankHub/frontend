@@ -1,6 +1,6 @@
 'use client'
-import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
-import Tournaments from "@/components/pages/students/tournaments/tournaments";
+import { ContentLayout } from "@/components/layout/volunteer-panel/content-layout";
+import Tournaments from "@/components/pages/volunteers/tournaments/tournaments";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,7 +16,7 @@ import React from "react";
 
 const page = withAuth(() => {
   return <Page />
-}, [Roles.STUDENT]);
+}, [Roles.VOLUNTEER]);
 
 function Page() {
   return (

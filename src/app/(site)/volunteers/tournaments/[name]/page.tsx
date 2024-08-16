@@ -1,7 +1,7 @@
 "use client";
-import { ContentLayout } from "@/components/layout/students-panel/content-layout";
-import TournamentUpdateForm from "@/components/pages/students/tournaments/tournament-name/tournament-update-form";
-import TournamentMenuWrapper from "@/components/pages/students/tournaments/tournament-name/tournament-menu-wrapper";
+import { ContentLayout } from "@/components/layout/volunteer-panel/content-layout";
+import TournamentUpdateForm from "@/components/pages/volunteers/tournaments/tournament-name/tournament-update-form";
+import TournamentMenuWrapper from "@/components/pages/volunteers/tournaments/tournament-name/tournament-menu-wrapper";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -23,7 +23,7 @@ const page = withAuth(
   ({ params }: Iparms) => {
     return <Page params={params} />;
   },
-  [Roles.STUDENT]
+  [Roles.VOLUNTEER]
 );
 
 function Page({ params }: Iparms) {

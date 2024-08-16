@@ -2,6 +2,8 @@ import { tournamentClient } from "@/core/grpc-clients";
 import {
     DeleteTournamentRequest,
     DeleteTournamentResponse,
+    GetAllInvitationsRequest,
+    GetAllInvitationsResponse,
     GetTournamentRequest,
     GetTournamentResponse,
     ListTournamentsRequest,
@@ -122,3 +124,18 @@ export const deleteTournament = async ({
 }
 
 
+// invitations
+export const getAllInvitations = async (token: string): Promise<GetAllInvitationsResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new GetAllInvitationsRequest();
+        request.setToken(token);
+
+        tournamentClient.getAllInvitations(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}

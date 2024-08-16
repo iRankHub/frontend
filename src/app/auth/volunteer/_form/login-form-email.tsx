@@ -72,7 +72,7 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
               requireTwoFactor: res.requireTwoFactor,
             };
             authLogin(user, role);
-            router.push("/volunteer/dashboard");
+            router.push("/volunteers/dashboard");
           } else {
             toast({
               variant: "destructive",
@@ -162,7 +162,7 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
             Forgot password?
           </Link>
         </div>
-        <Button disabled={isPending} variant={"default"} size={"lg"}>
+        <Button disabled={isPending} variant={"default"} size={"lg"} className="hover:bg-primary">
           {isPending && (
             <Icons.spinner
               className="mr-2 h-4 w-4 animate-spin"

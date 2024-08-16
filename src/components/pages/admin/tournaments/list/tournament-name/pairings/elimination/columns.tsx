@@ -25,11 +25,11 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "oposition",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Oposition" />
+      <DataTableColumnHeader column={column} title="Oposition" className="justify-center" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2">
+        <div className="w-full pr-5 text-center">
           <span className="max-w-[200px] truncate font-medium">
             {row.getValue("oposition")}
           </span>

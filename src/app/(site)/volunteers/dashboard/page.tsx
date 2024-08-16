@@ -6,6 +6,6 @@ import React from "react";
 
 const page = withAuth(() => {
   return <div>This is the Schools page.</div>;
-}, [Roles.SCHOOL]);
+}, [Roles.VOLUNTEER]);
 
 export default page;

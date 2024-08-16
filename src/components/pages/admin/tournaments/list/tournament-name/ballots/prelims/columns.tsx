@@ -65,16 +65,16 @@ export const columns: ColumnDef<BallotPreliminaries>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Rec. Status" />
+      <DataTableColumnHeader column={column} title="Rec. Status" className="justify-center" />
     ),
     cell: ({ row }) => {
       const status = row.getValue("status");
       const variant =
-        status === "Recorded"
+        status === "recorded"
           ? "bg-green-200 text-success hover:bg-green-200"
           : "bg-secondary text-foreground hover:bg-secondary";
       return (
-        <div className="flex w-[100px] items-center justify-center">
+        <div className="w-full pr-5 text-center">
           <Badge variant="default" className={cn("rounded-md", variant)}>
             {row.getValue("status")}
           </Badge>

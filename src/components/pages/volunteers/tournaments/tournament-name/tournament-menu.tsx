@@ -6,7 +6,7 @@ import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { getTournamentMenuList } from "@/lib/utils/tournament-menu-list";
+import { getTournamentMenuList } from "@/lib/utils/volunteer/tournament-menu-list";
 import { useState } from "react";
 import { Command, CommandInput } from "@/components/ui/command";
 import { CollapseMenuButton } from "@/components/layout/students-panel/collapse-menu-button";
@@ -17,7 +17,7 @@ export function TournamentMenu() {
   const menuList = getTournamentMenuList(pathname, routeName);
   const [isOpen] = useState(true);
   return (
-    <div className="hidden xl:inline w-full max-w-sm">
+    <div className="hidden xl:inline w-full max-w-xs">
       <div className="flex items-center gap-3 mt-2 h-auto">
         <Command className="rounded-md w-full border">
           <CommandInput

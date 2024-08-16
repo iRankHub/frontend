@@ -162,7 +162,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
             Forgot password?
           </Link>
         </div>
-        <Button disabled={isPending} variant={"default"} size={"lg"}>
+        <Button disabled={isPending} variant={"default"} size={"lg"} className="hover:bg-primary">
           {isPending && (
             <Icons.spinner
               className="mr-2 h-4 w-4 animate-spin"

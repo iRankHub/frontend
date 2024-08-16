@@ -50,7 +50,7 @@ function Leagues({ leagues, setSelectedLeague, selectedLeague }: Props) {
   const [provinces, setProvinces] = React.useState<string[]>([]);
   const [districts, setDistricts] = React.useState<string[]>([]);
   return (
-    <div className="hidden xl:inline w-full max-w-sm">
+    <div className="hidden xl:inline w-full max-w-xs">
       <h3
         className={cn(
           "text-foreground font-semibold text-2xl tracking-wider",

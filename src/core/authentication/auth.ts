@@ -1,4 +1,4 @@
-import { LoginRequest, LoginResponse, SignUpRequest } from "@/lib/grpc/proto/authentication/auth_pb";
+import { LoginRequest, LoginResponse, SignUpRequest, SignUpResponse } from "@/lib/grpc/proto/authentication/auth_pb";
 import { authClient } from "../grpc-clients";
 
 export const signUp = (data: {
@@ -23,9 +23,8 @@ export const signUp = (data: {
     isEnrolledInUniversity?: boolean;
     safeguardingCertificate?: boolean;
     gender?: string;
-}) => {
+}): Promise<SignUpResponse.AsObject> => {
     return new Promise((resolve, reject) => {
-        console.log(data)
         const request = new SignUpRequest();
         request.setFirstname(data.firstName ?? "");
         request.setLastname(data.lastName ?? "");

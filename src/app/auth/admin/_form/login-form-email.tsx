@@ -49,9 +49,9 @@ const LoginFormEmail = () => {
         if (res.success) {
           toast({
             variant: "success",
-            title: "Success Message",
-            description: "Success Description",
-            action: (
+            title: "Success",
+          description: res.message,
+          action: (
               <ToastAction altText="Close" className="bg-primary text-white">
                 Close
               </ToastAction>

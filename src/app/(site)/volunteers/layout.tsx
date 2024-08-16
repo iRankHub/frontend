@@ -1,4 +1,4 @@
-import AdminPanelLayout from "@/components/layout/schools-panel/panel-layout";
+import PanelLayout from "@/components/layout/volunteer-panel/panel-layout";
 import React from "react";
 
 function page({
@@ -7,9 +7,9 @@ function page({
   children: React.ReactNode;
 }>) {
   return (
-    <AdminPanelLayout>
+    <PanelLayout>
       <div className="min-h-screen">{children}</div>
-    </AdminPanelLayout>
+    </PanelLayout>
   );
 }
 

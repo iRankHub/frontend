@@ -2,8 +2,6 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { Check, ChevronsUpDown, Trash2 } from "lucide-react";
@@ -35,11 +33,11 @@ export const columns: ColumnDef<Judges>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="iDebate ID" />
+      <DataTableColumnHeader column={column} title="iDebate ID" className="justify-center" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2">
+        <div className="w-full pr-5 text-center">
           <span className="max-w-[200px] truncate font-medium">
             {row.getValue("id")}
           </span>
@@ -51,11 +49,11 @@ export const columns: ColumnDef<Judges>[] = [
   {
     accessorKey: "names",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Names" />
+      <DataTableColumnHeader column={column} title="Names" className="justify-center" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2">
+        <div className="w-full pr-5 text-center">
           <span className="max-w-[200px] truncate font-medium">
             {row.getValue("names")}
           </span>
@@ -75,7 +73,7 @@ export const columns: ColumnDef<Judges>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-[100px] items-center justify-center">
+        <div className="w-full pr-10 text-center">
           <span className="text-sm">{row.getValue("preliminary")}</span>
         </div>
       );
@@ -96,7 +94,7 @@ export const columns: ColumnDef<Judges>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-[100px] items-center justify-center">
+        <div className="w-full pr-5 text-center">
           <span className="text-sm">{row.getValue("elimination")}</span>
         </div>
       );
@@ -116,7 +114,7 @@ export const columns: ColumnDef<Judges>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-[100px] items-center justify-center space-x-1">
+        <div className="w-full pr-5 text-center">
           <Sheet>
             <SheetTrigger>
               <Button

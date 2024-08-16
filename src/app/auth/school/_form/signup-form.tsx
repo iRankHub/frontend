@@ -61,8 +61,6 @@ const SignupForm = () => {
   const [activeStep, setActiveStep] = React.useState(1);
   const [provinces, setProvinces] = React.useState<string[]>(Provinces());
   const [districts, setDisctricts] = React.useState<string[]>(Districts());
-  const [provinceState, setProvinceState] = React.useState("");
-  const [districtRegion, setDistrictRegion] = React.useState("");
   const steps = [1, 2, 3, 4];
 
   // react-hook-form
