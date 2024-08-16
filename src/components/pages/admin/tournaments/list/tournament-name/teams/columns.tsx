@@ -121,7 +121,7 @@ export const columns: ColumnDef<Teams>[] = [
               <Panelheader>
                 <div className="flex items-center gap-1">
                   <h3 className="text-sm font-bold capitalize">
-                    {row.getValue("room")}
+                    {row.getValue("school")}
                   </h3>
                   <Button
                     type="button"

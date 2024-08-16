@@ -53,6 +53,8 @@ import {
 } from "@/components/ui/command";
 import { UserRole } from "@/types";
 import { signUp } from "@/core/authentication/auth";
+import { School } from "@/lib/grpc/proto/user_management/users_pb";
+import { getSchoolsNoAuth } from "@/core/users/schools";
 
 type Inputs = z.infer<typeof volunteerSchema>;
 
@@ -62,6 +64,20 @@ const SignupForm = () => {
   const [openCountries, setOpenCountries] = React.useState(false);
   const { toast } = useToast();
   const [activeStep, setActiveStep] = React.useState(1);
+  const [school, setSchool] = React.useState<School.AsObject[]>([]);
+
+  React.useEffect(() => {
+    getSchoolsNoAuth({
+      pageSize: 100,
+      page: 1,
+    })
+      .then((res) => {
+        setSchool(res.schoolsList);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, []);
 
   const steps = [1, 2, 3, 4];
 
@@ -83,6 +99,7 @@ const SignupForm = () => {
       hasInternship: true,
       isEnrolledInUniversity: true,
       safeguardingCertificate: true,
+      gender: data.gender,
     })
       .then((res) => {
         toast({
@@ -96,7 +113,7 @@ const SignupForm = () => {
           ),
         });
         form.reset();
-        router.push("/auth/school/login");
+        router.push("/auth/volunteer/login");
       })
       .catch((err) => {
         console.error(err.message);
@@ -153,7 +170,7 @@ const SignupForm = () => {
   };
 
   const handleCancel = () => {
-    router.push("/auth/school/login");
+    router.push("/auth/volunteer/login");
   };
 
   type FieldName = keyof Inputs;

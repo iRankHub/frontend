@@ -43,6 +43,8 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { UserRole } from "@/types";
 import { signUp } from "@/core/authentication/auth";
+import { getSchoolsNoAuth } from "@/core/users/schools";
+import { School } from "@/lib/grpc/proto/user_management/users_pb";
 
 type Inputs = z.infer<typeof StudentSchema>;
 
@@ -52,6 +54,20 @@ const SignupForm = () => {
   const { toast } = useToast();
   const [activeStep, setActiveStep] = React.useState(1);
   const steps = [1, 2, 3];
+  const [schools, setSchools] = React.useState<School.AsObject[]>([]);
+
+  React.useEffect(() => {
+    getSchoolsNoAuth({
+      pageSize: 100,
+      page: 1,
+    })
+      .then((res) => {
+        setSchools(res.schoolsList);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, []);
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -74,8 +90,8 @@ const SignupForm = () => {
       .then((res) => {
         toast({
           variant: "success",
-          title: "Success Message",
-          description: "Success Description",
+          title: "Success",
+          description: res.message,
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close
@@ -116,7 +132,7 @@ const SignupForm = () => {
         <span className="text-xs capitalize">step {number.toString()}</span>
         <div className="flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 text-xs">
           {isActive || number < activeStep ? (
-            <div className="w-4 h-4 bg-green rounded-full flex items-center justify-center">
+            <div className="w-4 h-4 bg-success-green rounded-full flex items-center justify-center">
               {number !== activeStep && (
                 <Icons.check className="w-4 h-4 text-white" />
               )}
@@ -324,9 +340,9 @@ const SignupForm = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {countries.map((country) => (
-                          <SelectItem value={country.name} key={country.code}>
-                            {country.name}
+                        {schools.map((school) => (
+                          <SelectItem value={school.name} key={school.schoolid}>
+                            {school.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -440,7 +456,7 @@ const SignupForm = () => {
                   Back
                   <span className="sr-only">Cancel</span>
                 </Button>
-                <Button variant={"default"} size={"lg"} className="w-full">
+                <Button variant={"default"} size={"lg"} className="w-full hover:bg-primary">
                   Register
                   {isPending && (
                     <div className="w-4 h-4 ml-2 rounded-full animate-spin border-white border-2 border-r-0" />

@@ -42,7 +42,6 @@ function Page({ params }: Iparms) {
     };
     getTournament({ ...data })
       .then((res) => {
-        console.log(res.tournament);
         setTournament(res.tournament);
       })
       .catch((err) => {

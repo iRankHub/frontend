@@ -24,11 +24,11 @@ export const columns: ColumnDef<PairingsPreliminaries>[] = [
   {
     accessorKey: "oposition",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Oposition" />
+      <DataTableColumnHeader column={column} title="Oposition" className="justify-center" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2">
+        <div className="w-full pr-5 text-center">
           <span className="max-w-[200px] truncate font-medium">
             {row.getValue("oposition")}
           </span>
@@ -40,7 +40,7 @@ export const columns: ColumnDef<PairingsPreliminaries>[] = [
   {
     accessorKey: "room",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Room" />
+      <DataTableColumnHeader column={column} title="Room" className="justify-center" />
     ),
     cell: ({ row }) => {
       const debateRoom = roomsPairings.find(
@@ -52,7 +52,7 @@ export const columns: ColumnDef<PairingsPreliminaries>[] = [
       }
 
       return (
-        <div className="flex w-[100px] items-center">
+        <div className="w-full pr-5 text-center">
           <Badge
             variant="default"
             className={`bg-primary text-white rounded-md`}

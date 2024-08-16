@@ -125,17 +125,17 @@ export const pairingsPreliminaries = [
 export const ballotPreliminaries = [
   {
     "head_judge": "Mukamana Anonciatha",
-    "status": "Recorded",
+    "status": "recorded",
     "room": "room 1",
   },
   {
     "head_judge": "Aline Karame",
-    "status": "Not Yet",
+    "status": "not yet",
     "room": "room 2",
   },
   {
     "head_judge": "Alice Gahondo",
-    "status": "Recorded",
+    "status": "recorded",
     "room": "room 3",
   },
 ]
@@ -214,12 +214,6 @@ export const rooms = [
     "names": "Room 1",
     "preliminary": "occupied",
     "action": "bug",
-    "elimination": "Available"
-  },
-  {
-    "names": "Room 1",
-    "preliminary": "occupied",
-    "action": "feature",
     "elimination": "occupied"
   },
   {
@@ -231,14 +225,20 @@ export const rooms = [
   {
     "names": "Room 1",
     "preliminary": "occupied",
+    "action": "feature",
+    "elimination": "occupied"
+  },
+  {
+    "names": "Room 1",
+    "preliminary": "available",
     "action": "bug",
-    "elimination": "Available"
+    "elimination": "available"
   },
   {
     "names": "Room 1",
-    "preliminary": "occupied",
+    "preliminary": "available",
     "action": "feature",
-    "elimination": "Available"
+    "elimination": "available"
   },
   {
     "names": "Room 1",
@@ -250,19 +250,13 @@ export const rooms = [
     "names": "Room 1",
     "preliminary": "occupied",
     "action": "feature",
-    "elimination": "low"
-  },
-  {
-    "names": "Room 1",
-    "preliminary": "occupied",
-    "action": "documentation",
-    "elimination": "Available"
-  },
-  {
-    "names": "Room 1",
-    "preliminary": "occupied",
-    "action": "documentation",
     "elimination": "occupied"
+  },
+  {
+    "names": "Room 1",
+    "preliminary": "available",
+    "action": "documentation",
+    "elimination": "available"
   },
   {
     "names": "Room 1",
@@ -273,14 +267,20 @@ export const rooms = [
   {
     "names": "Room 1",
     "preliminary": "occupied",
-    "action": "bug",
+    "action": "documentation",
     "elimination": "occupied"
   },
   {
     "names": "Room 1",
     "preliminary": "occupied",
     "action": "bug",
-    "elimination": "Available"
+    "elimination": "occupied"
+  },
+  {
+    "names": "Room 1",
+    "preliminary": "available",
+    "action": "bug",
+    "elimination": "available"
   },
 ]
 

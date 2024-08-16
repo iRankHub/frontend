@@ -42,6 +42,19 @@ export const statuses = [
   },
 ];
 
+export const ballotStatuses = [
+  {
+    value: "recorded",
+    label: "Recorded",
+    icon: CheckCircledIcon,
+  },
+  {
+    value: "not yet",
+    label: "Not Yet",
+    icon: StopwatchIcon,
+  },
+]
+
 export const billingsStatuses = [
   {
     value: "paid",
@@ -93,7 +106,6 @@ export const rooms = [
   },
 ];
 
-
 export const roomsPairings = [
   {
     value: "room 1",
@@ -111,3 +123,32 @@ export const roomsPairings = [
     icon: QuestionMarkCircledIcon,
   },
 ];
+
+export const teams = [
+  {
+    label: "3",
+    value: "3",
+  },
+  {
+    label: "5",
+    value: "5",
+  },
+  {
+    label: "2",
+    value: "2",
+  },
+];
+
+
+export const roomStatus = [
+  {
+    value: "occupied",
+    label: "Occupied",
+    icon: CheckCircledIcon,
+  },
+  {
+    value: "available",
+    label: "Available",
+    icon: CrossCircledIcon,
+  },
+]

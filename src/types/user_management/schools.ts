@@ -3,3 +3,8 @@ export interface GetSchoolsType {
     pageSize: number;
     token: string;
 }
+
+export interface GetSchoolsNoAuthType {
+    page: number;
+    pageSize: number;
+}

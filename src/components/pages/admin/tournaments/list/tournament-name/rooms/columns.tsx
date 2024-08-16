@@ -3,7 +3,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { Trash2 } from "lucide-react";
@@ -20,11 +19,11 @@ export const columns: ColumnDef<Rooms>[] = [
   {
     accessorKey: "names",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Names" />
+      <DataTableColumnHeader column={column} title="Names" className="justify-center" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2">
+        <div className="w-full pr-5 text-center">
           <span className="max-w-[200px] truncate font-medium">
             {row.getValue("names")}
           </span>
@@ -36,14 +35,22 @@ export const columns: ColumnDef<Rooms>[] = [
   {
     accessorKey: "preliminary",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Preliminary" />
+      <DataTableColumnHeader column={column} title="Preliminary" className="justify-center" />
     ),
     cell: ({ row }) => {
+      const value = row.getValue("preliminary");
+      const variant =
+        value === "occupied"
+          ? "bg-green-200 text-success"
+          : "bg-secondary text-foreground hover:bg-secondary";
       return (
-        <div className="flex w-[100px] items-center">
+        <div className="w-full pr-5 text-center">
           <Badge
             variant="default"
-            className={`bg-green-200 hover:bg-green-200 text-success capitalize rounded-md`}
+            className={cn(
+              `bg-green-200 hover:bg-green-200 text-success capitalize rounded-md`,
+              variant
+            )}
           >
             {row.getValue("preliminary")}
           </Badge>
@@ -58,7 +65,7 @@ export const columns: ColumnDef<Rooms>[] = [
   {
     accessorKey: "elimination",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Elimination" />
+      <DataTableColumnHeader column={column} title="Elimination" className="justify-center" />
     ),
     cell: ({ row }) => {
       const value = row.getValue("elimination");
@@ -67,7 +74,7 @@ export const columns: ColumnDef<Rooms>[] = [
           ? "bg-green-200 text-success"
           : "bg-secondary text-foreground hover:bg-secondary";
       return (
-        <div className="flex items-center">
+        <div className="w-full pr-5 text-center">
           <Badge variant="default" className={cn("rounded-md", variant)}>
             {row.getValue("elimination")}
           </Badge>
@@ -81,11 +88,11 @@ export const columns: ColumnDef<Rooms>[] = [
   {
     accessorKey: "action",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Actions" />
+      <DataTableColumnHeader column={column} title="Actions" className="justify-end" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex items-center space-x-1">
+        <div className="w-full pr-5 text-end">
           <Button
             type="button"
             variant={"secondary"}

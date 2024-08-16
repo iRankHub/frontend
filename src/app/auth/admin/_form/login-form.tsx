@@ -53,8 +53,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
       .then((res) => {
         toast({
           variant: "success",
-          title: "Success Message",
-          description: "Success Description",
+          title: "Success",
+          description: res.message,
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close

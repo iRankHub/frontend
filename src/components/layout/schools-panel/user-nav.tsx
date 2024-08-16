@@ -21,8 +21,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Icons } from "@/components/icons";
+import { useUserStore } from "@/stores/auth/auth.store";
 
 export function UserNav() {
+  const { logout } = useUserStore((state) => state);
   return (
     <DropdownMenu>
       <TooltipProvider disableHoverableContent>
@@ -71,14 +73,14 @@ export function UserNav() {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Link href="/account" className="flex items-center">
+            <Link href="/dashboard/account" className="flex items-center">
               <User className="w-4 h-4 mr-3 text-muted-foreground" />
               Account
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="hover:cursor-pointer" onClick={() => {}}>
+        <DropdownMenuItem className="hover:cursor-pointer" onClick={logout}>
           <LogOut className="w-4 h-4 mr-3 text-muted-foreground" />
           Sign out
         </DropdownMenuItem>

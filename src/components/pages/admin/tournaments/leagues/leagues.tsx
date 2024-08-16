@@ -53,16 +53,20 @@ import {
 } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+// @ts-ignore
+import { Provinces, Districts } from "rwanda";
 
 type TournamentLeagueInput = z.infer<typeof createTournamentLeagueSchema>;
 
 function Leagues({}) {
-  const [provinces, setProvinces] = useState<string[]>([]);
-  const [districts, setDistricts] = useState<string[]>([]);
+  const [selectedProvinces, setSelectedProvinces] = useState<string[]>([]);
+  const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
   const [leagues, setLeagues] = useState<League.AsObject[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const { user } = useUserStore((state) => state);
   const { toast } = useToast();
+  const [provinces, setProvinces] = useState<string[]>(Provinces());
+  const [districts, setDisctricts] = useState<string[]>(Districts());
 
   const form = useForm<TournamentLeagueInput>({
     resolver: zodResolver(createTournamentLeagueSchema),
@@ -251,8 +255,8 @@ function Leagues({}) {
                       Province(s)
                     </Label>
                     <MultiSelector
-                      values={provinces}
-                      onValuesChange={setProvinces}
+                      values={selectedProvinces}
+                      onValuesChange={setSelectedProvinces}
                       loop
                       className="flex-1"
                     >
@@ -264,18 +268,11 @@ function Leagues({}) {
                       </MultiSelectorTrigger>
                       <MultiSelectorContent>
                         <MultiSelectorList>
-                          <MultiSelectorItem value={"South"}>
-                            South
-                          </MultiSelectorItem>
-                          <MultiSelectorItem value={"East"}>
-                            East
-                          </MultiSelectorItem>
-                          <MultiSelectorItem value={"Kigali"}>
-                            Kigali City
-                          </MultiSelectorItem>
-                          <MultiSelectorItem value={"West"}>
-                            West
-                          </MultiSelectorItem>
+                          {provinces.map((province) => (
+                            <MultiSelectorItem key={province} value={province}>
+                              {province}
+                            </MultiSelectorItem>
+                          ))}
                         </MultiSelectorList>
                       </MultiSelectorContent>
                     </MultiSelector>
@@ -285,8 +282,8 @@ function Leagues({}) {
                       District(s)
                     </Label>
                     <MultiSelector
-                      values={districts}
-                      onValuesChange={setDistricts}
+                      values={selectedDistricts}
+                      onValuesChange={setSelectedDistricts}
                       loop
                       className="flex-1"
                     >
@@ -298,15 +295,11 @@ function Leagues({}) {
                       </MultiSelectorTrigger>
                       <MultiSelectorContent>
                         <MultiSelectorList>
-                          <MultiSelectorItem value={"Rulindo"}>
-                            Rulindo
-                          </MultiSelectorItem>
-                          <MultiSelectorItem value={"Nyanza"}>
-                            Nyanza
-                          </MultiSelectorItem>
-                          <MultiSelectorItem value={"Kicukiro"}>
-                            Kicukiro
-                          </MultiSelectorItem>
+                          {districts.map((district) => (
+                            <MultiSelectorItem key={district} value={district}>
+                              {district}
+                            </MultiSelectorItem>
+                          ))}
                         </MultiSelectorList>
                       </MultiSelectorContent>
                     </MultiSelector>
