@@ -47,7 +47,7 @@ import {
 } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { tournamentFormats } from "@/core/tournament/formats";
-import { School } from "@/lib/grpc/proto/user_management/users_pb";
+import { School, UserSummary } from "@/lib/grpc/proto/user_management/users_pb";
 import { getSchools } from "@/core/users/schools";
 import {
   DeleteTournamentType,
@@ -58,6 +58,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { deleteTournament, updateTournament } from "@/core/tournament/list";
 import { useRouter } from "next/navigation";
+import { getVolunteersAndAdmins } from "@/core/users/users";
 
 type Props = {
   tournament: Tournament.AsObject;
@@ -72,8 +73,24 @@ function TournamentUpdateForm({ tournament }: Props) {
   const { user } = useUserStore((state) => state);
   const [loading, setLoading] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [coordinators, setCoordinators] = React.useState<
+    UserSummary.AsObject[]
+  >([]);
   const router = useRouter();
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (!user) return;
+
+    const options = {
+      pageSize: 100,
+      page: 1,
+      token: user.token,
+    };
+    getVolunteersAndAdmins({ ...options }).then((res) => {
+      setCoordinators(res.usersList);
+    });
+  }, [user]);
 
   const formatStartDate = (): string => {
     // format return from api: 2023-07-15 09:00
@@ -146,7 +163,7 @@ function TournamentUpdateForm({ tournament }: Props) {
       start_date: modifiedStartDate(),
       end_date: modifiedEndDate(),
       format_id: Number(data.format),
-      coordinator_id: tournament.coordinatorId,
+      coordinator_id: Number(data.coordinator),
       judges_per_debate_elimination: Number(data.no_of_elimination_judges),
       judges_per_debate_preliminary: Number(data.no_of_judges),
       league_id: tournament.leagueId,
@@ -630,9 +647,17 @@ function TournamentUpdateForm({ tournament }: Props) {
                             <SelectValue placeholder="Choose a venue" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="light">Hakidu</SelectItem>
+                            {coordinators.map((coordinator) => (
+                              <SelectItem
+                                key={coordinator.userid}
+                                value={String(coordinator.userid)}
+                              >
+                                {coordinator.name}
+                              </SelectItem>
+                            ))}
+                            {/* <SelectItem value="light">Hakidu</SelectItem>
                             <SelectItem value="dark">Guy 2</SelectItem>
-                            <SelectItem value="system">Guy 3</SelectItem>
+                            <SelectItem value="system">Guy 3</SelectItem> */}
                           </SelectContent>
                         </Select>
                       </FormControl>

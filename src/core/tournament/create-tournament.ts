@@ -37,6 +37,7 @@ export const createTournament = async ({
             if (err) {
                 reject(err);
             } else {
+                console.log(err);
                 resolve(response.toObject());
             }
         });

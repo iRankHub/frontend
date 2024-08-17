@@ -39,7 +39,7 @@ import {
 } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { tournamentFormats } from "@/core/tournament/formats";
-import { School } from "@/lib/grpc/proto/user_management/users_pb";
+import { School, UserSummary } from "@/lib/grpc/proto/user_management/users_pb";
 import { createTournament } from "@/core/tournament/create-tournament";
 import { CreateTournamentType } from "@/types/tournaments/tournament";
 import { TimePicker } from "@/components/ui/time-picker";
@@ -49,11 +49,12 @@ import { getSchools } from "@/core/users/schools";
 
 type Props = {
   selectedLeague: League.AsObject | null;
+  coordinators: UserSummary.AsObject[];
 };
 
 type Inputs = z.infer<typeof createTournamentSchema>;
 
-function TournamentForm({ selectedLeague }: Props) {
+function TournamentForm({ selectedLeague, coordinators }: Props) {
   const [formats, setFormats] = useState<TournamentFormat.AsObject[]>([]);
   const [venues, setVenues] = useState<School.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
@@ -76,8 +77,7 @@ function TournamentForm({ selectedLeague }: Props) {
       toast({
         variant: "destructive",
         title: "League not selected",
-        description:
-          "Please select a league before creating a tournament.",
+        description: "Please select a league before creating a tournament.",
         action: (
           <ToastAction altText="Close" className="bg-primary text-white">
             Close
@@ -113,7 +113,7 @@ function TournamentForm({ selectedLeague }: Props) {
 
     const options: CreateTournamentType = {
       token: user.token,
-      coordinator_id: 3,
+      coordinator_id: Number(data.coordinator),
       start_date: modifiedStartDate(),
       end_date: modifiedEndDate(),
       format_id: Number(data.format),
@@ -485,9 +485,17 @@ function TournamentForm({ selectedLeague }: Props) {
                             <SelectValue placeholder="Choose a venue" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="light">Hakidu</SelectItem>
+                            {coordinators.map((coordinator) => (
+                              <SelectItem
+                                key={coordinator.userid}
+                                value={String(coordinator.userid)}
+                              >
+                                {coordinator.name}
+                              </SelectItem>
+                            ))}
+                            {/* <SelectItem value="light">Hakidu</SelectItem>
                             <SelectItem value="dark">Guy 2</SelectItem>
-                            <SelectItem value="system">Guy 3</SelectItem>
+                            <SelectItem value="system">Guy 3</SelectItem> */}
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -737,11 +745,7 @@ function TournamentForm({ selectedLeague }: Props) {
                   Cancel
                   <span className="sr-only">Cancel</span>
                 </Button>
-                <Button
-                  type="submit"
-                  variant={"default"}
-                  className="w-full"
-                >
+                <Button type="submit" variant={"default"} className="w-full">
                   Create Tournament
                   {loading && (
                     <Icons.spinner

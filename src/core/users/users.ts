@@ -1,6 +1,6 @@
 import { userClient } from "../grpc-clients";
 import { DeactivateUser, GetAllUsers, GetUserDetails } from "@/types/user_management/users";
-import { DeactivateAccountRequest, DeactivateAccountResponse, DeleteUsersRequest, DeleteUsersResponse, GetAllUsersRequest, GetAllUsersResponse, GetUserDetailsRequest, GetUserDetailsResponse } from "@/lib/grpc/proto/user_management/users_pb";
+import { DeactivateAccountRequest, DeactivateAccountResponse, DeleteUsersRequest, DeleteUsersResponse, GetAllUsersRequest, GetAllUsersResponse, GetUserDetailsRequest, GetUserDetailsResponse, GetVolunteersAndAdminsRequest, GetVolunteersAndAdminsResponse } from "@/lib/grpc/proto/user_management/users_pb";
 
 export const deactivateUser = async ({
     userID,
@@ -37,7 +37,6 @@ export const getUserDetails = async ({
                 console.log(err);
                 reject(err);
             } else {
-                console.log(err);
                 resolve(response.toObject());
             }
         });
@@ -60,9 +59,30 @@ export const getAllUsers = async({
                 console.log(err);
                 reject(err);
             } else {
-                console.log(err);
                 resolve(response.toObject());
             }
         });
     });
 };
+
+export const getVolunteersAndAdmins = async({
+    token,
+    page,
+    pageSize,
+}: GetAllUsers): Promise<GetVolunteersAndAdminsResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new GetVolunteersAndAdminsRequest();
+        request.setToken(token);
+        request.setPage(page);
+        request.setPagesize(pageSize);
+        
+        userClient.getVolunteersAndAdmins(request, {}, (err, response) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}

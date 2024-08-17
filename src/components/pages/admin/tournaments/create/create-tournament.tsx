@@ -8,10 +8,19 @@ import LeaguesMobile from "./leagues-mobile";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { tournamentLeagues } from "@/core/tournament/leagues";
 import { League } from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import { getVolunteersAndAdmins } from "@/core/users/users";
+import {
+  GetVolunteersAndAdminsResponse,
+  UserSummary,
+} from "@/lib/grpc/proto/user_management/users_pb";
 
 function CreateTournament() {
   const [leagues, setLeagues] = React.useState<League.AsObject[]>([]);
-  const [selectedLeague, setSelectedLeague] = React.useState<League.AsObject | null>(null);
+  const [coordinators, setCoordinators] = React.useState<
+    UserSummary.AsObject[]
+  >([]);
+  const [selectedLeague, setSelectedLeague] =
+    React.useState<League.AsObject | null>(null);
   const { user } = useUserStore((state) => state);
 
   useEffect(() => {
@@ -28,12 +37,26 @@ function CreateTournament() {
       .catch((err) => {
         console.error(err.message);
       });
+
+    const options = {
+      pageSize: 100,
+      page: 1,
+      token: user.token,
+    };
+
+    getVolunteersAndAdmins({ ...options }).then((res) => {
+      setCoordinators(res.usersList);
+    });
   }, [user]);
   return (
     <div className="mt-7 flex gap-5 relative">
-      <Leagues leagues={leagues} setSelectedLeague={setSelectedLeague} selectedLeague={selectedLeague} />
+      <Leagues
+        leagues={leagues}
+        setSelectedLeague={setSelectedLeague}
+        selectedLeague={selectedLeague}
+      />
       <div className="bg-background w-full min-h-full rounded-md border border-gray-200 pb-4">
-        <TournamentForm selectedLeague={selectedLeague} />
+        <TournamentForm selectedLeague={selectedLeague} coordinators={coordinators} />
       </div>
       <Sheet>
         <SheetTrigger>
@@ -45,7 +68,11 @@ function CreateTournament() {
             <Icons.add className="text-white w-5 h-5 md:w-8 md:h-8" />
           </Button>
         </SheetTrigger>
-        <LeaguesMobile leagues={leagues} setSelectedLeague={setSelectedLeague} selectedLeague={selectedLeague} />
+        <LeaguesMobile
+          leagues={leagues}
+          setSelectedLeague={setSelectedLeague}
+          selectedLeague={selectedLeague}
+        />
       </Sheet>
     </div>
   );

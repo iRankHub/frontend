@@ -61,17 +61,15 @@ function Tournaments({}) {
             <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
           </div>
         ) : tournaments.length ? (
-          tournaments.map((tournament, index) => (
-            <div
-              key={index}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5"
-            >
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+            {tournaments.map((tournament, index) => (
               <TournamentCard
+                key={index}
                 tournament={tournament}
                 setTournaments={setTournaments}
               />
-            </div>
-          ))
+            ))}
+          </div>
         ) : (
           <div className="flex items-center justify-center w-full h-96">
             <p className="text-darkBlue text-lg font-semibold">

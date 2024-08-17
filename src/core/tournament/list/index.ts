@@ -123,6 +123,21 @@ export const deleteTournament = async ({
     });
 }
 
+// export const inv = async (token: string, tournament_id: number): Promise<GetAllInvitationsResponse.AsObject> => {
+//     return new Promise((resolve, reject) => {
+//         const request = new GetInvitationsByTournament();
+//         request.setToken(token);
+//         request.setTournamentId(tournament_id);
+
+//         tournamentClient.getAllInvitations(request, {}, (err, response) => {
+//             if (err) {
+//                 reject(err);
+//             } else {
+//                 resolve(response.toObject());
+//             }
+//         });
+//     });
+// }
 
 // invitations
 export const getAllInvitations = async (token: string): Promise<GetAllInvitationsResponse.AsObject> => {
