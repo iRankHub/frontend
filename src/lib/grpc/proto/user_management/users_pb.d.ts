@@ -109,6 +109,9 @@ export class UserSummary extends jspb.Message {
   getGender(): string;
   setGender(value: string): UserSummary;
 
+  getStatus(): string;
+  setStatus(value: string): UserSummary;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UserSummary.AsObject;
   static toObject(includeInstance: boolean, msg: UserSummary): UserSummary.AsObject;
@@ -125,6 +128,7 @@ export namespace UserSummary {
     userrole: string,
     signupdate: string,
     gender: string,
+    status: string,
   }
 }
 

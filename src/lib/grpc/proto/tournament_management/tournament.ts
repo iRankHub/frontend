@@ -4331,27 +4331,161 @@ export namespace tournament_management {
             return DeleteTournamentResponse.deserialize(bytes);
         }
     }
-    export class AcceptInvitationRequest extends pb_1.Message {
+    export class GetInvitationsByUserRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            invitation_id?: number;
             token?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
-                if ("invitation_id" in data && data.invitation_id != undefined) {
-                    this.invitation_id = data.invitation_id;
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            token?: string;
+        }): GetInvitationsByUserRequest {
+            const message = new GetInvitationsByUserRequest({});
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                token?: string;
+            } = {};
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.token.length)
+                writer.writeString(1, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetInvitationsByUserRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetInvitationsByUserRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetInvitationsByUserRequest {
+            return GetInvitationsByUserRequest.deserialize(bytes);
+        }
+    }
+    export class GetInvitationsByUserResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            invitations?: InvitationInfo[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("invitations" in data && data.invitations != undefined) {
+                    this.invitations = data.invitations;
+                }
+            }
+        }
+        get invitations() {
+            return pb_1.Message.getRepeatedWrapperField(this, InvitationInfo, 1) as InvitationInfo[];
+        }
+        set invitations(value: InvitationInfo[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        static fromObject(data: {
+            invitations?: ReturnType<typeof InvitationInfo.prototype.toObject>[];
+        }): GetInvitationsByUserResponse {
+            const message = new GetInvitationsByUserResponse({});
+            if (data.invitations != null) {
+                message.invitations = data.invitations.map(item => InvitationInfo.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                invitations?: ReturnType<typeof InvitationInfo.prototype.toObject>[];
+            } = {};
+            if (this.invitations != null) {
+                data.invitations = this.invitations.map((item: InvitationInfo) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.invitations.length)
+                writer.writeRepeatedMessage(1, this.invitations, (item: InvitationInfo) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetInvitationsByUserResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetInvitationsByUserResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.invitations, () => pb_1.Message.addToRepeatedWrapperField(message, 1, InvitationInfo.deserialize(reader), InvitationInfo));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetInvitationsByUserResponse {
+            return GetInvitationsByUserResponse.deserialize(bytes);
+        }
+    }
+    export class GetInvitationsByTournamentRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tournament_id?: number;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
                 }
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
                 }
             }
         }
-        get invitation_id() {
+        get tournament_id() {
             return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
         }
-        set invitation_id(value: number) {
+        set tournament_id(value: number) {
             pb_1.Message.setField(this, 1, value);
         }
         get token() {
@@ -4361,12 +4495,12 @@ export namespace tournament_management {
             pb_1.Message.setField(this, 2, value);
         }
         static fromObject(data: {
-            invitation_id?: number;
+            tournament_id?: number;
             token?: string;
-        }): AcceptInvitationRequest {
-            const message = new AcceptInvitationRequest({});
-            if (data.invitation_id != null) {
-                message.invitation_id = data.invitation_id;
+        }): GetInvitationsByTournamentRequest {
+            const message = new GetInvitationsByTournamentRequest({});
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
             }
             if (data.token != null) {
                 message.token = data.token;
@@ -4375,11 +4509,11 @@ export namespace tournament_management {
         }
         toObject() {
             const data: {
-                invitation_id?: number;
+                tournament_id?: number;
                 token?: string;
             } = {};
-            if (this.invitation_id != null) {
-                data.invitation_id = this.invitation_id;
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
             }
             if (this.token != null) {
                 data.token = this.token;
@@ -4390,21 +4524,21 @@ export namespace tournament_management {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.invitation_id != 0)
-                writer.writeInt32(1, this.invitation_id);
+            if (this.tournament_id != 0)
+                writer.writeInt32(1, this.tournament_id);
             if (this.token.length)
                 writer.writeString(2, this.token);
             if (!w)
                 return writer.getResultBuffer();
         }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): AcceptInvitationRequest {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new AcceptInvitationRequest();
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetInvitationsByTournamentRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetInvitationsByTournamentRequest();
             while (reader.nextField()) {
                 if (reader.isEndGroup())
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        message.invitation_id = reader.readInt32();
+                        message.tournament_id = reader.readInt32();
                         break;
                     case 2:
                         message.token = reader.readString();
@@ -4417,404 +4551,152 @@ export namespace tournament_management {
         serializeBinary(): Uint8Array {
             return this.serialize();
         }
-        static deserializeBinary(bytes: Uint8Array): AcceptInvitationRequest {
-            return AcceptInvitationRequest.deserialize(bytes);
+        static deserializeBinary(bytes: Uint8Array): GetInvitationsByTournamentRequest {
+            return GetInvitationsByTournamentRequest.deserialize(bytes);
         }
     }
-    export class AcceptInvitationResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            success?: boolean;
-            message?: string;
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("success" in data && data.success != undefined) {
-                    this.success = data.success;
-                }
-                if ("message" in data && data.message != undefined) {
-                    this.message = data.message;
-                }
-            }
-        }
-        get success() {
-            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
-        }
-        set success(value: boolean) {
-            pb_1.Message.setField(this, 1, value);
-        }
-        get message() {
-            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
-        }
-        set message(value: string) {
-            pb_1.Message.setField(this, 2, value);
-        }
-        static fromObject(data: {
-            success?: boolean;
-            message?: string;
-        }): AcceptInvitationResponse {
-            const message = new AcceptInvitationResponse({});
-            if (data.success != null) {
-                message.success = data.success;
-            }
-            if (data.message != null) {
-                message.message = data.message;
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                success?: boolean;
-                message?: string;
-            } = {};
-            if (this.success != null) {
-                data.success = this.success;
-            }
-            if (this.message != null) {
-                data.message = this.message;
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.success != false)
-                writer.writeBool(1, this.success);
-            if (this.message.length)
-                writer.writeString(2, this.message);
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): AcceptInvitationResponse {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new AcceptInvitationResponse();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        message.success = reader.readBool();
-                        break;
-                    case 2:
-                        message.message = reader.readString();
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): AcceptInvitationResponse {
-            return AcceptInvitationResponse.deserialize(bytes);
-        }
-    }
-    export class DeclineInvitationRequest extends pb_1.Message {
+    export class InvitationInfo extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             invitation_id?: number;
-            token?: string;
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("invitation_id" in data && data.invitation_id != undefined) {
-                    this.invitation_id = data.invitation_id;
-                }
-                if ("token" in data && data.token != undefined) {
-                    this.token = data.token;
-                }
-            }
-        }
-        get invitation_id() {
-            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
-        }
-        set invitation_id(value: number) {
-            pb_1.Message.setField(this, 1, value);
-        }
-        get token() {
-            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
-        }
-        set token(value: string) {
-            pb_1.Message.setField(this, 2, value);
-        }
-        static fromObject(data: {
-            invitation_id?: number;
-            token?: string;
-        }): DeclineInvitationRequest {
-            const message = new DeclineInvitationRequest({});
-            if (data.invitation_id != null) {
-                message.invitation_id = data.invitation_id;
-            }
-            if (data.token != null) {
-                message.token = data.token;
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                invitation_id?: number;
-                token?: string;
-            } = {};
-            if (this.invitation_id != null) {
-                data.invitation_id = this.invitation_id;
-            }
-            if (this.token != null) {
-                data.token = this.token;
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.invitation_id != 0)
-                writer.writeInt32(1, this.invitation_id);
-            if (this.token.length)
-                writer.writeString(2, this.token);
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): DeclineInvitationRequest {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new DeclineInvitationRequest();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        message.invitation_id = reader.readInt32();
-                        break;
-                    case 2:
-                        message.token = reader.readString();
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): DeclineInvitationRequest {
-            return DeclineInvitationRequest.deserialize(bytes);
-        }
-    }
-    export class DeclineInvitationResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            success?: boolean;
-            message?: string;
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("success" in data && data.success != undefined) {
-                    this.success = data.success;
-                }
-                if ("message" in data && data.message != undefined) {
-                    this.message = data.message;
-                }
-            }
-        }
-        get success() {
-            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
-        }
-        set success(value: boolean) {
-            pb_1.Message.setField(this, 1, value);
-        }
-        get message() {
-            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
-        }
-        set message(value: string) {
-            pb_1.Message.setField(this, 2, value);
-        }
-        static fromObject(data: {
-            success?: boolean;
-            message?: string;
-        }): DeclineInvitationResponse {
-            const message = new DeclineInvitationResponse({});
-            if (data.success != null) {
-                message.success = data.success;
-            }
-            if (data.message != null) {
-                message.message = data.message;
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                success?: boolean;
-                message?: string;
-            } = {};
-            if (this.success != null) {
-                data.success = this.success;
-            }
-            if (this.message != null) {
-                data.message = this.message;
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.success != false)
-                writer.writeBool(1, this.success);
-            if (this.message.length)
-                writer.writeString(2, this.message);
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): DeclineInvitationResponse {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new DeclineInvitationResponse();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        message.success = reader.readBool();
-                        break;
-                    case 2:
-                        message.message = reader.readString();
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): DeclineInvitationResponse {
-            return DeclineInvitationResponse.deserialize(bytes);
-        }
-    }
-    export class GetInvitationStatusRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            invitation_id?: number;
-            token?: string;
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("invitation_id" in data && data.invitation_id != undefined) {
-                    this.invitation_id = data.invitation_id;
-                }
-                if ("token" in data && data.token != undefined) {
-                    this.token = data.token;
-                }
-            }
-        }
-        get invitation_id() {
-            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
-        }
-        set invitation_id(value: number) {
-            pb_1.Message.setField(this, 1, value);
-        }
-        get token() {
-            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
-        }
-        set token(value: string) {
-            pb_1.Message.setField(this, 2, value);
-        }
-        static fromObject(data: {
-            invitation_id?: number;
-            token?: string;
-        }): GetInvitationStatusRequest {
-            const message = new GetInvitationStatusRequest({});
-            if (data.invitation_id != null) {
-                message.invitation_id = data.invitation_id;
-            }
-            if (data.token != null) {
-                message.token = data.token;
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                invitation_id?: number;
-                token?: string;
-            } = {};
-            if (this.invitation_id != null) {
-                data.invitation_id = this.invitation_id;
-            }
-            if (this.token != null) {
-                data.token = this.token;
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.invitation_id != 0)
-                writer.writeInt32(1, this.invitation_id);
-            if (this.token.length)
-                writer.writeString(2, this.token);
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetInvitationStatusRequest {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetInvitationStatusRequest();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        message.invitation_id = reader.readInt32();
-                        break;
-                    case 2:
-                        message.token = reader.readString();
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): GetInvitationStatusRequest {
-            return GetInvitationStatusRequest.deserialize(bytes);
-        }
-    }
-    export class GetInvitationStatusResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
             status?: string;
+            idebate_id?: string;
+            invitee_name?: string;
+            invitee_role?: string;
+            created_at?: string;
+            updated_at?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
+                if ("invitation_id" in data && data.invitation_id != undefined) {
+                    this.invitation_id = data.invitation_id;
+                }
                 if ("status" in data && data.status != undefined) {
                     this.status = data.status;
                 }
+                if ("idebate_id" in data && data.idebate_id != undefined) {
+                    this.idebate_id = data.idebate_id;
+                }
+                if ("invitee_name" in data && data.invitee_name != undefined) {
+                    this.invitee_name = data.invitee_name;
+                }
+                if ("invitee_role" in data && data.invitee_role != undefined) {
+                    this.invitee_role = data.invitee_role;
+                }
+                if ("created_at" in data && data.created_at != undefined) {
+                    this.created_at = data.created_at;
+                }
+                if ("updated_at" in data && data.updated_at != undefined) {
+                    this.updated_at = data.updated_at;
+                }
             }
         }
-        get status() {
-            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        get invitation_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
         }
-        set status(value: string) {
+        set invitation_id(value: number) {
             pb_1.Message.setField(this, 1, value);
         }
+        get status() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set status(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get idebate_id() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set idebate_id(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get invitee_name() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set invitee_name(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get invitee_role() {
+            return pb_1.Message.getFieldWithDefault(this, 5, "") as string;
+        }
+        set invitee_role(value: string) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        get created_at() {
+            return pb_1.Message.getFieldWithDefault(this, 6, "") as string;
+        }
+        set created_at(value: string) {
+            pb_1.Message.setField(this, 6, value);
+        }
+        get updated_at() {
+            return pb_1.Message.getFieldWithDefault(this, 7, "") as string;
+        }
+        set updated_at(value: string) {
+            pb_1.Message.setField(this, 7, value);
+        }
         static fromObject(data: {
+            invitation_id?: number;
             status?: string;
-        }): GetInvitationStatusResponse {
-            const message = new GetInvitationStatusResponse({});
+            idebate_id?: string;
+            invitee_name?: string;
+            invitee_role?: string;
+            created_at?: string;
+            updated_at?: string;
+        }): InvitationInfo {
+            const message = new InvitationInfo({});
+            if (data.invitation_id != null) {
+                message.invitation_id = data.invitation_id;
+            }
             if (data.status != null) {
                 message.status = data.status;
+            }
+            if (data.idebate_id != null) {
+                message.idebate_id = data.idebate_id;
+            }
+            if (data.invitee_name != null) {
+                message.invitee_name = data.invitee_name;
+            }
+            if (data.invitee_role != null) {
+                message.invitee_role = data.invitee_role;
+            }
+            if (data.created_at != null) {
+                message.created_at = data.created_at;
+            }
+            if (data.updated_at != null) {
+                message.updated_at = data.updated_at;
             }
             return message;
         }
         toObject() {
             const data: {
+                invitation_id?: number;
                 status?: string;
+                idebate_id?: string;
+                invitee_name?: string;
+                invitee_role?: string;
+                created_at?: string;
+                updated_at?: string;
             } = {};
+            if (this.invitation_id != null) {
+                data.invitation_id = this.invitation_id;
+            }
             if (this.status != null) {
                 data.status = this.status;
+            }
+            if (this.idebate_id != null) {
+                data.idebate_id = this.idebate_id;
+            }
+            if (this.invitee_name != null) {
+                data.invitee_name = this.invitee_name;
+            }
+            if (this.invitee_role != null) {
+                data.invitee_role = this.invitee_role;
+            }
+            if (this.created_at != null) {
+                data.created_at = this.created_at;
+            }
+            if (this.updated_at != null) {
+                data.updated_at = this.updated_at;
             }
             return data;
         }
@@ -4822,19 +4704,49 @@ export namespace tournament_management {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
+            if (this.invitation_id != 0)
+                writer.writeInt32(1, this.invitation_id);
             if (this.status.length)
-                writer.writeString(1, this.status);
+                writer.writeString(2, this.status);
+            if (this.idebate_id.length)
+                writer.writeString(3, this.idebate_id);
+            if (this.invitee_name.length)
+                writer.writeString(4, this.invitee_name);
+            if (this.invitee_role.length)
+                writer.writeString(5, this.invitee_role);
+            if (this.created_at.length)
+                writer.writeString(6, this.created_at);
+            if (this.updated_at.length)
+                writer.writeString(7, this.updated_at);
             if (!w)
                 return writer.getResultBuffer();
         }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetInvitationStatusResponse {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetInvitationStatusResponse();
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): InvitationInfo {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new InvitationInfo();
             while (reader.nextField()) {
                 if (reader.isEndGroup())
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
+                        message.invitation_id = reader.readInt32();
+                        break;
+                    case 2:
                         message.status = reader.readString();
+                        break;
+                    case 3:
+                        message.idebate_id = reader.readString();
+                        break;
+                    case 4:
+                        message.invitee_name = reader.readString();
+                        break;
+                    case 5:
+                        message.invitee_role = reader.readString();
+                        break;
+                    case 6:
+                        message.created_at = reader.readString();
+                        break;
+                    case 7:
+                        message.updated_at = reader.readString();
                         break;
                     default: reader.skipField();
                 }
@@ -4844,8 +4756,504 @@ export namespace tournament_management {
         serializeBinary(): Uint8Array {
             return this.serialize();
         }
-        static deserializeBinary(bytes: Uint8Array): GetInvitationStatusResponse {
-            return GetInvitationStatusResponse.deserialize(bytes);
+        static deserializeBinary(bytes: Uint8Array): InvitationInfo {
+            return InvitationInfo.deserialize(bytes);
+        }
+    }
+    export class GetInvitationsByTournamentResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            invitations?: InvitationInfo[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("invitations" in data && data.invitations != undefined) {
+                    this.invitations = data.invitations;
+                }
+            }
+        }
+        get invitations() {
+            return pb_1.Message.getRepeatedWrapperField(this, InvitationInfo, 1) as InvitationInfo[];
+        }
+        set invitations(value: InvitationInfo[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        static fromObject(data: {
+            invitations?: ReturnType<typeof InvitationInfo.prototype.toObject>[];
+        }): GetInvitationsByTournamentResponse {
+            const message = new GetInvitationsByTournamentResponse({});
+            if (data.invitations != null) {
+                message.invitations = data.invitations.map(item => InvitationInfo.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                invitations?: ReturnType<typeof InvitationInfo.prototype.toObject>[];
+            } = {};
+            if (this.invitations != null) {
+                data.invitations = this.invitations.map((item: InvitationInfo) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.invitations.length)
+                writer.writeRepeatedMessage(1, this.invitations, (item: InvitationInfo) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetInvitationsByTournamentResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetInvitationsByTournamentResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.invitations, () => pb_1.Message.addToRepeatedWrapperField(message, 1, InvitationInfo.deserialize(reader), InvitationInfo));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetInvitationsByTournamentResponse {
+            return GetInvitationsByTournamentResponse.deserialize(bytes);
+        }
+    }
+    export class UpdateInvitationStatusRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            invitation_id?: number;
+            new_status?: string;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("invitation_id" in data && data.invitation_id != undefined) {
+                    this.invitation_id = data.invitation_id;
+                }
+                if ("new_status" in data && data.new_status != undefined) {
+                    this.new_status = data.new_status;
+                }
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get invitation_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set invitation_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get new_status() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set new_status(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        static fromObject(data: {
+            invitation_id?: number;
+            new_status?: string;
+            token?: string;
+        }): UpdateInvitationStatusRequest {
+            const message = new UpdateInvitationStatusRequest({});
+            if (data.invitation_id != null) {
+                message.invitation_id = data.invitation_id;
+            }
+            if (data.new_status != null) {
+                message.new_status = data.new_status;
+            }
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                invitation_id?: number;
+                new_status?: string;
+                token?: string;
+            } = {};
+            if (this.invitation_id != null) {
+                data.invitation_id = this.invitation_id;
+            }
+            if (this.new_status != null) {
+                data.new_status = this.new_status;
+            }
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.invitation_id != 0)
+                writer.writeInt32(1, this.invitation_id);
+            if (this.new_status.length)
+                writer.writeString(2, this.new_status);
+            if (this.token.length)
+                writer.writeString(3, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateInvitationStatusRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateInvitationStatusRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.invitation_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.new_status = reader.readString();
+                        break;
+                    case 3:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): UpdateInvitationStatusRequest {
+            return UpdateInvitationStatusRequest.deserialize(bytes);
+        }
+    }
+    export class UpdateInvitationStatusResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            success?: boolean;
+            message?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("success" in data && data.success != undefined) {
+                    this.success = data.success;
+                }
+                if ("message" in data && data.message != undefined) {
+                    this.message = data.message;
+                }
+            }
+        }
+        get success() {
+            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
+        }
+        set success(value: boolean) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get message() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set message(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            success?: boolean;
+            message?: string;
+        }): UpdateInvitationStatusResponse {
+            const message = new UpdateInvitationStatusResponse({});
+            if (data.success != null) {
+                message.success = data.success;
+            }
+            if (data.message != null) {
+                message.message = data.message;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                success?: boolean;
+                message?: string;
+            } = {};
+            if (this.success != null) {
+                data.success = this.success;
+            }
+            if (this.message != null) {
+                data.message = this.message;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.success != false)
+                writer.writeBool(1, this.success);
+            if (this.message.length)
+                writer.writeString(2, this.message);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateInvitationStatusResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateInvitationStatusResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.success = reader.readBool();
+                        break;
+                    case 2:
+                        message.message = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): UpdateInvitationStatusResponse {
+            return UpdateInvitationStatusResponse.deserialize(bytes);
+        }
+    }
+    export class BulkUpdateInvitationStatusRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            invitation_ids?: number[];
+            new_status?: string;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("invitation_ids" in data && data.invitation_ids != undefined) {
+                    this.invitation_ids = data.invitation_ids;
+                }
+                if ("new_status" in data && data.new_status != undefined) {
+                    this.new_status = data.new_status;
+                }
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get invitation_ids() {
+            return pb_1.Message.getFieldWithDefault(this, 1, []) as number[];
+        }
+        set invitation_ids(value: number[]) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get new_status() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set new_status(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        static fromObject(data: {
+            invitation_ids?: number[];
+            new_status?: string;
+            token?: string;
+        }): BulkUpdateInvitationStatusRequest {
+            const message = new BulkUpdateInvitationStatusRequest({});
+            if (data.invitation_ids != null) {
+                message.invitation_ids = data.invitation_ids;
+            }
+            if (data.new_status != null) {
+                message.new_status = data.new_status;
+            }
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                invitation_ids?: number[];
+                new_status?: string;
+                token?: string;
+            } = {};
+            if (this.invitation_ids != null) {
+                data.invitation_ids = this.invitation_ids;
+            }
+            if (this.new_status != null) {
+                data.new_status = this.new_status;
+            }
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.invitation_ids.length)
+                writer.writePackedInt32(1, this.invitation_ids);
+            if (this.new_status.length)
+                writer.writeString(2, this.new_status);
+            if (this.token.length)
+                writer.writeString(3, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): BulkUpdateInvitationStatusRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new BulkUpdateInvitationStatusRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.invitation_ids = reader.readPackedInt32();
+                        break;
+                    case 2:
+                        message.new_status = reader.readString();
+                        break;
+                    case 3:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): BulkUpdateInvitationStatusRequest {
+            return BulkUpdateInvitationStatusRequest.deserialize(bytes);
+        }
+    }
+    export class BulkUpdateInvitationStatusResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            success?: boolean;
+            message?: string;
+            updated_invitation_ids?: number[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("success" in data && data.success != undefined) {
+                    this.success = data.success;
+                }
+                if ("message" in data && data.message != undefined) {
+                    this.message = data.message;
+                }
+                if ("updated_invitation_ids" in data && data.updated_invitation_ids != undefined) {
+                    this.updated_invitation_ids = data.updated_invitation_ids;
+                }
+            }
+        }
+        get success() {
+            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
+        }
+        set success(value: boolean) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get message() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set message(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get updated_invitation_ids() {
+            return pb_1.Message.getFieldWithDefault(this, 3, []) as number[];
+        }
+        set updated_invitation_ids(value: number[]) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        static fromObject(data: {
+            success?: boolean;
+            message?: string;
+            updated_invitation_ids?: number[];
+        }): BulkUpdateInvitationStatusResponse {
+            const message = new BulkUpdateInvitationStatusResponse({});
+            if (data.success != null) {
+                message.success = data.success;
+            }
+            if (data.message != null) {
+                message.message = data.message;
+            }
+            if (data.updated_invitation_ids != null) {
+                message.updated_invitation_ids = data.updated_invitation_ids;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                success?: boolean;
+                message?: string;
+                updated_invitation_ids?: number[];
+            } = {};
+            if (this.success != null) {
+                data.success = this.success;
+            }
+            if (this.message != null) {
+                data.message = this.message;
+            }
+            if (this.updated_invitation_ids != null) {
+                data.updated_invitation_ids = this.updated_invitation_ids;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.success != false)
+                writer.writeBool(1, this.success);
+            if (this.message.length)
+                writer.writeString(2, this.message);
+            if (this.updated_invitation_ids.length)
+                writer.writePackedInt32(3, this.updated_invitation_ids);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): BulkUpdateInvitationStatusResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new BulkUpdateInvitationStatusResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.success = reader.readBool();
+                        break;
+                    case 2:
+                        message.message = reader.readString();
+                        break;
+                    case 3:
+                        message.updated_invitation_ids = reader.readPackedInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): BulkUpdateInvitationStatusResponse {
+            return BulkUpdateInvitationStatusResponse.deserialize(bytes);
         }
     }
     export class ResendInvitationRequest extends pb_1.Message {
@@ -5208,747 +5616,6 @@ export namespace tournament_management {
             return BulkResendInvitationsResponse.deserialize(bytes);
         }
     }
-    export class GetInvitationsByUserRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            token?: string;
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("token" in data && data.token != undefined) {
-                    this.token = data.token;
-                }
-            }
-        }
-        get token() {
-            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
-        }
-        set token(value: string) {
-            pb_1.Message.setField(this, 1, value);
-        }
-        static fromObject(data: {
-            token?: string;
-        }): GetInvitationsByUserRequest {
-            const message = new GetInvitationsByUserRequest({});
-            if (data.token != null) {
-                message.token = data.token;
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                token?: string;
-            } = {};
-            if (this.token != null) {
-                data.token = this.token;
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.token.length)
-                writer.writeString(1, this.token);
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetInvitationsByUserRequest {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetInvitationsByUserRequest();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        message.token = reader.readString();
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): GetInvitationsByUserRequest {
-            return GetInvitationsByUserRequest.deserialize(bytes);
-        }
-    }
-    export class Invitation extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            invitation_id?: number;
-            tournament_id?: number;
-            status?: string;
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("invitation_id" in data && data.invitation_id != undefined) {
-                    this.invitation_id = data.invitation_id;
-                }
-                if ("tournament_id" in data && data.tournament_id != undefined) {
-                    this.tournament_id = data.tournament_id;
-                }
-                if ("status" in data && data.status != undefined) {
-                    this.status = data.status;
-                }
-            }
-        }
-        get invitation_id() {
-            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
-        }
-        set invitation_id(value: number) {
-            pb_1.Message.setField(this, 1, value);
-        }
-        get tournament_id() {
-            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
-        }
-        set tournament_id(value: number) {
-            pb_1.Message.setField(this, 2, value);
-        }
-        get status() {
-            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
-        }
-        set status(value: string) {
-            pb_1.Message.setField(this, 3, value);
-        }
-        static fromObject(data: {
-            invitation_id?: number;
-            tournament_id?: number;
-            status?: string;
-        }): Invitation {
-            const message = new Invitation({});
-            if (data.invitation_id != null) {
-                message.invitation_id = data.invitation_id;
-            }
-            if (data.tournament_id != null) {
-                message.tournament_id = data.tournament_id;
-            }
-            if (data.status != null) {
-                message.status = data.status;
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                invitation_id?: number;
-                tournament_id?: number;
-                status?: string;
-            } = {};
-            if (this.invitation_id != null) {
-                data.invitation_id = this.invitation_id;
-            }
-            if (this.tournament_id != null) {
-                data.tournament_id = this.tournament_id;
-            }
-            if (this.status != null) {
-                data.status = this.status;
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.invitation_id != 0)
-                writer.writeInt32(1, this.invitation_id);
-            if (this.tournament_id != 0)
-                writer.writeInt32(2, this.tournament_id);
-            if (this.status.length)
-                writer.writeString(3, this.status);
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): Invitation {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new Invitation();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        message.invitation_id = reader.readInt32();
-                        break;
-                    case 2:
-                        message.tournament_id = reader.readInt32();
-                        break;
-                    case 3:
-                        message.status = reader.readString();
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): Invitation {
-            return Invitation.deserialize(bytes);
-        }
-    }
-    export class GetInvitationsByUserResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            invitations?: Invitation[];
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("invitations" in data && data.invitations != undefined) {
-                    this.invitations = data.invitations;
-                }
-            }
-        }
-        get invitations() {
-            return pb_1.Message.getRepeatedWrapperField(this, Invitation, 1) as Invitation[];
-        }
-        set invitations(value: Invitation[]) {
-            pb_1.Message.setRepeatedWrapperField(this, 1, value);
-        }
-        static fromObject(data: {
-            invitations?: ReturnType<typeof Invitation.prototype.toObject>[];
-        }): GetInvitationsByUserResponse {
-            const message = new GetInvitationsByUserResponse({});
-            if (data.invitations != null) {
-                message.invitations = data.invitations.map(item => Invitation.fromObject(item));
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                invitations?: ReturnType<typeof Invitation.prototype.toObject>[];
-            } = {};
-            if (this.invitations != null) {
-                data.invitations = this.invitations.map((item: Invitation) => item.toObject());
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.invitations.length)
-                writer.writeRepeatedMessage(1, this.invitations, (item: Invitation) => item.serialize(writer));
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetInvitationsByUserResponse {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetInvitationsByUserResponse();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        reader.readMessage(message.invitations, () => pb_1.Message.addToRepeatedWrapperField(message, 1, Invitation.deserialize(reader), Invitation));
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): GetInvitationsByUserResponse {
-            return GetInvitationsByUserResponse.deserialize(bytes);
-        }
-    }
-    export class BulkAcceptInvitationsRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            invitation_ids?: number[];
-            token?: string;
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("invitation_ids" in data && data.invitation_ids != undefined) {
-                    this.invitation_ids = data.invitation_ids;
-                }
-                if ("token" in data && data.token != undefined) {
-                    this.token = data.token;
-                }
-            }
-        }
-        get invitation_ids() {
-            return pb_1.Message.getFieldWithDefault(this, 1, []) as number[];
-        }
-        set invitation_ids(value: number[]) {
-            pb_1.Message.setField(this, 1, value);
-        }
-        get token() {
-            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
-        }
-        set token(value: string) {
-            pb_1.Message.setField(this, 2, value);
-        }
-        static fromObject(data: {
-            invitation_ids?: number[];
-            token?: string;
-        }): BulkAcceptInvitationsRequest {
-            const message = new BulkAcceptInvitationsRequest({});
-            if (data.invitation_ids != null) {
-                message.invitation_ids = data.invitation_ids;
-            }
-            if (data.token != null) {
-                message.token = data.token;
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                invitation_ids?: number[];
-                token?: string;
-            } = {};
-            if (this.invitation_ids != null) {
-                data.invitation_ids = this.invitation_ids;
-            }
-            if (this.token != null) {
-                data.token = this.token;
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.invitation_ids.length)
-                writer.writePackedInt32(1, this.invitation_ids);
-            if (this.token.length)
-                writer.writeString(2, this.token);
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): BulkAcceptInvitationsRequest {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new BulkAcceptInvitationsRequest();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        message.invitation_ids = reader.readPackedInt32();
-                        break;
-                    case 2:
-                        message.token = reader.readString();
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): BulkAcceptInvitationsRequest {
-            return BulkAcceptInvitationsRequest.deserialize(bytes);
-        }
-    }
-    export class BulkAcceptInvitationsResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            success?: boolean;
-            message?: string;
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("success" in data && data.success != undefined) {
-                    this.success = data.success;
-                }
-                if ("message" in data && data.message != undefined) {
-                    this.message = data.message;
-                }
-            }
-        }
-        get success() {
-            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
-        }
-        set success(value: boolean) {
-            pb_1.Message.setField(this, 1, value);
-        }
-        get message() {
-            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
-        }
-        set message(value: string) {
-            pb_1.Message.setField(this, 2, value);
-        }
-        static fromObject(data: {
-            success?: boolean;
-            message?: string;
-        }): BulkAcceptInvitationsResponse {
-            const message = new BulkAcceptInvitationsResponse({});
-            if (data.success != null) {
-                message.success = data.success;
-            }
-            if (data.message != null) {
-                message.message = data.message;
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                success?: boolean;
-                message?: string;
-            } = {};
-            if (this.success != null) {
-                data.success = this.success;
-            }
-            if (this.message != null) {
-                data.message = this.message;
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.success != false)
-                writer.writeBool(1, this.success);
-            if (this.message.length)
-                writer.writeString(2, this.message);
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): BulkAcceptInvitationsResponse {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new BulkAcceptInvitationsResponse();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        message.success = reader.readBool();
-                        break;
-                    case 2:
-                        message.message = reader.readString();
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): BulkAcceptInvitationsResponse {
-            return BulkAcceptInvitationsResponse.deserialize(bytes);
-        }
-    }
-    export class BulkDeclineInvitationsRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            invitation_ids?: number[];
-            token?: string;
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("invitation_ids" in data && data.invitation_ids != undefined) {
-                    this.invitation_ids = data.invitation_ids;
-                }
-                if ("token" in data && data.token != undefined) {
-                    this.token = data.token;
-                }
-            }
-        }
-        get invitation_ids() {
-            return pb_1.Message.getFieldWithDefault(this, 1, []) as number[];
-        }
-        set invitation_ids(value: number[]) {
-            pb_1.Message.setField(this, 1, value);
-        }
-        get token() {
-            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
-        }
-        set token(value: string) {
-            pb_1.Message.setField(this, 2, value);
-        }
-        static fromObject(data: {
-            invitation_ids?: number[];
-            token?: string;
-        }): BulkDeclineInvitationsRequest {
-            const message = new BulkDeclineInvitationsRequest({});
-            if (data.invitation_ids != null) {
-                message.invitation_ids = data.invitation_ids;
-            }
-            if (data.token != null) {
-                message.token = data.token;
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                invitation_ids?: number[];
-                token?: string;
-            } = {};
-            if (this.invitation_ids != null) {
-                data.invitation_ids = this.invitation_ids;
-            }
-            if (this.token != null) {
-                data.token = this.token;
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.invitation_ids.length)
-                writer.writePackedInt32(1, this.invitation_ids);
-            if (this.token.length)
-                writer.writeString(2, this.token);
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): BulkDeclineInvitationsRequest {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new BulkDeclineInvitationsRequest();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        message.invitation_ids = reader.readPackedInt32();
-                        break;
-                    case 2:
-                        message.token = reader.readString();
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): BulkDeclineInvitationsRequest {
-            return BulkDeclineInvitationsRequest.deserialize(bytes);
-        }
-    }
-    export class BulkDeclineInvitationsResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            success?: boolean;
-            message?: string;
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("success" in data && data.success != undefined) {
-                    this.success = data.success;
-                }
-                if ("message" in data && data.message != undefined) {
-                    this.message = data.message;
-                }
-            }
-        }
-        get success() {
-            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
-        }
-        set success(value: boolean) {
-            pb_1.Message.setField(this, 1, value);
-        }
-        get message() {
-            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
-        }
-        set message(value: string) {
-            pb_1.Message.setField(this, 2, value);
-        }
-        static fromObject(data: {
-            success?: boolean;
-            message?: string;
-        }): BulkDeclineInvitationsResponse {
-            const message = new BulkDeclineInvitationsResponse({});
-            if (data.success != null) {
-                message.success = data.success;
-            }
-            if (data.message != null) {
-                message.message = data.message;
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                success?: boolean;
-                message?: string;
-            } = {};
-            if (this.success != null) {
-                data.success = this.success;
-            }
-            if (this.message != null) {
-                data.message = this.message;
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.success != false)
-                writer.writeBool(1, this.success);
-            if (this.message.length)
-                writer.writeString(2, this.message);
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): BulkDeclineInvitationsResponse {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new BulkDeclineInvitationsResponse();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        message.success = reader.readBool();
-                        break;
-                    case 2:
-                        message.message = reader.readString();
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): BulkDeclineInvitationsResponse {
-            return BulkDeclineInvitationsResponse.deserialize(bytes);
-        }
-    }
-    export class GetAllInvitationsRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            token?: string;
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("token" in data && data.token != undefined) {
-                    this.token = data.token;
-                }
-            }
-        }
-        get token() {
-            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
-        }
-        set token(value: string) {
-            pb_1.Message.setField(this, 1, value);
-        }
-        static fromObject(data: {
-            token?: string;
-        }): GetAllInvitationsRequest {
-            const message = new GetAllInvitationsRequest({});
-            if (data.token != null) {
-                message.token = data.token;
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                token?: string;
-            } = {};
-            if (this.token != null) {
-                data.token = this.token;
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.token.length)
-                writer.writeString(1, this.token);
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetAllInvitationsRequest {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetAllInvitationsRequest();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        message.token = reader.readString();
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): GetAllInvitationsRequest {
-            return GetAllInvitationsRequest.deserialize(bytes);
-        }
-    }
-    export class GetAllInvitationsResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            invitations?: Invitation[];
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("invitations" in data && data.invitations != undefined) {
-                    this.invitations = data.invitations;
-                }
-            }
-        }
-        get invitations() {
-            return pb_1.Message.getRepeatedWrapperField(this, Invitation, 1) as Invitation[];
-        }
-        set invitations(value: Invitation[]) {
-            pb_1.Message.setRepeatedWrapperField(this, 1, value);
-        }
-        static fromObject(data: {
-            invitations?: ReturnType<typeof Invitation.prototype.toObject>[];
-        }): GetAllInvitationsResponse {
-            const message = new GetAllInvitationsResponse({});
-            if (data.invitations != null) {
-                message.invitations = data.invitations.map(item => Invitation.fromObject(item));
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                invitations?: ReturnType<typeof Invitation.prototype.toObject>[];
-            } = {};
-            if (this.invitations != null) {
-                data.invitations = this.invitations.map((item: Invitation) => item.toObject());
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.invitations.length)
-                writer.writeRepeatedMessage(1, this.invitations, (item: Invitation) => item.serialize(writer));
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetAllInvitationsResponse {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetAllInvitationsResponse();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        reader.readMessage(message.invitations, () => pb_1.Message.addToRepeatedWrapperField(message, 1, Invitation.deserialize(reader), Invitation));
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): GetAllInvitationsResponse {
-            return GetAllInvitationsResponse.deserialize(bytes);
-        }
-    }
     interface GrpcUnaryServiceInterface<P, R> {
         (message: P, metadata: grpc_1.Metadata, options: grpc_1.CallOptions, callback: grpc_1.requestCallback<R>): grpc_1.ClientUnaryCall;
         (message: P, metadata: grpc_1.Metadata, callback: grpc_1.requestCallback<R>): grpc_1.ClientUnaryCall;
@@ -6110,42 +5777,6 @@ export namespace tournament_management {
                 responseSerialize: (message: DeleteTournamentResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => DeleteTournamentResponse.deserialize(new Uint8Array(bytes))
             },
-            AcceptInvitation: {
-                path: "/tournament_management.TournamentService/AcceptInvitation",
-                requestStream: false,
-                responseStream: false,
-                requestSerialize: (message: AcceptInvitationRequest) => Buffer.from(message.serialize()),
-                requestDeserialize: (bytes: Buffer) => AcceptInvitationRequest.deserialize(new Uint8Array(bytes)),
-                responseSerialize: (message: AcceptInvitationResponse) => Buffer.from(message.serialize()),
-                responseDeserialize: (bytes: Buffer) => AcceptInvitationResponse.deserialize(new Uint8Array(bytes))
-            },
-            DeclineInvitation: {
-                path: "/tournament_management.TournamentService/DeclineInvitation",
-                requestStream: false,
-                responseStream: false,
-                requestSerialize: (message: DeclineInvitationRequest) => Buffer.from(message.serialize()),
-                requestDeserialize: (bytes: Buffer) => DeclineInvitationRequest.deserialize(new Uint8Array(bytes)),
-                responseSerialize: (message: DeclineInvitationResponse) => Buffer.from(message.serialize()),
-                responseDeserialize: (bytes: Buffer) => DeclineInvitationResponse.deserialize(new Uint8Array(bytes))
-            },
-            GetInvitationStatus: {
-                path: "/tournament_management.TournamentService/GetInvitationStatus",
-                requestStream: false,
-                responseStream: false,
-                requestSerialize: (message: GetInvitationStatusRequest) => Buffer.from(message.serialize()),
-                requestDeserialize: (bytes: Buffer) => GetInvitationStatusRequest.deserialize(new Uint8Array(bytes)),
-                responseSerialize: (message: GetInvitationStatusResponse) => Buffer.from(message.serialize()),
-                responseDeserialize: (bytes: Buffer) => GetInvitationStatusResponse.deserialize(new Uint8Array(bytes))
-            },
-            ResendInvitation: {
-                path: "/tournament_management.TournamentService/ResendInvitation",
-                requestStream: false,
-                responseStream: false,
-                requestSerialize: (message: ResendInvitationRequest) => Buffer.from(message.serialize()),
-                requestDeserialize: (bytes: Buffer) => ResendInvitationRequest.deserialize(new Uint8Array(bytes)),
-                responseSerialize: (message: ResendInvitationResponse) => Buffer.from(message.serialize()),
-                responseDeserialize: (bytes: Buffer) => ResendInvitationResponse.deserialize(new Uint8Array(bytes))
-            },
             GetInvitationsByUser: {
                 path: "/tournament_management.TournamentService/GetInvitationsByUser",
                 requestStream: false,
@@ -6155,32 +5786,41 @@ export namespace tournament_management {
                 responseSerialize: (message: GetInvitationsByUserResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => GetInvitationsByUserResponse.deserialize(new Uint8Array(bytes))
             },
-            BulkAcceptInvitations: {
-                path: "/tournament_management.TournamentService/BulkAcceptInvitations",
+            GetInvitationsByTournament: {
+                path: "/tournament_management.TournamentService/GetInvitationsByTournament",
                 requestStream: false,
                 responseStream: false,
-                requestSerialize: (message: BulkAcceptInvitationsRequest) => Buffer.from(message.serialize()),
-                requestDeserialize: (bytes: Buffer) => BulkAcceptInvitationsRequest.deserialize(new Uint8Array(bytes)),
-                responseSerialize: (message: BulkAcceptInvitationsResponse) => Buffer.from(message.serialize()),
-                responseDeserialize: (bytes: Buffer) => BulkAcceptInvitationsResponse.deserialize(new Uint8Array(bytes))
+                requestSerialize: (message: GetInvitationsByTournamentRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetInvitationsByTournamentRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: GetInvitationsByTournamentResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => GetInvitationsByTournamentResponse.deserialize(new Uint8Array(bytes))
             },
-            BulkDeclineInvitations: {
-                path: "/tournament_management.TournamentService/BulkDeclineInvitations",
+            UpdateInvitationStatus: {
+                path: "/tournament_management.TournamentService/UpdateInvitationStatus",
                 requestStream: false,
                 responseStream: false,
-                requestSerialize: (message: BulkDeclineInvitationsRequest) => Buffer.from(message.serialize()),
-                requestDeserialize: (bytes: Buffer) => BulkDeclineInvitationsRequest.deserialize(new Uint8Array(bytes)),
-                responseSerialize: (message: BulkDeclineInvitationsResponse) => Buffer.from(message.serialize()),
-                responseDeserialize: (bytes: Buffer) => BulkDeclineInvitationsResponse.deserialize(new Uint8Array(bytes))
+                requestSerialize: (message: UpdateInvitationStatusRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => UpdateInvitationStatusRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: UpdateInvitationStatusResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => UpdateInvitationStatusResponse.deserialize(new Uint8Array(bytes))
             },
-            GetAllInvitations: {
-                path: "/tournament_management.TournamentService/GetAllInvitations",
+            BulkUpdateInvitationStatus: {
+                path: "/tournament_management.TournamentService/BulkUpdateInvitationStatus",
                 requestStream: false,
                 responseStream: false,
-                requestSerialize: (message: GetAllInvitationsRequest) => Buffer.from(message.serialize()),
-                requestDeserialize: (bytes: Buffer) => GetAllInvitationsRequest.deserialize(new Uint8Array(bytes)),
-                responseSerialize: (message: GetAllInvitationsResponse) => Buffer.from(message.serialize()),
-                responseDeserialize: (bytes: Buffer) => GetAllInvitationsResponse.deserialize(new Uint8Array(bytes))
+                requestSerialize: (message: BulkUpdateInvitationStatusRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => BulkUpdateInvitationStatusRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: BulkUpdateInvitationStatusResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => BulkUpdateInvitationStatusResponse.deserialize(new Uint8Array(bytes))
+            },
+            ResendInvitation: {
+                path: "/tournament_management.TournamentService/ResendInvitation",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: ResendInvitationRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => ResendInvitationRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: ResendInvitationResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => ResendInvitationResponse.deserialize(new Uint8Array(bytes))
             },
             BulkResendInvitations: {
                 path: "/tournament_management.TournamentService/BulkResendInvitations",
@@ -6208,14 +5848,11 @@ export namespace tournament_management {
         abstract ListTournaments(call: grpc_1.ServerUnaryCall<ListTournamentsRequest, ListTournamentsResponse>, callback: grpc_1.sendUnaryData<ListTournamentsResponse>): void;
         abstract UpdateTournament(call: grpc_1.ServerUnaryCall<UpdateTournamentRequest, UpdateTournamentResponse>, callback: grpc_1.sendUnaryData<UpdateTournamentResponse>): void;
         abstract DeleteTournament(call: grpc_1.ServerUnaryCall<DeleteTournamentRequest, DeleteTournamentResponse>, callback: grpc_1.sendUnaryData<DeleteTournamentResponse>): void;
-        abstract AcceptInvitation(call: grpc_1.ServerUnaryCall<AcceptInvitationRequest, AcceptInvitationResponse>, callback: grpc_1.sendUnaryData<AcceptInvitationResponse>): void;
-        abstract DeclineInvitation(call: grpc_1.ServerUnaryCall<DeclineInvitationRequest, DeclineInvitationResponse>, callback: grpc_1.sendUnaryData<DeclineInvitationResponse>): void;
-        abstract GetInvitationStatus(call: grpc_1.ServerUnaryCall<GetInvitationStatusRequest, GetInvitationStatusResponse>, callback: grpc_1.sendUnaryData<GetInvitationStatusResponse>): void;
-        abstract ResendInvitation(call: grpc_1.ServerUnaryCall<ResendInvitationRequest, ResendInvitationResponse>, callback: grpc_1.sendUnaryData<ResendInvitationResponse>): void;
         abstract GetInvitationsByUser(call: grpc_1.ServerUnaryCall<GetInvitationsByUserRequest, GetInvitationsByUserResponse>, callback: grpc_1.sendUnaryData<GetInvitationsByUserResponse>): void;
-        abstract BulkAcceptInvitations(call: grpc_1.ServerUnaryCall<BulkAcceptInvitationsRequest, BulkAcceptInvitationsResponse>, callback: grpc_1.sendUnaryData<BulkAcceptInvitationsResponse>): void;
-        abstract BulkDeclineInvitations(call: grpc_1.ServerUnaryCall<BulkDeclineInvitationsRequest, BulkDeclineInvitationsResponse>, callback: grpc_1.sendUnaryData<BulkDeclineInvitationsResponse>): void;
-        abstract GetAllInvitations(call: grpc_1.ServerUnaryCall<GetAllInvitationsRequest, GetAllInvitationsResponse>, callback: grpc_1.sendUnaryData<GetAllInvitationsResponse>): void;
+        abstract GetInvitationsByTournament(call: grpc_1.ServerUnaryCall<GetInvitationsByTournamentRequest, GetInvitationsByTournamentResponse>, callback: grpc_1.sendUnaryData<GetInvitationsByTournamentResponse>): void;
+        abstract UpdateInvitationStatus(call: grpc_1.ServerUnaryCall<UpdateInvitationStatusRequest, UpdateInvitationStatusResponse>, callback: grpc_1.sendUnaryData<UpdateInvitationStatusResponse>): void;
+        abstract BulkUpdateInvitationStatus(call: grpc_1.ServerUnaryCall<BulkUpdateInvitationStatusRequest, BulkUpdateInvitationStatusResponse>, callback: grpc_1.sendUnaryData<BulkUpdateInvitationStatusResponse>): void;
+        abstract ResendInvitation(call: grpc_1.ServerUnaryCall<ResendInvitationRequest, ResendInvitationResponse>, callback: grpc_1.sendUnaryData<ResendInvitationResponse>): void;
         abstract BulkResendInvitations(call: grpc_1.ServerUnaryCall<BulkResendInvitationsRequest, BulkResendInvitationsResponse>, callback: grpc_1.sendUnaryData<BulkResendInvitationsResponse>): void;
     }
     export class TournamentServiceClient extends grpc_1.makeGenericClientConstructor(UnimplementedTournamentServiceService.definition, "TournamentService", {}) {
@@ -6267,29 +5904,20 @@ export namespace tournament_management {
         DeleteTournament: GrpcUnaryServiceInterface<DeleteTournamentRequest, DeleteTournamentResponse> = (message: DeleteTournamentRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<DeleteTournamentResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<DeleteTournamentResponse>, callback?: grpc_1.requestCallback<DeleteTournamentResponse>): grpc_1.ClientUnaryCall => {
             return super.DeleteTournament(message, metadata, options, callback);
         };
-        AcceptInvitation: GrpcUnaryServiceInterface<AcceptInvitationRequest, AcceptInvitationResponse> = (message: AcceptInvitationRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<AcceptInvitationResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<AcceptInvitationResponse>, callback?: grpc_1.requestCallback<AcceptInvitationResponse>): grpc_1.ClientUnaryCall => {
-            return super.AcceptInvitation(message, metadata, options, callback);
-        };
-        DeclineInvitation: GrpcUnaryServiceInterface<DeclineInvitationRequest, DeclineInvitationResponse> = (message: DeclineInvitationRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<DeclineInvitationResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<DeclineInvitationResponse>, callback?: grpc_1.requestCallback<DeclineInvitationResponse>): grpc_1.ClientUnaryCall => {
-            return super.DeclineInvitation(message, metadata, options, callback);
-        };
-        GetInvitationStatus: GrpcUnaryServiceInterface<GetInvitationStatusRequest, GetInvitationStatusResponse> = (message: GetInvitationStatusRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetInvitationStatusResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetInvitationStatusResponse>, callback?: grpc_1.requestCallback<GetInvitationStatusResponse>): grpc_1.ClientUnaryCall => {
-            return super.GetInvitationStatus(message, metadata, options, callback);
-        };
-        ResendInvitation: GrpcUnaryServiceInterface<ResendInvitationRequest, ResendInvitationResponse> = (message: ResendInvitationRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<ResendInvitationResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<ResendInvitationResponse>, callback?: grpc_1.requestCallback<ResendInvitationResponse>): grpc_1.ClientUnaryCall => {
-            return super.ResendInvitation(message, metadata, options, callback);
-        };
         GetInvitationsByUser: GrpcUnaryServiceInterface<GetInvitationsByUserRequest, GetInvitationsByUserResponse> = (message: GetInvitationsByUserRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetInvitationsByUserResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetInvitationsByUserResponse>, callback?: grpc_1.requestCallback<GetInvitationsByUserResponse>): grpc_1.ClientUnaryCall => {
             return super.GetInvitationsByUser(message, metadata, options, callback);
         };
-        BulkAcceptInvitations: GrpcUnaryServiceInterface<BulkAcceptInvitationsRequest, BulkAcceptInvitationsResponse> = (message: BulkAcceptInvitationsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<BulkAcceptInvitationsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<BulkAcceptInvitationsResponse>, callback?: grpc_1.requestCallback<BulkAcceptInvitationsResponse>): grpc_1.ClientUnaryCall => {
-            return super.BulkAcceptInvitations(message, metadata, options, callback);
+        GetInvitationsByTournament: GrpcUnaryServiceInterface<GetInvitationsByTournamentRequest, GetInvitationsByTournamentResponse> = (message: GetInvitationsByTournamentRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetInvitationsByTournamentResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetInvitationsByTournamentResponse>, callback?: grpc_1.requestCallback<GetInvitationsByTournamentResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetInvitationsByTournament(message, metadata, options, callback);
         };
-        BulkDeclineInvitations: GrpcUnaryServiceInterface<BulkDeclineInvitationsRequest, BulkDeclineInvitationsResponse> = (message: BulkDeclineInvitationsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<BulkDeclineInvitationsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<BulkDeclineInvitationsResponse>, callback?: grpc_1.requestCallback<BulkDeclineInvitationsResponse>): grpc_1.ClientUnaryCall => {
-            return super.BulkDeclineInvitations(message, metadata, options, callback);
+        UpdateInvitationStatus: GrpcUnaryServiceInterface<UpdateInvitationStatusRequest, UpdateInvitationStatusResponse> = (message: UpdateInvitationStatusRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<UpdateInvitationStatusResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<UpdateInvitationStatusResponse>, callback?: grpc_1.requestCallback<UpdateInvitationStatusResponse>): grpc_1.ClientUnaryCall => {
+            return super.UpdateInvitationStatus(message, metadata, options, callback);
         };
-        GetAllInvitations: GrpcUnaryServiceInterface<GetAllInvitationsRequest, GetAllInvitationsResponse> = (message: GetAllInvitationsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetAllInvitationsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetAllInvitationsResponse>, callback?: grpc_1.requestCallback<GetAllInvitationsResponse>): grpc_1.ClientUnaryCall => {
-            return super.GetAllInvitations(message, metadata, options, callback);
+        BulkUpdateInvitationStatus: GrpcUnaryServiceInterface<BulkUpdateInvitationStatusRequest, BulkUpdateInvitationStatusResponse> = (message: BulkUpdateInvitationStatusRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<BulkUpdateInvitationStatusResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<BulkUpdateInvitationStatusResponse>, callback?: grpc_1.requestCallback<BulkUpdateInvitationStatusResponse>): grpc_1.ClientUnaryCall => {
+            return super.BulkUpdateInvitationStatus(message, metadata, options, callback);
+        };
+        ResendInvitation: GrpcUnaryServiceInterface<ResendInvitationRequest, ResendInvitationResponse> = (message: ResendInvitationRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<ResendInvitationResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<ResendInvitationResponse>, callback?: grpc_1.requestCallback<ResendInvitationResponse>): grpc_1.ClientUnaryCall => {
+            return super.ResendInvitation(message, metadata, options, callback);
         };
         BulkResendInvitations: GrpcUnaryServiceInterface<BulkResendInvitationsRequest, BulkResendInvitationsResponse> = (message: BulkResendInvitationsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<BulkResendInvitationsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<BulkResendInvitationsResponse>, callback?: grpc_1.requestCallback<BulkResendInvitationsResponse>): grpc_1.ClientUnaryCall => {
             return super.BulkResendInvitations(message, metadata, options, callback);

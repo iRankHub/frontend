@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
 import Invitations from "@/components/pages/admin/tournaments/list/tournament-name/invitations/invitations";
 import TournamentMenuWrapper from "@/components/pages/admin/tournaments/list/tournament-name/tournament-menu-wrapper";
@@ -10,8 +10,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { getAllInvitations, getTournament } from "@/core/tournament/list";
-import { Invitation, Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import {
+  getInvitationsByTournament,
+  getTournament,
+} from "@/core/tournament/list";
+import {
+  InvitationInfo,
+  Tournament,
+} from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import { useInvitationsStore } from "@/stores/admin/tournaments/invitations.store";
 import { Roles, useUserStore } from "@/stores/auth/auth.store";
 import { withAuth } from "@/stores/auth/middleware.store";
 import { Iparms } from "@/types";
@@ -32,7 +39,7 @@ function Page({ params }: Iparms) {
   const [tournament, setTournament] = React.useState<
     Tournament.AsObject | undefined
   >(undefined);
-  const [invitations, setInvitations] = React.useState<Invitation.AsObject[]>([]);
+  const { setInvitations } = useInvitationsStore((state) => state);
 
   useEffect(() => {
     if (!user) return;
@@ -48,14 +55,14 @@ function Page({ params }: Iparms) {
         console.error(err.message);
       });
 
-      getAllInvitations(user.token)
+    getInvitationsByTournament(user.token, Number(tourn_id) || 0)
       .then((res) => {
         setInvitations(res.invitationsList);
       })
       .catch((err) => {
         console.error(err.message);
       });
-  }, [user, tourn_id]);
+  }, [user, tourn_id, setInvitations]);
   return (
     <ContentLayout title="format">
       <div className="w-full flex items-center justify-between gap-5">

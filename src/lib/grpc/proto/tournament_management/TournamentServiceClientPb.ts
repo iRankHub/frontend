@@ -684,178 +684,6 @@ export class TournamentServiceClient {
     this.methodDescriptorDeleteTournament);
   }
 
-  methodDescriptorAcceptInvitation = new grpcWeb.MethodDescriptor(
-    '/tournament_management.TournamentService/AcceptInvitation',
-    grpcWeb.MethodType.UNARY,
-    tournament_management_tournament_pb.AcceptInvitationRequest,
-    tournament_management_tournament_pb.AcceptInvitationResponse,
-    (request: tournament_management_tournament_pb.AcceptInvitationRequest) => {
-      return request.serializeBinary();
-    },
-    tournament_management_tournament_pb.AcceptInvitationResponse.deserializeBinary
-  );
-
-  acceptInvitation(
-    request: tournament_management_tournament_pb.AcceptInvitationRequest,
-    metadata?: grpcWeb.Metadata | null): Promise<tournament_management_tournament_pb.AcceptInvitationResponse>;
-
-  acceptInvitation(
-    request: tournament_management_tournament_pb.AcceptInvitationRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.RpcError,
-               response: tournament_management_tournament_pb.AcceptInvitationResponse) => void): grpcWeb.ClientReadableStream<tournament_management_tournament_pb.AcceptInvitationResponse>;
-
-  acceptInvitation(
-    request: tournament_management_tournament_pb.AcceptInvitationRequest,
-    metadata?: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.RpcError,
-               response: tournament_management_tournament_pb.AcceptInvitationResponse) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/tournament_management.TournamentService/AcceptInvitation',
-        request,
-        metadata || {},
-        this.methodDescriptorAcceptInvitation,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/tournament_management.TournamentService/AcceptInvitation',
-    request,
-    metadata || {},
-    this.methodDescriptorAcceptInvitation);
-  }
-
-  methodDescriptorDeclineInvitation = new grpcWeb.MethodDescriptor(
-    '/tournament_management.TournamentService/DeclineInvitation',
-    grpcWeb.MethodType.UNARY,
-    tournament_management_tournament_pb.DeclineInvitationRequest,
-    tournament_management_tournament_pb.DeclineInvitationResponse,
-    (request: tournament_management_tournament_pb.DeclineInvitationRequest) => {
-      return request.serializeBinary();
-    },
-    tournament_management_tournament_pb.DeclineInvitationResponse.deserializeBinary
-  );
-
-  declineInvitation(
-    request: tournament_management_tournament_pb.DeclineInvitationRequest,
-    metadata?: grpcWeb.Metadata | null): Promise<tournament_management_tournament_pb.DeclineInvitationResponse>;
-
-  declineInvitation(
-    request: tournament_management_tournament_pb.DeclineInvitationRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.RpcError,
-               response: tournament_management_tournament_pb.DeclineInvitationResponse) => void): grpcWeb.ClientReadableStream<tournament_management_tournament_pb.DeclineInvitationResponse>;
-
-  declineInvitation(
-    request: tournament_management_tournament_pb.DeclineInvitationRequest,
-    metadata?: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.RpcError,
-               response: tournament_management_tournament_pb.DeclineInvitationResponse) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/tournament_management.TournamentService/DeclineInvitation',
-        request,
-        metadata || {},
-        this.methodDescriptorDeclineInvitation,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/tournament_management.TournamentService/DeclineInvitation',
-    request,
-    metadata || {},
-    this.methodDescriptorDeclineInvitation);
-  }
-
-  methodDescriptorGetInvitationStatus = new grpcWeb.MethodDescriptor(
-    '/tournament_management.TournamentService/GetInvitationStatus',
-    grpcWeb.MethodType.UNARY,
-    tournament_management_tournament_pb.GetInvitationStatusRequest,
-    tournament_management_tournament_pb.GetInvitationStatusResponse,
-    (request: tournament_management_tournament_pb.GetInvitationStatusRequest) => {
-      return request.serializeBinary();
-    },
-    tournament_management_tournament_pb.GetInvitationStatusResponse.deserializeBinary
-  );
-
-  getInvitationStatus(
-    request: tournament_management_tournament_pb.GetInvitationStatusRequest,
-    metadata?: grpcWeb.Metadata | null): Promise<tournament_management_tournament_pb.GetInvitationStatusResponse>;
-
-  getInvitationStatus(
-    request: tournament_management_tournament_pb.GetInvitationStatusRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.RpcError,
-               response: tournament_management_tournament_pb.GetInvitationStatusResponse) => void): grpcWeb.ClientReadableStream<tournament_management_tournament_pb.GetInvitationStatusResponse>;
-
-  getInvitationStatus(
-    request: tournament_management_tournament_pb.GetInvitationStatusRequest,
-    metadata?: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.RpcError,
-               response: tournament_management_tournament_pb.GetInvitationStatusResponse) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/tournament_management.TournamentService/GetInvitationStatus',
-        request,
-        metadata || {},
-        this.methodDescriptorGetInvitationStatus,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/tournament_management.TournamentService/GetInvitationStatus',
-    request,
-    metadata || {},
-    this.methodDescriptorGetInvitationStatus);
-  }
-
-  methodDescriptorResendInvitation = new grpcWeb.MethodDescriptor(
-    '/tournament_management.TournamentService/ResendInvitation',
-    grpcWeb.MethodType.UNARY,
-    tournament_management_tournament_pb.ResendInvitationRequest,
-    tournament_management_tournament_pb.ResendInvitationResponse,
-    (request: tournament_management_tournament_pb.ResendInvitationRequest) => {
-      return request.serializeBinary();
-    },
-    tournament_management_tournament_pb.ResendInvitationResponse.deserializeBinary
-  );
-
-  resendInvitation(
-    request: tournament_management_tournament_pb.ResendInvitationRequest,
-    metadata?: grpcWeb.Metadata | null): Promise<tournament_management_tournament_pb.ResendInvitationResponse>;
-
-  resendInvitation(
-    request: tournament_management_tournament_pb.ResendInvitationRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.RpcError,
-               response: tournament_management_tournament_pb.ResendInvitationResponse) => void): grpcWeb.ClientReadableStream<tournament_management_tournament_pb.ResendInvitationResponse>;
-
-  resendInvitation(
-    request: tournament_management_tournament_pb.ResendInvitationRequest,
-    metadata?: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.RpcError,
-               response: tournament_management_tournament_pb.ResendInvitationResponse) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/tournament_management.TournamentService/ResendInvitation',
-        request,
-        metadata || {},
-        this.methodDescriptorResendInvitation,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/tournament_management.TournamentService/ResendInvitation',
-    request,
-    metadata || {},
-    this.methodDescriptorResendInvitation);
-  }
-
   methodDescriptorGetInvitationsByUser = new grpcWeb.MethodDescriptor(
     '/tournament_management.TournamentService/GetInvitationsByUser',
     grpcWeb.MethodType.UNARY,
@@ -899,133 +727,176 @@ export class TournamentServiceClient {
     this.methodDescriptorGetInvitationsByUser);
   }
 
-  methodDescriptorBulkAcceptInvitations = new grpcWeb.MethodDescriptor(
-    '/tournament_management.TournamentService/BulkAcceptInvitations',
+  methodDescriptorGetInvitationsByTournament = new grpcWeb.MethodDescriptor(
+    '/tournament_management.TournamentService/GetInvitationsByTournament',
     grpcWeb.MethodType.UNARY,
-    tournament_management_tournament_pb.BulkAcceptInvitationsRequest,
-    tournament_management_tournament_pb.BulkAcceptInvitationsResponse,
-    (request: tournament_management_tournament_pb.BulkAcceptInvitationsRequest) => {
+    tournament_management_tournament_pb.GetInvitationsByTournamentRequest,
+    tournament_management_tournament_pb.GetInvitationsByTournamentResponse,
+    (request: tournament_management_tournament_pb.GetInvitationsByTournamentRequest) => {
       return request.serializeBinary();
     },
-    tournament_management_tournament_pb.BulkAcceptInvitationsResponse.deserializeBinary
+    tournament_management_tournament_pb.GetInvitationsByTournamentResponse.deserializeBinary
   );
 
-  bulkAcceptInvitations(
-    request: tournament_management_tournament_pb.BulkAcceptInvitationsRequest,
-    metadata?: grpcWeb.Metadata | null): Promise<tournament_management_tournament_pb.BulkAcceptInvitationsResponse>;
+  getInvitationsByTournament(
+    request: tournament_management_tournament_pb.GetInvitationsByTournamentRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<tournament_management_tournament_pb.GetInvitationsByTournamentResponse>;
 
-  bulkAcceptInvitations(
-    request: tournament_management_tournament_pb.BulkAcceptInvitationsRequest,
+  getInvitationsByTournament(
+    request: tournament_management_tournament_pb.GetInvitationsByTournamentRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.RpcError,
-               response: tournament_management_tournament_pb.BulkAcceptInvitationsResponse) => void): grpcWeb.ClientReadableStream<tournament_management_tournament_pb.BulkAcceptInvitationsResponse>;
+               response: tournament_management_tournament_pb.GetInvitationsByTournamentResponse) => void): grpcWeb.ClientReadableStream<tournament_management_tournament_pb.GetInvitationsByTournamentResponse>;
 
-  bulkAcceptInvitations(
-    request: tournament_management_tournament_pb.BulkAcceptInvitationsRequest,
+  getInvitationsByTournament(
+    request: tournament_management_tournament_pb.GetInvitationsByTournamentRequest,
     metadata?: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.RpcError,
-               response: tournament_management_tournament_pb.BulkAcceptInvitationsResponse) => void) {
+               response: tournament_management_tournament_pb.GetInvitationsByTournamentResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/tournament_management.TournamentService/BulkAcceptInvitations',
+          '/tournament_management.TournamentService/GetInvitationsByTournament',
         request,
         metadata || {},
-        this.methodDescriptorBulkAcceptInvitations,
+        this.methodDescriptorGetInvitationsByTournament,
         callback);
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/tournament_management.TournamentService/BulkAcceptInvitations',
+      '/tournament_management.TournamentService/GetInvitationsByTournament',
     request,
     metadata || {},
-    this.methodDescriptorBulkAcceptInvitations);
+    this.methodDescriptorGetInvitationsByTournament);
   }
 
-  methodDescriptorBulkDeclineInvitations = new grpcWeb.MethodDescriptor(
-    '/tournament_management.TournamentService/BulkDeclineInvitations',
+  methodDescriptorUpdateInvitationStatus = new grpcWeb.MethodDescriptor(
+    '/tournament_management.TournamentService/UpdateInvitationStatus',
     grpcWeb.MethodType.UNARY,
-    tournament_management_tournament_pb.BulkDeclineInvitationsRequest,
-    tournament_management_tournament_pb.BulkDeclineInvitationsResponse,
-    (request: tournament_management_tournament_pb.BulkDeclineInvitationsRequest) => {
+    tournament_management_tournament_pb.UpdateInvitationStatusRequest,
+    tournament_management_tournament_pb.UpdateInvitationStatusResponse,
+    (request: tournament_management_tournament_pb.UpdateInvitationStatusRequest) => {
       return request.serializeBinary();
     },
-    tournament_management_tournament_pb.BulkDeclineInvitationsResponse.deserializeBinary
+    tournament_management_tournament_pb.UpdateInvitationStatusResponse.deserializeBinary
   );
 
-  bulkDeclineInvitations(
-    request: tournament_management_tournament_pb.BulkDeclineInvitationsRequest,
-    metadata?: grpcWeb.Metadata | null): Promise<tournament_management_tournament_pb.BulkDeclineInvitationsResponse>;
+  updateInvitationStatus(
+    request: tournament_management_tournament_pb.UpdateInvitationStatusRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<tournament_management_tournament_pb.UpdateInvitationStatusResponse>;
 
-  bulkDeclineInvitations(
-    request: tournament_management_tournament_pb.BulkDeclineInvitationsRequest,
+  updateInvitationStatus(
+    request: tournament_management_tournament_pb.UpdateInvitationStatusRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.RpcError,
-               response: tournament_management_tournament_pb.BulkDeclineInvitationsResponse) => void): grpcWeb.ClientReadableStream<tournament_management_tournament_pb.BulkDeclineInvitationsResponse>;
+               response: tournament_management_tournament_pb.UpdateInvitationStatusResponse) => void): grpcWeb.ClientReadableStream<tournament_management_tournament_pb.UpdateInvitationStatusResponse>;
 
-  bulkDeclineInvitations(
-    request: tournament_management_tournament_pb.BulkDeclineInvitationsRequest,
+  updateInvitationStatus(
+    request: tournament_management_tournament_pb.UpdateInvitationStatusRequest,
     metadata?: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.RpcError,
-               response: tournament_management_tournament_pb.BulkDeclineInvitationsResponse) => void) {
+               response: tournament_management_tournament_pb.UpdateInvitationStatusResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/tournament_management.TournamentService/BulkDeclineInvitations',
+          '/tournament_management.TournamentService/UpdateInvitationStatus',
         request,
         metadata || {},
-        this.methodDescriptorBulkDeclineInvitations,
+        this.methodDescriptorUpdateInvitationStatus,
         callback);
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/tournament_management.TournamentService/BulkDeclineInvitations',
+      '/tournament_management.TournamentService/UpdateInvitationStatus',
     request,
     metadata || {},
-    this.methodDescriptorBulkDeclineInvitations);
+    this.methodDescriptorUpdateInvitationStatus);
   }
 
-  methodDescriptorGetAllInvitations = new grpcWeb.MethodDescriptor(
-    '/tournament_management.TournamentService/GetAllInvitations',
+  methodDescriptorBulkUpdateInvitationStatus = new grpcWeb.MethodDescriptor(
+    '/tournament_management.TournamentService/BulkUpdateInvitationStatus',
     grpcWeb.MethodType.UNARY,
-    tournament_management_tournament_pb.GetAllInvitationsRequest,
-    tournament_management_tournament_pb.GetAllInvitationsResponse,
-    (request: tournament_management_tournament_pb.GetAllInvitationsRequest) => {
+    tournament_management_tournament_pb.BulkUpdateInvitationStatusRequest,
+    tournament_management_tournament_pb.BulkUpdateInvitationStatusResponse,
+    (request: tournament_management_tournament_pb.BulkUpdateInvitationStatusRequest) => {
       return request.serializeBinary();
     },
-    tournament_management_tournament_pb.GetAllInvitationsResponse.deserializeBinary
+    tournament_management_tournament_pb.BulkUpdateInvitationStatusResponse.deserializeBinary
   );
 
-  getAllInvitations(
-    request: tournament_management_tournament_pb.GetAllInvitationsRequest,
-    metadata?: grpcWeb.Metadata | null): Promise<tournament_management_tournament_pb.GetAllInvitationsResponse>;
+  bulkUpdateInvitationStatus(
+    request: tournament_management_tournament_pb.BulkUpdateInvitationStatusRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<tournament_management_tournament_pb.BulkUpdateInvitationStatusResponse>;
 
-  getAllInvitations(
-    request: tournament_management_tournament_pb.GetAllInvitationsRequest,
+  bulkUpdateInvitationStatus(
+    request: tournament_management_tournament_pb.BulkUpdateInvitationStatusRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.RpcError,
-               response: tournament_management_tournament_pb.GetAllInvitationsResponse) => void): grpcWeb.ClientReadableStream<tournament_management_tournament_pb.GetAllInvitationsResponse>;
+               response: tournament_management_tournament_pb.BulkUpdateInvitationStatusResponse) => void): grpcWeb.ClientReadableStream<tournament_management_tournament_pb.BulkUpdateInvitationStatusResponse>;
 
-  getAllInvitations(
-    request: tournament_management_tournament_pb.GetAllInvitationsRequest,
+  bulkUpdateInvitationStatus(
+    request: tournament_management_tournament_pb.BulkUpdateInvitationStatusRequest,
     metadata?: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.RpcError,
-               response: tournament_management_tournament_pb.GetAllInvitationsResponse) => void) {
+               response: tournament_management_tournament_pb.BulkUpdateInvitationStatusResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/tournament_management.TournamentService/GetAllInvitations',
+          '/tournament_management.TournamentService/BulkUpdateInvitationStatus',
         request,
         metadata || {},
-        this.methodDescriptorGetAllInvitations,
+        this.methodDescriptorBulkUpdateInvitationStatus,
         callback);
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/tournament_management.TournamentService/GetAllInvitations',
+      '/tournament_management.TournamentService/BulkUpdateInvitationStatus',
     request,
     metadata || {},
-    this.methodDescriptorGetAllInvitations);
+    this.methodDescriptorBulkUpdateInvitationStatus);
+  }
+
+  methodDescriptorResendInvitation = new grpcWeb.MethodDescriptor(
+    '/tournament_management.TournamentService/ResendInvitation',
+    grpcWeb.MethodType.UNARY,
+    tournament_management_tournament_pb.ResendInvitationRequest,
+    tournament_management_tournament_pb.ResendInvitationResponse,
+    (request: tournament_management_tournament_pb.ResendInvitationRequest) => {
+      return request.serializeBinary();
+    },
+    tournament_management_tournament_pb.ResendInvitationResponse.deserializeBinary
+  );
+
+  resendInvitation(
+    request: tournament_management_tournament_pb.ResendInvitationRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<tournament_management_tournament_pb.ResendInvitationResponse>;
+
+  resendInvitation(
+    request: tournament_management_tournament_pb.ResendInvitationRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: tournament_management_tournament_pb.ResendInvitationResponse) => void): grpcWeb.ClientReadableStream<tournament_management_tournament_pb.ResendInvitationResponse>;
+
+  resendInvitation(
+    request: tournament_management_tournament_pb.ResendInvitationRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: tournament_management_tournament_pb.ResendInvitationResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/tournament_management.TournamentService/ResendInvitation',
+        request,
+        metadata || {},
+        this.methodDescriptorResendInvitation,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/tournament_management.TournamentService/ResendInvitation',
+    request,
+    metadata || {},
+    this.methodDescriptorResendInvitation);
   }
 
   methodDescriptorBulkResendInvitations = new grpcWeb.MethodDescriptor(

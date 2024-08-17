@@ -1,16 +1,15 @@
 import React from "react";
 import { columns } from "./columns";
 import { DataTable } from "@/components/tables/data-table";
-import { tasks } from "@/components/tables/data/tasks";
 import { DataTableToolbar } from "./data-table-toolbar";
+import { useInvitationsStore } from "@/stores/admin/tournaments/invitations.store";
 
-type Props = {};
-
-function Invitations({}: Props) {
+function Invitations() {
+  const { invitations } = useInvitationsStore((state) => state);
   return (
     <div className="w-full rounded-md overflow-hidden">
       <DataTable
-        data={tasks}
+        data={invitations}
         columns={columns}
         DataTableToolbar={DataTableToolbar}
       />

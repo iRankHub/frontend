@@ -21,14 +21,10 @@ var global =
     (function () { return this; }).call(null) ||
     Function('return this')();
 
-goog.exportSymbol('proto.tournament_management.AcceptInvitationRequest', null, global);
-goog.exportSymbol('proto.tournament_management.AcceptInvitationResponse', null, global);
-goog.exportSymbol('proto.tournament_management.BulkAcceptInvitationsRequest', null, global);
-goog.exportSymbol('proto.tournament_management.BulkAcceptInvitationsResponse', null, global);
-goog.exportSymbol('proto.tournament_management.BulkDeclineInvitationsRequest', null, global);
-goog.exportSymbol('proto.tournament_management.BulkDeclineInvitationsResponse', null, global);
 goog.exportSymbol('proto.tournament_management.BulkResendInvitationsRequest', null, global);
 goog.exportSymbol('proto.tournament_management.BulkResendInvitationsResponse', null, global);
+goog.exportSymbol('proto.tournament_management.BulkUpdateInvitationStatusRequest', null, global);
+goog.exportSymbol('proto.tournament_management.BulkUpdateInvitationStatusResponse', null, global);
 goog.exportSymbol('proto.tournament_management.CreateLeagueRequest', null, global);
 goog.exportSymbol('proto.tournament_management.CreateLeagueRequest.LeagueDetailsCase', null, global);
 goog.exportSymbol('proto.tournament_management.CreateLeagueResponse', null, global);
@@ -36,18 +32,14 @@ goog.exportSymbol('proto.tournament_management.CreateTournamentFormatRequest', n
 goog.exportSymbol('proto.tournament_management.CreateTournamentFormatResponse', null, global);
 goog.exportSymbol('proto.tournament_management.CreateTournamentRequest', null, global);
 goog.exportSymbol('proto.tournament_management.CreateTournamentResponse', null, global);
-goog.exportSymbol('proto.tournament_management.DeclineInvitationRequest', null, global);
-goog.exportSymbol('proto.tournament_management.DeclineInvitationResponse', null, global);
 goog.exportSymbol('proto.tournament_management.DeleteLeagueRequest', null, global);
 goog.exportSymbol('proto.tournament_management.DeleteLeagueResponse', null, global);
 goog.exportSymbol('proto.tournament_management.DeleteTournamentFormatRequest', null, global);
 goog.exportSymbol('proto.tournament_management.DeleteTournamentFormatResponse', null, global);
 goog.exportSymbol('proto.tournament_management.DeleteTournamentRequest', null, global);
 goog.exportSymbol('proto.tournament_management.DeleteTournamentResponse', null, global);
-goog.exportSymbol('proto.tournament_management.GetAllInvitationsRequest', null, global);
-goog.exportSymbol('proto.tournament_management.GetAllInvitationsResponse', null, global);
-goog.exportSymbol('proto.tournament_management.GetInvitationStatusRequest', null, global);
-goog.exportSymbol('proto.tournament_management.GetInvitationStatusResponse', null, global);
+goog.exportSymbol('proto.tournament_management.GetInvitationsByTournamentRequest', null, global);
+goog.exportSymbol('proto.tournament_management.GetInvitationsByTournamentResponse', null, global);
 goog.exportSymbol('proto.tournament_management.GetInvitationsByUserRequest', null, global);
 goog.exportSymbol('proto.tournament_management.GetInvitationsByUserResponse', null, global);
 goog.exportSymbol('proto.tournament_management.GetLeagueRequest', null, global);
@@ -57,7 +49,7 @@ goog.exportSymbol('proto.tournament_management.GetTournamentFormatResponse', nul
 goog.exportSymbol('proto.tournament_management.GetTournamentRequest', null, global);
 goog.exportSymbol('proto.tournament_management.GetTournamentResponse', null, global);
 goog.exportSymbol('proto.tournament_management.InternationalDetails', null, global);
-goog.exportSymbol('proto.tournament_management.Invitation', null, global);
+goog.exportSymbol('proto.tournament_management.InvitationInfo', null, global);
 goog.exportSymbol('proto.tournament_management.League', null, global);
 goog.exportSymbol('proto.tournament_management.LeagueType', null, global);
 goog.exportSymbol('proto.tournament_management.ListLeaguesRequest', null, global);
@@ -71,6 +63,8 @@ goog.exportSymbol('proto.tournament_management.ResendInvitationRequest', null, g
 goog.exportSymbol('proto.tournament_management.ResendInvitationResponse', null, global);
 goog.exportSymbol('proto.tournament_management.Tournament', null, global);
 goog.exportSymbol('proto.tournament_management.TournamentFormat', null, global);
+goog.exportSymbol('proto.tournament_management.UpdateInvitationStatusRequest', null, global);
+goog.exportSymbol('proto.tournament_management.UpdateInvitationStatusResponse', null, global);
 goog.exportSymbol('proto.tournament_management.UpdateLeagueRequest', null, global);
 goog.exportSymbol('proto.tournament_management.UpdateLeagueRequest.LeagueDetailsCase', null, global);
 goog.exportSymbol('proto.tournament_management.UpdateLeagueResponse', null, global);
@@ -823,16 +817,16 @@ if (goog.DEBUG && !COMPILED) {
  * @extends {jspb.Message}
  * @constructor
  */
-proto.tournament_management.AcceptInvitationRequest = function(opt_data) {
+proto.tournament_management.GetInvitationsByUserRequest = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
-goog.inherits(proto.tournament_management.AcceptInvitationRequest, jspb.Message);
+goog.inherits(proto.tournament_management.GetInvitationsByUserRequest, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   /**
    * @public
    * @override
    */
-  proto.tournament_management.AcceptInvitationRequest.displayName = 'proto.tournament_management.AcceptInvitationRequest';
+  proto.tournament_management.GetInvitationsByUserRequest.displayName = 'proto.tournament_management.GetInvitationsByUserRequest';
 }
 /**
  * Generated by JsPbCodeGenerator.
@@ -844,16 +838,16 @@ if (goog.DEBUG && !COMPILED) {
  * @extends {jspb.Message}
  * @constructor
  */
-proto.tournament_management.AcceptInvitationResponse = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+proto.tournament_management.GetInvitationsByUserResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.tournament_management.GetInvitationsByUserResponse.repeatedFields_, null);
 };
-goog.inherits(proto.tournament_management.AcceptInvitationResponse, jspb.Message);
+goog.inherits(proto.tournament_management.GetInvitationsByUserResponse, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   /**
    * @public
    * @override
    */
-  proto.tournament_management.AcceptInvitationResponse.displayName = 'proto.tournament_management.AcceptInvitationResponse';
+  proto.tournament_management.GetInvitationsByUserResponse.displayName = 'proto.tournament_management.GetInvitationsByUserResponse';
 }
 /**
  * Generated by JsPbCodeGenerator.
@@ -865,16 +859,16 @@ if (goog.DEBUG && !COMPILED) {
  * @extends {jspb.Message}
  * @constructor
  */
-proto.tournament_management.DeclineInvitationRequest = function(opt_data) {
+proto.tournament_management.GetInvitationsByTournamentRequest = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
-goog.inherits(proto.tournament_management.DeclineInvitationRequest, jspb.Message);
+goog.inherits(proto.tournament_management.GetInvitationsByTournamentRequest, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   /**
    * @public
    * @override
    */
-  proto.tournament_management.DeclineInvitationRequest.displayName = 'proto.tournament_management.DeclineInvitationRequest';
+  proto.tournament_management.GetInvitationsByTournamentRequest.displayName = 'proto.tournament_management.GetInvitationsByTournamentRequest';
 }
 /**
  * Generated by JsPbCodeGenerator.
@@ -886,16 +880,16 @@ if (goog.DEBUG && !COMPILED) {
  * @extends {jspb.Message}
  * @constructor
  */
-proto.tournament_management.DeclineInvitationResponse = function(opt_data) {
+proto.tournament_management.InvitationInfo = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
-goog.inherits(proto.tournament_management.DeclineInvitationResponse, jspb.Message);
+goog.inherits(proto.tournament_management.InvitationInfo, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   /**
    * @public
    * @override
    */
-  proto.tournament_management.DeclineInvitationResponse.displayName = 'proto.tournament_management.DeclineInvitationResponse';
+  proto.tournament_management.InvitationInfo.displayName = 'proto.tournament_management.InvitationInfo';
 }
 /**
  * Generated by JsPbCodeGenerator.
@@ -907,16 +901,16 @@ if (goog.DEBUG && !COMPILED) {
  * @extends {jspb.Message}
  * @constructor
  */
-proto.tournament_management.GetInvitationStatusRequest = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+proto.tournament_management.GetInvitationsByTournamentResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.tournament_management.GetInvitationsByTournamentResponse.repeatedFields_, null);
 };
-goog.inherits(proto.tournament_management.GetInvitationStatusRequest, jspb.Message);
+goog.inherits(proto.tournament_management.GetInvitationsByTournamentResponse, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   /**
    * @public
    * @override
    */
-  proto.tournament_management.GetInvitationStatusRequest.displayName = 'proto.tournament_management.GetInvitationStatusRequest';
+  proto.tournament_management.GetInvitationsByTournamentResponse.displayName = 'proto.tournament_management.GetInvitationsByTournamentResponse';
 }
 /**
  * Generated by JsPbCodeGenerator.
@@ -928,16 +922,79 @@ if (goog.DEBUG && !COMPILED) {
  * @extends {jspb.Message}
  * @constructor
  */
-proto.tournament_management.GetInvitationStatusResponse = function(opt_data) {
+proto.tournament_management.UpdateInvitationStatusRequest = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
-goog.inherits(proto.tournament_management.GetInvitationStatusResponse, jspb.Message);
+goog.inherits(proto.tournament_management.UpdateInvitationStatusRequest, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   /**
    * @public
    * @override
    */
-  proto.tournament_management.GetInvitationStatusResponse.displayName = 'proto.tournament_management.GetInvitationStatusResponse';
+  proto.tournament_management.UpdateInvitationStatusRequest.displayName = 'proto.tournament_management.UpdateInvitationStatusRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.tournament_management.UpdateInvitationStatusResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.tournament_management.UpdateInvitationStatusResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.tournament_management.UpdateInvitationStatusResponse.displayName = 'proto.tournament_management.UpdateInvitationStatusResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.tournament_management.BulkUpdateInvitationStatusRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.tournament_management.BulkUpdateInvitationStatusRequest.repeatedFields_, null);
+};
+goog.inherits(proto.tournament_management.BulkUpdateInvitationStatusRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.tournament_management.BulkUpdateInvitationStatusRequest.displayName = 'proto.tournament_management.BulkUpdateInvitationStatusRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.tournament_management.BulkUpdateInvitationStatusResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.tournament_management.BulkUpdateInvitationStatusResponse.repeatedFields_, null);
+};
+goog.inherits(proto.tournament_management.BulkUpdateInvitationStatusResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.tournament_management.BulkUpdateInvitationStatusResponse.displayName = 'proto.tournament_management.BulkUpdateInvitationStatusResponse';
 }
 /**
  * Generated by JsPbCodeGenerator.
@@ -1022,195 +1079,6 @@ if (goog.DEBUG && !COMPILED) {
    * @override
    */
   proto.tournament_management.BulkResendInvitationsResponse.displayName = 'proto.tournament_management.BulkResendInvitationsResponse';
-}
-/**
- * Generated by JsPbCodeGenerator.
- * @param {Array=} opt_data Optional initial data array, typically from a
- * server response, or constructed directly in Javascript. The array is used
- * in place and becomes part of the constructed object. It is not cloned.
- * If no data is provided, the constructed object will be empty, but still
- * valid.
- * @extends {jspb.Message}
- * @constructor
- */
-proto.tournament_management.GetInvitationsByUserRequest = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
-};
-goog.inherits(proto.tournament_management.GetInvitationsByUserRequest, jspb.Message);
-if (goog.DEBUG && !COMPILED) {
-  /**
-   * @public
-   * @override
-   */
-  proto.tournament_management.GetInvitationsByUserRequest.displayName = 'proto.tournament_management.GetInvitationsByUserRequest';
-}
-/**
- * Generated by JsPbCodeGenerator.
- * @param {Array=} opt_data Optional initial data array, typically from a
- * server response, or constructed directly in Javascript. The array is used
- * in place and becomes part of the constructed object. It is not cloned.
- * If no data is provided, the constructed object will be empty, but still
- * valid.
- * @extends {jspb.Message}
- * @constructor
- */
-proto.tournament_management.Invitation = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
-};
-goog.inherits(proto.tournament_management.Invitation, jspb.Message);
-if (goog.DEBUG && !COMPILED) {
-  /**
-   * @public
-   * @override
-   */
-  proto.tournament_management.Invitation.displayName = 'proto.tournament_management.Invitation';
-}
-/**
- * Generated by JsPbCodeGenerator.
- * @param {Array=} opt_data Optional initial data array, typically from a
- * server response, or constructed directly in Javascript. The array is used
- * in place and becomes part of the constructed object. It is not cloned.
- * If no data is provided, the constructed object will be empty, but still
- * valid.
- * @extends {jspb.Message}
- * @constructor
- */
-proto.tournament_management.GetInvitationsByUserResponse = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, proto.tournament_management.GetInvitationsByUserResponse.repeatedFields_, null);
-};
-goog.inherits(proto.tournament_management.GetInvitationsByUserResponse, jspb.Message);
-if (goog.DEBUG && !COMPILED) {
-  /**
-   * @public
-   * @override
-   */
-  proto.tournament_management.GetInvitationsByUserResponse.displayName = 'proto.tournament_management.GetInvitationsByUserResponse';
-}
-/**
- * Generated by JsPbCodeGenerator.
- * @param {Array=} opt_data Optional initial data array, typically from a
- * server response, or constructed directly in Javascript. The array is used
- * in place and becomes part of the constructed object. It is not cloned.
- * If no data is provided, the constructed object will be empty, but still
- * valid.
- * @extends {jspb.Message}
- * @constructor
- */
-proto.tournament_management.BulkAcceptInvitationsRequest = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, proto.tournament_management.BulkAcceptInvitationsRequest.repeatedFields_, null);
-};
-goog.inherits(proto.tournament_management.BulkAcceptInvitationsRequest, jspb.Message);
-if (goog.DEBUG && !COMPILED) {
-  /**
-   * @public
-   * @override
-   */
-  proto.tournament_management.BulkAcceptInvitationsRequest.displayName = 'proto.tournament_management.BulkAcceptInvitationsRequest';
-}
-/**
- * Generated by JsPbCodeGenerator.
- * @param {Array=} opt_data Optional initial data array, typically from a
- * server response, or constructed directly in Javascript. The array is used
- * in place and becomes part of the constructed object. It is not cloned.
- * If no data is provided, the constructed object will be empty, but still
- * valid.
- * @extends {jspb.Message}
- * @constructor
- */
-proto.tournament_management.BulkAcceptInvitationsResponse = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
-};
-goog.inherits(proto.tournament_management.BulkAcceptInvitationsResponse, jspb.Message);
-if (goog.DEBUG && !COMPILED) {
-  /**
-   * @public
-   * @override
-   */
-  proto.tournament_management.BulkAcceptInvitationsResponse.displayName = 'proto.tournament_management.BulkAcceptInvitationsResponse';
-}
-/**
- * Generated by JsPbCodeGenerator.
- * @param {Array=} opt_data Optional initial data array, typically from a
- * server response, or constructed directly in Javascript. The array is used
- * in place and becomes part of the constructed object. It is not cloned.
- * If no data is provided, the constructed object will be empty, but still
- * valid.
- * @extends {jspb.Message}
- * @constructor
- */
-proto.tournament_management.BulkDeclineInvitationsRequest = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, proto.tournament_management.BulkDeclineInvitationsRequest.repeatedFields_, null);
-};
-goog.inherits(proto.tournament_management.BulkDeclineInvitationsRequest, jspb.Message);
-if (goog.DEBUG && !COMPILED) {
-  /**
-   * @public
-   * @override
-   */
-  proto.tournament_management.BulkDeclineInvitationsRequest.displayName = 'proto.tournament_management.BulkDeclineInvitationsRequest';
-}
-/**
- * Generated by JsPbCodeGenerator.
- * @param {Array=} opt_data Optional initial data array, typically from a
- * server response, or constructed directly in Javascript. The array is used
- * in place and becomes part of the constructed object. It is not cloned.
- * If no data is provided, the constructed object will be empty, but still
- * valid.
- * @extends {jspb.Message}
- * @constructor
- */
-proto.tournament_management.BulkDeclineInvitationsResponse = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
-};
-goog.inherits(proto.tournament_management.BulkDeclineInvitationsResponse, jspb.Message);
-if (goog.DEBUG && !COMPILED) {
-  /**
-   * @public
-   * @override
-   */
-  proto.tournament_management.BulkDeclineInvitationsResponse.displayName = 'proto.tournament_management.BulkDeclineInvitationsResponse';
-}
-/**
- * Generated by JsPbCodeGenerator.
- * @param {Array=} opt_data Optional initial data array, typically from a
- * server response, or constructed directly in Javascript. The array is used
- * in place and becomes part of the constructed object. It is not cloned.
- * If no data is provided, the constructed object will be empty, but still
- * valid.
- * @extends {jspb.Message}
- * @constructor
- */
-proto.tournament_management.GetAllInvitationsRequest = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
-};
-goog.inherits(proto.tournament_management.GetAllInvitationsRequest, jspb.Message);
-if (goog.DEBUG && !COMPILED) {
-  /**
-   * @public
-   * @override
-   */
-  proto.tournament_management.GetAllInvitationsRequest.displayName = 'proto.tournament_management.GetAllInvitationsRequest';
-}
-/**
- * Generated by JsPbCodeGenerator.
- * @param {Array=} opt_data Optional initial data array, typically from a
- * server response, or constructed directly in Javascript. The array is used
- * in place and becomes part of the constructed object. It is not cloned.
- * If no data is provided, the constructed object will be empty, but still
- * valid.
- * @extends {jspb.Message}
- * @constructor
- */
-proto.tournament_management.GetAllInvitationsResponse = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, proto.tournament_management.GetAllInvitationsResponse.repeatedFields_, null);
-};
-goog.inherits(proto.tournament_management.GetAllInvitationsResponse, jspb.Message);
-if (goog.DEBUG && !COMPILED) {
-  /**
-   * @public
-   * @override
-   */
-  proto.tournament_management.GetAllInvitationsResponse.displayName = 'proto.tournament_management.GetAllInvitationsResponse';
 }
 
 /**
@@ -8801,8 +8669,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
  *     http://goto/soy-param-migration
  * @return {!Object}
  */
-proto.tournament_management.AcceptInvitationRequest.prototype.toObject = function(opt_includeInstance) {
-  return proto.tournament_management.AcceptInvitationRequest.toObject(opt_includeInstance, this);
+proto.tournament_management.GetInvitationsByUserRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.GetInvitationsByUserRequest.toObject(opt_includeInstance, this);
 };
 
 
@@ -8811,14 +8679,13 @@ proto.tournament_management.AcceptInvitationRequest.prototype.toObject = functio
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.tournament_management.AcceptInvitationRequest} msg The msg instance to transform.
+ * @param {!proto.tournament_management.GetInvitationsByUserRequest} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.tournament_management.AcceptInvitationRequest.toObject = function(includeInstance, msg) {
+proto.tournament_management.GetInvitationsByUserRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    invitationId: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    token: jspb.Message.getFieldWithDefault(msg, 2, "")
+    token: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -8832,23 +8699,23 @@ proto.tournament_management.AcceptInvitationRequest.toObject = function(includeI
 /**
  * Deserializes binary data (in protobuf wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.tournament_management.AcceptInvitationRequest}
+ * @return {!proto.tournament_management.GetInvitationsByUserRequest}
  */
-proto.tournament_management.AcceptInvitationRequest.deserializeBinary = function(bytes) {
+proto.tournament_management.GetInvitationsByUserRequest.deserializeBinary = function(bytes) {
   var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.tournament_management.AcceptInvitationRequest;
-  return proto.tournament_management.AcceptInvitationRequest.deserializeBinaryFromReader(msg, reader);
+  var msg = new proto.tournament_management.GetInvitationsByUserRequest;
+  return proto.tournament_management.GetInvitationsByUserRequest.deserializeBinaryFromReader(msg, reader);
 };
 
 
 /**
  * Deserializes binary data (in protobuf wire format) from the
  * given reader into the given message object.
- * @param {!proto.tournament_management.AcceptInvitationRequest} msg The message object to deserialize into.
+ * @param {!proto.tournament_management.GetInvitationsByUserRequest} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.tournament_management.AcceptInvitationRequest}
+ * @return {!proto.tournament_management.GetInvitationsByUserRequest}
  */
-proto.tournament_management.AcceptInvitationRequest.deserializeBinaryFromReader = function(msg, reader) {
+proto.tournament_management.GetInvitationsByUserRequest.deserializeBinaryFromReader = function(msg, reader) {
   while (reader.nextField()) {
     if (reader.isEndGroup()) {
       break;
@@ -8856,10 +8723,6 @@ proto.tournament_management.AcceptInvitationRequest.deserializeBinaryFromReader 
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setInvitationId(value);
-      break;
-    case 2:
       var value = /** @type {string} */ (reader.readString());
       msg.setToken(value);
       break;
@@ -8876,9 +8739,9 @@ proto.tournament_management.AcceptInvitationRequest.deserializeBinaryFromReader 
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
-proto.tournament_management.AcceptInvitationRequest.prototype.serializeBinary = function() {
+proto.tournament_management.GetInvitationsByUserRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  proto.tournament_management.AcceptInvitationRequest.serializeBinaryToWriter(this, writer);
+  proto.tournament_management.GetInvitationsByUserRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
@@ -8886,810 +8749,15 @@ proto.tournament_management.AcceptInvitationRequest.prototype.serializeBinary = 
 /**
  * Serializes the given message to binary data (in protobuf wire
  * format), writing to the given BinaryWriter.
- * @param {!proto.tournament_management.AcceptInvitationRequest} message
+ * @param {!proto.tournament_management.GetInvitationsByUserRequest} message
  * @param {!jspb.BinaryWriter} writer
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.tournament_management.AcceptInvitationRequest.serializeBinaryToWriter = function(message, writer) {
+proto.tournament_management.GetInvitationsByUserRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getInvitationId();
-  if (f !== 0) {
-    writer.writeInt32(
-      1,
-      f
-    );
-  }
   f = message.getToken();
   if (f.length > 0) {
     writer.writeString(
-      2,
-      f
-    );
-  }
-};
-
-
-/**
- * optional int32 invitation_id = 1;
- * @return {number}
- */
-proto.tournament_management.AcceptInvitationRequest.prototype.getInvitationId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.tournament_management.AcceptInvitationRequest} returns this
- */
-proto.tournament_management.AcceptInvitationRequest.prototype.setInvitationId = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
-};
-
-
-/**
- * optional string token = 2;
- * @return {string}
- */
-proto.tournament_management.AcceptInvitationRequest.prototype.getToken = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.tournament_management.AcceptInvitationRequest} returns this
- */
-proto.tournament_management.AcceptInvitationRequest.prototype.setToken = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.tournament_management.AcceptInvitationResponse.prototype.toObject = function(opt_includeInstance) {
-  return proto.tournament_management.AcceptInvitationResponse.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.tournament_management.AcceptInvitationResponse} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.AcceptInvitationResponse.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    success: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
-    message: jspb.Message.getFieldWithDefault(msg, 2, "")
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.tournament_management.AcceptInvitationResponse}
- */
-proto.tournament_management.AcceptInvitationResponse.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.tournament_management.AcceptInvitationResponse;
-  return proto.tournament_management.AcceptInvitationResponse.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.tournament_management.AcceptInvitationResponse} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.tournament_management.AcceptInvitationResponse}
- */
-proto.tournament_management.AcceptInvitationResponse.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = /** @type {boolean} */ (reader.readBool());
-      msg.setSuccess(value);
-      break;
-    case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setMessage(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.tournament_management.AcceptInvitationResponse.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.tournament_management.AcceptInvitationResponse.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.tournament_management.AcceptInvitationResponse} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.AcceptInvitationResponse.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getSuccess();
-  if (f) {
-    writer.writeBool(
-      1,
-      f
-    );
-  }
-  f = message.getMessage();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
-};
-
-
-/**
- * optional bool success = 1;
- * @return {boolean}
- */
-proto.tournament_management.AcceptInvitationResponse.prototype.getSuccess = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
-};
-
-
-/**
- * @param {boolean} value
- * @return {!proto.tournament_management.AcceptInvitationResponse} returns this
- */
-proto.tournament_management.AcceptInvitationResponse.prototype.setSuccess = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 1, value);
-};
-
-
-/**
- * optional string message = 2;
- * @return {string}
- */
-proto.tournament_management.AcceptInvitationResponse.prototype.getMessage = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.tournament_management.AcceptInvitationResponse} returns this
- */
-proto.tournament_management.AcceptInvitationResponse.prototype.setMessage = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.tournament_management.DeclineInvitationRequest.prototype.toObject = function(opt_includeInstance) {
-  return proto.tournament_management.DeclineInvitationRequest.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.tournament_management.DeclineInvitationRequest} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.DeclineInvitationRequest.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    invitationId: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    token: jspb.Message.getFieldWithDefault(msg, 2, "")
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.tournament_management.DeclineInvitationRequest}
- */
-proto.tournament_management.DeclineInvitationRequest.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.tournament_management.DeclineInvitationRequest;
-  return proto.tournament_management.DeclineInvitationRequest.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.tournament_management.DeclineInvitationRequest} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.tournament_management.DeclineInvitationRequest}
- */
-proto.tournament_management.DeclineInvitationRequest.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setInvitationId(value);
-      break;
-    case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setToken(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.tournament_management.DeclineInvitationRequest.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.tournament_management.DeclineInvitationRequest.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.tournament_management.DeclineInvitationRequest} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.DeclineInvitationRequest.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getInvitationId();
-  if (f !== 0) {
-    writer.writeInt32(
-      1,
-      f
-    );
-  }
-  f = message.getToken();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
-};
-
-
-/**
- * optional int32 invitation_id = 1;
- * @return {number}
- */
-proto.tournament_management.DeclineInvitationRequest.prototype.getInvitationId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.tournament_management.DeclineInvitationRequest} returns this
- */
-proto.tournament_management.DeclineInvitationRequest.prototype.setInvitationId = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
-};
-
-
-/**
- * optional string token = 2;
- * @return {string}
- */
-proto.tournament_management.DeclineInvitationRequest.prototype.getToken = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.tournament_management.DeclineInvitationRequest} returns this
- */
-proto.tournament_management.DeclineInvitationRequest.prototype.setToken = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.tournament_management.DeclineInvitationResponse.prototype.toObject = function(opt_includeInstance) {
-  return proto.tournament_management.DeclineInvitationResponse.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.tournament_management.DeclineInvitationResponse} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.DeclineInvitationResponse.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    success: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
-    message: jspb.Message.getFieldWithDefault(msg, 2, "")
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.tournament_management.DeclineInvitationResponse}
- */
-proto.tournament_management.DeclineInvitationResponse.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.tournament_management.DeclineInvitationResponse;
-  return proto.tournament_management.DeclineInvitationResponse.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.tournament_management.DeclineInvitationResponse} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.tournament_management.DeclineInvitationResponse}
- */
-proto.tournament_management.DeclineInvitationResponse.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = /** @type {boolean} */ (reader.readBool());
-      msg.setSuccess(value);
-      break;
-    case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setMessage(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.tournament_management.DeclineInvitationResponse.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.tournament_management.DeclineInvitationResponse.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.tournament_management.DeclineInvitationResponse} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.DeclineInvitationResponse.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getSuccess();
-  if (f) {
-    writer.writeBool(
-      1,
-      f
-    );
-  }
-  f = message.getMessage();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
-};
-
-
-/**
- * optional bool success = 1;
- * @return {boolean}
- */
-proto.tournament_management.DeclineInvitationResponse.prototype.getSuccess = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
-};
-
-
-/**
- * @param {boolean} value
- * @return {!proto.tournament_management.DeclineInvitationResponse} returns this
- */
-proto.tournament_management.DeclineInvitationResponse.prototype.setSuccess = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 1, value);
-};
-
-
-/**
- * optional string message = 2;
- * @return {string}
- */
-proto.tournament_management.DeclineInvitationResponse.prototype.getMessage = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.tournament_management.DeclineInvitationResponse} returns this
- */
-proto.tournament_management.DeclineInvitationResponse.prototype.setMessage = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.tournament_management.GetInvitationStatusRequest.prototype.toObject = function(opt_includeInstance) {
-  return proto.tournament_management.GetInvitationStatusRequest.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.tournament_management.GetInvitationStatusRequest} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.GetInvitationStatusRequest.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    invitationId: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    token: jspb.Message.getFieldWithDefault(msg, 2, "")
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.tournament_management.GetInvitationStatusRequest}
- */
-proto.tournament_management.GetInvitationStatusRequest.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.tournament_management.GetInvitationStatusRequest;
-  return proto.tournament_management.GetInvitationStatusRequest.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.tournament_management.GetInvitationStatusRequest} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.tournament_management.GetInvitationStatusRequest}
- */
-proto.tournament_management.GetInvitationStatusRequest.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setInvitationId(value);
-      break;
-    case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setToken(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.tournament_management.GetInvitationStatusRequest.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.tournament_management.GetInvitationStatusRequest.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.tournament_management.GetInvitationStatusRequest} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.GetInvitationStatusRequest.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getInvitationId();
-  if (f !== 0) {
-    writer.writeInt32(
-      1,
-      f
-    );
-  }
-  f = message.getToken();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
-};
-
-
-/**
- * optional int32 invitation_id = 1;
- * @return {number}
- */
-proto.tournament_management.GetInvitationStatusRequest.prototype.getInvitationId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.tournament_management.GetInvitationStatusRequest} returns this
- */
-proto.tournament_management.GetInvitationStatusRequest.prototype.setInvitationId = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
-};
-
-
-/**
- * optional string token = 2;
- * @return {string}
- */
-proto.tournament_management.GetInvitationStatusRequest.prototype.getToken = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.tournament_management.GetInvitationStatusRequest} returns this
- */
-proto.tournament_management.GetInvitationStatusRequest.prototype.setToken = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.tournament_management.GetInvitationStatusResponse.prototype.toObject = function(opt_includeInstance) {
-  return proto.tournament_management.GetInvitationStatusResponse.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.tournament_management.GetInvitationStatusResponse} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.GetInvitationStatusResponse.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    status: jspb.Message.getFieldWithDefault(msg, 1, "")
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.tournament_management.GetInvitationStatusResponse}
- */
-proto.tournament_management.GetInvitationStatusResponse.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.tournament_management.GetInvitationStatusResponse;
-  return proto.tournament_management.GetInvitationStatusResponse.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.tournament_management.GetInvitationStatusResponse} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.tournament_management.GetInvitationStatusResponse}
- */
-proto.tournament_management.GetInvitationStatusResponse.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setStatus(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.tournament_management.GetInvitationStatusResponse.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.tournament_management.GetInvitationStatusResponse.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.tournament_management.GetInvitationStatusResponse} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.GetInvitationStatusResponse.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getStatus();
-  if (f.length > 0) {
-    writer.writeString(
       1,
       f
     );
@@ -9698,20 +8766,1596 @@ proto.tournament_management.GetInvitationStatusResponse.serializeBinaryToWriter 
 
 
 /**
- * optional string status = 1;
+ * optional string token = 1;
  * @return {string}
  */
-proto.tournament_management.GetInvitationStatusResponse.prototype.getStatus = function() {
+proto.tournament_management.GetInvitationsByUserRequest.prototype.getToken = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
  * @param {string} value
- * @return {!proto.tournament_management.GetInvitationStatusResponse} returns this
+ * @return {!proto.tournament_management.GetInvitationsByUserRequest} returns this
  */
-proto.tournament_management.GetInvitationStatusResponse.prototype.setStatus = function(value) {
+proto.tournament_management.GetInvitationsByUserRequest.prototype.setToken = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.tournament_management.GetInvitationsByUserResponse.repeatedFields_ = [1];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.GetInvitationsByUserResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.GetInvitationsByUserResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.GetInvitationsByUserResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.GetInvitationsByUserResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    invitationsList: jspb.Message.toObjectList(msg.getInvitationsList(),
+    proto.tournament_management.InvitationInfo.toObject, includeInstance)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.GetInvitationsByUserResponse}
+ */
+proto.tournament_management.GetInvitationsByUserResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.GetInvitationsByUserResponse;
+  return proto.tournament_management.GetInvitationsByUserResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.GetInvitationsByUserResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.GetInvitationsByUserResponse}
+ */
+proto.tournament_management.GetInvitationsByUserResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = new proto.tournament_management.InvitationInfo;
+      reader.readMessage(value,proto.tournament_management.InvitationInfo.deserializeBinaryFromReader);
+      msg.addInvitations(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.GetInvitationsByUserResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.GetInvitationsByUserResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.GetInvitationsByUserResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.GetInvitationsByUserResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getInvitationsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      1,
+      f,
+      proto.tournament_management.InvitationInfo.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * repeated InvitationInfo invitations = 1;
+ * @return {!Array<!proto.tournament_management.InvitationInfo>}
+ */
+proto.tournament_management.GetInvitationsByUserResponse.prototype.getInvitationsList = function() {
+  return /** @type{!Array<!proto.tournament_management.InvitationInfo>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.tournament_management.InvitationInfo, 1));
+};
+
+
+/**
+ * @param {!Array<!proto.tournament_management.InvitationInfo>} value
+ * @return {!proto.tournament_management.GetInvitationsByUserResponse} returns this
+*/
+proto.tournament_management.GetInvitationsByUserResponse.prototype.setInvitationsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.tournament_management.InvitationInfo=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.tournament_management.InvitationInfo}
+ */
+proto.tournament_management.GetInvitationsByUserResponse.prototype.addInvitations = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.tournament_management.InvitationInfo, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.tournament_management.GetInvitationsByUserResponse} returns this
+ */
+proto.tournament_management.GetInvitationsByUserResponse.prototype.clearInvitationsList = function() {
+  return this.setInvitationsList([]);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.GetInvitationsByTournamentRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.GetInvitationsByTournamentRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.GetInvitationsByTournamentRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.GetInvitationsByTournamentRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    tournamentId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    token: jspb.Message.getFieldWithDefault(msg, 2, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.GetInvitationsByTournamentRequest}
+ */
+proto.tournament_management.GetInvitationsByTournamentRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.GetInvitationsByTournamentRequest;
+  return proto.tournament_management.GetInvitationsByTournamentRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.GetInvitationsByTournamentRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.GetInvitationsByTournamentRequest}
+ */
+proto.tournament_management.GetInvitationsByTournamentRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.GetInvitationsByTournamentRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.GetInvitationsByTournamentRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.GetInvitationsByTournamentRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.GetInvitationsByTournamentRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTournamentId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 tournament_id = 1;
+ * @return {number}
+ */
+proto.tournament_management.GetInvitationsByTournamentRequest.prototype.getTournamentId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.GetInvitationsByTournamentRequest} returns this
+ */
+proto.tournament_management.GetInvitationsByTournamentRequest.prototype.setTournamentId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string token = 2;
+ * @return {string}
+ */
+proto.tournament_management.GetInvitationsByTournamentRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.GetInvitationsByTournamentRequest} returns this
+ */
+proto.tournament_management.GetInvitationsByTournamentRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.InvitationInfo.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.InvitationInfo.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.InvitationInfo} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.InvitationInfo.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    invitationId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    status: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    idebateId: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    inviteeName: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    inviteeRole: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    createdAt: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    updatedAt: jspb.Message.getFieldWithDefault(msg, 7, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.InvitationInfo}
+ */
+proto.tournament_management.InvitationInfo.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.InvitationInfo;
+  return proto.tournament_management.InvitationInfo.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.InvitationInfo} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.InvitationInfo}
+ */
+proto.tournament_management.InvitationInfo.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setInvitationId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setStatus(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setIdebateId(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setInviteeName(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setInviteeRole(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCreatedAt(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUpdatedAt(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.InvitationInfo.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.InvitationInfo.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.InvitationInfo} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.InvitationInfo.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getInvitationId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getStatus();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getIdebateId();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getInviteeName();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getInviteeRole();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getCreatedAt();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getUpdatedAt();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 invitation_id = 1;
+ * @return {number}
+ */
+proto.tournament_management.InvitationInfo.prototype.getInvitationId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.InvitationInfo} returns this
+ */
+proto.tournament_management.InvitationInfo.prototype.setInvitationId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string status = 2;
+ * @return {string}
+ */
+proto.tournament_management.InvitationInfo.prototype.getStatus = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.InvitationInfo} returns this
+ */
+proto.tournament_management.InvitationInfo.prototype.setStatus = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string idebate_id = 3;
+ * @return {string}
+ */
+proto.tournament_management.InvitationInfo.prototype.getIdebateId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.InvitationInfo} returns this
+ */
+proto.tournament_management.InvitationInfo.prototype.setIdebateId = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string invitee_name = 4;
+ * @return {string}
+ */
+proto.tournament_management.InvitationInfo.prototype.getInviteeName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.InvitationInfo} returns this
+ */
+proto.tournament_management.InvitationInfo.prototype.setInviteeName = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string invitee_role = 5;
+ * @return {string}
+ */
+proto.tournament_management.InvitationInfo.prototype.getInviteeRole = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.InvitationInfo} returns this
+ */
+proto.tournament_management.InvitationInfo.prototype.setInviteeRole = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional string created_at = 6;
+ * @return {string}
+ */
+proto.tournament_management.InvitationInfo.prototype.getCreatedAt = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.InvitationInfo} returns this
+ */
+proto.tournament_management.InvitationInfo.prototype.setCreatedAt = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional string updated_at = 7;
+ * @return {string}
+ */
+proto.tournament_management.InvitationInfo.prototype.getUpdatedAt = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.InvitationInfo} returns this
+ */
+proto.tournament_management.InvitationInfo.prototype.setUpdatedAt = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.tournament_management.GetInvitationsByTournamentResponse.repeatedFields_ = [1];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.GetInvitationsByTournamentResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.GetInvitationsByTournamentResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.GetInvitationsByTournamentResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.GetInvitationsByTournamentResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    invitationsList: jspb.Message.toObjectList(msg.getInvitationsList(),
+    proto.tournament_management.InvitationInfo.toObject, includeInstance)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.GetInvitationsByTournamentResponse}
+ */
+proto.tournament_management.GetInvitationsByTournamentResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.GetInvitationsByTournamentResponse;
+  return proto.tournament_management.GetInvitationsByTournamentResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.GetInvitationsByTournamentResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.GetInvitationsByTournamentResponse}
+ */
+proto.tournament_management.GetInvitationsByTournamentResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = new proto.tournament_management.InvitationInfo;
+      reader.readMessage(value,proto.tournament_management.InvitationInfo.deserializeBinaryFromReader);
+      msg.addInvitations(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.GetInvitationsByTournamentResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.GetInvitationsByTournamentResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.GetInvitationsByTournamentResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.GetInvitationsByTournamentResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getInvitationsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      1,
+      f,
+      proto.tournament_management.InvitationInfo.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * repeated InvitationInfo invitations = 1;
+ * @return {!Array<!proto.tournament_management.InvitationInfo>}
+ */
+proto.tournament_management.GetInvitationsByTournamentResponse.prototype.getInvitationsList = function() {
+  return /** @type{!Array<!proto.tournament_management.InvitationInfo>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.tournament_management.InvitationInfo, 1));
+};
+
+
+/**
+ * @param {!Array<!proto.tournament_management.InvitationInfo>} value
+ * @return {!proto.tournament_management.GetInvitationsByTournamentResponse} returns this
+*/
+proto.tournament_management.GetInvitationsByTournamentResponse.prototype.setInvitationsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.tournament_management.InvitationInfo=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.tournament_management.InvitationInfo}
+ */
+proto.tournament_management.GetInvitationsByTournamentResponse.prototype.addInvitations = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.tournament_management.InvitationInfo, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.tournament_management.GetInvitationsByTournamentResponse} returns this
+ */
+proto.tournament_management.GetInvitationsByTournamentResponse.prototype.clearInvitationsList = function() {
+  return this.setInvitationsList([]);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.UpdateInvitationStatusRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.UpdateInvitationStatusRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.UpdateInvitationStatusRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.UpdateInvitationStatusRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    invitationId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    newStatus: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    token: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.UpdateInvitationStatusRequest}
+ */
+proto.tournament_management.UpdateInvitationStatusRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.UpdateInvitationStatusRequest;
+  return proto.tournament_management.UpdateInvitationStatusRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.UpdateInvitationStatusRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.UpdateInvitationStatusRequest}
+ */
+proto.tournament_management.UpdateInvitationStatusRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setInvitationId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNewStatus(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.UpdateInvitationStatusRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.UpdateInvitationStatusRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.UpdateInvitationStatusRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.UpdateInvitationStatusRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getInvitationId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getNewStatus();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 invitation_id = 1;
+ * @return {number}
+ */
+proto.tournament_management.UpdateInvitationStatusRequest.prototype.getInvitationId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.UpdateInvitationStatusRequest} returns this
+ */
+proto.tournament_management.UpdateInvitationStatusRequest.prototype.setInvitationId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string new_status = 2;
+ * @return {string}
+ */
+proto.tournament_management.UpdateInvitationStatusRequest.prototype.getNewStatus = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.UpdateInvitationStatusRequest} returns this
+ */
+proto.tournament_management.UpdateInvitationStatusRequest.prototype.setNewStatus = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string token = 3;
+ * @return {string}
+ */
+proto.tournament_management.UpdateInvitationStatusRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.UpdateInvitationStatusRequest} returns this
+ */
+proto.tournament_management.UpdateInvitationStatusRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.UpdateInvitationStatusResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.UpdateInvitationStatusResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.UpdateInvitationStatusResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.UpdateInvitationStatusResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    success: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    message: jspb.Message.getFieldWithDefault(msg, 2, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.UpdateInvitationStatusResponse}
+ */
+proto.tournament_management.UpdateInvitationStatusResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.UpdateInvitationStatusResponse;
+  return proto.tournament_management.UpdateInvitationStatusResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.UpdateInvitationStatusResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.UpdateInvitationStatusResponse}
+ */
+proto.tournament_management.UpdateInvitationStatusResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSuccess(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMessage(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.UpdateInvitationStatusResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.UpdateInvitationStatusResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.UpdateInvitationStatusResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.UpdateInvitationStatusResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSuccess();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getMessage();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool success = 1;
+ * @return {boolean}
+ */
+proto.tournament_management.UpdateInvitationStatusResponse.prototype.getSuccess = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.tournament_management.UpdateInvitationStatusResponse} returns this
+ */
+proto.tournament_management.UpdateInvitationStatusResponse.prototype.setSuccess = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional string message = 2;
+ * @return {string}
+ */
+proto.tournament_management.UpdateInvitationStatusResponse.prototype.getMessage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.UpdateInvitationStatusResponse} returns this
+ */
+proto.tournament_management.UpdateInvitationStatusResponse.prototype.setMessage = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.tournament_management.BulkUpdateInvitationStatusRequest.repeatedFields_ = [1];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.BulkUpdateInvitationStatusRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.BulkUpdateInvitationStatusRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.BulkUpdateInvitationStatusRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.BulkUpdateInvitationStatusRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    invitationIdsList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined : f,
+    newStatus: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    token: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.BulkUpdateInvitationStatusRequest}
+ */
+proto.tournament_management.BulkUpdateInvitationStatusRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.BulkUpdateInvitationStatusRequest;
+  return proto.tournament_management.BulkUpdateInvitationStatusRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.BulkUpdateInvitationStatusRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.BulkUpdateInvitationStatusRequest}
+ */
+proto.tournament_management.BulkUpdateInvitationStatusRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addInvitationIds(values[i]);
+      }
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNewStatus(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.BulkUpdateInvitationStatusRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.BulkUpdateInvitationStatusRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.BulkUpdateInvitationStatusRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.BulkUpdateInvitationStatusRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getInvitationIdsList();
+  if (f.length > 0) {
+    writer.writePackedInt32(
+      1,
+      f
+    );
+  }
+  f = message.getNewStatus();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * repeated int32 invitation_ids = 1;
+ * @return {!Array<number>}
+ */
+proto.tournament_management.BulkUpdateInvitationStatusRequest.prototype.getInvitationIdsList = function() {
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 1));
+};
+
+
+/**
+ * @param {!Array<number>} value
+ * @return {!proto.tournament_management.BulkUpdateInvitationStatusRequest} returns this
+ */
+proto.tournament_management.BulkUpdateInvitationStatusRequest.prototype.setInvitationIdsList = function(value) {
+  return jspb.Message.setField(this, 1, value || []);
+};
+
+
+/**
+ * @param {number} value
+ * @param {number=} opt_index
+ * @return {!proto.tournament_management.BulkUpdateInvitationStatusRequest} returns this
+ */
+proto.tournament_management.BulkUpdateInvitationStatusRequest.prototype.addInvitationIds = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 1, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.tournament_management.BulkUpdateInvitationStatusRequest} returns this
+ */
+proto.tournament_management.BulkUpdateInvitationStatusRequest.prototype.clearInvitationIdsList = function() {
+  return this.setInvitationIdsList([]);
+};
+
+
+/**
+ * optional string new_status = 2;
+ * @return {string}
+ */
+proto.tournament_management.BulkUpdateInvitationStatusRequest.prototype.getNewStatus = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.BulkUpdateInvitationStatusRequest} returns this
+ */
+proto.tournament_management.BulkUpdateInvitationStatusRequest.prototype.setNewStatus = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string token = 3;
+ * @return {string}
+ */
+proto.tournament_management.BulkUpdateInvitationStatusRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.BulkUpdateInvitationStatusRequest} returns this
+ */
+proto.tournament_management.BulkUpdateInvitationStatusRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.tournament_management.BulkUpdateInvitationStatusResponse.repeatedFields_ = [3];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.BulkUpdateInvitationStatusResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.BulkUpdateInvitationStatusResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.BulkUpdateInvitationStatusResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.BulkUpdateInvitationStatusResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    success: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    message: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    updatedInvitationIdsList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.BulkUpdateInvitationStatusResponse}
+ */
+proto.tournament_management.BulkUpdateInvitationStatusResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.BulkUpdateInvitationStatusResponse;
+  return proto.tournament_management.BulkUpdateInvitationStatusResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.BulkUpdateInvitationStatusResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.BulkUpdateInvitationStatusResponse}
+ */
+proto.tournament_management.BulkUpdateInvitationStatusResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSuccess(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMessage(value);
+      break;
+    case 3:
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addUpdatedInvitationIds(values[i]);
+      }
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.BulkUpdateInvitationStatusResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.BulkUpdateInvitationStatusResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.BulkUpdateInvitationStatusResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.BulkUpdateInvitationStatusResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSuccess();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getMessage();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getUpdatedInvitationIdsList();
+  if (f.length > 0) {
+    writer.writePackedInt32(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool success = 1;
+ * @return {boolean}
+ */
+proto.tournament_management.BulkUpdateInvitationStatusResponse.prototype.getSuccess = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.tournament_management.BulkUpdateInvitationStatusResponse} returns this
+ */
+proto.tournament_management.BulkUpdateInvitationStatusResponse.prototype.setSuccess = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional string message = 2;
+ * @return {string}
+ */
+proto.tournament_management.BulkUpdateInvitationStatusResponse.prototype.getMessage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.BulkUpdateInvitationStatusResponse} returns this
+ */
+proto.tournament_management.BulkUpdateInvitationStatusResponse.prototype.setMessage = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * repeated int32 updated_invitation_ids = 3;
+ * @return {!Array<number>}
+ */
+proto.tournament_management.BulkUpdateInvitationStatusResponse.prototype.getUpdatedInvitationIdsList = function() {
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 3));
+};
+
+
+/**
+ * @param {!Array<number>} value
+ * @return {!proto.tournament_management.BulkUpdateInvitationStatusResponse} returns this
+ */
+proto.tournament_management.BulkUpdateInvitationStatusResponse.prototype.setUpdatedInvitationIdsList = function(value) {
+  return jspb.Message.setField(this, 3, value || []);
+};
+
+
+/**
+ * @param {number} value
+ * @param {number=} opt_index
+ * @return {!proto.tournament_management.BulkUpdateInvitationStatusResponse} returns this
+ */
+proto.tournament_management.BulkUpdateInvitationStatusResponse.prototype.addUpdatedInvitationIds = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.tournament_management.BulkUpdateInvitationStatusResponse} returns this
+ */
+proto.tournament_management.BulkUpdateInvitationStatusResponse.prototype.clearUpdatedInvitationIdsList = function() {
+  return this.setUpdatedInvitationIdsList([]);
 };
 
 
@@ -10380,1472 +11024,6 @@ proto.tournament_management.BulkResendInvitationsResponse.prototype.getMessage =
  */
 proto.tournament_management.BulkResendInvitationsResponse.prototype.setMessage = function(value) {
   return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.tournament_management.GetInvitationsByUserRequest.prototype.toObject = function(opt_includeInstance) {
-  return proto.tournament_management.GetInvitationsByUserRequest.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.tournament_management.GetInvitationsByUserRequest} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.GetInvitationsByUserRequest.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    token: jspb.Message.getFieldWithDefault(msg, 1, "")
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.tournament_management.GetInvitationsByUserRequest}
- */
-proto.tournament_management.GetInvitationsByUserRequest.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.tournament_management.GetInvitationsByUserRequest;
-  return proto.tournament_management.GetInvitationsByUserRequest.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.tournament_management.GetInvitationsByUserRequest} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.tournament_management.GetInvitationsByUserRequest}
- */
-proto.tournament_management.GetInvitationsByUserRequest.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setToken(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.tournament_management.GetInvitationsByUserRequest.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.tournament_management.GetInvitationsByUserRequest.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.tournament_management.GetInvitationsByUserRequest} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.GetInvitationsByUserRequest.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getToken();
-  if (f.length > 0) {
-    writer.writeString(
-      1,
-      f
-    );
-  }
-};
-
-
-/**
- * optional string token = 1;
- * @return {string}
- */
-proto.tournament_management.GetInvitationsByUserRequest.prototype.getToken = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.tournament_management.GetInvitationsByUserRequest} returns this
- */
-proto.tournament_management.GetInvitationsByUserRequest.prototype.setToken = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
-};
-
-
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.tournament_management.Invitation.prototype.toObject = function(opt_includeInstance) {
-  return proto.tournament_management.Invitation.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.tournament_management.Invitation} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.Invitation.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    invitationId: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    tournamentId: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    status: jspb.Message.getFieldWithDefault(msg, 3, "")
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.tournament_management.Invitation}
- */
-proto.tournament_management.Invitation.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.tournament_management.Invitation;
-  return proto.tournament_management.Invitation.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.tournament_management.Invitation} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.tournament_management.Invitation}
- */
-proto.tournament_management.Invitation.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setInvitationId(value);
-      break;
-    case 2:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setTournamentId(value);
-      break;
-    case 3:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setStatus(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.tournament_management.Invitation.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.tournament_management.Invitation.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.tournament_management.Invitation} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.Invitation.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getInvitationId();
-  if (f !== 0) {
-    writer.writeInt32(
-      1,
-      f
-    );
-  }
-  f = message.getTournamentId();
-  if (f !== 0) {
-    writer.writeInt32(
-      2,
-      f
-    );
-  }
-  f = message.getStatus();
-  if (f.length > 0) {
-    writer.writeString(
-      3,
-      f
-    );
-  }
-};
-
-
-/**
- * optional int32 invitation_id = 1;
- * @return {number}
- */
-proto.tournament_management.Invitation.prototype.getInvitationId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.tournament_management.Invitation} returns this
- */
-proto.tournament_management.Invitation.prototype.setInvitationId = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
-};
-
-
-/**
- * optional int32 tournament_id = 2;
- * @return {number}
- */
-proto.tournament_management.Invitation.prototype.getTournamentId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.tournament_management.Invitation} returns this
- */
-proto.tournament_management.Invitation.prototype.setTournamentId = function(value) {
-  return jspb.Message.setProto3IntField(this, 2, value);
-};
-
-
-/**
- * optional string status = 3;
- * @return {string}
- */
-proto.tournament_management.Invitation.prototype.getStatus = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.tournament_management.Invitation} returns this
- */
-proto.tournament_management.Invitation.prototype.setStatus = function(value) {
-  return jspb.Message.setProto3StringField(this, 3, value);
-};
-
-
-
-/**
- * List of repeated fields within this message type.
- * @private {!Array<number>}
- * @const
- */
-proto.tournament_management.GetInvitationsByUserResponse.repeatedFields_ = [1];
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.tournament_management.GetInvitationsByUserResponse.prototype.toObject = function(opt_includeInstance) {
-  return proto.tournament_management.GetInvitationsByUserResponse.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.tournament_management.GetInvitationsByUserResponse} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.GetInvitationsByUserResponse.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    invitationsList: jspb.Message.toObjectList(msg.getInvitationsList(),
-    proto.tournament_management.Invitation.toObject, includeInstance)
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.tournament_management.GetInvitationsByUserResponse}
- */
-proto.tournament_management.GetInvitationsByUserResponse.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.tournament_management.GetInvitationsByUserResponse;
-  return proto.tournament_management.GetInvitationsByUserResponse.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.tournament_management.GetInvitationsByUserResponse} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.tournament_management.GetInvitationsByUserResponse}
- */
-proto.tournament_management.GetInvitationsByUserResponse.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = new proto.tournament_management.Invitation;
-      reader.readMessage(value,proto.tournament_management.Invitation.deserializeBinaryFromReader);
-      msg.addInvitations(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.tournament_management.GetInvitationsByUserResponse.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.tournament_management.GetInvitationsByUserResponse.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.tournament_management.GetInvitationsByUserResponse} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.GetInvitationsByUserResponse.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getInvitationsList();
-  if (f.length > 0) {
-    writer.writeRepeatedMessage(
-      1,
-      f,
-      proto.tournament_management.Invitation.serializeBinaryToWriter
-    );
-  }
-};
-
-
-/**
- * repeated Invitation invitations = 1;
- * @return {!Array<!proto.tournament_management.Invitation>}
- */
-proto.tournament_management.GetInvitationsByUserResponse.prototype.getInvitationsList = function() {
-  return /** @type{!Array<!proto.tournament_management.Invitation>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.tournament_management.Invitation, 1));
-};
-
-
-/**
- * @param {!Array<!proto.tournament_management.Invitation>} value
- * @return {!proto.tournament_management.GetInvitationsByUserResponse} returns this
-*/
-proto.tournament_management.GetInvitationsByUserResponse.prototype.setInvitationsList = function(value) {
-  return jspb.Message.setRepeatedWrapperField(this, 1, value);
-};
-
-
-/**
- * @param {!proto.tournament_management.Invitation=} opt_value
- * @param {number=} opt_index
- * @return {!proto.tournament_management.Invitation}
- */
-proto.tournament_management.GetInvitationsByUserResponse.prototype.addInvitations = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.tournament_management.Invitation, opt_index);
-};
-
-
-/**
- * Clears the list making it empty but non-null.
- * @return {!proto.tournament_management.GetInvitationsByUserResponse} returns this
- */
-proto.tournament_management.GetInvitationsByUserResponse.prototype.clearInvitationsList = function() {
-  return this.setInvitationsList([]);
-};
-
-
-
-/**
- * List of repeated fields within this message type.
- * @private {!Array<number>}
- * @const
- */
-proto.tournament_management.BulkAcceptInvitationsRequest.repeatedFields_ = [1];
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.tournament_management.BulkAcceptInvitationsRequest.prototype.toObject = function(opt_includeInstance) {
-  return proto.tournament_management.BulkAcceptInvitationsRequest.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.tournament_management.BulkAcceptInvitationsRequest} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.BulkAcceptInvitationsRequest.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    invitationIdsList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined : f,
-    token: jspb.Message.getFieldWithDefault(msg, 2, "")
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.tournament_management.BulkAcceptInvitationsRequest}
- */
-proto.tournament_management.BulkAcceptInvitationsRequest.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.tournament_management.BulkAcceptInvitationsRequest;
-  return proto.tournament_management.BulkAcceptInvitationsRequest.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.tournament_management.BulkAcceptInvitationsRequest} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.tournament_management.BulkAcceptInvitationsRequest}
- */
-proto.tournament_management.BulkAcceptInvitationsRequest.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addInvitationIds(values[i]);
-      }
-      break;
-    case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setToken(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.tournament_management.BulkAcceptInvitationsRequest.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.tournament_management.BulkAcceptInvitationsRequest.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.tournament_management.BulkAcceptInvitationsRequest} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.BulkAcceptInvitationsRequest.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getInvitationIdsList();
-  if (f.length > 0) {
-    writer.writePackedInt32(
-      1,
-      f
-    );
-  }
-  f = message.getToken();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
-};
-
-
-/**
- * repeated int32 invitation_ids = 1;
- * @return {!Array<number>}
- */
-proto.tournament_management.BulkAcceptInvitationsRequest.prototype.getInvitationIdsList = function() {
-  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 1));
-};
-
-
-/**
- * @param {!Array<number>} value
- * @return {!proto.tournament_management.BulkAcceptInvitationsRequest} returns this
- */
-proto.tournament_management.BulkAcceptInvitationsRequest.prototype.setInvitationIdsList = function(value) {
-  return jspb.Message.setField(this, 1, value || []);
-};
-
-
-/**
- * @param {number} value
- * @param {number=} opt_index
- * @return {!proto.tournament_management.BulkAcceptInvitationsRequest} returns this
- */
-proto.tournament_management.BulkAcceptInvitationsRequest.prototype.addInvitationIds = function(value, opt_index) {
-  return jspb.Message.addToRepeatedField(this, 1, value, opt_index);
-};
-
-
-/**
- * Clears the list making it empty but non-null.
- * @return {!proto.tournament_management.BulkAcceptInvitationsRequest} returns this
- */
-proto.tournament_management.BulkAcceptInvitationsRequest.prototype.clearInvitationIdsList = function() {
-  return this.setInvitationIdsList([]);
-};
-
-
-/**
- * optional string token = 2;
- * @return {string}
- */
-proto.tournament_management.BulkAcceptInvitationsRequest.prototype.getToken = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.tournament_management.BulkAcceptInvitationsRequest} returns this
- */
-proto.tournament_management.BulkAcceptInvitationsRequest.prototype.setToken = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.tournament_management.BulkAcceptInvitationsResponse.prototype.toObject = function(opt_includeInstance) {
-  return proto.tournament_management.BulkAcceptInvitationsResponse.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.tournament_management.BulkAcceptInvitationsResponse} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.BulkAcceptInvitationsResponse.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    success: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
-    message: jspb.Message.getFieldWithDefault(msg, 2, "")
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.tournament_management.BulkAcceptInvitationsResponse}
- */
-proto.tournament_management.BulkAcceptInvitationsResponse.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.tournament_management.BulkAcceptInvitationsResponse;
-  return proto.tournament_management.BulkAcceptInvitationsResponse.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.tournament_management.BulkAcceptInvitationsResponse} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.tournament_management.BulkAcceptInvitationsResponse}
- */
-proto.tournament_management.BulkAcceptInvitationsResponse.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = /** @type {boolean} */ (reader.readBool());
-      msg.setSuccess(value);
-      break;
-    case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setMessage(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.tournament_management.BulkAcceptInvitationsResponse.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.tournament_management.BulkAcceptInvitationsResponse.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.tournament_management.BulkAcceptInvitationsResponse} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.BulkAcceptInvitationsResponse.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getSuccess();
-  if (f) {
-    writer.writeBool(
-      1,
-      f
-    );
-  }
-  f = message.getMessage();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
-};
-
-
-/**
- * optional bool success = 1;
- * @return {boolean}
- */
-proto.tournament_management.BulkAcceptInvitationsResponse.prototype.getSuccess = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
-};
-
-
-/**
- * @param {boolean} value
- * @return {!proto.tournament_management.BulkAcceptInvitationsResponse} returns this
- */
-proto.tournament_management.BulkAcceptInvitationsResponse.prototype.setSuccess = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 1, value);
-};
-
-
-/**
- * optional string message = 2;
- * @return {string}
- */
-proto.tournament_management.BulkAcceptInvitationsResponse.prototype.getMessage = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.tournament_management.BulkAcceptInvitationsResponse} returns this
- */
-proto.tournament_management.BulkAcceptInvitationsResponse.prototype.setMessage = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-
-/**
- * List of repeated fields within this message type.
- * @private {!Array<number>}
- * @const
- */
-proto.tournament_management.BulkDeclineInvitationsRequest.repeatedFields_ = [1];
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.tournament_management.BulkDeclineInvitationsRequest.prototype.toObject = function(opt_includeInstance) {
-  return proto.tournament_management.BulkDeclineInvitationsRequest.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.tournament_management.BulkDeclineInvitationsRequest} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.BulkDeclineInvitationsRequest.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    invitationIdsList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined : f,
-    token: jspb.Message.getFieldWithDefault(msg, 2, "")
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.tournament_management.BulkDeclineInvitationsRequest}
- */
-proto.tournament_management.BulkDeclineInvitationsRequest.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.tournament_management.BulkDeclineInvitationsRequest;
-  return proto.tournament_management.BulkDeclineInvitationsRequest.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.tournament_management.BulkDeclineInvitationsRequest} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.tournament_management.BulkDeclineInvitationsRequest}
- */
-proto.tournament_management.BulkDeclineInvitationsRequest.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addInvitationIds(values[i]);
-      }
-      break;
-    case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setToken(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.tournament_management.BulkDeclineInvitationsRequest.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.tournament_management.BulkDeclineInvitationsRequest.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.tournament_management.BulkDeclineInvitationsRequest} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.BulkDeclineInvitationsRequest.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getInvitationIdsList();
-  if (f.length > 0) {
-    writer.writePackedInt32(
-      1,
-      f
-    );
-  }
-  f = message.getToken();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
-};
-
-
-/**
- * repeated int32 invitation_ids = 1;
- * @return {!Array<number>}
- */
-proto.tournament_management.BulkDeclineInvitationsRequest.prototype.getInvitationIdsList = function() {
-  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 1));
-};
-
-
-/**
- * @param {!Array<number>} value
- * @return {!proto.tournament_management.BulkDeclineInvitationsRequest} returns this
- */
-proto.tournament_management.BulkDeclineInvitationsRequest.prototype.setInvitationIdsList = function(value) {
-  return jspb.Message.setField(this, 1, value || []);
-};
-
-
-/**
- * @param {number} value
- * @param {number=} opt_index
- * @return {!proto.tournament_management.BulkDeclineInvitationsRequest} returns this
- */
-proto.tournament_management.BulkDeclineInvitationsRequest.prototype.addInvitationIds = function(value, opt_index) {
-  return jspb.Message.addToRepeatedField(this, 1, value, opt_index);
-};
-
-
-/**
- * Clears the list making it empty but non-null.
- * @return {!proto.tournament_management.BulkDeclineInvitationsRequest} returns this
- */
-proto.tournament_management.BulkDeclineInvitationsRequest.prototype.clearInvitationIdsList = function() {
-  return this.setInvitationIdsList([]);
-};
-
-
-/**
- * optional string token = 2;
- * @return {string}
- */
-proto.tournament_management.BulkDeclineInvitationsRequest.prototype.getToken = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.tournament_management.BulkDeclineInvitationsRequest} returns this
- */
-proto.tournament_management.BulkDeclineInvitationsRequest.prototype.setToken = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.tournament_management.BulkDeclineInvitationsResponse.prototype.toObject = function(opt_includeInstance) {
-  return proto.tournament_management.BulkDeclineInvitationsResponse.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.tournament_management.BulkDeclineInvitationsResponse} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.BulkDeclineInvitationsResponse.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    success: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
-    message: jspb.Message.getFieldWithDefault(msg, 2, "")
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.tournament_management.BulkDeclineInvitationsResponse}
- */
-proto.tournament_management.BulkDeclineInvitationsResponse.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.tournament_management.BulkDeclineInvitationsResponse;
-  return proto.tournament_management.BulkDeclineInvitationsResponse.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.tournament_management.BulkDeclineInvitationsResponse} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.tournament_management.BulkDeclineInvitationsResponse}
- */
-proto.tournament_management.BulkDeclineInvitationsResponse.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = /** @type {boolean} */ (reader.readBool());
-      msg.setSuccess(value);
-      break;
-    case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setMessage(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.tournament_management.BulkDeclineInvitationsResponse.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.tournament_management.BulkDeclineInvitationsResponse.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.tournament_management.BulkDeclineInvitationsResponse} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.BulkDeclineInvitationsResponse.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getSuccess();
-  if (f) {
-    writer.writeBool(
-      1,
-      f
-    );
-  }
-  f = message.getMessage();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
-};
-
-
-/**
- * optional bool success = 1;
- * @return {boolean}
- */
-proto.tournament_management.BulkDeclineInvitationsResponse.prototype.getSuccess = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
-};
-
-
-/**
- * @param {boolean} value
- * @return {!proto.tournament_management.BulkDeclineInvitationsResponse} returns this
- */
-proto.tournament_management.BulkDeclineInvitationsResponse.prototype.setSuccess = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 1, value);
-};
-
-
-/**
- * optional string message = 2;
- * @return {string}
- */
-proto.tournament_management.BulkDeclineInvitationsResponse.prototype.getMessage = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.tournament_management.BulkDeclineInvitationsResponse} returns this
- */
-proto.tournament_management.BulkDeclineInvitationsResponse.prototype.setMessage = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.tournament_management.GetAllInvitationsRequest.prototype.toObject = function(opt_includeInstance) {
-  return proto.tournament_management.GetAllInvitationsRequest.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.tournament_management.GetAllInvitationsRequest} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.GetAllInvitationsRequest.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    token: jspb.Message.getFieldWithDefault(msg, 1, "")
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.tournament_management.GetAllInvitationsRequest}
- */
-proto.tournament_management.GetAllInvitationsRequest.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.tournament_management.GetAllInvitationsRequest;
-  return proto.tournament_management.GetAllInvitationsRequest.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.tournament_management.GetAllInvitationsRequest} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.tournament_management.GetAllInvitationsRequest}
- */
-proto.tournament_management.GetAllInvitationsRequest.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setToken(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.tournament_management.GetAllInvitationsRequest.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.tournament_management.GetAllInvitationsRequest.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.tournament_management.GetAllInvitationsRequest} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.GetAllInvitationsRequest.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getToken();
-  if (f.length > 0) {
-    writer.writeString(
-      1,
-      f
-    );
-  }
-};
-
-
-/**
- * optional string token = 1;
- * @return {string}
- */
-proto.tournament_management.GetAllInvitationsRequest.prototype.getToken = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.tournament_management.GetAllInvitationsRequest} returns this
- */
-proto.tournament_management.GetAllInvitationsRequest.prototype.setToken = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
-};
-
-
-
-/**
- * List of repeated fields within this message type.
- * @private {!Array<number>}
- * @const
- */
-proto.tournament_management.GetAllInvitationsResponse.repeatedFields_ = [1];
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.tournament_management.GetAllInvitationsResponse.prototype.toObject = function(opt_includeInstance) {
-  return proto.tournament_management.GetAllInvitationsResponse.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.tournament_management.GetAllInvitationsResponse} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.GetAllInvitationsResponse.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    invitationsList: jspb.Message.toObjectList(msg.getInvitationsList(),
-    proto.tournament_management.Invitation.toObject, includeInstance)
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.tournament_management.GetAllInvitationsResponse}
- */
-proto.tournament_management.GetAllInvitationsResponse.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.tournament_management.GetAllInvitationsResponse;
-  return proto.tournament_management.GetAllInvitationsResponse.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.tournament_management.GetAllInvitationsResponse} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.tournament_management.GetAllInvitationsResponse}
- */
-proto.tournament_management.GetAllInvitationsResponse.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = new proto.tournament_management.Invitation;
-      reader.readMessage(value,proto.tournament_management.Invitation.deserializeBinaryFromReader);
-      msg.addInvitations(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.tournament_management.GetAllInvitationsResponse.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.tournament_management.GetAllInvitationsResponse.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.tournament_management.GetAllInvitationsResponse} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.tournament_management.GetAllInvitationsResponse.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getInvitationsList();
-  if (f.length > 0) {
-    writer.writeRepeatedMessage(
-      1,
-      f,
-      proto.tournament_management.Invitation.serializeBinaryToWriter
-    );
-  }
-};
-
-
-/**
- * repeated Invitation invitations = 1;
- * @return {!Array<!proto.tournament_management.Invitation>}
- */
-proto.tournament_management.GetAllInvitationsResponse.prototype.getInvitationsList = function() {
-  return /** @type{!Array<!proto.tournament_management.Invitation>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.tournament_management.Invitation, 1));
-};
-
-
-/**
- * @param {!Array<!proto.tournament_management.Invitation>} value
- * @return {!proto.tournament_management.GetAllInvitationsResponse} returns this
-*/
-proto.tournament_management.GetAllInvitationsResponse.prototype.setInvitationsList = function(value) {
-  return jspb.Message.setRepeatedWrapperField(this, 1, value);
-};
-
-
-/**
- * @param {!proto.tournament_management.Invitation=} opt_value
- * @param {number=} opt_index
- * @return {!proto.tournament_management.Invitation}
- */
-proto.tournament_management.GetAllInvitationsResponse.prototype.addInvitations = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.tournament_management.Invitation, opt_index);
-};
-
-
-/**
- * Clears the list making it empty but non-null.
- * @return {!proto.tournament_management.GetAllInvitationsResponse} returns this
- */
-proto.tournament_management.GetAllInvitationsResponse.prototype.clearInvitationsList = function() {
-  return this.setInvitationsList([]);
 };
 
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTableFacetedFilter } from "@/components/tables/data-table-faceted-filter";
-import { priorities, statuses } from "@/components/tables/data/data";
+import { priorities, statuses, userRoles } from "@/components/tables/data/data";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Cross2Icon } from "@radix-ui/react-icons";
@@ -21,17 +21,17 @@ export function DataTableToolbar<TData>({
       <div className="flex flex-1 items-center space-x-3 bg-brown p-5 py-4">
         <Input
           placeholder="Search names..."
-          value={(table.getColumn("names")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("inviteeName")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("names")?.setFilterValue(event.target.value)
+            table.getColumn("inviteeName")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[280px]"
         />
-        {table.getColumn("category") && (
+        {table.getColumn("inviteeRole") && (
           <DataTableFacetedFilter
-            column={table.getColumn("category")}
+            column={table.getColumn("inviteeRole")}
             title="Category"
-            options={priorities}
+            options={userRoles}
           />
         )}
         {table.getColumn("status") && (

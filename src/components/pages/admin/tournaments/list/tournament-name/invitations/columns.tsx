@@ -4,13 +4,28 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
-import { Task } from "@/components/tables/data/schema";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
-import { priorities, statuses } from "@/components/tables/data/data";
+import { userRoles } from "@/components/tables/data/data";
+import { InvitationInfo } from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import ResendInvite from "./actions/resend-invite";
+import AcceptInvite from "./actions/accept-invite";
+import RejectInvite from "./actions/reject-invite copy";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
+import { Separator } from "@/components/ui/separator";
+import { Icons } from "@/components/icons";
+import {
+  useBulkResendInvites,
+  useBulkUpdateInvite,
+} from "./actions/bulk-invitation-handle";
+import { InvitationStatuses } from "@/types/tournaments/invitations";
 
-export const columns: ColumnDef<Task>[] = [
+export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -24,38 +39,177 @@ export const columns: ColumnDef<Task>[] = [
         className="translate-y-[2px]"
       />
     ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
-    ),
+    cell: ({ row, table }) => {
+      // get all selected rows
+      const selectedRows = table.getFilteredSelectedRowModel().rows;
+      const bulkInvitationIds = selectedRows.map(
+        (row) => row.original.invitationId
+      );
+      const { handleUpdate } = useBulkUpdateInvite({
+        invitationIds: bulkInvitationIds,
+      });
+      const { handleResend } = useBulkResendInvites({
+        invitationIds: bulkInvitationIds,
+      });
+      return (
+        <ContextMenu>
+          <ContextMenuTrigger>
+            <Checkbox
+              checked={row.getIsSelected()}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+              aria-label="Select row"
+              className="translate-y-[2px]"
+            />
+          </ContextMenuTrigger>
+          <ContextMenuContent>
+            <ContextMenuItem className="text-foreground font-bold">
+              Actions (Selected)
+            </ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem
+              className="flex items-center gap-3"
+              onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
+            >
+              <Icons.addCircle className="w-4 h-4" />
+              Approve
+            </ContextMenuItem>
+            <ContextMenuItem
+              className="flex items-center gap-3"
+              onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
+            >
+              <Icons.addCircle className="w-4 h-4" />
+              Rejected
+            </ContextMenuItem>
+            <ContextMenuSeparator className="bg-input" />
+            <ContextMenuItem
+              className="flex items-center gap-3"
+              onClick={handleResend}
+            >
+              <Icons.trash2 className="w-4 h-4" />
+              Resend
+            </ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
+      );
+    },
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "id",
+    accessorKey: "idebateId",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="IDebate ID" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
+    cell: ({ row, table }) => {
+      // get all selected rows
+      const selectedRows = table.getFilteredSelectedRowModel().rows;
+      const bulkInvitationIds = selectedRows.map(
+        (row) => row.original.invitationId
+      );
+      const { handleUpdate } = useBulkUpdateInvite({
+        invitationIds: bulkInvitationIds,
+      });
+      const { handleResend } = useBulkResendInvites({
+        invitationIds: bulkInvitationIds,
+      });
+      return (
+        <ContextMenu>
+          <ContextMenuTrigger>
+            <div className="w-[80px]">{row.getValue("idebateId")}</div>
+          </ContextMenuTrigger>
+          <ContextMenuContent>
+            <ContextMenuItem className="text-foreground font-bold">
+              Actions (Selected)
+            </ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem
+              className="flex items-center gap-3"
+              onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
+            >
+              <Icons.addCircle className="w-4 h-4" />
+              Approve
+            </ContextMenuItem>
+            <ContextMenuItem
+              className="flex items-center gap-3"
+              onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
+            >
+              <Icons.addCircle className="w-4 h-4" />
+              Rejected
+            </ContextMenuItem>
+            <ContextMenuSeparator className="bg-input" />
+            <ContextMenuItem
+              className="flex items-center gap-3"
+              onClick={handleResend}
+            >
+              <Icons.trash2 className="w-4 h-4" />
+              Resend
+            </ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
+      );
+    },
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "names",
+    accessorKey: "inviteeName",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Names" />
+      <DataTableColumnHeader
+        column={column}
+        title="Names"
+        className="justify-center"
+      />
     ),
-    cell: ({ row }) => {
+    cell: ({ row, table }) => {
+      // get all selected rows
+      const selectedRows = table.getFilteredSelectedRowModel().rows;
+      const bulkInvitationIds = selectedRows.map(
+        (row) => row.original.invitationId
+      );
+      const { handleUpdate } = useBulkUpdateInvite({
+        invitationIds: bulkInvitationIds,
+      });
+      const { handleResend } = useBulkResendInvites({
+        invitationIds: bulkInvitationIds,
+      });
       return (
-        <div className="flex space-x-2">
-          <span className="max-w-[200px] truncate font-medium">
-            {row.getValue("names")}
-          </span>
-        </div>
+        <ContextMenu>
+          <ContextMenuTrigger>
+            <div className="w-full text-center">
+              <span className="max-w-[200px] truncate font-medium">
+                {row.getValue("inviteeName")}
+              </span>
+            </div>
+          </ContextMenuTrigger>
+          <ContextMenuContent>
+            <ContextMenuItem className="text-foreground font-bold">
+              Actions (Selected)
+            </ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem
+              className="flex items-center gap-3"
+              onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
+            >
+              <Icons.addCircle className="w-4 h-4" />
+              Approve
+            </ContextMenuItem>
+            <ContextMenuItem
+              className="flex items-center gap-3"
+              onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
+            >
+              <Icons.addCircle className="w-4 h-4" />
+              Rejected
+            </ContextMenuItem>
+            <ContextMenuSeparator className="bg-input" />
+            <ContextMenuItem
+              className="flex items-center gap-3"
+              onClick={handleResend}
+            >
+              <Icons.trash2 className="w-4 h-4" />
+              Resend
+            </ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
       );
     },
     enableHiding: false,
@@ -63,37 +217,80 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader
+        column={column}
+        title="Status"
+        className="justify-center"
+      />
     ),
-    cell: ({ row }) => {
-      const status = statuses.find(
-        (status) => status.value === row.getValue("status")
+    cell: ({ row, table }) => {
+      // get all selected rows
+      const selectedRows = table.getFilteredSelectedRowModel().rows;
+      const bulkInvitationIds = selectedRows.map(
+        (row) => row.original.invitationId
       );
-
-      if (!status) {
-        return null;
-      }
+      const { handleUpdate } = useBulkUpdateInvite({
+        invitationIds: bulkInvitationIds,
+      });
+      const { handleResend } = useBulkResendInvites({
+        invitationIds: bulkInvitationIds,
+      });
 
       let variant;
-      switch (status.label) {
-        case "Accepted":
+      switch (row.getValue("status")) {
+        case "accepted":
           variant = "green-200 text-success";
           break;
-        case "Rejected":
+        case "rejected":
           variant = "red-200 text-destructive";
           break;
-        case "Pending":
+        case "pending":
           variant = "slate-400";
           break;
         default:
           variant = "secondary";
       }
       return (
-        <div className="flex w-[100px] items-center">
-          <Badge variant="default" className={`bg-${variant} hover:bg-${variant}`}>
-            {status.label}
-          </Badge>
-        </div>
+        <ContextMenu>
+          <ContextMenuTrigger>
+            <div className="w-full pr-5 text-center">
+              <Badge
+                variant="default"
+                className={`bg-${variant} hover:bg-${variant}`}
+              >
+                {row.getValue("status")}
+              </Badge>
+            </div>
+          </ContextMenuTrigger>
+          <ContextMenuContent>
+            <ContextMenuItem className="text-foreground font-bold">
+              Actions (Selected)
+            </ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem
+              className="flex items-center gap-3"
+              onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
+            >
+              <Icons.addCircle className="w-4 h-4" />
+              Approve
+            </ContextMenuItem>
+            <ContextMenuItem
+              className="flex items-center gap-3"
+              onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
+            >
+              <Icons.addCircle className="w-4 h-4" />
+              Rejected
+            </ContextMenuItem>
+            <ContextMenuSeparator className="bg-input" />
+            <ContextMenuItem
+              className="flex items-center gap-3"
+              onClick={handleResend}
+            >
+              <Icons.trash2 className="w-4 h-4" />
+              Resend
+            </ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
       );
     },
     filterFn: (row, id, value) => {
@@ -102,13 +299,29 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "category",
+    accessorKey: "inviteeRole",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Category" />
+      <DataTableColumnHeader
+        column={column}
+        title="Category"
+        className="justify-center"
+      />
     ),
-    cell: ({ row }) => {
-      const category = priorities.find(
-        (category) => category.value === row.getValue("category")
+    cell: ({ row, table }) => {
+      // get all selected rows
+      const selectedRows = table.getFilteredSelectedRowModel().rows;
+      const bulkInvitationIds = selectedRows.map(
+        (row) => row.original.invitationId
+      );
+      const { handleUpdate } = useBulkUpdateInvite({
+        invitationIds: bulkInvitationIds,
+      });
+      const { handleResend } = useBulkResendInvites({
+        invitationIds: bulkInvitationIds,
+      });
+
+      const category = userRoles.find(
+        (category) => category.value === row.getValue("inviteeRole")
       );
 
       if (!category) {
@@ -116,11 +329,43 @@ export const columns: ColumnDef<Task>[] = [
       }
 
       return (
-        <div className="flex items-center">
-          <Badge variant="default" className="hover:bg-${variant">
-            {category.label}
-          </Badge>
-        </div>
+        <ContextMenu>
+          <ContextMenuTrigger>
+            <div className="w-full pr-5 text-center">
+              <Badge variant="default" className="hover:bg-${variant">
+                {category.label}
+              </Badge>
+            </div>
+          </ContextMenuTrigger>
+          <ContextMenuContent>
+            <ContextMenuItem className="text-foreground font-bold">
+              Actions (Selected)
+            </ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem
+              className="flex items-center gap-3"
+              onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
+            >
+              <Icons.addCircle className="w-4 h-4" />
+              Approve
+            </ContextMenuItem>
+            <ContextMenuItem
+              className="flex items-center gap-3"
+              onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
+            >
+              <Icons.addCircle className="w-4 h-4" />
+              Rejected
+            </ContextMenuItem>
+            <ContextMenuSeparator className="bg-input" />
+            <ContextMenuItem
+              className="flex items-center gap-3"
+              onClick={handleResend}
+            >
+              <Icons.trash2 className="w-4 h-4" />
+              Resend
+            </ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
       );
     },
     filterFn: (row, id, value) => {
@@ -128,25 +373,22 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
-    accessorKey: "action",
+    accessorKey: "invitationId",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Actions" />
+      <DataTableColumnHeader
+        column={column}
+        title="Actions"
+        className="justify-end"
+      />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex items-center space-x-1">
-          <Button type="button" variant={"secondary"} size={"icon"} className="bg-transparent w-6 h-6 p-1 m-0">
-            <Icons.mailResend className="w-6 h-6 text-info" />
-          </Button>
-          <Button type="button" variant={"secondary"} size={"icon"} className="bg-transparent w-6 h-6 p-1 m-0">
-            <Icons.mailx className="w-6 h-6 text-success-border" />
-          </Button>
-          <Button type="button" variant={"secondary"} size={"icon"} className="bg-transparent w-6 h-6 p-1 m-0">
-            <Icons.mailx className="w-6 h-6 text-destructive" />
-          </Button>
+        <div className="w-full flex items-center justify-end gap-2">
+          <ResendInvite invitationId={row.getValue("invitationId")} />
+          <AcceptInvite invitationId={row.getValue("invitationId")} />
+          <RejectInvite invitationId={row.getValue("invitationId")} />
         </div>
       );
     },
-    enableHiding: false,
   },
 ];

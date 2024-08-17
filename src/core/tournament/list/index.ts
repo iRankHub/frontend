@@ -1,13 +1,21 @@
 import { tournamentClient } from "@/core/grpc-clients";
 import {
+    BulkResendInvitationsRequest,
+    BulkResendInvitationsResponse,
+    BulkUpdateInvitationStatusRequest,
+    BulkUpdateInvitationStatusResponse,
     DeleteTournamentRequest,
     DeleteTournamentResponse,
-    GetAllInvitationsRequest,
-    GetAllInvitationsResponse,
+    GetInvitationsByTournamentRequest,
+    GetInvitationsByTournamentResponse,
     GetTournamentRequest,
     GetTournamentResponse,
     ListTournamentsRequest,
     ListTournamentsResponse,
+    ResendInvitationRequest,
+    ResendInvitationResponse,
+    UpdateInvitationStatusRequest,
+    UpdateInvitationStatusResponse,
     UpdateTournamentRequest,
     UpdateTournamentResponse,
 } from "@/lib/grpc/proto/tournament_management/tournament_pb";
@@ -123,29 +131,111 @@ export const deleteTournament = async ({
     });
 }
 
-// export const inv = async (token: string, tournament_id: number): Promise<GetAllInvitationsResponse.AsObject> => {
-//     return new Promise((resolve, reject) => {
-//         const request = new GetInvitationsByTournament();
-//         request.setToken(token);
-//         request.setTournamentId(tournament_id);
-
-//         tournamentClient.getAllInvitations(request, {}, (err, response) => {
-//             if (err) {
-//                 reject(err);
-//             } else {
-//                 resolve(response.toObject());
-//             }
-//         });
-//     });
-// }
-
 // invitations
-export const getAllInvitations = async (token: string): Promise<GetAllInvitationsResponse.AsObject> => {
+export const getInvitationsByTournament = async (
+    token: string,
+    tournament_id: number
+): Promise<GetInvitationsByTournamentResponse.AsObject> => {
     return new Promise((resolve, reject) => {
-        const request = new GetAllInvitationsRequest();
+        const request = new GetInvitationsByTournamentRequest();
         request.setToken(token);
+        request.setTournamentId(tournament_id);
 
-        tournamentClient.getAllInvitations(request, {}, (err, response) => {
+        tournamentClient.getInvitationsByTournament(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const updateInvitationStatus = async ({
+    token,
+    invitation_id,
+    new_status,
+}: {
+    token: string;
+    invitation_id: number;
+    new_status: string;
+}): Promise<UpdateInvitationStatusResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new UpdateInvitationStatusRequest();
+        request.setToken(token);
+        request.setInvitationId(invitation_id);
+        request.setNewStatus(new_status);
+
+        tournamentClient.updateInvitationStatus(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const resendInvitation = async ({
+    token,
+    invitation_id,
+}: {
+    token: string;
+    invitation_id: number;
+}): Promise<ResendInvitationResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new ResendInvitationRequest();
+        request.setToken(token);
+        request.setInvitationId(invitation_id);
+
+        tournamentClient.resendInvitation(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const bulkUpdateInvitation = async ({
+    token,
+    invitation_ids,
+    new_status,
+}: {
+    token: string;
+    invitation_ids: number[];
+    new_status: string;
+}): Promise<BulkUpdateInvitationStatusResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new BulkUpdateInvitationStatusRequest();
+        request.setToken(token);
+        request.setInvitationIdsList(invitation_ids);
+        request.setNewStatus(new_status);
+
+        tournamentClient.bulkUpdateInvitationStatus(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const bulkResendInvitations = async ({
+    token,
+    invitation_ids,
+}: {
+    token: string;
+    invitation_ids: number[];
+}): Promise<BulkResendInvitationsResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new BulkResendInvitationsRequest();
+        request.setToken(token);
+        request.setInvitationIdsList(invitation_ids);
+
+        tournamentClient.bulkResendInvitations(request, {}, (err, response) => {
             if (err) {
                 reject(err);
             } else {

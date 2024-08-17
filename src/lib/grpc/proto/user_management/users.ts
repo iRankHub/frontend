@@ -352,6 +352,7 @@ export namespace user_management {
             userRole?: string;
             signUpDate?: string;
             gender?: string;
+            status?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -373,6 +374,9 @@ export namespace user_management {
                 }
                 if ("gender" in data && data.gender != undefined) {
                     this.gender = data.gender;
+                }
+                if ("status" in data && data.status != undefined) {
+                    this.status = data.status;
                 }
             }
         }
@@ -412,6 +416,12 @@ export namespace user_management {
         set gender(value: string) {
             pb_1.Message.setField(this, 6, value);
         }
+        get status() {
+            return pb_1.Message.getFieldWithDefault(this, 7, "") as string;
+        }
+        set status(value: string) {
+            pb_1.Message.setField(this, 7, value);
+        }
         static fromObject(data: {
             userID?: number;
             name?: string;
@@ -419,6 +429,7 @@ export namespace user_management {
             userRole?: string;
             signUpDate?: string;
             gender?: string;
+            status?: string;
         }): UserSummary {
             const message = new UserSummary({});
             if (data.userID != null) {
@@ -439,6 +450,9 @@ export namespace user_management {
             if (data.gender != null) {
                 message.gender = data.gender;
             }
+            if (data.status != null) {
+                message.status = data.status;
+            }
             return message;
         }
         toObject() {
@@ -449,6 +463,7 @@ export namespace user_management {
                 userRole?: string;
                 signUpDate?: string;
                 gender?: string;
+                status?: string;
             } = {};
             if (this.userID != null) {
                 data.userID = this.userID;
@@ -468,6 +483,9 @@ export namespace user_management {
             if (this.gender != null) {
                 data.gender = this.gender;
             }
+            if (this.status != null) {
+                data.status = this.status;
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -486,6 +504,8 @@ export namespace user_management {
                 writer.writeString(5, this.signUpDate);
             if (this.gender.length)
                 writer.writeString(6, this.gender);
+            if (this.status.length)
+                writer.writeString(7, this.status);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -512,6 +532,9 @@ export namespace user_management {
                         break;
                     case 6:
                         message.gender = reader.readString();
+                        break;
+                    case 7:
+                        message.status = reader.readString();
                         break;
                     default: reader.skipField();
                 }

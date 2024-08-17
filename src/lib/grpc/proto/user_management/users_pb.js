@@ -1785,7 +1785,8 @@ proto.user_management.UserSummary.toObject = function(includeInstance, msg) {
     email: jspb.Message.getFieldWithDefault(msg, 3, ""),
     userrole: jspb.Message.getFieldWithDefault(msg, 4, ""),
     signupdate: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    gender: jspb.Message.getFieldWithDefault(msg, 6, "")
+    gender: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    status: jspb.Message.getFieldWithDefault(msg, 7, "")
   };
 
   if (includeInstance) {
@@ -1845,6 +1846,10 @@ proto.user_management.UserSummary.deserializeBinaryFromReader = function(msg, re
     case 6:
       var value = /** @type {string} */ (reader.readString());
       msg.setGender(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setStatus(value);
       break;
     default:
       reader.skipField();
@@ -1914,6 +1919,13 @@ proto.user_management.UserSummary.serializeBinaryToWriter = function(message, wr
   if (f.length > 0) {
     writer.writeString(
       6,
+      f
+    );
+  }
+  f = message.getStatus();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
       f
     );
   }
@@ -2025,6 +2037,24 @@ proto.user_management.UserSummary.prototype.getGender = function() {
  */
 proto.user_management.UserSummary.prototype.setGender = function(value) {
   return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional string status = 7;
+ * @return {string}
+ */
+proto.user_management.UserSummary.prototype.getStatus = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.user_management.UserSummary} returns this
+ */
+proto.user_management.UserSummary.prototype.setStatus = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
 };
 
 
