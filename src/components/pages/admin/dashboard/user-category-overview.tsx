@@ -6,7 +6,7 @@ type Props = {};
 
 function UserCategoryOverview({}: Props) {
   return (
-    <div className="p-7 bg-background rounded-lg border-2 border-muted">
+    <div className="p-7 bg-background rounded-lg border-2 border-muted mb-3 md:mb-0">
       <h2 className="text-foreground text-xl capitalize">Users Per Category</h2>
       <div className="flex flex-col gap-4 mt-5">
         <div className="flex items-center justify-between gap-3">

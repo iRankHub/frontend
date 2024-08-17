@@ -162,7 +162,6 @@ const LoginFormEmail = () => {
           disabled={isPending}
           variant={"default"}
           size={"lg"}
-          className="hover:bg-primary"
         >
           {isPending && (
             <Icons.spinner

@@ -34,7 +34,7 @@ export function SheetMenu() {
                 height={50}
                 className="rounded-md mr-1"
               />
-              <h1 className="font-bold text-lg text-foreground">iRankHub</h1>
+              <h1 className="font-bold text-lg text-background">iRankHub</h1>
             </Link>
           </Button>
         </SheetHeader>

@@ -88,8 +88,8 @@ const SignupForm = () => {
       .then((res) => {
         toast({
           variant: "success",
-          title: "Success Message",
-          description: "Success Description",
+          title: "Success",
+          description: res.message,
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close
@@ -223,12 +223,12 @@ const SignupForm = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="public">Public</SelectItem>
+                        <SelectItem value="Public">Public</SelectItem>
                         <SelectItem value="Private">Private</SelectItem>
-                        <SelectItem value="international">
+                        <SelectItem value="International">
                           International
                         </SelectItem>
-                        <SelectItem value="government-aid">
+                        <SelectItem value="Government Aided">
                           Government-aided
                         </SelectItem>
                       </SelectContent>
@@ -268,7 +268,7 @@ const SignupForm = () => {
                   type="button"
                   variant={"default"}
                   size={"lg"}
-                  className="w-full hover:bg-primary"
+                  className="w-full"
                   onClick={async () => {
                     const formErrors = await validateFormData([
                       "name",
@@ -410,6 +410,7 @@ const SignupForm = () => {
                                     value={province}
                                     onSelect={() => {
                                       form.setValue("province_state", province);
+                                      setDisctricts(Districts(province));
                                     }}
                                   >
                                     {province}
@@ -512,7 +513,7 @@ const SignupForm = () => {
                   type="button"
                   variant={"default"}
                   size={"lg"}
-                  className="w-full hover:bg-primary"
+                  className="w-full"
                   onClick={async () => {
                     const formErrors = await validateFormData([
                       "country",
@@ -627,7 +628,7 @@ const SignupForm = () => {
                   type="button"
                   variant={"default"}
                   size={"lg"}
-                  className="w-full hover:bg-primary"
+                  className="w-full"
                   onClick={async () => {
                     const formErrors = await validateFormData([
                       "contact_person",
@@ -722,7 +723,7 @@ const SignupForm = () => {
                 <Button
                   variant={"default"}
                   size={"lg"}
-                  className="w-full hover:bg-primary"
+                  className="w-full"
                 >
                   Continue
                   {isPending && (

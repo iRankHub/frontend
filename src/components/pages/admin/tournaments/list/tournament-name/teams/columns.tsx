@@ -11,7 +11,6 @@ import SidePanel, {
   Panelheader,
 } from "@/components/layout/admin-panel/side-panel";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
-import { Input } from "@/components/ui/input";
 import {
   Collapsible,
   CollapsibleContent,
@@ -65,11 +64,11 @@ export const columns: ColumnDef<Teams>[] = [
   {
     accessorKey: "no_of_teams",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="No. of Teams" />
+      <DataTableColumnHeader column={column} title="No. of Teams" className="justify-center"/>
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-[100px] items-center justify-center">
+        <div className="w-full pr-5 text-center">
           <span className="max-w-[200px] truncate font-medium">
             {row.getValue("no_of_teams")}
           </span>
@@ -77,15 +76,20 @@ export const columns: ColumnDef<Teams>[] = [
       );
     },
     enableHiding: false,
+    filterFn: (row, columnId, filterValue: string) => {
+      let value = row.getValue(columnId) as string;
+      if (typeof value === "number") value = String(value);
+      return value?.toLowerCase().includes(filterValue);
+    }
   },
   {
     accessorKey: "no_of_speakers",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="No. of Speakers" />
+      <DataTableColumnHeader column={column} title="No. of Speakers" className="justify-center" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-[100px] items-center justify-center">
+        <div className="w-full pr-5 text-center">
           <span className="max-w-[200px] truncate font-medium">
             {row.getValue("no_of_speakers")}
           </span>
@@ -105,7 +109,7 @@ export const columns: ColumnDef<Teams>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-full h-6 items-center justify-center">
+        <div className="w-full pr-5 text-center">
           <Sheet>
             <SheetTrigger>
               <Button

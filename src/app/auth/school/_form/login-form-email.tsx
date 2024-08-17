@@ -153,7 +153,6 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
           disabled={isPending}
           variant={"default"}
           size={"lg"}
-          className="hover:bg-primary"
         >
           {isPending && (
             <Icons.spinner

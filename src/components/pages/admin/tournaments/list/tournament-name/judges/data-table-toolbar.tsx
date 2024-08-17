@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTableFacetedFilter } from "@/components/tables/data-table-faceted-filter";
-import { priorities, statuses } from "@/components/tables/data/data";
+import { priorities, statuses, teams } from "@/components/tables/data/data";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Cross2Icon } from "@radix-ui/react-icons";
@@ -31,7 +31,7 @@ export function DataTableToolbar<TData>({
           <DataTableFacetedFilter
             column={table.getColumn("preliminary")}
             title="Preliminary"
-            options={priorities}
+            options={teams}
           />
         )}
         {isFiltered && (

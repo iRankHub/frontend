@@ -76,7 +76,7 @@ const SignupForm = () => {
 
   async function onSubmit(data: Inputs) {
     setIsPending(true);
-
+    
     await signUp({
       firstName: data.firstName,
       lastName: data.lastName,
@@ -85,7 +85,7 @@ const SignupForm = () => {
       userRole: UserRole.STUDENT,
       dob: format(data.dob, 'yyyy-MM-dd'),
       grade: "Grade-4",
-      schoolId: 1,
+      schoolId: Number(data.school),
     })
       .then((res) => {
         toast({

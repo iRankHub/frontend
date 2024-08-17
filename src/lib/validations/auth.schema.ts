@@ -161,7 +161,7 @@ export const volunteerSchema = z.object({
         message: "address invalid"
     }),
     contact_person_email: z.string().email(),
-    secondary_school: z.string().min(5, {
+    secondary_school: z.string().min(1, {
         message: "School name too small"
     }),
     graduation_year: z.string(),

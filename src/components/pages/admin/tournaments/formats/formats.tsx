@@ -18,9 +18,7 @@ import {
   createTournamentFormat,
   tournamentFormats,
 } from "@/core/tournament/formats";
-import {
-  TournamentFormat,
-} from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import { TournamentFormat } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { createTournamentFormatSchema } from "@/lib/validations/admin/tournaments/create-tournament-format.schema";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -41,6 +39,7 @@ type TournamentFormatInput = z.infer<typeof createTournamentFormatSchema>;
 function Formats({}) {
   const [formats, setFormats] = useState<TournamentFormat.AsObject[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [pageLoading, setPageLoading] = useState<boolean>(true);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const { user } = useUserStore((state) => state);
   const { toast } = useToast();
@@ -115,25 +114,25 @@ function Formats({}) {
       })
       .catch((err) => {
         console.error(err.message);
+      })
+      .finally(() => {
+        setPageLoading(false);
       });
   }, [user]);
   return (
     <div className="w-full mt-5 rounded-md overflow-hidden border border-muted">
       <div className="flex items-center justify-between flex-wrap gap-5 p-5 bg-brown">
-        <form action="#" className="flex items-center gap-3">
+        <div className="flex items-center gap-3">
           <Input
             type="search"
             placeholder="Search name..."
             className="w-72 h-8"
           />
-          <Button
-            type="submit"
-            className="border border-dashed border-white gap-2 h-8 font-semibold hover:bg-white hover:text-foreground group"
-          >
+          <Button className="border border-dashed border-white gap-2 h-8 font-semibold hover:bg-white hover:text-foreground group">
             <Icons.addCircle className="text-white w-3.5 h-3.5 group-hover:text-foreground" />
             Speakers
           </Button>
-        </form>
+        </div>
         <Dialog onOpenChange={setDialogOpen} open={dialogOpen}>
           <DialogTrigger>
             <Button
@@ -235,17 +234,36 @@ function Formats({}) {
       </div>
       <div className="w-full bg-background p-8 grid">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-10">
-          {formats.map((format) => (
-            <FormatCard key={format.formatId} format={format} setFormats={setFormats} />
-          ))}
+          {pageLoading ? (
+            <div className="flex items-center justify-center w-full h-96">
+              <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
+            </div>
+          ) : formats.length ? (
+            formats.map((format) => (
+              <FormatCard
+                key={format.formatId}
+                format={format}
+                setFormats={setFormats}
+              />
+            ))
+          ) : (
+            <div className="flex items-center justify-center w-full h-96">
+              <p className="text-darkBlue text-lg font-semibold">
+                No formats available
+              </p>
+            </div>
+          )}
         </div>
-        <Button
-          type="button"
-          size={"sm"}
-          className="max-w-auto mx-auto ring-0 border-none outline-none text-primary dark:text-white mt-10 bg-transparent underline"
-        >
-          Load More
-        </Button>
+        {formats.length && (
+          <Button
+            type="button"
+            size={"sm"}
+            variant={"link"}
+            className="max-w-auto mx-auto ring-0 border-none outline-none mt-10 hover:bg-primary hover:text-white underline"
+          >
+            Load More
+          </Button>
+        )}
       </div>
     </div>
   );

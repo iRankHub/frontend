@@ -59,6 +59,7 @@ import { Provinces, Districts } from "rwanda";
 type TournamentLeagueInput = z.infer<typeof createTournamentLeagueSchema>;
 
 function Leagues({}) {
+  const [pageLoading, setPageLoading] = useState<boolean>(true);
   const [selectedProvinces, setSelectedProvinces] = useState<string[]>([]);
   const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
   const [leagues, setLeagues] = useState<League.AsObject[]>([]);
@@ -161,6 +162,9 @@ function Leagues({}) {
       })
       .catch((err) => {
         console.error(err.message);
+      })
+      .finally(() => {
+        setPageLoading(false);
       });
   }, [user]);
   return (
@@ -235,7 +239,7 @@ function Leagues({}) {
                         >
                           <FormControl>
                             <SelectTrigger className="flex-1">
-                              <SelectValue placeholder="Select a school type..." />
+                              <SelectValue placeholder="Select a league type..." />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -328,21 +332,36 @@ function Leagues({}) {
       </div>
       <div className="w-full bg-background p-8 grid">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-10">
-          {leagues.map((league) => (
-            <LeagueCard
-              key={league.leagueId}
-              league={league}
-              setLeagues={setLeagues}
-            />
-          ))}
+          {pageLoading ? (
+            <div className="flex items-center justify-center w-full h-96">
+              <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
+            </div>
+          ) : leagues.length ? (
+            leagues.map((league) => (
+              <LeagueCard
+                key={league.leagueId}
+                league={league}
+                setLeagues={setLeagues}
+              />
+            ))
+          ) : (
+            <div className="flex items-center justify-center w-full h-96">
+              <p className="text-darkBlue text-lg font-semibold">
+                No formats available
+              </p>
+            </div>
+          )}
         </div>
-        <Button
-          type="button"
-          size={"sm"}
-          className="max-w-auto mx-auto ring-0 border-none outline-none text-primary dark:text-white mt-10 bg-transparent underline"
-        >
-          Load More
-        </Button>
+        {leagues.length && (
+          <Button
+            type="button"
+            size={"sm"}
+            variant={"link"}
+            className="max-w-auto mx-auto ring-0 border-none outline-none mt-10 hover:bg-primary hover:text-white underline"
+          >
+            Load More
+          </Button>
+        )}
       </div>
     </div>
   );

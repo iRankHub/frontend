@@ -13,7 +13,7 @@ export const StudentSchema = z.object({
         message: "name too long"
     }),
     email: z.string().email(),
-    school: z.string().min(2, {
+    school: z.string().min(1, {
         message: "School is required!"
     }),
     password: z.

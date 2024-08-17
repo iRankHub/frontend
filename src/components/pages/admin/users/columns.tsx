@@ -24,7 +24,7 @@ import SidePanel, {
 } from "@/components/layout/admin-panel/side-panel";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
-import { School } from "@/lib/grpc/proto/user_management/users_pb";
+import { UserSummary } from "@/lib/grpc/proto/user_management/users_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { useToast } from "@/components/ui/use-toast";
 import { deactivateUser } from "@/core/users/users";
@@ -32,14 +32,14 @@ import { DeactivateUser } from "@/types/user_management/users";
 import { ToastAction } from "@/components/ui/toast";
 import { useUsersStore } from "@/stores/admin/users/users.store";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
-import { priorities, statuses } from "@/components/tables/data/data";
+import { priorities, statuses, userRoles } from "@/components/tables/data/data";
 
 const inter = Inter({
   weight: "700",
   subsets: ["latin"],
 });
 
-export const columns: ColumnDef<School.AsObject>[] = [
+export const columns: ColumnDef<UserSummary.AsObject>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -65,12 +65,12 @@ export const columns: ColumnDef<School.AsObject>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "schoolid",
+    accessorKey: "userid",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="IDebate ID" />
     ),
     cell: ({ row }) => (
-      <div className="w-[80px]">{row.getValue("schoolid")}</div>
+      <div className="w-[80px]">{row.getValue("userid")}</div>
     ),
     enableSorting: false,
     enableHiding: false,
@@ -78,11 +78,11 @@ export const columns: ColumnDef<School.AsObject>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Names" />
+      <DataTableColumnHeader column={column} title="Names" className="justify-center" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2">
+        <div className="w-full text-center">
           <span className="max-w-[200px] truncate font-medium">
             {row.getValue("name")}
           </span>
@@ -92,15 +92,15 @@ export const columns: ColumnDef<School.AsObject>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "schoolemail",
+    accessorKey: "email",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Emails" />
+      <DataTableColumnHeader column={column} title="Emails" className="justify-center" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2">
+        <div className="w-full text-center">
           <span className={cn("max-w-[200px] truncate", inter)}>
-            {row.getValue("schoolemail")}
+            {row.getValue("email")}
           </span>
         </div>
       );
@@ -110,7 +110,7 @@ export const columns: ColumnDef<School.AsObject>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="Status" className="justify-center" />
     ),
     cell: ({ row }) => {
       const status = statuses.find(
@@ -136,7 +136,7 @@ export const columns: ColumnDef<School.AsObject>[] = [
           variant = "secondary";
       }
       return (
-        <div className="flex w-[100px] items-center">
+        <div className="w-full pr-10 text-center">
           <Badge
             variant="default"
             className={`bg-${variant} hover:bg-${variant}`}
@@ -152,23 +152,23 @@ export const columns: ColumnDef<School.AsObject>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "category",
+    accessorKey: "userrole",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Category" />
+      <DataTableColumnHeader column={column} title="Category" className="justify-center" />
     ),
     cell: ({ row }) => {
-      const category = priorities.find(
-        (category) => category.value === row.getValue("category")
+      const role = userRoles.find(
+        (role) => role.value === row.getValue("userrole")
       );
 
-      if (!category) {
+      if (!role) {
         return null;
       }
 
       return (
-        <div className="flex items-center">
+        <div className="w-full pr-5 text-center">
           <Badge variant="default" className="hover:bg-${variant">
-            {category.label}
+            {role.label}
           </Badge>
         </div>
       );
@@ -180,7 +180,7 @@ export const columns: ColumnDef<School.AsObject>[] = [
   {
     accessorKey: "action",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Actions" />
+      <DataTableColumnHeader column={column} title="Actions" className="justify-end" />
     ),
     cell: ({ row }) => {
       return <Options userid={row.getValue("schoolid")} />;
@@ -248,7 +248,7 @@ const Options = ({ userid }: { userid: number }) => {
   };
 
   return (
-    <div className="flex items-center space-x-1">
+    <div className="w-full text-end">
       <Dialog onOpenChange={setOpen} open={open}>
         <Sheet>
           <SheetTrigger>

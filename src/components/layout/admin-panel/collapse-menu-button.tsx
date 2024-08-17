@@ -64,7 +64,7 @@ export function CollapseMenuButton({
         <Button
           variant={active ? "secondary" : "ghost"}
           className={cn(
-            "w-full justify-start h-10 mb-1 text-background font-bold group",
+            "w-full justify-start h-10 mb-1 text-background dark:text-foreground font-bold group",
             active && "bg-[#F5AE73] hover:bg-[#F5AE73]"
           )}
         >
@@ -113,7 +113,7 @@ export function CollapseMenuButton({
             key={index}
             variant={active ? "secondary" : "ghost"}
             className={cn(
-              "w-full justify-start h-10 mb-1 text-background font-bold group",
+              "w-full justify-start h-10 mb-1 text-background dark:text-foreground font-bold group",
               active && "bg-[#F5AE73] hover:bg-[#F5AE73]"
             )}
             asChild
@@ -150,7 +150,7 @@ export function CollapseMenuButton({
               <Button
                 variant={active ? "secondary" : "ghost"}
                 className={cn(
-                  "w-full justify-start h-10 mb-1 text-background font-bold group",
+                  "w-full justify-start h-10 mb-1 text-background dark:text-foreground font-bold group",
                   active && "bg-[#F5AE73] hover:bg-[#F5AE73]"
                 )}
               >

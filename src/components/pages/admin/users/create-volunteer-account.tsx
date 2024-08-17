@@ -36,7 +36,9 @@ import {
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { signUp } from "@/core/authentication/auth";
+import { getSchoolsNoAuth } from "@/core/users/schools";
 import { countries } from "@/lib/data";
+import { School } from "@/lib/grpc/proto/user_management/users_pb";
 import { cn } from "@/lib/utils";
 import { volunteerSchema } from "@/lib/validations/auth.schema";
 import { UserRole } from "@/types";
@@ -60,7 +62,20 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
   const [openCountries, setOpenCountries] = React.useState(false);
   const { toast } = useToast();
   const [activeStep, setActiveStep] = React.useState(1);
+  const [schools, setSchools] = React.useState<School.AsObject[]>([]);
 
+  React.useEffect(() => {
+    getSchoolsNoAuth({
+      pageSize: 100,
+      page: 1,
+    })
+      .then((res) => {
+        setSchools(res.schoolsList);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, []);
   // react-hook-form
   const form = useForm<Inputs>({
     resolver: zodResolver(volunteerSchema),
@@ -76,19 +91,24 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
       dob: format(data.dob, "yyyy-MM-dd"),
       graduationYear: parseInt(data.graduation_year),
       roleInterestedIn: "Mentor",
+      hasInternship: false,
+      isEnrolledInUniversity: data.enrolled === "yes",
+      safeguardingCertificate: false,
+      gender: data.gender,
+      schoolId: parseInt(data.secondary_school),
     })
       .then((res) => {
+        form.reset();
         toast({
           variant: "success",
-          title: "Success Message",
-          description: "Success Description",
+          title: "Success",
+          description: res.message,
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close
             </ToastAction>
           ),
         });
-        form.reset();
       })
       .catch((err) => {
         console.error(err.message);
@@ -146,7 +166,7 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
                       First Name<b className="text-primary font-light"> *</b>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Riviera High School" {...field} />
+                      <Input placeholder="James" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -161,7 +181,7 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
                       Last Name<b className="text-primary font-light"> *</b>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Riviera High School" {...field} />
+                      <Input placeholder="koulibally" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -189,7 +209,7 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
                 render={({ field }) => (
                   <FormItem className="flex flex-col relative">
                     <FormLabel>Date of birth</FormLabel>
-                    <Popover>
+                    <Popover modal>
                       <PopoverTrigger asChild>
                         <FormControl className="w-full overflow-hidden">
                           <Button
@@ -313,6 +333,7 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
                       <Popover
                         open={openCountries}
                         onOpenChange={setOpenCountries}
+                        modal
                       >
                         <PopoverTrigger asChild>
                           <Button
@@ -460,9 +481,23 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
                       Secondary School
                       <b className="text-primary font-light"> *</b>
                     </FormLabel>
-                    <FormControl>
-                      <Input placeholder="Emma" {...field} />
-                    </FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select school..." />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {schools.map((school) => (
+                          <SelectItem value={String(school.schoolid)} key={school.schoolid}>
+                            {school.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

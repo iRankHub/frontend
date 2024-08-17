@@ -83,8 +83,8 @@ function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
       .then((res) => {
         toast({
           variant: "success",
-          title: "Success Message",
-          description: "Success Description",
+          title: "Success",
+          description: res.message,
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close
@@ -174,12 +174,12 @@ function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="public">Public</SelectItem>
+                        <SelectItem value="Public">Public</SelectItem>
                         <SelectItem value="Private">Private</SelectItem>
-                        <SelectItem value="international">
+                        <SelectItem value="International">
                           International
                         </SelectItem>
-                        <SelectItem value="government-aid">
+                        <SelectItem value="Government Aided">
                           Government-aided
                         </SelectItem>
                       </SelectContent>
@@ -202,6 +202,7 @@ function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
                       <Popover
                         open={openCountries}
                         onOpenChange={setOpenCountries}
+                        modal
                       >
                         <PopoverTrigger asChild>
                           <Button

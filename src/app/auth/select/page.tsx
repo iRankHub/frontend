@@ -7,11 +7,13 @@ import { redirect, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const Page = () => {
-  const [selected, setSelected] = useState<"school" | "student" | "volunteer" | null>(null);
-  const router = useRouter()
+  const [selected, setSelected] = useState<
+    "school" | "student" | "volunteer" | null
+  >(null);
+  const router = useRouter();
   const handlePress = () => {
-    router.push(`/auth/${selected}/login`)
-  }
+    router.push(`/auth/${selected}/login`);
+  };
   return (
     <div className="min-h-screen w-full bg-primary px-5 py-10 lg:p-20 grid">
       <div className="bg-white rounded-2xl h-full w-full p-10 flex flex-col items-center overflow-hidden">
@@ -77,7 +79,13 @@ const Page = () => {
             </h3>
           </div>
         </div>
-        <Button disabled={selected === null} variant={"default"} size={"lg"} className="w-52 mt-10 hover:bg-primary" onClick={handlePress}>
+        <Button
+          disabled={selected === null}
+          variant={"default"}
+          size={"lg"}
+          className="w-52 mt-10"
+          onClick={handlePress}
+        >
           Continue
           <span className="sr-only">Continue</span>
         </Button>

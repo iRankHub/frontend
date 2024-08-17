@@ -162,13 +162,13 @@ export const teams = [
   {
     "id": "USA-IL-123442",
     "school": "Green Hills",
-    "no_of_teams": "3",
+    "no_of_teams": "5",
     "no_of_speakers": "9",
   },
   {
     "id": "USA-IL-123442",
     "school": "College Saint Andres",
-    "no_of_teams": "3",
+    "no_of_teams": "5",
     "no_of_speakers": "9",
   },
   {
@@ -186,13 +186,13 @@ export const teams = [
   {
     "id": "USA-IL-123442",
     "school": "Rusumo High School",
-    "no_of_teams": "3",
+    "no_of_teams": "9",
     "no_of_speakers": "9",
   },
   {
-    "id": "USA-IL-123442",
+    "id": "USA-IL-129442",
     "school": "Rusumo High School",
-    "no_of_teams": "3",
+    "no_of_teams": "9",
     "no_of_speakers": "9",
   },
 ]
@@ -294,13 +294,13 @@ export const judgesTasks = [
   {
     "id": "VOL00001",
     "names": "Baho Joselyto",
-    "preliminary": "3",
+    "preliminary": "5",
     "elimination": "2"
   },
   {
     "id": "VOL00001",
     "names": "Baho Joselyto",
-    "preliminary": "3",
+    "preliminary": "9",
     "elimination": "2"
   },
   {

@@ -260,7 +260,7 @@ function TournamentForm({ selectedLeague }: Props) {
               <h3 className="text-sm text-muted-foreground uppercase font-semibold">
                 Tournament Details
               </h3>
-              <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-8 mt-3">
+              <div className="w-full grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-3 mt-3">
                 <FormField
                   control={form.control}
                   name="startDate"
@@ -740,7 +740,7 @@ function TournamentForm({ selectedLeague }: Props) {
                 <Button
                   type="submit"
                   variant={"default"}
-                  className="w-full hover:bg-primary"
+                  className="w-full"
                 >
                   Create Tournament
                   {loading && (

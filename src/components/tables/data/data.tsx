@@ -91,6 +91,25 @@ export const priorities = [
   },
 ];
 
+export const userRoles = [
+  {
+    value: "admin",
+    label: "Admin",
+  },
+  {
+    value: "student",
+    label: "Student",
+  },
+  {
+    value: "school",
+    label: "School",
+  },
+  {
+    value: "volunteer",
+    label: "Volunteer",
+  },
+];
+
 export const rooms = [
   {
     value: "room 1",

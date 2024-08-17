@@ -78,8 +78,10 @@ export const columns: ColumnDef<Judges>[] = [
         </div>
       );
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+    filterFn: (row, columnId, filterValue: string) => {
+      let value = row.getValue(columnId) as string;
+      if (typeof value === "number") value = String(value);
+      return value?.toLowerCase().includes(filterValue);
     },
     enableHiding: false,
   },
