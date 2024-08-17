@@ -30,10 +30,8 @@ export const tournamentLeagues = async ({
 
         tournamentClient.listLeagues(request, {}, (err, response) => {
             if (err) {
-                console.log(err);
                 reject(err);
             } else {
-                console.log(err);
                 resolve(response.toObject());
             }
         });
@@ -63,10 +61,8 @@ export const createTournamentLeague = async ({
 
         tournamentClient.createLeague(request, {}, (err, response) => {
             if (err) {
-                console.log(err);
                 reject(err);
             } else {
-                console.log(err);
                 resolve(response.toObject());
             }
         });
@@ -90,10 +86,8 @@ export const updateTournamentLeague = async ({
 
         tournamentClient.updateLeague(request, {}, (err, response) => {
             if (err) {
-                console.log(err);
                 reject(err);
             } else {
-                console.log(err);
                 resolve(response.toObject());
             }
         });
@@ -111,10 +105,8 @@ export const deleteTournamentLeague = async ({
 
         tournamentClient.deleteLeague(request, {}, (err, response) => {
             if (err) {
-                console.log(err);
                 reject(err);
             } else {
-                console.log(err);
                 resolve(response.toObject());
             }
         });

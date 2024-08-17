@@ -64,6 +64,7 @@ function Leagues({}) {
   const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
   const [leagues, setLeagues] = useState<League.AsObject[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const { user } = useUserStore((state) => state);
   const { toast } = useToast();
   const [provinces, setProvinces] = useState<string[]>(Provinces());
@@ -76,7 +77,7 @@ function Leagues({}) {
   const createLeague = async (data: TournamentLeagueInput) => {
     if (!user) return;
 
-    if (provinces.length === 0) {
+    if (selectedProvinces.length === 0) {
       toast({
         variant: "destructive",
         title: "Error",
@@ -90,7 +91,7 @@ function Leagues({}) {
       return;
     }
 
-    if (districts.length === 0) {
+    if (selectedDistricts.length === 0) {
       toast({
         variant: "destructive",
         title: "Error",
@@ -126,7 +127,8 @@ function Leagues({}) {
     await createTournamentLeague({ ...options })
       .then((res) => {
         setLoading(false);
-        // form.reset();
+        form.reset();
+        setLeagues((prev) => [...prev, res.league as League.AsObject]);
         toast({
           variant: "success",
           title: "Success",
@@ -137,8 +139,7 @@ function Leagues({}) {
             </ToastAction>
           ),
         });
-        console.log(res.league);
-        // setDialogOpen(false);
+        setDialogOpen(false);
       })
       .catch((err) => {
         console.error(err.message);
@@ -184,7 +185,7 @@ function Leagues({}) {
             League Type
           </Button>
         </form>
-        <Dialog>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger>
             <Button
               type="button"
@@ -299,11 +300,16 @@ function Leagues({}) {
                       </MultiSelectorTrigger>
                       <MultiSelectorContent>
                         <MultiSelectorList>
-                          {districts.map((district) => (
-                            <MultiSelectorItem key={district} value={district}>
-                              {district}
-                            </MultiSelectorItem>
-                          ))}
+                          {Districts(selectedProvinces).map(
+                            (district: string) => (
+                              <MultiSelectorItem
+                                key={district}
+                                value={district}
+                              >
+                                {district}
+                              </MultiSelectorItem>
+                            )
+                          )}
                         </MultiSelectorList>
                       </MultiSelectorContent>
                     </MultiSelector>
@@ -331,28 +337,28 @@ function Leagues({}) {
         </Dialog>
       </div>
       <div className="w-full bg-background p-8 grid">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-10">
-          {pageLoading ? (
-            <div className="flex items-center justify-center w-full h-96">
-              <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
-            </div>
-          ) : leagues.length ? (
-            leagues.map((league) => (
+        {pageLoading ? (
+          <div className="flex items-center justify-center w-full h-96">
+            <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
+          </div>
+        ) : leagues.length ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-10">
+            {leagues.map((league) => (
               <LeagueCard
                 key={league.leagueId}
                 league={league}
                 setLeagues={setLeagues}
               />
-            ))
-          ) : (
-            <div className="flex items-center justify-center w-full h-96">
-              <p className="text-darkBlue text-lg font-semibold">
-                No formats available
-              </p>
-            </div>
-          )}
-        </div>
-        {leagues.length && (
+            ))}
+          </div>
+        ) : (
+          <div className="flex items-center justify-center w-full h-96">
+            <p className="text-darkBlue text-lg font-semibold">
+              No formats available
+            </p>
+          </div>
+        )}
+        {leagues.length > 0 && (
           <Button
             type="button"
             size={"sm"}

@@ -8,6 +8,7 @@ import { useUserStore } from "@/stores/auth/auth.store";
 import { Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 
 function Tournaments({}) {
+  const [pageLoading, setPageLoading] = useState<boolean>(true);
   const [tournaments, setTournaments] = useState<Tournament.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
 
@@ -24,6 +25,9 @@ function Tournaments({}) {
       })
       .catch((err) => {
         console.error(err.message);
+      })
+      .finally(() => {
+        setPageLoading(false);
       });
   }, [user]);
   return (
@@ -52,18 +56,40 @@ function Tournaments({}) {
         </form>
       </div>
       <div className="w-full bg-background p-8 grid">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-          {tournaments.map((tournament, index) => (
-            <TournamentCard key={index} tournament={tournament} setTournaments={setTournaments} />
-          ))}
-        </div>
-        <Button
-          type="button"
-          size={"sm"}
-          className="max-w-auto mx-auto ring-0 border-none outline-none text-primary dark:text-white mt-10 bg-transparent underline"
-        >
-          Load More
-        </Button>
+        {pageLoading ? (
+          <div className="flex items-center justify-center w-full h-96">
+            <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
+          </div>
+        ) : tournaments.length ? (
+          tournaments.map((tournament, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5"
+            >
+              <TournamentCard
+                tournament={tournament}
+                setTournaments={setTournaments}
+              />
+            </div>
+          ))
+        ) : (
+          <div className="flex items-center justify-center w-full h-96">
+            <p className="text-darkBlue text-lg font-semibold">
+              No tournaments available
+            </p>
+          </div>
+        )}
+
+        {tournaments.length > 0 && (
+          <Button
+            type="button"
+            size={"sm"}
+            variant={"link"}
+            className="max-w-auto mx-auto ring-0 border-none outline-none mt-10 hover:bg-primary hover:text-white underline"
+          >
+            Load More
+          </Button>
+        )}
       </div>
     </div>
   );

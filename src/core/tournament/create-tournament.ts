@@ -35,10 +35,8 @@ export const createTournament = async ({
         
         tournamentClient.createTournament(request, {}, (err, response) => {
             if (err) {
-                console.log(err);
                 reject(err);
             } else {
-                console.log(err);
                 resolve(response.toObject());
             }
         });

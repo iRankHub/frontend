@@ -233,28 +233,28 @@ function Formats({}) {
         </Dialog>
       </div>
       <div className="w-full bg-background p-8 grid">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-10">
-          {pageLoading ? (
-            <div className="flex items-center justify-center w-full h-96">
-              <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
-            </div>
-          ) : formats.length ? (
-            formats.map((format) => (
+        {pageLoading ? (
+          <div className="flex items-center justify-center w-full h-96">
+            <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
+          </div>
+        ) : formats.length ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-10">
+            {formats.map((format) => (
               <FormatCard
                 key={format.formatId}
                 format={format}
                 setFormats={setFormats}
               />
-            ))
-          ) : (
-            <div className="flex items-center justify-center w-full h-96">
-              <p className="text-darkBlue text-lg font-semibold">
-                No formats available
-              </p>
-            </div>
-          )}
-        </div>
-        {formats.length && (
+            ))}
+          </div>
+        ) : (
+          <div className="flex items-center justify-center w-full h-96">
+            <p className="text-darkBlue text-lg font-semibold">
+              No formats available
+            </p>
+          </div>
+        )}
+        {formats.length > 0 && (
           <Button
             type="button"
             size={"sm"}
