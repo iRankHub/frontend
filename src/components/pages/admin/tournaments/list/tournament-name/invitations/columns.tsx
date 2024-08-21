@@ -41,16 +41,16 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
     ),
     cell: ({ row, table }) => {
       // get all selected rows
-      const selectedRows = table.getFilteredSelectedRowModel().rows;
-      const bulkInvitationIds = selectedRows.map(
-        (row) => row.original.invitationId
-      );
-      const { handleUpdate } = useBulkUpdateInvite({
-        invitationIds: bulkInvitationIds,
-      });
-      const { handleResend } = useBulkResendInvites({
-        invitationIds: bulkInvitationIds,
-      });
+      // const selectedRows = table.getFilteredSelectedRowModel().rows;
+      // const bulkInvitationIds = selectedRows.map(
+      //   (row) => row.original.invitationId
+      // );
+      // const { handleUpdate } = useBulkUpdateInvite({
+      //   invitationIds: bulkInvitationIds,
+      // });
+      // const { handleResend } = useBulkResendInvites({
+      //   invitationIds: bulkInvitationIds,
+      // });
       return (
         <ContextMenu>
           <ContextMenuTrigger>
@@ -68,14 +68,14 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
             <ContextMenuSeparator />
             <ContextMenuItem
               className="flex items-center gap-3"
-              onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
+              // onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
             >
               <Icons.addCircle className="w-4 h-4" />
               Approve
             </ContextMenuItem>
             <ContextMenuItem
               className="flex items-center gap-3"
-              onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
+              // onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
             >
               <Icons.addCircle className="w-4 h-4" />
               Rejected
@@ -83,7 +83,7 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
             <ContextMenuSeparator className="bg-input" />
             <ContextMenuItem
               className="flex items-center gap-3"
-              onClick={handleResend}
+              // onClick={handleResend}
             >
               <Icons.trash2 className="w-4 h-4" />
               Resend
@@ -102,16 +102,16 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
     ),
     cell: ({ row, table }) => {
       // get all selected rows
-      const selectedRows = table.getFilteredSelectedRowModel().rows;
-      const bulkInvitationIds = selectedRows.map(
-        (row) => row.original.invitationId
-      );
-      const { handleUpdate } = useBulkUpdateInvite({
-        invitationIds: bulkInvitationIds,
-      });
-      const { handleResend } = useBulkResendInvites({
-        invitationIds: bulkInvitationIds,
-      });
+      // const selectedRows = table.getFilteredSelectedRowModel().rows;
+      // const bulkInvitationIds = selectedRows.map(
+      //   (row) => row.original.invitationId
+      // );
+      // const { handleUpdate } = useBulkUpdateInvite({
+      //   invitationIds: bulkInvitationIds,
+      // });
+      // const { handleResend } = useBulkResendInvites({
+      //   invitationIds: bulkInvitationIds,
+      // });
       return (
         <ContextMenu>
           <ContextMenuTrigger>
@@ -124,14 +124,14 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
             <ContextMenuSeparator />
             <ContextMenuItem
               className="flex items-center gap-3"
-              onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
+              // onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
             >
               <Icons.addCircle className="w-4 h-4" />
               Approve
             </ContextMenuItem>
             <ContextMenuItem
               className="flex items-center gap-3"
-              onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
+              // onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
             >
               <Icons.addCircle className="w-4 h-4" />
               Rejected
@@ -139,7 +139,7 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
             <ContextMenuSeparator className="bg-input" />
             <ContextMenuItem
               className="flex items-center gap-3"
-              onClick={handleResend}
+              // onClick={handleResend}
             >
               <Icons.trash2 className="w-4 h-4" />
               Resend
@@ -162,16 +162,16 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
     ),
     cell: ({ row, table }) => {
       // get all selected rows
-      const selectedRows = table.getFilteredSelectedRowModel().rows;
-      const bulkInvitationIds = selectedRows.map(
-        (row) => row.original.invitationId
-      );
-      const { handleUpdate } = useBulkUpdateInvite({
-        invitationIds: bulkInvitationIds,
-      });
-      const { handleResend } = useBulkResendInvites({
-        invitationIds: bulkInvitationIds,
-      });
+      // const selectedRows = table.getFilteredSelectedRowModel().rows;
+      // const bulkInvitationIds = selectedRows.map(
+      //   (row) => row.original.invitationId
+      // );
+      // const { handleUpdate } = useBulkUpdateInvite({
+      //   invitationIds: bulkInvitationIds,
+      // });
+      // const { handleResend } = useBulkResendInvites({
+      //   invitationIds: bulkInvitationIds,
+      // });
       return (
         <ContextMenu>
           <ContextMenuTrigger>
@@ -188,14 +188,14 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
             <ContextMenuSeparator />
             <ContextMenuItem
               className="flex items-center gap-3"
-              onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
+              // onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
             >
               <Icons.addCircle className="w-4 h-4" />
               Approve
             </ContextMenuItem>
             <ContextMenuItem
               className="flex items-center gap-3"
-              onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
+              // onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
             >
               <Icons.addCircle className="w-4 h-4" />
               Rejected
@@ -203,7 +203,7 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
             <ContextMenuSeparator className="bg-input" />
             <ContextMenuItem
               className="flex items-center gap-3"
-              onClick={handleResend}
+              // onClick={handleResend}
             >
               <Icons.trash2 className="w-4 h-4" />
               Resend
@@ -225,16 +225,16 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
     ),
     cell: ({ row, table }) => {
       // get all selected rows
-      const selectedRows = table.getFilteredSelectedRowModel().rows;
-      const bulkInvitationIds = selectedRows.map(
-        (row) => row.original.invitationId
-      );
-      const { handleUpdate } = useBulkUpdateInvite({
-        invitationIds: bulkInvitationIds,
-      });
-      const { handleResend } = useBulkResendInvites({
-        invitationIds: bulkInvitationIds,
-      });
+      // const selectedRows = table.getFilteredSelectedRowModel().rows;
+      // const bulkInvitationIds = selectedRows.map(
+      //   (row) => row.original.invitationId
+      // );
+      // const { handleUpdate } = useBulkUpdateInvite({
+      //   invitationIds: bulkInvitationIds,
+      // });
+      // const { handleResend } = useBulkResendInvites({
+      //   invitationIds: bulkInvitationIds,
+      // });
 
       let variant;
       switch (row.getValue("status")) {
@@ -269,14 +269,14 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
             <ContextMenuSeparator />
             <ContextMenuItem
               className="flex items-center gap-3"
-              onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
+              // onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
             >
               <Icons.addCircle className="w-4 h-4" />
               Approve
             </ContextMenuItem>
             <ContextMenuItem
               className="flex items-center gap-3"
-              onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
+              // onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
             >
               <Icons.addCircle className="w-4 h-4" />
               Rejected
@@ -284,7 +284,7 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
             <ContextMenuSeparator className="bg-input" />
             <ContextMenuItem
               className="flex items-center gap-3"
-              onClick={handleResend}
+              // onClick={handleResend}
             >
               <Icons.trash2 className="w-4 h-4" />
               Resend
@@ -309,16 +309,16 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
     ),
     cell: ({ row, table }) => {
       // get all selected rows
-      const selectedRows = table.getFilteredSelectedRowModel().rows;
-      const bulkInvitationIds = selectedRows.map(
-        (row) => row.original.invitationId
-      );
-      const { handleUpdate } = useBulkUpdateInvite({
-        invitationIds: bulkInvitationIds,
-      });
-      const { handleResend } = useBulkResendInvites({
-        invitationIds: bulkInvitationIds,
-      });
+      // const selectedRows = table.getFilteredSelectedRowModel().rows;
+      // const bulkInvitationIds = selectedRows.map(
+      //   (row) => row.original.invitationId
+      // );
+      // const { handleUpdate } = useBulkUpdateInvite({
+      //   invitationIds: bulkInvitationIds,
+      // });
+      // const { handleResend } = useBulkResendInvites({
+      //   invitationIds: bulkInvitationIds,
+      // });
 
       const category = userRoles.find(
         (category) => category.value === row.getValue("inviteeRole")
@@ -344,14 +344,14 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
             <ContextMenuSeparator />
             <ContextMenuItem
               className="flex items-center gap-3"
-              onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
+              // onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
             >
               <Icons.addCircle className="w-4 h-4" />
               Approve
             </ContextMenuItem>
             <ContextMenuItem
               className="flex items-center gap-3"
-              onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
+              // onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
             >
               <Icons.addCircle className="w-4 h-4" />
               Rejected
@@ -359,7 +359,7 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
             <ContextMenuSeparator className="bg-input" />
             <ContextMenuItem
               className="flex items-center gap-3"
-              onClick={handleResend}
+              // onClick={handleResend}
             >
               <Icons.trash2 className="w-4 h-4" />
               Resend

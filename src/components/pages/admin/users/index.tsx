@@ -27,7 +27,7 @@ function Users() {
       .catch((err) => {
         console.error(err.message);
       });
-  }, [user]);
+  }, [user, setUsers]);
   return (
     <div className="w-full rounded-md overflow-hidden border border-muted">
       <DataTable
