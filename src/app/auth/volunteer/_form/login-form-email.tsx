@@ -48,31 +48,51 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
 
   async function onSubmit(data: Inputs) {
     try {
+      setIsPending(true);
       await login({ emailOrId: data.email, password: data.password })
         .then((res) => {
           if (res.success) {
-            toast({
-              variant: "success",
-              title: "Success",
-              description: res.message,
-              action: (
-                <ToastAction altText="Close" className="bg-primary text-white">
-                  Close
-                </ToastAction>
-              ),
-            });
             form.reset();
+            if (res.status !== "pending") {
+              toast({
+                variant: "success",
+                title: "Success",
+                description: res.message,
+                action: (
+                  <ToastAction
+                    altText="Close"
+                    className="bg-primary text-white"
+                  >
+                    Close
+                  </ToastAction>
+                ),
+              });
 
-            const role = Roles.VOLUNTEER;
-            const user: AuthStateUser = {
-              userId: res.userid,
-              token: res.token,
-              status: "idle",
-              requiredPasswordReset: res.requirePasswordReset,
-              requireTwoFactor: res.requireTwoFactor,
-            };
-            authLogin(user, role);
-            router.push("/volunteers/dashboard");
+              const role = Roles.VOLUNTEER;
+              const user: AuthStateUser = {
+                userId: res.userid,
+                token: res.token,
+                status: "idle",
+                requiredPasswordReset: res.requirePasswordReset,
+                requireTwoFactor: res.requireTwoFactor,
+              };
+              authLogin(user, role);
+              router.push("/volunteers/dashboard");
+            } else {
+              toast({
+                variant: "success",
+                title: "Success",
+                description: "Your account is pending approval. You will be notified once your account is approved",
+                action: (
+                  <ToastAction
+                    altText="Close"
+                    className="bg-primary text-white"
+                  >
+                    Close
+                  </ToastAction>
+                ),
+              });
+            }
           } else {
             toast({
               variant: "destructive",
@@ -156,13 +176,18 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
         />
         <div className=" mt-2 flex items-center justify-end gap-1">
           <Link
-            href="/"
+            href="/auth/volunteer/forgot-password"
             className="text-base font-light text-blue hover:underline"
           >
             Forgot password?
           </Link>
         </div>
-        <Button disabled={isPending} variant={"default"} size={"lg"} className="hover:bg-primary">
+        <Button
+          disabled={isPending}
+          variant={"default"}
+          size={"lg"}
+          className="hover:bg-primary"
+        >
           {isPending && (
             <Icons.spinner
               className="mr-2 h-4 w-4 animate-spin"

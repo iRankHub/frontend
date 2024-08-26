@@ -1,4 +1,4 @@
-import { LoginRequest, LoginResponse, SignUpRequest, SignUpResponse } from "@/lib/grpc/proto/authentication/auth_pb";
+import { GenerateTwoFactorOTPRequest, GenerateTwoFactorOTPResponse, LoginRequest, LoginResponse, PasswordResetRequest, PasswordResetResponse, ResetPasswordRequest, ResetPasswordResponse, SignUpRequest, SignUpResponse, VerifyTwoFactorRequest } from "@/lib/grpc/proto/authentication/auth_pb";
 import { authClient } from "../grpc-clients";
 
 export const signUp = (data: {
@@ -81,3 +81,77 @@ export const login = (
         })
     })
 }
+
+// forgot password
+export const forgotPassword = (email: string): Promise<PasswordResetResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new PasswordResetRequest();
+        request.setEmail(email);
+
+        authClient.requestPasswordReset(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+};
+
+// reset password
+export const resetPassword = (data: {
+    password: string;
+    token: string;
+}): Promise<ResetPasswordResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new ResetPasswordRequest();
+        request.setToken(data.token);
+        request.setNewpassword(data.password);
+
+        authClient.resetPassword(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+};
+
+// 2fa
+export const generateTwoFactorOTP = (data: {
+    email: string;
+}): Promise<GenerateTwoFactorOTPResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new GenerateTwoFactorOTPRequest();
+        request.setEmail(data.email);
+
+        authClient.generateTwoFactorOTP(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+};
+
+export const verifyTwoFactor = (data: {
+    token: string;
+    userId: string;
+    otp: string;
+}): Promise<GenerateTwoFactorOTPResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new VerifyTwoFactorRequest();
+        request.setEmail(data.userId);
+        request.setCode(data.otp);
+
+        authClient.verifyTwoFactor(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+};

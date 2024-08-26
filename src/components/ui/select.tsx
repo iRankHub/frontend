@@ -2,7 +2,13 @@
 
 import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { Check, ChevronDown, ChevronsUpDown, ChevronUp, MapPin } from "lucide-react";
+import {
+  Check,
+  ChevronDown,
+  ChevronsUpDown,
+  ChevronUp,
+  MapPin,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -16,8 +22,9 @@ const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
     iconType?: "location" | "collapsible" | null;
+    iconClassName?: string;
   }
->(({ className, children, iconType, ...props }, ref) => (
+>(({ className, children, iconType, iconClassName, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
@@ -30,19 +37,19 @@ const SelectTrigger = React.forwardRef<
 
     {!iconType && (
       <SelectPrimitive.Icon asChild>
-        <ChevronDown className="h-4 w-4 opacity-50" />
+        <ChevronDown className={cn("h-4 w-4 opacity-50", iconClassName)} />
       </SelectPrimitive.Icon>
     )}
 
     {iconType && iconType === "location" && (
       <SelectPrimitive.Icon asChild>
-        <MapPin className="h-4 w-4 opacity-50" />
+        <MapPin className={cn("h-4 w-4 opacity-50", iconClassName)} />
       </SelectPrimitive.Icon>
     )}
 
     {iconType && iconType === "collapsible" && (
       <SelectPrimitive.Icon asChild>
-        <ChevronsUpDown className="h-4 w-4 opacity-50" />
+        <ChevronsUpDown className={cn("h-4 w-4 opacity-50", iconClassName)} />
       </SelectPrimitive.Icon>
     )}
   </SelectPrimitive.Trigger>

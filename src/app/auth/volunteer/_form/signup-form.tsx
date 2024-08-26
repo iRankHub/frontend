@@ -58,12 +58,16 @@ import { getSchoolsNoAuth } from "@/core/users/schools";
 
 type Inputs = z.infer<typeof volunteerSchema>;
 
-const SignupForm = () => {
+interface SignupFormProps {
+  activeStep: number;
+  setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const SignupForm = ({ activeStep, setActiveStep }: SignupFormProps) => {
   const router = useRouter();
   const [isPending, setIsPending] = React.useState(false);
   const [openCountries, setOpenCountries] = React.useState(false);
   const { toast } = useToast();
-  const [activeStep, setActiveStep] = React.useState(1);
   const [school, setSchool] = React.useState<School.AsObject[]>([]);
 
   React.useEffect(() => {
@@ -105,7 +109,7 @@ const SignupForm = () => {
         toast({
           variant: "success",
           title: "Success Message",
-          description: "Success Description",
+          description: "Your account has been created successfully",
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close
@@ -307,8 +311,7 @@ const SignupForm = () => {
                       <SelectContent>
                         <SelectItem value="male">Male</SelectItem>
                         <SelectItem value="female">Female</SelectItem>
-                        <SelectItem value="they/them">Them / Them</SelectItem>
-                        <SelectItem value="none">Prefer not to say</SelectItem>
+                        <SelectItem value="non-binary">Prefer not to say</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -353,7 +356,7 @@ const SignupForm = () => {
                     Already have an account?
                   </span>
                   <Link
-                    href="/auth/student/signup"
+                    href="/auth/volunteer/signup"
                     className="text-lg text-blue hover:underline"
                   >
                     Login
@@ -518,7 +521,7 @@ const SignupForm = () => {
                     Already have an account?
                   </span>
                   <Link
-                    href="/auth/student/signup"
+                    href="/auth/volunteer/signup"
                     className="text-lg text-blue hover:underline"
                   >
                     Login
@@ -644,7 +647,7 @@ const SignupForm = () => {
                     Already have an account?
                   </span>
                   <Link
-                    href="/auth/student/signup"
+                    href="/auth/volunteer/signup"
                     className="text-lg text-blue hover:underline"
                   >
                     Login

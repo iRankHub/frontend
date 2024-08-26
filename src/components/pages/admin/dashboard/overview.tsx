@@ -22,7 +22,7 @@ function Overview() {
           </p>
         </div>
       </Link>
-      <Link href={"/admin/dashboard/users"} className="border-transparent md:border-l border-dashed md:pl-3 ">
+      <Link href={"/admin/dashboard/users"} className="border-transparent md:border-l border-dashed md:border-border md:pl-3 ">
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between gap-3">
             <h3 className="font-semibold text-sm capitalize text-foreground">
@@ -39,7 +39,7 @@ function Overview() {
           </p>
         </div>
       </Link>
-      <Link href={"/admin/dashboard/tournament"} className="border-transparent md:border-l border-dashed lg:pl-3">
+      <Link href={"/admin/dashboard/tournament"} className="border-transparent md:border-l border-dashed md:border-border lg:pl-3">
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between gap-3">
             <h3 className="font-semibold text-sm capitalize text-foreground">
@@ -54,7 +54,7 @@ function Overview() {
           <p className="text-sm text-muted-text">Past and Upcoming</p>
         </div>
       </Link>
-      <Link href={"/admin/dashboard/tournament"} className="border-transparent md:border-l border-dashed md:pl-3">
+      <Link href={"/admin/dashboard/tournament"} className="border-transparent md:border-l border-dashed md:border-border md:pl-3">
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between gap-3">
             <h3 className="font-semibold text-sm capitalize text-foreground">

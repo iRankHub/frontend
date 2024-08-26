@@ -51,29 +51,55 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
     console.log("hello");
     await login({ emailOrId: data.id, password: data.password })
       .then((res) => {
-        console.log(res);
-        toast({
-          variant: "success",
-          title: "Success Message",
-          description: "Success Description",
-          action: (
-            <ToastAction altText="Close" className="bg-primary text-white">
-              Close
-            </ToastAction>
-          ),
-        });
-        form.reset();
+        if (res.success) {
+          form.reset();
+          if (res.status !== "pending") {
+            toast({
+              variant: "success",
+              title: "Success",
+              description: res.message,
+              action: (
+                <ToastAction altText="Close" className="bg-primary text-white">
+                  Close
+                </ToastAction>
+              ),
+            });
 
-        const role = Roles.SCHOOL;
-        const user: AuthStateUser = {
-          userId: res.userid,
-          token: res.token,
-          status: "idle",
-          requiredPasswordReset: res.requirePasswordReset,
-          requireTwoFactor: res.requireTwoFactor,
-        };
-        authLogin(user, role);
-        router.push("/schools/dashboard");
+            const role = Roles.SCHOOL;
+            const user: AuthStateUser = {
+              userId: res.userid,
+              token: res.token,
+              status: "idle",
+              requiredPasswordReset: res.requirePasswordReset,
+              requireTwoFactor: res.requireTwoFactor,
+            };
+            authLogin(user, role);
+            router.push("/schools/dashboard");
+          } else {
+            toast({
+              variant: "success",
+              title: "Success",
+              description:
+                "Your account is pending approval. You will be notified once your account is approved.",
+              action: (
+                <ToastAction altText="Close" className="bg-primary text-white">
+                  Close
+                </ToastAction>
+              ),
+            });
+          }
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: res.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        }
       })
       .catch((err) => {
         console.error(err.message);

@@ -25,10 +25,10 @@ export const emailLoginSchema = z.object({
             message: "Password must be atleast 8 characters long"
         })
         .max(100)
-        // .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/, {
-        //     message:
-        //         "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
-        // }),
+    // .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/, {
+    //     message:
+    //         "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
+    // }),
 })
 
 export const StudentSchema = z.object({
@@ -198,3 +198,47 @@ export const volunteerSchema = z.object({
         });
     }
 });
+
+
+// forgot-password
+export const forgotPasswordSchema = z.object({
+    email: z.string().email(),
+})
+
+export const resetPasswordSchema = z.object({
+    password: z.
+        string()
+        .min(8, {
+            message: "Password must be atleast 8 characters long"
+        })
+        .max(100)
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/, {
+            message:
+                "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
+        }),
+    confirm_password: z.
+        string()
+        .min(8, {
+            message: "Password must be atleast 8 characters long"
+        })
+        .max(100)
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/, {
+            message:
+                "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
+        }),
+}).superRefine(({ confirm_password, password }, ctx) => {
+    if (confirm_password !== password) {
+        ctx.addIssue({
+            code: "custom",
+            message: "The passwords did not match",
+            path: ['confirm_password']
+        });
+    }
+})
+
+// 2fa
+export const twoFactorSchema = z.object({
+    code: z.string().min(6, {
+        message: "Your one-time password must be 6 characters."
+    }).max(6)
+})

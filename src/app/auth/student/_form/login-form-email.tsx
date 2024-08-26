@@ -51,28 +51,47 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
       await login({ emailOrId: data.email, password: data.password })
         .then((res) => {
           if (res.success) {
-            toast({
-              variant: "success",
-              title: "Success",
-              description: res.message,
-              action: (
-                <ToastAction altText="Close" className="bg-primary text-white">
-                  Close
-                </ToastAction>
-              ),
-            });
-            form.reset();
+            if (res.status !== "pending") {
+              toast({
+                variant: "success",
+                title: "Success",
+                description: res.message,
+                action: (
+                  <ToastAction
+                    altText="Close"
+                    className="bg-primary text-white"
+                  >
+                    Close
+                  </ToastAction>
+                ),
+              });
+              form.reset();
 
-            const role = Roles.STUDENT;
-            const user: AuthStateUser = {
-              userId: res.userid,
-              token: res.token,
-              status: "idle",
-              requiredPasswordReset: res.requirePasswordReset,
-              requireTwoFactor: res.requireTwoFactor,
-            };
-            authLogin(user, role);
-            router.push("/students/dashboard");
+              const role = Roles.STUDENT;
+              const user: AuthStateUser = {
+                userId: res.userid,
+                token: res.token,
+                status: "idle",
+                requiredPasswordReset: res.requirePasswordReset,
+                requireTwoFactor: res.requireTwoFactor,
+              };
+              authLogin(user, role);
+              router.push("/students/dashboard");
+            } else {
+              toast({
+                variant: "success",
+                title: "Success",
+                description: res.message,
+                action: (
+                  <ToastAction
+                    altText="Close"
+                    className="bg-primary text-white"
+                  >
+                    Close
+                  </ToastAction>
+                ),
+              });
+            }
           } else {
             toast({
               variant: "destructive",

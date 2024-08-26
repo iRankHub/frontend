@@ -47,19 +47,19 @@ const LoginFormEmail = () => {
     await login({ emailOrId: data.email, password: data.password })
       .then((res) => {
         if (res.success) {
-          toast({
-            variant: "success",
-            title: "Success",
-          description: res.message,
-          action: (
-              <ToastAction altText="Close" className="bg-primary text-white">
-                Close
-              </ToastAction>
-            ),
-          });
           form.reset();
-
           if (res.userrole === "admin") {
+            toast({
+              variant: "success",
+              title: "Success",
+              description: res.message,
+              action: (
+                <ToastAction altText="Close" className="bg-primary text-white">
+                  Close
+                </ToastAction>
+              ),
+            });
+
             const role = Roles.ADMIN;
             const user: AuthStateUser = {
               userId: res.userid,
@@ -158,11 +158,7 @@ const LoginFormEmail = () => {
             Forgot password?
           </Link>
         </div>
-        <Button
-          disabled={isPending}
-          variant={"default"}
-          size={"lg"}
-        >
+        <Button disabled={isPending} variant={"default"} size={"lg"}>
           {isPending && (
             <Icons.spinner
               className="mr-2 h-4 w-4 animate-spin"
