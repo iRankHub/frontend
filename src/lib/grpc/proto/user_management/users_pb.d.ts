@@ -132,120 +132,22 @@ export namespace UserSummary {
   }
 }
 
-export class GetUserDetailsRequest extends jspb.Message {
-  getToken(): string;
-  setToken(value: string): GetUserDetailsRequest;
-
+export class UserProfile extends jspb.Message {
   getUserid(): number;
-  setUserid(value: number): GetUserDetailsRequest;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): GetUserDetailsRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: GetUserDetailsRequest): GetUserDetailsRequest.AsObject;
-  static serializeBinaryToWriter(message: GetUserDetailsRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): GetUserDetailsRequest;
-  static deserializeBinaryFromReader(message: GetUserDetailsRequest, reader: jspb.BinaryReader): GetUserDetailsRequest;
-}
-
-export namespace GetUserDetailsRequest {
-  export type AsObject = {
-    token: string,
-    userid: number,
-  }
-}
-
-export class GetUserDetailsResponse extends jspb.Message {
-  getUser(): UserDetails | undefined;
-  setUser(value?: UserDetails): GetUserDetailsResponse;
-  hasUser(): boolean;
-  clearUser(): GetUserDetailsResponse;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): GetUserDetailsResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: GetUserDetailsResponse): GetUserDetailsResponse.AsObject;
-  static serializeBinaryToWriter(message: GetUserDetailsResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): GetUserDetailsResponse;
-  static deserializeBinaryFromReader(message: GetUserDetailsResponse, reader: jspb.BinaryReader): GetUserDetailsResponse;
-}
-
-export namespace GetUserDetailsResponse {
-  export type AsObject = {
-    user?: UserDetails.AsObject,
-  }
-}
-
-export class UserDetails extends jspb.Message {
-  getUserid(): number;
-  setUserid(value: number): UserDetails;
+  setUserid(value: number): UserProfile;
 
   getName(): string;
-  setName(value: string): UserDetails;
+  setName(value: string): UserProfile;
 
   getEmail(): string;
-  setEmail(value: string): UserDetails;
+  setEmail(value: string): UserProfile;
 
   getUserrole(): string;
-  setUserrole(value: string): UserDetails;
-
-  getSignupdate(): string;
-  setSignupdate(value: string): UserDetails;
-
-  getProfile(): UserProfile | undefined;
-  setProfile(value?: UserProfile): UserDetails;
-  hasProfile(): boolean;
-  clearProfile(): UserDetails;
-
-  getStudentdetails(): StudentDetails | undefined;
-  setStudentdetails(value?: StudentDetails): UserDetails;
-  hasStudentdetails(): boolean;
-  clearStudentdetails(): UserDetails;
-
-  getSchooldetails(): SchoolDetails | undefined;
-  setSchooldetails(value?: SchoolDetails): UserDetails;
-  hasSchooldetails(): boolean;
-  clearSchooldetails(): UserDetails;
-
-  getVolunteerdetails(): VolunteerDetails | undefined;
-  setVolunteerdetails(value?: VolunteerDetails): UserDetails;
-  hasVolunteerdetails(): boolean;
-  clearVolunteerdetails(): UserDetails;
+  setUserrole(value: string): UserProfile;
 
   getGender(): string;
-  setGender(value: string): UserDetails;
+  setGender(value: string): UserProfile;
 
-  getRoleSpecificDetailsCase(): UserDetails.RoleSpecificDetailsCase;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): UserDetails.AsObject;
-  static toObject(includeInstance: boolean, msg: UserDetails): UserDetails.AsObject;
-  static serializeBinaryToWriter(message: UserDetails, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): UserDetails;
-  static deserializeBinaryFromReader(message: UserDetails, reader: jspb.BinaryReader): UserDetails;
-}
-
-export namespace UserDetails {
-  export type AsObject = {
-    userid: number,
-    name: string,
-    email: string,
-    userrole: string,
-    signupdate: string,
-    profile?: UserProfile.AsObject,
-    studentdetails?: StudentDetails.AsObject,
-    schooldetails?: SchoolDetails.AsObject,
-    volunteerdetails?: VolunteerDetails.AsObject,
-    gender: string,
-  }
-
-  export enum RoleSpecificDetailsCase { 
-    ROLE_SPECIFIC_DETAILS_NOT_SET = 0,
-    STUDENTDETAILS = 7,
-    SCHOOLDETAILS = 8,
-    VOLUNTEERDETAILS = 9,
-  }
-}
-
-export class UserProfile extends jspb.Message {
   getAddress(): string;
   setAddress(value: string): UserProfile;
 
@@ -260,8 +162,34 @@ export class UserProfile extends jspb.Message {
   getProfilepicture_asB64(): string;
   setProfilepicture(value: Uint8Array | string): UserProfile;
 
-  getGender(): string;
-  setGender(value: string): UserProfile;
+  getVerificationstatus(): boolean;
+  setVerificationstatus(value: boolean): UserProfile;
+
+  getSignupdate(): string;
+  setSignupdate(value: string): UserProfile;
+
+  getTwofactorenabled(): boolean;
+  setTwofactorenabled(value: boolean): UserProfile;
+
+  getBiometricauthenabled(): boolean;
+  setBiometricauthenabled(value: boolean): UserProfile;
+
+  getStudentdetails(): StudentDetails | undefined;
+  setStudentdetails(value?: StudentDetails): UserProfile;
+  hasStudentdetails(): boolean;
+  clearStudentdetails(): UserProfile;
+
+  getSchooldetails(): SchoolDetails | undefined;
+  setSchooldetails(value?: SchoolDetails): UserProfile;
+  hasSchooldetails(): boolean;
+  clearSchooldetails(): UserProfile;
+
+  getVolunteerdetails(): VolunteerDetails | undefined;
+  setVolunteerdetails(value?: VolunteerDetails): UserProfile;
+  hasVolunteerdetails(): boolean;
+  clearVolunteerdetails(): UserProfile;
+
+  getRoleSpecificDetailsCase(): UserProfile.RoleSpecificDetailsCase;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UserProfile.AsObject;
@@ -273,11 +201,29 @@ export class UserProfile extends jspb.Message {
 
 export namespace UserProfile {
   export type AsObject = {
+    userid: number,
+    name: string,
+    email: string,
+    userrole: string,
+    gender: string,
     address: string,
     phone: string,
     bio: string,
     profilepicture: Uint8Array | string,
-    gender: string,
+    verificationstatus: boolean,
+    signupdate: string,
+    twofactorenabled: boolean,
+    biometricauthenabled: boolean,
+    studentdetails?: StudentDetails.AsObject,
+    schooldetails?: SchoolDetails.AsObject,
+    volunteerdetails?: VolunteerDetails.AsObject,
+  }
+
+  export enum RoleSpecificDetailsCase { 
+    ROLE_SPECIFIC_DETAILS_NOT_SET = 0,
+    STUDENTDETAILS = 14,
+    SCHOOLDETAILS = 15,
+    VOLUNTEERDETAILS = 16,
   }
 }
 
@@ -290,9 +236,6 @@ export class StudentDetails extends jspb.Message {
 
   getSchoolid(): number;
   setSchoolid(value: number): StudentDetails;
-
-  getSchoolname(): string;
-  setSchoolname(value: string): StudentDetails;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): StudentDetails.AsObject;
@@ -307,11 +250,13 @@ export namespace StudentDetails {
     grade: string,
     dateofbirth: string,
     schoolid: number,
-    schoolname: string,
   }
 }
 
 export class SchoolDetails extends jspb.Message {
+  getSchoolname(): string;
+  setSchoolname(value: string): SchoolDetails;
+
   getAddress(): string;
   setAddress(value: string): SchoolDetails;
 
@@ -327,12 +272,6 @@ export class SchoolDetails extends jspb.Message {
   getSchooltype(): string;
   setSchooltype(value: string): SchoolDetails;
 
-  getContactpersonname(): string;
-  setContactpersonname(value: string): SchoolDetails;
-
-  getContactpersonnumber(): string;
-  setContactpersonnumber(value: string): SchoolDetails;
-
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SchoolDetails.AsObject;
   static toObject(includeInstance: boolean, msg: SchoolDetails): SchoolDetails.AsObject;
@@ -343,28 +282,30 @@ export class SchoolDetails extends jspb.Message {
 
 export namespace SchoolDetails {
   export type AsObject = {
+    schoolname: string,
     address: string,
     country: string,
     province: string,
     district: string,
     schooltype: string,
-    contactpersonname: string,
-    contactpersonnumber: string,
   }
 }
 
 export class VolunteerDetails extends jspb.Message {
-  getDateofbirth(): string;
-  setDateofbirth(value: string): VolunteerDetails;
+  getRole(): string;
+  setRole(value: string): VolunteerDetails;
 
-  getGraduationyear(): number;
-  setGraduationyear(value: number): VolunteerDetails;
+  getGraduateyear(): number;
+  setGraduateyear(value: number): VolunteerDetails;
 
-  getRoleinterestedin(): string;
-  setRoleinterestedin(value: string): VolunteerDetails;
+  getSafeguardcertificate(): boolean;
+  setSafeguardcertificate(value: boolean): VolunteerDetails;
 
-  getSafeguardingcertificate(): boolean;
-  setSafeguardingcertificate(value: boolean): VolunteerDetails;
+  getHasinternship(): boolean;
+  setHasinternship(value: boolean): VolunteerDetails;
+
+  getIsenrolledinuniversity(): boolean;
+  setIsenrolledinuniversity(value: boolean): VolunteerDetails;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): VolunteerDetails.AsObject;
@@ -376,10 +317,11 @@ export class VolunteerDetails extends jspb.Message {
 
 export namespace VolunteerDetails {
   export type AsObject = {
-    dateofbirth: string,
-    graduationyear: number,
-    roleinterestedin: string,
-    safeguardingcertificate: boolean,
+    role: string,
+    graduateyear: number,
+    safeguardcertificate: boolean,
+    hasinternship: boolean,
+    isenrolledinuniversity: boolean,
   }
 }
 
@@ -627,6 +569,48 @@ export namespace DeleteUsersResponse {
   }
 }
 
+export class GetUserProfileRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): GetUserProfileRequest;
+
+  getUserid(): number;
+  setUserid(value: number): GetUserProfileRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetUserProfileRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetUserProfileRequest): GetUserProfileRequest.AsObject;
+  static serializeBinaryToWriter(message: GetUserProfileRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetUserProfileRequest;
+  static deserializeBinaryFromReader(message: GetUserProfileRequest, reader: jspb.BinaryReader): GetUserProfileRequest;
+}
+
+export namespace GetUserProfileRequest {
+  export type AsObject = {
+    token: string,
+    userid: number,
+  }
+}
+
+export class GetUserProfileResponse extends jspb.Message {
+  getProfile(): UserProfile | undefined;
+  setProfile(value?: UserProfile): GetUserProfileResponse;
+  hasProfile(): boolean;
+  clearProfile(): GetUserProfileResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetUserProfileResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetUserProfileResponse): GetUserProfileResponse.AsObject;
+  static serializeBinaryToWriter(message: GetUserProfileResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetUserProfileResponse;
+  static deserializeBinaryFromReader(message: GetUserProfileResponse, reader: jspb.BinaryReader): GetUserProfileResponse;
+}
+
+export namespace GetUserProfileResponse {
+  export type AsObject = {
+    profile?: UserProfile.AsObject,
+  }
+}
+
 export class UpdateUserProfileRequest extends jspb.Message {
   getToken(): string;
   setToken(value: string): UpdateUserProfileRequest;
@@ -639,6 +623,9 @@ export class UpdateUserProfileRequest extends jspb.Message {
 
   getEmail(): string;
   setEmail(value: string): UpdateUserProfileRequest;
+
+  getGender(): string;
+  setGender(value: string): UpdateUserProfileRequest;
 
   getAddress(): string;
   setAddress(value: string): UpdateUserProfileRequest;
@@ -654,8 +641,28 @@ export class UpdateUserProfileRequest extends jspb.Message {
   getProfilepicture_asB64(): string;
   setProfilepicture(value: Uint8Array | string): UpdateUserProfileRequest;
 
-  getGender(): string;
-  setGender(value: string): UpdateUserProfileRequest;
+  getTwofactorenabled(): boolean;
+  setTwofactorenabled(value: boolean): UpdateUserProfileRequest;
+
+  getPassword(): string;
+  setPassword(value: string): UpdateUserProfileRequest;
+
+  getStudentdetails(): StudentDetails | undefined;
+  setStudentdetails(value?: StudentDetails): UpdateUserProfileRequest;
+  hasStudentdetails(): boolean;
+  clearStudentdetails(): UpdateUserProfileRequest;
+
+  getSchooldetails(): SchoolDetails | undefined;
+  setSchooldetails(value?: SchoolDetails): UpdateUserProfileRequest;
+  hasSchooldetails(): boolean;
+  clearSchooldetails(): UpdateUserProfileRequest;
+
+  getVolunteerdetails(): VolunteerDetails | undefined;
+  setVolunteerdetails(value?: VolunteerDetails): UpdateUserProfileRequest;
+  hasVolunteerdetails(): boolean;
+  clearVolunteerdetails(): UpdateUserProfileRequest;
+
+  getRoleSpecificDetailsCase(): UpdateUserProfileRequest.RoleSpecificDetailsCase;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UpdateUserProfileRequest.AsObject;
@@ -671,11 +678,23 @@ export namespace UpdateUserProfileRequest {
     userid: number,
     name: string,
     email: string,
+    gender: string,
     address: string,
     phone: string,
     bio: string,
     profilepicture: Uint8Array | string,
-    gender: string,
+    twofactorenabled: boolean,
+    password: string,
+    studentdetails?: StudentDetails.AsObject,
+    schooldetails?: SchoolDetails.AsObject,
+    volunteerdetails?: VolunteerDetails.AsObject,
+  }
+
+  export enum RoleSpecificDetailsCase { 
+    ROLE_SPECIFIC_DETAILS_NOT_SET = 0,
+    STUDENTDETAILS = 12,
+    SCHOOLDETAILS = 13,
+    VOLUNTEERDETAILS = 14,
   }
 }
 

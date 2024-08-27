@@ -1,19 +1,13 @@
 "use client";
+import React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
@@ -26,142 +20,91 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { ToastAction } from "@/components/ui/toast";
-import { useToast } from "@/components/ui/use-toast";
-import { getUserDetails } from "@/core/users/users";
-import { countries } from "@/lib/data";
-import { Districts, Provinces } from "@/lib/get-provinces-and-districts";
-import {
-  SchoolDetails,
-  UserDetails,
-} from "@/lib/grpc/proto/user_management/users_pb";
-import { cn } from "@/lib/utils";
+import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 import { schoolProfileSchemaStep2 } from "@/lib/validations/admin/accounts/profile-update.schema";
-import { useUserStore } from "@/stores/auth/auth.store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckIcon, ChevronsUpDown } from "lucide-react";
-import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { ToastAction } from "@/components/ui/toast";
+import { useUserStore } from "@/stores/auth/auth.store";
+import { useToast } from "@/components/ui/use-toast";
+import { UpdateUserProfile } from "@/types/user_management/users";
+import { UserRole } from "@/types";
+import { updateUserProfile } from "@/core/users/users";
+
+interface AccountFormProps {
+  user: UserProfile.AsObject;
+}
 
 type Inputs = z.infer<typeof schoolProfileSchemaStep2>;
 
-function AccountForm() {
-  const { toast } = useToast();
-  const { user: storeUser } = useUserStore((state) => state);
+function AccountForm({ user }: AccountFormProps) {
+  const [dialogOpen, setDialogOpen] = React.useState(false);
   const [isPending, setIsPending] = React.useState(false);
-  const [openCountries, setOpenCountries] = React.useState(false);
-  const [provinces, setProvinces] = React.useState<string[]>(Provinces());
-  const [districts, setDisctricts] = React.useState<string[]>(Districts());
-  const [school, setSchool] = React.useState<SchoolDetails.AsObject | null>(
-    null
-  );
-  const [user, setUser] = React.useState<UserDetails.AsObject | null>(null);
+  const { user: storeUser } = useUserStore((state) => state);
+  const { toast } = useToast();
 
   // react-hook-form
   const form = useForm<Inputs>({
     resolver: zodResolver(schoolProfileSchemaStep2),
     defaultValues: {
-      email: "testuser@mail.com",
-      contact_person: "testuser",
-      contact_person_email: "testuser@gmail.com",
-      contact_person_number: "1234567890",
+      email: user?.email,
+      contact_person: user?.name,
+      contact_person_email: user?.email,
+      contact_person_number: user?.phone,
     },
   });
 
-  const onSubmit = (data: Inputs) => {
+  const onSubmit = async (data: Inputs) => {
+    if (!storeUser) return;
     setIsPending(true);
 
-    // await signUp({
-    //   firstName: data.contact_person_firstname,
-    //   lastName: data.contact_person_lastname,
-    //   address: data.address,
-    //   email: data.email,
-    //   password: data.password,
-    //   userRole: UserRole.SCHOOL,
-    //   schoolName: data.name,
-    //   country: data.country,
-    //   province: data.province_state,
-    //   district: data.district_region,
-    //   contactEmail: data.contact_person_email,
-    //   schoolType: data.type,
-    // })
-    //   .then((res) => {
-    //     toast({
-    //       variant: "success",
-    //       title: "Success",
-    //       description: res.message,
-    //       action: (
-    //         <ToastAction altText="Close" className="bg-primary text-white">
-    //           Close
-    //         </ToastAction>
-    //       ),
-    //     });
-    //     form.reset();
-    //     router.push("/auth/school/login");
-    //   })
-    //   .catch((err) => {
-    //     console.error(err.message);
-    //     toast({
-    //       variant: "destructive",
-    //       title: "Error",
-    //       description:
-    //         "Something went wrong. Please check your credentials and try again later",
-    //       action: (
-    //         <ToastAction altText="Close" className="bg-primary text-white">
-    //           Close
-    //         </ToastAction>
-    //       ),
-    //     });
-    //   })
-    //   .finally(() => {
-    //     setIsPending(false);
-    //   });
+    const NewProfile: UpdateUserProfile = {
+      name: data.contact_person,
+      address: user.address,
+      bio: user.bio,
+      email: data.contact_person_email,
+      phone: data.contact_person_number,
+      profilePicture: user.profilepicture,
+      token: storeUser.token,
+      userID: user.userid,
+      gender: user.gender,
+      role: UserRole.SCHOOL,
+    };
+
+    await updateUserProfile(NewProfile)
+      .then((res) => {
+        toast({
+          variant: "success",
+          title: "Success",
+          description: res.message,
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+      })
+      .catch((err) => {
+        console.error(err.message);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description:
+            "Something went wrong. Please check your credentials and try again later",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+      })
+      .finally(() => {
+        setIsPending(false);
+        setDialogOpen(false);
+      });
   };
 
-  useEffect(() => {
-    if (!storeUser) return;
-    const getUser = async () => {
-      await getUserDetails({
-        userID: storeUser.userId,
-        token: storeUser.token,
-      }).then((res) => {
-        if (res.user) {
-          setUser(res.user);
-        }
-      });
-    };
-    getUser().catch((err) => {
-      toast({
-        variant: "success",
-        title: "Success",
-        description: "Tournament created successfully",
-        action: (
-          <ToastAction altText="Close" className="bg-primary text-white">
-            Close
-          </ToastAction>
-        ),
-      });
-    });
-  }, [storeUser, toast]);
-
-  if (!user) {
-    return (
-      <div className="grid place-content-center mt-auto h-full">loading...</div>
-    );
-  }
   return (
     <div className="w-full rounded-md overflow-hidden">
       <div className="flex items-center justify-between flex-wrap gap-5 px-20 py-4 bg-brown">
@@ -184,7 +127,7 @@ function AccountForm() {
                       placeholder="school name"
                       className=""
                       value={field.value}
-                      onChange={field.onChange}
+                      disabled
                     />
                   </FormControl>
                   <FormDescription className="text-sm text-muted-foreground">
@@ -258,11 +201,8 @@ function AccountForm() {
                 </FormItem>
               )}
             />
-            <Dialog>
-              <DialogTrigger
-                type="button"
-                className="max-w-52 w-full h-10 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90"
-              >
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <DialogTrigger className="max-w-52 w-full h-10 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90">
                 Update Profile
                 {isPending && (
                   <div className="ml-2 w-3.5 h-3.5 rounded-full border-2 border-background border-r-0 animate-spin" />
@@ -270,19 +210,32 @@ function AccountForm() {
                 <span className="sr-only">Update Profile</span>
               </DialogTrigger>
               <DialogContent>
-                <DialogHeader className="font-semibold">
+                <DialogTitle className="font-semibold">
                   Are you absolutely sure?
-                </DialogHeader>
+                </DialogTitle>
                 <DialogDescription>
-                  This action cannot be undone. This will permanently Update
-                  your account .
+                  This action cannot be undone. This will permanently update
+                  your profile.
                 </DialogDescription>
                 <DialogFooter>
-                  <Button type="button" variant="outline">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setDialogOpen(false)}
+                  >
                     Cancel
                     <span className="sr-only">Cancel</span>
                   </Button>
-                  <Button type="submit" variant="default">
+                  <Button
+                    type="submit"
+                    variant="default"
+                    onClick={() => {
+                      form.trigger();
+                      if (form.formState.isValid) {
+                        onSubmit(form.getValues() as Inputs);
+                      }
+                    }}
+                  >
                     Update
                     {isPending && (
                       <div className="ml-2 w-3.5 h-3.5 rounded-full border-2 border-background border-r-0 animate-spin" />

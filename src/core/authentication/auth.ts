@@ -137,17 +137,17 @@ export const generateTwoFactorOTP = (data: {
 };
 
 export const verifyTwoFactor = (data: {
-    token: string;
-    userId: string;
+    email: string;
     otp: string;
 }): Promise<GenerateTwoFactorOTPResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new VerifyTwoFactorRequest();
-        request.setEmail(data.userId);
+        request.setEmail(data.email);
         request.setCode(data.otp);
 
         authClient.verifyTwoFactor(request, {}, (err, response) => {
             if (err) {
+                console.log(err);
                 reject(err);
             } else {
                 resolve(response.toObject());

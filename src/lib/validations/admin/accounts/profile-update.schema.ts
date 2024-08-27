@@ -65,3 +65,32 @@ export const schoolProfileSchemaStep3 = z.object({
         });
     }
 });
+
+// volunteer profile schema
+export const volunteerProfileSchemaStep1 = z.object({
+    first_name: z.string().min(2, {
+        message: "First name too short"
+    }),
+    last_name: z.string().min(2, {
+        message: "Last name too short"
+    }),
+    school_id: z.string().min(1, {
+        message: "Please select a school"
+    }),
+    graduation_year: z.string().min(4, {
+        message: "Please enter a valid graduation year"
+    })
+});
+
+export const volunteerProfileSchemaStep2 = z.object({
+    email: z.string().email(),
+    national_id: z.string().min(6, {
+        message: "National ID too short"
+    }),
+    dob: z.date({
+        required_error: "A date of birth is required.",
+    }),
+    gender: z.string().min(4, {
+        message: "Please select gender",
+    }),
+});

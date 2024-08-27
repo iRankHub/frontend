@@ -1,14 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -26,26 +18,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { getUserDetails } from "@/core/users/users";
+import { getUserProfile } from "@/core/users/users";
 import { countries } from "@/lib/data";
 import { Districts, Provinces } from "@/lib/get-provinces-and-districts";
 import {
   SchoolDetails,
-  UserDetails,
+  UserProfile,
 } from "@/lib/grpc/proto/user_management/users_pb";
 import { cn } from "@/lib/utils";
 import { schoolProfileSchemaStep2 } from "@/lib/validations/admin/accounts/profile-update.schema";
@@ -68,7 +48,7 @@ function AccountForm() {
   const [school, setSchool] = React.useState<SchoolDetails.AsObject | null>(
     null
   );
-  const [user, setUser] = React.useState<UserDetails.AsObject | null>(null);
+  const [user, setUser] = React.useState<UserProfile.AsObject | null>(null);
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -134,12 +114,12 @@ function AccountForm() {
   useEffect(() => {
     if (!storeUser) return;
     const getUser = async () => {
-      await getUserDetails({
+      await getUserProfile({
         userID: storeUser.userId,
         token: storeUser.token,
       }).then((res) => {
-        if (res.user) {
-          setUser(res.user);
+        if (res.profile) {
+          setUser(res.profile);
         }
       });
     };

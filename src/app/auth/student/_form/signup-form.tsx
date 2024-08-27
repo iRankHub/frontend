@@ -36,7 +36,6 @@ import { PasswordInput } from "@/components/ui/password-Input";
 import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { countries } from "@/lib/data";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
@@ -76,30 +75,44 @@ const SignupForm = () => {
 
   async function onSubmit(data: Inputs) {
     setIsPending(true);
-    
+
     await signUp({
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
       password: data.password,
       userRole: UserRole.STUDENT,
-      dob: format(data.dob, 'yyyy-MM-dd'),
+      dob: format(data.dob, "yyyy-MM-dd"),
       grade: "Grade-4",
       schoolId: Number(data.school),
     })
       .then((res) => {
-        toast({
-          variant: "success",
-          title: "Success",
-          description: res.message,
-          action: (
-            <ToastAction altText="Close" className="bg-primary text-white">
-              Close
-            </ToastAction>
-          ),
-        });
-        form.reset();
-        router.push("/auth/school/login")
+        if (res.success) {
+          toast({
+            variant: "success",
+            title: "Success",
+            description: res.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+          form.reset();
+          router.push("/auth/school/login");
+        } else {
+          console.error(res.message);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: res.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        }
       })
       .catch((err) => {
         console.error(err.message);
@@ -258,7 +271,7 @@ const SignupForm = () => {
                     Already have an account?
                   </span>
                   <Link
-                    href="/auth/student/signup"
+                    href="/auth/student/login"
                     className="text-lg text-blue hover:underline"
                   >
                     Login
@@ -386,7 +399,7 @@ const SignupForm = () => {
                     Already have an account?
                   </span>
                   <Link
-                    href="/auth/student/signup"
+                    href="/auth/student/login"
                     className="text-lg text-blue hover:underline"
                   >
                     Login
@@ -456,7 +469,11 @@ const SignupForm = () => {
                   Back
                   <span className="sr-only">Cancel</span>
                 </Button>
-                <Button variant={"default"} size={"lg"} className="w-full hover:bg-primary">
+                <Button
+                  variant={"default"}
+                  size={"lg"}
+                  className="w-full hover:bg-primary"
+                >
                   Register
                   {isPending && (
                     <div className="w-4 h-4 ml-2 rounded-full animate-spin border-white border-2 border-r-0" />
@@ -464,21 +481,19 @@ const SignupForm = () => {
                   <span className="sr-only">Continue</span>
                 </Button>
               </div>
-              {activeStep <= 1 && (
-                <div className="w-full flex flex-col justify-center gap-4 mt-4">
-                  <div className="flex items-center gap-1 justify-center">
-                    <span className="text-lg text-darkBlue">
-                      Already have an account?
-                    </span>
-                    <Link
-                      href="/auth/school/signup"
-                      className="text-lg text-blue hover:underline"
-                    >
-                      Login
-                    </Link>
-                  </div>
+              <div className="w-full flex flex-col justify-center gap-4 mt-4">
+                <div className="flex items-center gap-1 justify-center">
+                  <span className="text-lg text-darkBlue">
+                    Already have an account?
+                  </span>
+                  <Link
+                    href="/auth/student/login"
+                    className="text-lg text-blue hover:underline"
+                  >
+                    Login
+                  </Link>
                 </div>
-              )}
+              </div>
             </>
           )}
         </form>

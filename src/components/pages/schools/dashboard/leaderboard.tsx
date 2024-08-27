@@ -15,7 +15,7 @@ const inter = Inter({
 
 function Leaderboard({}: Props) {
   return (
-    <div className="w-full min-h-40 h-full py-5 flex flex-col items-center justify-center gap-4 bg-background rounded-lg border-2 border-muted">
+    <div className="w-full min-h-40 h-full py-5 flex flex-col items-center justify-start gap-4 bg-background rounded-lg border-2 border-muted">
       <div>
         <h3 className="text-sm text-muted-foreground font-bold uppercase mb-3">
           Leaderboard

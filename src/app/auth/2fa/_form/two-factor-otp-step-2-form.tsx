@@ -44,49 +44,51 @@ const TwoFactorStep2 = () => {
   async function onSubmit(data: Inputs) {
     try {
       setIsPending(true);
-        // await verifyTwoFactor(data.code)
-        //   .then((res) => {
-        //     if (res.success) {
-        //       form.reset();
-        //       toast({
-        //         variant: "success",
-        //         title: "Success",
-        //         description: "A password reset link has been sent to your email",
-        //         action: (
-        //           <ToastAction altText="Close" className="bg-primary text-white">
-        //             Close
-        //           </ToastAction>
-        //         ),
-        //       });
-        //     } else {
-        //       toast({
-        //         variant: "destructive",
-        //         title: "Error",
-        //         description: "Something went wrong. Please try again later",
-        //         action: (
-        //           <ToastAction altText="Close" className="bg-primary text-white">
-        //             Close
-        //           </ToastAction>
-        //         ),
-        //       });
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     toast({
-        //       variant: "destructive",
-        //       title: "Error",
-        //       description:
-        //         "Something went wrong. Please try again later or contact support",
-        //       action: (
-        //         <ToastAction altText="Close" className="bg-primary text-white">
-        //           Close
-        //         </ToastAction>
-        //       ),
-        //     });
-        //   })
-        //   .finally(() => {
-        //     setIsPending(false);
-        //   });
+      await verifyTwoFactor({ email: "hirwaauguste@gmail.com", otp: data.code })
+        .then((res) => {
+          if (res.success) {
+            form.reset();
+            toast({
+              variant: "success",
+              title: "Success",
+              description: "Two-factor authentication enabled",
+              action: (
+                <ToastAction altText="Close" className="bg-primary text-white">
+                  Close
+                </ToastAction>
+              ),
+            });
+          } else {
+            console.error("Error:", res);
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: "Something went wrong. Please try again later",
+              action: (
+                <ToastAction altText="Close" className="bg-primary text-white">
+                  Close
+                </ToastAction>
+              ),
+            });
+          }
+        })
+        .catch((err) => {
+          console.error("Error:", err);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description:
+              "Something went wrong. Please try again later or contact support",
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        })
+        .finally(() => {
+          setIsPending(false);
+        });
     } catch (error) {
       console.error("Login failed:", error);
       toast({

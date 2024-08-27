@@ -290,7 +290,7 @@ const SignupForm = () => {
                     Already have an account?
                   </span>
                   <Link
-                    href="/auth/school/signup"
+                    href="/auth/school/login"
                     className="text-lg text-blue hover:underline"
                   >
                     Login
@@ -440,7 +440,7 @@ const SignupForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                    District/Region
+                      District/Region
                       <b className="text-primary font-light"> *</b>
                     </FormLabel>
                     <br />
@@ -466,7 +466,9 @@ const SignupForm = () => {
                         <PopoverContent className="w-full p-0">
                           <Command className="w-full">
                             <CommandInput placeholder="Search province..." />
-                            <CommandEmpty>District/Region not Found.</CommandEmpty>
+                            <CommandEmpty>
+                              District/Region not Found.
+                            </CommandEmpty>
                             <CommandList>
                               <CommandGroup>
                                 {districts.map((district, index) => (
@@ -474,7 +476,10 @@ const SignupForm = () => {
                                     key={index}
                                     value={district}
                                     onSelect={() => {
-                                      form.setValue("district_region", district);
+                                      form.setValue(
+                                        "district_region",
+                                        district
+                                      );
                                     }}
                                   >
                                     {district}
@@ -535,7 +540,7 @@ const SignupForm = () => {
                     Already have an account?
                   </span>
                   <Link
-                    href="/auth/school/signup"
+                    href="/auth/school/login"
                     className="text-lg text-blue hover:underline"
                   >
                     Login
@@ -650,7 +655,7 @@ const SignupForm = () => {
                     Already have an account?
                   </span>
                   <Link
-                    href="/auth/student/signup"
+                    href="/auth/school/login"
                     className="text-lg text-blue hover:underline"
                   >
                     Login
@@ -720,11 +725,7 @@ const SignupForm = () => {
                   Back
                   <span className="sr-only">Cancel</span>
                 </Button>
-                <Button
-                  variant={"default"}
-                  size={"lg"}
-                  className="w-full"
-                >
+                <Button variant={"default"} size={"lg"} className="w-full">
                   Continue
                   {isPending && (
                     <div className="ml-2 w-3.5 h-3.5 rounded-full border-2 border-background border-r-0 animate-spin" />
@@ -732,21 +733,19 @@ const SignupForm = () => {
                   <span className="sr-only">Continue</span>
                 </Button>
               </div>
-              {activeStep <= 1 && (
-                <div className="w-full flex flex-col justify-center gap-4 mt-4">
-                  <div className="flex items-center gap-1 justify-center">
-                    <span className="text-lg text-darkBlue">
-                      Already have an account?
-                    </span>
-                    <Link
-                      href="/auth/school/login"
-                      className="text-lg text-blue hover:underline"
-                    >
-                      Login
-                    </Link>
-                  </div>
+              <div className="w-full flex flex-col justify-center gap-4 mt-4">
+                <div className="flex items-center gap-1 justify-center">
+                  <span className="text-lg text-darkBlue">
+                    Already have an account?
+                  </span>
+                  <Link
+                    href="/auth/school/login"
+                    className="text-lg text-blue hover:underline"
+                  >
+                    Login
+                  </Link>
                 </div>
-              )}
+              </div>
             </>
           )}
         </form>

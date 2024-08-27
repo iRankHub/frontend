@@ -6,6 +6,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
@@ -17,49 +18,56 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-Input";
 import { Separator } from "@/components/ui/separator";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { getUserDetails } from "@/core/users/users";
-import { UserDetails } from "@/lib/grpc/proto/user_management/users_pb";
+import { updateUserProfile } from "@/core/users/users";
+import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 import { schoolProfileSchemaStep3 } from "@/lib/validations/admin/accounts/profile-update.schema";
 import { useUserStore } from "@/stores/auth/auth.store";
+import { UserRole } from "@/types";
+import { UpdateUserProfile } from "@/types/user_management/users";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+interface PasswordsFormProps {
+  user: UserProfile.AsObject;
+}
+
 type Inputs = z.infer<typeof schoolProfileSchemaStep3>;
 
-function PasswordsForm() {
-  const { toast } = useToast();
-  const { user: storeUser } = useUserStore((state) => state);
+function PasswordsForm({ user }: PasswordsFormProps) {
+  const [dialogOpen, setDialogOpen] = React.useState(false);
   const [isPending, setIsPending] = React.useState(false);
-  const [user, setUser] = React.useState<UserDetails.AsObject | null>(null);
+  const { user: storeUser } = useUserStore((state) => state);
+  const { toast } = useToast();
 
   // react-hook-form
   const form = useForm<Inputs>({
     resolver: zodResolver(schoolProfileSchemaStep3),
   });
 
-  const onSubmit = (data: Inputs) => {
+  const onSubmit = async (data: Inputs) => {
+    if (!storeUser) return;
     // setIsPending(true);
-    // await signUp({
-    //   firstName: data.contact_person_firstname,
-    //   lastName: data.contact_person_lastname,
-    //   address: data.address,
-    //   email: data.email,
-    //   password: data.password,
-    //   userRole: UserRole.SCHOOL,
-    //   schoolName: data.name,
-    //   country: data.country,
-    //   province: data.province_state,
-    //   district: data.district_region,
-    //   contactEmail: data.contact_person_email,
-    //   schoolType: data.type,
-    // })
+
+    // const NewProfile: UpdateUserProfile = {
+    //   name: user.name,
+    //   address: user.address,
+    //   bio: user.bio,
+    //   email: user.email,
+    //   phone: user.phone,
+    //   profilePicture: user.profilepicture,
+    //   token: storeUser.token,
+    //   userID: user.userid,
+    //   gender: user.gender,
+    //   password: data.new_password,
+    // };
+
+    // await updateUserProfile(NewProfile)
     //   .then((res) => {
     //     toast({
     //       variant: "success",
@@ -71,8 +79,6 @@ function PasswordsForm() {
     //         </ToastAction>
     //       ),
     //     });
-    //     form.reset();
-    //     router.push("/auth/school/login");
     //   })
     //   .catch((err) => {
     //     console.error(err.message);
@@ -90,40 +96,10 @@ function PasswordsForm() {
     //   })
     //   .finally(() => {
     //     setIsPending(false);
+    //     setDialogOpen(false);
     //   });
   };
 
-  useEffect(() => {
-    if (!storeUser) return;
-    const getUser = async () => {
-      await getUserDetails({
-        userID: storeUser.userId,
-        token: storeUser.token,
-      }).then((res) => {
-        if (res.user) {
-          setUser(res.user);
-        }
-      });
-    };
-    getUser().catch((err) => {
-      toast({
-        variant: "success",
-        title: "Success",
-        description: "Tournament created successfully",
-        action: (
-          <ToastAction altText="Close" className="bg-primary text-white">
-            Close
-          </ToastAction>
-        ),
-      });
-    });
-  }, [storeUser, toast]);
-
-  if (!user) {
-    return (
-      <div className="grid place-content-center mt-auto h-full">loading...</div>
-    );
-  }
   return (
     <div className="w-full rounded-md overflow-hidden">
       <div className="flex items-center justify-between flex-wrap gap-5 px-20 py-4 bg-brown">
@@ -199,12 +175,8 @@ function PasswordsForm() {
                 </FormItem>
               )}
             />
-
-            <Dialog>
-              <DialogTrigger
-                type="button"
-                className="max-w-52 w-full h-10 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90"
-              >
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <DialogTrigger className="max-w-52 w-full h-10 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90">
                 Update Profile
                 {isPending && (
                   <div className="ml-2 w-3.5 h-3.5 rounded-full border-2 border-background border-r-0 animate-spin" />
@@ -212,20 +184,32 @@ function PasswordsForm() {
                 <span className="sr-only">Update Profile</span>
               </DialogTrigger>
               <DialogContent>
-                <DialogHeader className="font-semibold">Are you absolutely sure?</DialogHeader>
+                <DialogTitle className="font-semibold">
+                  Are you absolutely sure?
+                </DialogTitle>
                 <DialogDescription>
                   This action cannot be undone. This will permanently Update
                   your password. If you forget your password, you{"`"}ll need to
                   reset
                 </DialogDescription>
                 <DialogFooter>
-                  <Button type="button" variant="outline">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setDialogOpen(false)}
+                  >
                     Cancel
                     <span className="sr-only">Cancel</span>
                   </Button>
                   <Button
                     type="submit"
                     variant="default"
+                    onClick={() => {
+                      form.trigger();
+                      if (form.formState.isValid) {
+                        onSubmit(form.getValues() as Inputs);
+                      }
+                    }}
                   >
                     Update
                     {isPending && (

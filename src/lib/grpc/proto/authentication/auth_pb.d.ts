@@ -356,6 +356,94 @@ export namespace LoginResponse {
   }
 }
 
+export class EnableTwoFactorRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): EnableTwoFactorRequest;
+
+  getUserid(): number;
+  setUserid(value: number): EnableTwoFactorRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): EnableTwoFactorRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: EnableTwoFactorRequest): EnableTwoFactorRequest.AsObject;
+  static serializeBinaryToWriter(message: EnableTwoFactorRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): EnableTwoFactorRequest;
+  static deserializeBinaryFromReader(message: EnableTwoFactorRequest, reader: jspb.BinaryReader): EnableTwoFactorRequest;
+}
+
+export namespace EnableTwoFactorRequest {
+  export type AsObject = {
+    token: string,
+    userid: number,
+  }
+}
+
+export class EnableTwoFactorResponse extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): EnableTwoFactorResponse;
+
+  getMessage(): string;
+  setMessage(value: string): EnableTwoFactorResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): EnableTwoFactorResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: EnableTwoFactorResponse): EnableTwoFactorResponse.AsObject;
+  static serializeBinaryToWriter(message: EnableTwoFactorResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): EnableTwoFactorResponse;
+  static deserializeBinaryFromReader(message: EnableTwoFactorResponse, reader: jspb.BinaryReader): EnableTwoFactorResponse;
+}
+
+export namespace EnableTwoFactorResponse {
+  export type AsObject = {
+    success: boolean,
+    message: string,
+  }
+}
+
+export class DisableTwoFactorRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): DisableTwoFactorRequest;
+
+  getUserid(): number;
+  setUserid(value: number): DisableTwoFactorRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DisableTwoFactorRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: DisableTwoFactorRequest): DisableTwoFactorRequest.AsObject;
+  static serializeBinaryToWriter(message: DisableTwoFactorRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DisableTwoFactorRequest;
+  static deserializeBinaryFromReader(message: DisableTwoFactorRequest, reader: jspb.BinaryReader): DisableTwoFactorRequest;
+}
+
+export namespace DisableTwoFactorRequest {
+  export type AsObject = {
+    token: string,
+    userid: number,
+  }
+}
+
+export class DisableTwoFactorResponse extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): DisableTwoFactorResponse;
+
+  getMessage(): string;
+  setMessage(value: string): DisableTwoFactorResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DisableTwoFactorResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: DisableTwoFactorResponse): DisableTwoFactorResponse.AsObject;
+  static serializeBinaryToWriter(message: DisableTwoFactorResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DisableTwoFactorResponse;
+  static deserializeBinaryFromReader(message: DisableTwoFactorResponse, reader: jspb.BinaryReader): DisableTwoFactorResponse;
+}
+
+export namespace DisableTwoFactorResponse {
+  export type AsObject = {
+    success: boolean,
+    message: string,
+  }
+}
+
 export class GenerateTwoFactorOTPRequest extends jspb.Message {
   getEmail(): string;
   setEmail(value: string): GenerateTwoFactorOTPRequest;

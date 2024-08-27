@@ -1,6 +1,6 @@
 "use client";
 
-import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
+import { ContentLayout } from "@/components/layout/schools-panel/content-layout";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,12 +13,12 @@ import React, { useEffect, useState } from "react";
 import SystemMonitor from "@/components/pages/admin/dashboard/system-monitor";
 import { withAuth } from "@/stores/auth/middleware.store";
 import { Roles, useUserStore } from "@/stores/auth/auth.store";
-import { UserDetails } from "@/lib/grpc/proto/user_management/users_pb";
-import { getUserDetails } from "@/core/users/users";
 import Overview from "@/components/pages/schools/dashboard/overview";
 import CurrentRank from "@/components/pages/schools/dashboard/current-rank";
 import Leaderboard from "@/components/pages/schools/dashboard/leaderboard";
 import { PerformanceTrendChart } from "@/components/pages/schools/dashboard/charts/performance-trend-chart";
+import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
+import { getUserProfile } from "@/core/users/users";
 
 const page = withAuth(() => {
   return <Dashboard />;
@@ -27,7 +27,7 @@ const page = withAuth(() => {
 function Dashboard() {
   const { user } = useUserStore((state) => state);
   const [currentUser, setCurrentUser] = useState<
-    UserDetails.AsObject | undefined
+    UserProfile.AsObject | undefined
   >(undefined);
 
   const handleGreetMessage = () => {
@@ -46,12 +46,12 @@ function Dashboard() {
   useEffect(() => {
     if (!user) return;
 
-    getUserDetails({
+    getUserProfile({
       userID: user.userId,
       token: user.token,
     })
       .then((res) => {
-        setCurrentUser(res.user);
+        setCurrentUser(res.profile);
       })
       .catch((err) => {
         console.error(err.message);

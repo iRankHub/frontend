@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
 import { CollapseMenuButton } from "@/components/layout/students-panel/collapse-menu-button";
-import { getMenuList } from "@/lib/utils/volunteer/accounts-menu-list";
+import { getMenuList } from "@/lib/utils/schools/accounts-menu-list";
 
 export function Menu() {
   const pathname = usePathname();

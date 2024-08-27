@@ -1763,6 +1763,366 @@ export namespace auth {
             return LoginResponse.deserialize(bytes);
         }
     }
+    export class EnableTwoFactorRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            token?: string;
+            userID?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+                if ("userID" in data && data.userID != undefined) {
+                    this.userID = data.userID;
+                }
+            }
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get userID() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set userID(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            token?: string;
+            userID?: number;
+        }): EnableTwoFactorRequest {
+            const message = new EnableTwoFactorRequest({});
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            if (data.userID != null) {
+                message.userID = data.userID;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                token?: string;
+                userID?: number;
+            } = {};
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            if (this.userID != null) {
+                data.userID = this.userID;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.token.length)
+                writer.writeString(1, this.token);
+            if (this.userID != 0)
+                writer.writeInt32(2, this.userID);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): EnableTwoFactorRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new EnableTwoFactorRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.token = reader.readString();
+                        break;
+                    case 2:
+                        message.userID = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): EnableTwoFactorRequest {
+            return EnableTwoFactorRequest.deserialize(bytes);
+        }
+    }
+    export class EnableTwoFactorResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            success?: boolean;
+            message?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("success" in data && data.success != undefined) {
+                    this.success = data.success;
+                }
+                if ("message" in data && data.message != undefined) {
+                    this.message = data.message;
+                }
+            }
+        }
+        get success() {
+            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
+        }
+        set success(value: boolean) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get message() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set message(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            success?: boolean;
+            message?: string;
+        }): EnableTwoFactorResponse {
+            const message = new EnableTwoFactorResponse({});
+            if (data.success != null) {
+                message.success = data.success;
+            }
+            if (data.message != null) {
+                message.message = data.message;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                success?: boolean;
+                message?: string;
+            } = {};
+            if (this.success != null) {
+                data.success = this.success;
+            }
+            if (this.message != null) {
+                data.message = this.message;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.success != false)
+                writer.writeBool(1, this.success);
+            if (this.message.length)
+                writer.writeString(2, this.message);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): EnableTwoFactorResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new EnableTwoFactorResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.success = reader.readBool();
+                        break;
+                    case 2:
+                        message.message = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): EnableTwoFactorResponse {
+            return EnableTwoFactorResponse.deserialize(bytes);
+        }
+    }
+    export class DisableTwoFactorRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            token?: string;
+            userID?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+                if ("userID" in data && data.userID != undefined) {
+                    this.userID = data.userID;
+                }
+            }
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get userID() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set userID(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            token?: string;
+            userID?: number;
+        }): DisableTwoFactorRequest {
+            const message = new DisableTwoFactorRequest({});
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            if (data.userID != null) {
+                message.userID = data.userID;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                token?: string;
+                userID?: number;
+            } = {};
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            if (this.userID != null) {
+                data.userID = this.userID;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.token.length)
+                writer.writeString(1, this.token);
+            if (this.userID != 0)
+                writer.writeInt32(2, this.userID);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): DisableTwoFactorRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new DisableTwoFactorRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.token = reader.readString();
+                        break;
+                    case 2:
+                        message.userID = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): DisableTwoFactorRequest {
+            return DisableTwoFactorRequest.deserialize(bytes);
+        }
+    }
+    export class DisableTwoFactorResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            success?: boolean;
+            message?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("success" in data && data.success != undefined) {
+                    this.success = data.success;
+                }
+                if ("message" in data && data.message != undefined) {
+                    this.message = data.message;
+                }
+            }
+        }
+        get success() {
+            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
+        }
+        set success(value: boolean) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get message() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set message(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            success?: boolean;
+            message?: string;
+        }): DisableTwoFactorResponse {
+            const message = new DisableTwoFactorResponse({});
+            if (data.success != null) {
+                message.success = data.success;
+            }
+            if (data.message != null) {
+                message.message = data.message;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                success?: boolean;
+                message?: string;
+            } = {};
+            if (this.success != null) {
+                data.success = this.success;
+            }
+            if (this.message != null) {
+                data.message = this.message;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.success != false)
+                writer.writeBool(1, this.success);
+            if (this.message.length)
+                writer.writeString(2, this.message);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): DisableTwoFactorResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new DisableTwoFactorResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.success = reader.readBool();
+                        break;
+                    case 2:
+                        message.message = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): DisableTwoFactorResponse {
+            return DisableTwoFactorResponse.deserialize(bytes);
+        }
+    }
     export class GenerateTwoFactorOTPRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -3185,6 +3545,24 @@ export namespace auth {
                 responseSerialize: (message: LoginResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => LoginResponse.deserialize(new Uint8Array(bytes))
             },
+            EnableTwoFactor: {
+                path: "/auth.AuthService/EnableTwoFactor",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: EnableTwoFactorRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => EnableTwoFactorRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: EnableTwoFactorResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => EnableTwoFactorResponse.deserialize(new Uint8Array(bytes))
+            },
+            DisableTwoFactor: {
+                path: "/auth.AuthService/DisableTwoFactor",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: DisableTwoFactorRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => DisableTwoFactorRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: DisableTwoFactorResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => DisableTwoFactorResponse.deserialize(new Uint8Array(bytes))
+            },
             GenerateTwoFactorOTP: {
                 path: "/auth.AuthService/GenerateTwoFactorOTP",
                 requestStream: false,
@@ -3271,6 +3649,8 @@ export namespace auth {
         abstract SignUp(call: grpc_1.ServerUnaryCall<SignUpRequest, SignUpResponse>, callback: grpc_1.sendUnaryData<SignUpResponse>): void;
         abstract BatchImportUsers(call: grpc_1.ServerUnaryCall<BatchImportUsersRequest, BatchImportUsersResponse>, callback: grpc_1.sendUnaryData<BatchImportUsersResponse>): void;
         abstract Login(call: grpc_1.ServerUnaryCall<LoginRequest, LoginResponse>, callback: grpc_1.sendUnaryData<LoginResponse>): void;
+        abstract EnableTwoFactor(call: grpc_1.ServerUnaryCall<EnableTwoFactorRequest, EnableTwoFactorResponse>, callback: grpc_1.sendUnaryData<EnableTwoFactorResponse>): void;
+        abstract DisableTwoFactor(call: grpc_1.ServerUnaryCall<DisableTwoFactorRequest, DisableTwoFactorResponse>, callback: grpc_1.sendUnaryData<DisableTwoFactorResponse>): void;
         abstract GenerateTwoFactorOTP(call: grpc_1.ServerUnaryCall<GenerateTwoFactorOTPRequest, GenerateTwoFactorOTPResponse>, callback: grpc_1.sendUnaryData<GenerateTwoFactorOTPResponse>): void;
         abstract VerifyTwoFactor(call: grpc_1.ServerUnaryCall<VerifyTwoFactorRequest, LoginResponse>, callback: grpc_1.sendUnaryData<LoginResponse>): void;
         abstract RequestPasswordReset(call: grpc_1.ServerUnaryCall<PasswordResetRequest, PasswordResetResponse>, callback: grpc_1.sendUnaryData<PasswordResetResponse>): void;
@@ -3293,6 +3673,12 @@ export namespace auth {
         };
         Login: GrpcUnaryServiceInterface<LoginRequest, LoginResponse> = (message: LoginRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<LoginResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<LoginResponse>, callback?: grpc_1.requestCallback<LoginResponse>): grpc_1.ClientUnaryCall => {
             return super.Login(message, metadata, options, callback);
+        };
+        EnableTwoFactor: GrpcUnaryServiceInterface<EnableTwoFactorRequest, EnableTwoFactorResponse> = (message: EnableTwoFactorRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<EnableTwoFactorResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<EnableTwoFactorResponse>, callback?: grpc_1.requestCallback<EnableTwoFactorResponse>): grpc_1.ClientUnaryCall => {
+            return super.EnableTwoFactor(message, metadata, options, callback);
+        };
+        DisableTwoFactor: GrpcUnaryServiceInterface<DisableTwoFactorRequest, DisableTwoFactorResponse> = (message: DisableTwoFactorRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<DisableTwoFactorResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<DisableTwoFactorResponse>, callback?: grpc_1.requestCallback<DisableTwoFactorResponse>): grpc_1.ClientUnaryCall => {
+            return super.DisableTwoFactor(message, metadata, options, callback);
         };
         GenerateTwoFactorOTP: GrpcUnaryServiceInterface<GenerateTwoFactorOTPRequest, GenerateTwoFactorOTPResponse> = (message: GenerateTwoFactorOTPRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GenerateTwoFactorOTPResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GenerateTwoFactorOTPResponse>, callback?: grpc_1.requestCallback<GenerateTwoFactorOTPResponse>): grpc_1.ClientUnaryCall => {
             return super.GenerateTwoFactorOTP(message, metadata, options, callback);

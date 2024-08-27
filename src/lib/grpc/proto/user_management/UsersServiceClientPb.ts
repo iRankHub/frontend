@@ -82,49 +82,6 @@ export class UserManagementServiceClient {
     this.methodDescriptorGetPendingUsers);
   }
 
-  methodDescriptorGetUserDetails = new grpcWeb.MethodDescriptor(
-    '/user_management.UserManagementService/GetUserDetails',
-    grpcWeb.MethodType.UNARY,
-    user_management_users_pb.GetUserDetailsRequest,
-    user_management_users_pb.GetUserDetailsResponse,
-    (request: user_management_users_pb.GetUserDetailsRequest) => {
-      return request.serializeBinary();
-    },
-    user_management_users_pb.GetUserDetailsResponse.deserializeBinary
-  );
-
-  getUserDetails(
-    request: user_management_users_pb.GetUserDetailsRequest,
-    metadata?: grpcWeb.Metadata | null): Promise<user_management_users_pb.GetUserDetailsResponse>;
-
-  getUserDetails(
-    request: user_management_users_pb.GetUserDetailsRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.RpcError,
-               response: user_management_users_pb.GetUserDetailsResponse) => void): grpcWeb.ClientReadableStream<user_management_users_pb.GetUserDetailsResponse>;
-
-  getUserDetails(
-    request: user_management_users_pb.GetUserDetailsRequest,
-    metadata?: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.RpcError,
-               response: user_management_users_pb.GetUserDetailsResponse) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/user_management.UserManagementService/GetUserDetails',
-        request,
-        metadata || {},
-        this.methodDescriptorGetUserDetails,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/user_management.UserManagementService/GetUserDetails',
-    request,
-    metadata || {},
-    this.methodDescriptorGetUserDetails);
-  }
-
   methodDescriptorApproveUser = new grpcWeb.MethodDescriptor(
     '/user_management.UserManagementService/ApproveUser',
     grpcWeb.MethodType.UNARY,
@@ -338,6 +295,49 @@ export class UserManagementServiceClient {
     request,
     metadata || {},
     this.methodDescriptorDeleteUsers);
+  }
+
+  methodDescriptorGetUserProfile = new grpcWeb.MethodDescriptor(
+    '/user_management.UserManagementService/GetUserProfile',
+    grpcWeb.MethodType.UNARY,
+    user_management_users_pb.GetUserProfileRequest,
+    user_management_users_pb.GetUserProfileResponse,
+    (request: user_management_users_pb.GetUserProfileRequest) => {
+      return request.serializeBinary();
+    },
+    user_management_users_pb.GetUserProfileResponse.deserializeBinary
+  );
+
+  getUserProfile(
+    request: user_management_users_pb.GetUserProfileRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<user_management_users_pb.GetUserProfileResponse>;
+
+  getUserProfile(
+    request: user_management_users_pb.GetUserProfileRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.GetUserProfileResponse) => void): grpcWeb.ClientReadableStream<user_management_users_pb.GetUserProfileResponse>;
+
+  getUserProfile(
+    request: user_management_users_pb.GetUserProfileRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.GetUserProfileResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/user_management.UserManagementService/GetUserProfile',
+        request,
+        metadata || {},
+        this.methodDescriptorGetUserProfile,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/user_management.UserManagementService/GetUserProfile',
+    request,
+    metadata || {},
+    this.methodDescriptorGetUserProfile);
   }
 
   methodDescriptorUpdateUserProfile = new grpcWeb.MethodDescriptor(

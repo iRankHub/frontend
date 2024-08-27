@@ -22,8 +22,8 @@ import { PasswordInput } from "@/components/ui/password-Input";
 import { Separator } from "@/components/ui/separator";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { getUserDetails } from "@/core/users/users";
-import { UserDetails } from "@/lib/grpc/proto/user_management/users_pb";
+import { getUserProfile } from "@/core/users/users";
+import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 import { schoolProfileSchemaStep3 } from "@/lib/validations/admin/accounts/profile-update.schema";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,7 +37,7 @@ function PasswordsForm() {
   const { toast } = useToast();
   const { user: storeUser } = useUserStore((state) => state);
   const [isPending, setIsPending] = React.useState(false);
-  const [user, setUser] = React.useState<UserDetails.AsObject | null>(null);
+  const [user, setUser] = React.useState<UserProfile.AsObject | null>(null);
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -96,12 +96,12 @@ function PasswordsForm() {
   useEffect(() => {
     if (!storeUser) return;
     const getUser = async () => {
-      await getUserDetails({
+      await getUserProfile({
         userID: storeUser.userId,
         token: storeUser.token,
       }).then((res) => {
-        if (res.user) {
-          setUser(res.user);
+        if (res.profile) {
+          setUser(res.profile);
         }
       });
     };

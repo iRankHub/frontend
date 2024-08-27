@@ -5,6 +5,8 @@ import {
   GetSchoolsNoAuthResponse,
   GetSchoolsRequest,
   GetSchoolsResponse,
+  GetUserProfileRequest,
+  GetUserProfileResponse,
   SchoolDetails,
 } from "@/lib/grpc/proto/user_management/users_pb";
 import { GetSchoolsNoAuthType, GetSchoolsType } from "@/types/user_management/schools";
@@ -52,19 +54,4 @@ export const getSchoolsNoAuth = ({
     });
   });
 }
-
-//get single school
-// export const getSchool = async (id: string, token: string): Promise<SchoolDetails.AsObject> => {
-//   return new Promise((resolve, reject) => {
-//     userClient.getS({ id: id }, {}, (err, response) => {
-//       if (err) {
-//         console.log(err);
-//         reject(err);
-//       } else {
-//         console.log(err);
-//         resolve(response.toObject());
-//       }
-//     });
-//   });
-// };
 

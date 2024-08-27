@@ -40,12 +40,12 @@ import {
 } from "@/components/ui/select";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { getUserDetails } from "@/core/users/users";
+import { getUserProfile } from "@/core/users/users";
 import { countries } from "@/lib/data";
 import { Districts, Provinces } from "@/lib/get-provinces-and-districts";
 import {
   SchoolDetails,
-  UserDetails,
+  UserProfile,
 } from "@/lib/grpc/proto/user_management/users_pb";
 import { cn } from "@/lib/utils";
 import { schoolProfileSchemaStep1 } from "@/lib/validations/admin/accounts/profile-update.schema";
@@ -68,7 +68,7 @@ function ProfileForm() {
   const [school, setSchool] = React.useState<SchoolDetails.AsObject | null>(
     null
   );
-  const [user, setUser] = React.useState<UserDetails.AsObject | null>(null);
+  const [user, setUser] = React.useState<UserProfile.AsObject | null>(null);
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -135,12 +135,12 @@ function ProfileForm() {
   useEffect(() => {
     if (!storeUser) return;
     const getUser = async () => {
-      await getUserDetails({
+      await getUserProfile({
         userID: storeUser.userId,
         token: storeUser.token,
       }).then((res) => {
-        if (res.user) {
-          setUser(res.user);
+        if (res.profile) {
+          setUser(res.profile);
         }
       });
     };

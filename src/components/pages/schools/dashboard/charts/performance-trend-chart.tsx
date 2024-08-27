@@ -66,10 +66,10 @@ export function PerformanceTrendChart() {
     <Card className="w-full h-full border-muted">
       <CardHeader className="flex items-center gap-2 space-y-0 py-5 sm:flex-row">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
-          <CardTitle>Area Chart - Interactive</CardTitle>
-          <CardDescription>
+          <CardTitle>Performance Trend</CardTitle>
+          {/* <CardDescription>
             Showing total visitors for the last 3 months
-          </CardDescription>
+          </CardDescription> */}
         </div>
         <Select>
           <SelectTrigger
@@ -92,7 +92,7 @@ export function PerformanceTrendChart() {
         </Select>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={chartConfig} className="w-full max-h-96 mt-5">
           <AreaChart
             accessibilityLayer
             data={chartData}

@@ -23,24 +23,24 @@ import {
 import { Icons } from "@/components/icons";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { useEffect, useState } from "react";
-import { UserDetails } from "@/lib/grpc/proto/user_management/users_pb";
-import { getUserDetails } from "@/core/users/users";
+import { getUserProfile } from "@/core/users/users";
+import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 
 export function UserNav() {
   const { logout, user } = useUserStore((state) => state);
-  const [currentUser, setCurrentUser] = useState<UserDetails.AsObject | undefined>(
+  const [currentUser, setCurrentUser] = useState<UserProfile.AsObject | undefined>(
     undefined
   );
 
   useEffect(() => {
     if (!user) return;
 
-    getUserDetails({
+    getUserProfile({
       userID: user.userId,
       token: user.token,
     })
       .then((res) => {
-        setCurrentUser(res.user);
+        setCurrentUser(res.profile);
       })
       .catch((err) => {
         console.error(err.message);
@@ -91,9 +91,9 @@ export function UserNav() {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Link href="/volunteers/account" className="flex items-center">
+            <Link href="/volunteers/profile" className="flex items-center">
               <User className="w-4 h-4 mr-3 text-muted-foreground" />
-              Account
+              Profile
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>

@@ -168,6 +168,92 @@ export class AuthServiceClient {
     this.methodDescriptorLogin);
   }
 
+  methodDescriptorEnableTwoFactor = new grpcWeb.MethodDescriptor(
+    '/auth.AuthService/EnableTwoFactor',
+    grpcWeb.MethodType.UNARY,
+    authentication_auth_pb.EnableTwoFactorRequest,
+    authentication_auth_pb.EnableTwoFactorResponse,
+    (request: authentication_auth_pb.EnableTwoFactorRequest) => {
+      return request.serializeBinary();
+    },
+    authentication_auth_pb.EnableTwoFactorResponse.deserializeBinary
+  );
+
+  enableTwoFactor(
+    request: authentication_auth_pb.EnableTwoFactorRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<authentication_auth_pb.EnableTwoFactorResponse>;
+
+  enableTwoFactor(
+    request: authentication_auth_pb.EnableTwoFactorRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: authentication_auth_pb.EnableTwoFactorResponse) => void): grpcWeb.ClientReadableStream<authentication_auth_pb.EnableTwoFactorResponse>;
+
+  enableTwoFactor(
+    request: authentication_auth_pb.EnableTwoFactorRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: authentication_auth_pb.EnableTwoFactorResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/auth.AuthService/EnableTwoFactor',
+        request,
+        metadata || {},
+        this.methodDescriptorEnableTwoFactor,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/auth.AuthService/EnableTwoFactor',
+    request,
+    metadata || {},
+    this.methodDescriptorEnableTwoFactor);
+  }
+
+  methodDescriptorDisableTwoFactor = new grpcWeb.MethodDescriptor(
+    '/auth.AuthService/DisableTwoFactor',
+    grpcWeb.MethodType.UNARY,
+    authentication_auth_pb.DisableTwoFactorRequest,
+    authentication_auth_pb.DisableTwoFactorResponse,
+    (request: authentication_auth_pb.DisableTwoFactorRequest) => {
+      return request.serializeBinary();
+    },
+    authentication_auth_pb.DisableTwoFactorResponse.deserializeBinary
+  );
+
+  disableTwoFactor(
+    request: authentication_auth_pb.DisableTwoFactorRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<authentication_auth_pb.DisableTwoFactorResponse>;
+
+  disableTwoFactor(
+    request: authentication_auth_pb.DisableTwoFactorRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: authentication_auth_pb.DisableTwoFactorResponse) => void): grpcWeb.ClientReadableStream<authentication_auth_pb.DisableTwoFactorResponse>;
+
+  disableTwoFactor(
+    request: authentication_auth_pb.DisableTwoFactorRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: authentication_auth_pb.DisableTwoFactorResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/auth.AuthService/DisableTwoFactor',
+        request,
+        metadata || {},
+        this.methodDescriptorDisableTwoFactor,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/auth.AuthService/DisableTwoFactor',
+    request,
+    metadata || {},
+    this.methodDescriptorDisableTwoFactor);
+  }
+
   methodDescriptorGenerateTwoFactorOTP = new grpcWeb.MethodDescriptor(
     '/auth.AuthService/GenerateTwoFactorOTP',
     grpcWeb.MethodType.UNARY,
