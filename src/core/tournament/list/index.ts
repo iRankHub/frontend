@@ -20,7 +20,6 @@ import {
     UpdateTournamentResponse,
 } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { DeleteTournamentType, GetTournamentType, UpdateTournamentType } from "@/types/tournaments/tournament";
-import { CreateTournamentRequest } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import {
     ListTournamentFormats,
 } from "@/types/tournaments/tournament-formats";

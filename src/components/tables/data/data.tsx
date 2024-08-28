@@ -26,8 +26,8 @@ export const labels = [
 
 export const statuses = [
   {
-    value: "accepted",
-    label: "Accepted",
+    value: "approved",
+    label: "Approved",
     icon: QuestionMarkCircledIcon,
   },
   {

@@ -129,6 +129,11 @@ function Leagues({}) {
         setLoading(false);
         form.reset();
         setLeagues((prev) => [...prev, res.league as League.AsObject]);
+
+        // clear states
+        setSelectedProvinces([]);
+        setSelectedDistricts([]);
+
         toast({
           variant: "success",
           title: "Success",

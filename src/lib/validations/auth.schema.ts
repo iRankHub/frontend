@@ -45,7 +45,7 @@ export const StudentSchema = z.object({
     dob: z.date({
         required_error: "A date of birth is required.",
     }),
-    school: z.string().min(2, {
+    school: z.string().min(1, {
         message: "School is required!"
     }),
     email: z.string().email(),

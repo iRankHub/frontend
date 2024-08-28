@@ -1,6 +1,8 @@
 import { userClient } from "../grpc-clients";
 import { DeactivateUser, GetAllUsers, GetUserDetails, SchoolDetailsType, StudentDetailsType, UpdateUserProfile, VolunteerDetailsType } from "@/types/user_management/users";
 import {
+    ApproveUserRequest,
+    ApproveUserResponse,
     DeactivateAccountRequest,
     DeactivateAccountResponse,
     DeleteUsersRequest,
@@ -11,12 +13,52 @@ import {
     GetUserProfileResponse,
     GetVolunteersAndAdminsRequest,
     GetVolunteersAndAdminsResponse,
+    RejectUserRequest,
+    RejectUserResponse,
     SchoolDetails,
     StudentDetails,
     UpdateUserProfileRequest,
     UpdateUserProfileResponse,
     VolunteerDetails
 } from "@/lib/grpc/proto/user_management/users_pb";
+
+export const approveUser = async ({
+    token,
+    userID
+}: DeactivateUser): Promise<ApproveUserResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new ApproveUserRequest();
+        request.setUserid(userID);
+        request.setToken(token);
+
+        userClient.approveUser(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const rejectUser = async ({
+    token,
+    userID
+}: DeactivateUser): Promise<RejectUserResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new RejectUserRequest();
+        request.setUserid(userID);
+        request.setToken(token);
+
+        userClient.rejectUser(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
 
 export const deactivateUser = async ({
     userID,
@@ -29,10 +71,8 @@ export const deactivateUser = async ({
 
         userClient.deactivateAccount(request, {}, (err, response) => {
             if (err) {
-                console.log(err);
                 reject(err);
             } else {
-                console.log(err);
                 resolve(response.toObject());
             }
         });
@@ -52,7 +92,6 @@ export const getAllUsers = async ({
 
         userClient.getAllUsers(request, {}, (err, response) => {
             if (err) {
-                console.log(err);
                 reject(err);
             } else {
                 resolve(response.toObject());
@@ -74,7 +113,6 @@ export const getVolunteersAndAdmins = async ({
 
         userClient.getVolunteersAndAdmins(request, {}, (err, response) => {
             if (err) {
-                console.log(err);
                 reject(err);
             } else {
                 resolve(response.toObject());
@@ -178,7 +216,6 @@ export const updateUserProfile = async ({
 
         userClient.updateUserProfile(request, {}, (err, response) => {
             if (err) {
-                console.log(err);
                 reject(err);
             } else {
                 resolve(response.toObject());

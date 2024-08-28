@@ -16,12 +16,13 @@ function Users() {
   useEffect(() => {
     if (!user) return;
     const options: GetSchoolsType = {
-      pageSize: 10,
+      pageSize: 200,
       page: 1,
       token: user.token,
     };
     getAllUsers({ ...options })
       .then((res) => {
+        console.log(res.usersList);
         setUsers(res.usersList);
       })
       .catch((err) => {

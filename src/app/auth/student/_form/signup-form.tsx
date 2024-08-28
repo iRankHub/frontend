@@ -354,7 +354,7 @@ const SignupForm = () => {
                       </FormControl>
                       <SelectContent>
                         {schools.map((school) => (
-                          <SelectItem value={school.name} key={school.schoolid}>
+                          <SelectItem value={String(school.schoolid)} key={school.schoolid}>
                             {school.name}
                           </SelectItem>
                         ))}

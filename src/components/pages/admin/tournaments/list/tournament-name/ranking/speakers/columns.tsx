@@ -10,7 +10,7 @@ export const columns: ColumnDef<Rankings>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2">
+        <div className="w-full pr-5 text-center">
           <span className="max-w-[200px] truncate font-medium">
             {row.getValue("place")}
           </span>
@@ -26,7 +26,7 @@ export const columns: ColumnDef<Rankings>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2">
+        <div className="w-full pr-5 text-center">
           <span className="max-w-[200px] truncate font-medium">
             {row.getValue("names")}
           </span>
@@ -46,7 +46,7 @@ export const columns: ColumnDef<Rankings>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-[100px] items-center justify-center">
+        <div className="w-full pr-5 text-center">
           <span className="text-sm">{row.getValue("schools")}</span>
         </div>
       );
@@ -67,7 +67,7 @@ export const columns: ColumnDef<Rankings>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-[50px] items-center justify-center">
+        <div className="w-full pr-5 text-center">
           <span className="text-sm">{row.getValue("points")}</span>
         </div>
       );
@@ -87,7 +87,7 @@ export const columns: ColumnDef<Rankings>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-[50px] items-center justify-center">
+        <div className="w-full pr-5 text-center">
           <span className="text-sm">{row.getValue("wins")}</span>
         </div>
       );
@@ -107,7 +107,7 @@ export const columns: ColumnDef<Rankings>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-[50px] items-center justify-center">
+        <div className="w-full pr-5 text-center">
           <span className="text-sm">{row.getValue("rank")}</span>
         </div>
       );

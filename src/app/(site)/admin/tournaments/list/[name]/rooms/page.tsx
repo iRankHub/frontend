@@ -46,6 +46,8 @@ function Page({ params }: Iparms) {
       .catch((err) => {
         console.error(err.message);
       });
+
+      
   }, [user, tourn_id]);
   return (
     <ContentLayout title="format">

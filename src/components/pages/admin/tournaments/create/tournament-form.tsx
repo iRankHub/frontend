@@ -493,9 +493,6 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                                 {coordinator.name}
                               </SelectItem>
                             ))}
-                            {/* <SelectItem value="light">Hakidu</SelectItem>
-                            <SelectItem value="dark">Guy 2</SelectItem>
-                            <SelectItem value="system">Guy 3</SelectItem> */}
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -627,6 +624,13 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                             <SelectItem value="1">Round 1</SelectItem>
                             <SelectItem value="2">Round 2</SelectItem>
                             <SelectItem value="3">Round 3</SelectItem>
+                            <SelectItem value="4">Round 4</SelectItem>
+                            <SelectItem value="5">Round 5</SelectItem>
+                            <SelectItem value="6">Round 6</SelectItem>
+                            <SelectItem value="7">Round 7</SelectItem>
+                            <SelectItem value="8">Round 8</SelectItem>
+                            <SelectItem value="9">Round 9</SelectItem>
+                            <SelectItem value="10">Round 10</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -661,6 +665,13 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                             <SelectItem value="1">Round 1</SelectItem>
                             <SelectItem value="2">Round 2</SelectItem>
                             <SelectItem value="3">Round 3</SelectItem>
+                            <SelectItem value="4">Round 4</SelectItem>
+                            <SelectItem value="5">Round 5</SelectItem>
+                            <SelectItem value="6">Round 6</SelectItem>
+                            <SelectItem value="7">Round 7</SelectItem>
+                            <SelectItem value="8">Round 8</SelectItem>
+                            <SelectItem value="9">Round 9</SelectItem>
+                            <SelectItem value="10">Round 10</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -697,6 +708,8 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                             <SelectItem value="1">1 Per Debate</SelectItem>
                             <SelectItem value="2">2 Per Debate</SelectItem>
                             <SelectItem value="3">3 Per Debate</SelectItem>
+                            <SelectItem value="4">4 Per Debate</SelectItem>
+                            <SelectItem value="5">5 Per Debate</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -731,6 +744,8 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                             <SelectItem value="1">1 Per Debate</SelectItem>
                             <SelectItem value="2">2 Per Debate</SelectItem>
                             <SelectItem value="3">3 Per Debate</SelectItem>
+                            <SelectItem value="4">4 Per Debate</SelectItem>
+                            <SelectItem value="5">5 Per Debate</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>

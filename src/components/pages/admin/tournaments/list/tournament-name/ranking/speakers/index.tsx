@@ -49,7 +49,7 @@ const WinnerCard = () => {
           <div className="w-full flex items-center gap-2 justify-between">
             <div className="flex flex-col">
               <h3 className="text-foreground font-semibold">Mutesi Joy</h3>
-              <small className="text-xs text-border">Glorry Academy</small>
+              <small className="text-xs text-muted-foreground">Glorry Academy</small>
             </div>
             <div className="w-8 h-8 relative">
               <Image
@@ -62,15 +62,15 @@ const WinnerCard = () => {
           </div>
           <div className="grid grid-cols-3 gap-2 mt-2">
             <div className="flex flex-col">
-              <span className="text-xs text-border">Points</span>
+              <span className="text-xs text-muted-foreground">Points</span>
               <span className="text-foreground">290</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-xs text-border">Wins</span>
+              <span className="text-xs text-muted-foreground">Wins</span>
               <span className="text-foreground">3</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-xs text-border">Rank</span>
+              <span className="text-xs text-muted-foreground">Rank</span>
               <span className="text-foreground">1</span>
             </div>
           </div>

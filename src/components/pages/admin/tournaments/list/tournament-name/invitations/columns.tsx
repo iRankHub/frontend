@@ -24,6 +24,7 @@ import {
   useBulkUpdateInvite,
 } from "./actions/bulk-invitation-handle";
 import { InvitationStatuses } from "@/types/tournaments/invitations";
+import { cn } from "@/lib/utils";
 
 export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
   {
@@ -381,12 +382,21 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
         className="justify-end"
       />
     ),
-    cell: ({ row }) => {
+    cell: ({ row, table }) => {
+      // get status from table
+      const columnStatus = row.getValue("status");
+      const isAcceptReject = columnStatus === "pending";
       return (
-        <div className="w-full flex items-center justify-end gap-2">
+        <div className={cn("w-full flex items-center justify-end gap-2",
+          !isAcceptReject && "pr-10"
+        )}>
           <ResendInvite invitationId={row.getValue("invitationId")} />
-          <AcceptInvite invitationId={row.getValue("invitationId")} />
-          <RejectInvite invitationId={row.getValue("invitationId")} />
+          {isAcceptReject && (
+            <>
+              <AcceptInvite invitationId={row.getValue("invitationId")} />
+              <RejectInvite invitationId={row.getValue("invitationId")} />
+            </>
+          )}
         </div>
       );
     },

@@ -72,6 +72,7 @@ function TournamentUpdateForm({ tournament }: Props) {
   const [venues, setVenues] = useState<School.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
   const [loading, setLoading] = useState<boolean>(false);
+  const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [coordinators, setCoordinators] = React.useState<
     UserSummary.AsObject[]
@@ -354,7 +355,7 @@ function TournamentUpdateForm({ tournament }: Props) {
                 <Icons.pencilLine className="w-[1rem] h-[1rem] text-white m-1 group-hover:text-primary" />
                 <span className="sr-only">Edit</span>
               </Button>
-              <Dialog>
+              <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
                 <DialogTrigger>
                   <Button
                     type="button"
@@ -382,6 +383,7 @@ function TournamentUpdateForm({ tournament }: Props) {
                       size={"sm"}
                       variant={"outline"}
                       className="max-w-32"
+                      onClick={() => setDeleteOpen(false)}
                     >
                       Cancel
                     </Button>
@@ -794,6 +796,13 @@ function TournamentUpdateForm({ tournament }: Props) {
                             <SelectItem value="1">Round 1</SelectItem>
                             <SelectItem value="2">Round 2</SelectItem>
                             <SelectItem value="3">Round 3</SelectItem>
+                            <SelectItem value="4">Round 4</SelectItem>
+                            <SelectItem value="5">Round 5</SelectItem>
+                            <SelectItem value="6">Round 6</SelectItem>
+                            <SelectItem value="7">Round 7</SelectItem>
+                            <SelectItem value="8">Round 8</SelectItem>
+                            <SelectItem value="9">Round 9</SelectItem>
+                            <SelectItem value="10">Round 10</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -829,6 +838,13 @@ function TournamentUpdateForm({ tournament }: Props) {
                             <SelectItem value="1">Round 1</SelectItem>
                             <SelectItem value="2">Round 2</SelectItem>
                             <SelectItem value="3">Round 3</SelectItem>
+                            <SelectItem value="4">Round 4</SelectItem>
+                            <SelectItem value="5">Round 5</SelectItem>
+                            <SelectItem value="6">Round 6</SelectItem>
+                            <SelectItem value="7">Round 7</SelectItem>
+                            <SelectItem value="8">Round 8</SelectItem>
+                            <SelectItem value="9">Round 9</SelectItem>
+                            <SelectItem value="10">Round 10</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -866,6 +882,8 @@ function TournamentUpdateForm({ tournament }: Props) {
                             <SelectItem value="1">1 Per Debate</SelectItem>
                             <SelectItem value="2">2 Per Debate</SelectItem>
                             <SelectItem value="3">3 Per Debate</SelectItem>
+                            <SelectItem value="4">4 Per Debate</SelectItem>
+                            <SelectItem value="5">5 Per Debate</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -901,6 +919,8 @@ function TournamentUpdateForm({ tournament }: Props) {
                             <SelectItem value="1">1 Per Debate</SelectItem>
                             <SelectItem value="2">2 Per Debate</SelectItem>
                             <SelectItem value="3">3 Per Debate</SelectItem>
+                            <SelectItem value="4">4 Per Debate</SelectItem>
+                            <SelectItem value="5">5 Per Debate</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>

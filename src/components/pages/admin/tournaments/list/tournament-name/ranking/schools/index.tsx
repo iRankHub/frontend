@@ -48,8 +48,8 @@ const WinnerCard = () => {
         <div className="flex-1">
           <div className="w-full flex items-center gap-2 justify-between">
             <div className="flex flex-col">
-              <h3 className="text-foreground font-semibold">Mutesi Joy</h3>
-              <small className="text-xs text-border">Glorry Academy</small>
+              <h3 className="text-foreground dark:text-background font-semibold">Mutesi Joy</h3>
+              <small className="text-xs text-border dark:text-red-500">Glorry Academy</small>
             </div>
             <div className="w-8 h-8 relative">
               <Image

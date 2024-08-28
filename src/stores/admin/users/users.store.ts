@@ -4,6 +4,8 @@ import { create } from "zustand";
 interface UsersStore {
     users: UserSummary.AsObject[];
     setUsers: (users: UserSummary.AsObject[]) => void;
+    createUser: (user: UserSummary.AsObject) => void;
+    updateUserStatus: (userId: number, new_status: string) => void;
     deleteUser: (userID: number) => void;
 }
 
@@ -13,6 +15,17 @@ export const useUsersStore = create<UsersStore>((set) => ({
     createUser: (user: UserSummary.AsObject) => {
         set((state: UsersStore) => {
             return { users: [...state.users, user] };
+        });
+    },
+    updateUserStatus: (userId: number, status: string) => {
+        set((state: UsersStore) => {
+            const newUsers = state.users.map((u) => {
+                if (u.userid === userId) {
+                    return { ...u, status };
+                }
+                return u;
+            });
+            return { users: newUsers };
         });
     },
     deleteUser: (userID: number) => {

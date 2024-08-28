@@ -41,7 +41,10 @@ export const useUserStore = create<AuthState>(
             userRole: null,
             isLoading: true,
             login: (user, role) => set({ user, userRole: role }),
-            logout: () => set({ user: null, userRole: null }),
+            logout: () => {
+                set({ user: null, userRole: null });
+                localStorage.setItem('theme', 'light');
+            },
             setIsLoading: (isLoading) => set({ isLoading }),
         }),
         {

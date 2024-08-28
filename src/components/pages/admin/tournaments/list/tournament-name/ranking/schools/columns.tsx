@@ -10,9 +10,9 @@ export const columns: ColumnDef<Rankings>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2">
+        <div className="w-full pr-5 text-start">
           <span className="max-w-[200px] truncate font-medium">
-            {row.getValue("place")}
+            {row.getValue("id")}
           </span>
         </div>
       );
@@ -26,7 +26,7 @@ export const columns: ColumnDef<Rankings>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2">
+        <div className="w-full pr-5 text-end">
           <span className="max-w-[200px] truncate font-medium">
             {row.getValue("names")}
           </span>
