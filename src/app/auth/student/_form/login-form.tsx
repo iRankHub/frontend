@@ -57,13 +57,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
                 title: "Success",
                 description: res.message,
                 action: (
-                  <ToastAction altText="Close" className="bg-primary text-white">
+                  <ToastAction
+                    altText="Close"
+                    className="bg-primary text-white"
+                  >
                     Close
                   </ToastAction>
                 ),
               });
               form.reset();
-  
+
               const role = Roles.STUDENT;
               const user: AuthStateUser = {
                 userId: res.userid,
@@ -72,15 +75,23 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
                 requiredPasswordReset: res.requirePasswordReset,
                 requireTwoFactor: res.requireTwoFactor,
               };
-              authLogin(user, role);
-              router.push("/students/dashboard");
+
+              if (res.requireTwoFactor) {
+                router.push("/auth/2fa");
+              } else {
+                authLogin(user, role);
+                router.push("/student/dashboard");
+              }
             } else {
               toast({
                 variant: "success",
                 title: "Success",
                 description: res.message,
                 action: (
-                  <ToastAction altText="Close" className="bg-primary text-white">
+                  <ToastAction
+                    altText="Close"
+                    className="bg-primary text-white"
+                  >
                     Close
                   </ToastAction>
                 ),

@@ -127,7 +127,6 @@ function ProfileForm({ user }: ProfileFormProps) {
         });
       })
       .catch((err) => {
-        console.error(err.message);
         toast({
           variant: "destructive",
           title: "Error",

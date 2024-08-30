@@ -22,7 +22,6 @@ import { Icons } from "@/components/icons";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import {
-  forgotPassword,
   generateTwoFactorOTP,
 } from "@/core/authentication/auth";
 
@@ -56,6 +55,8 @@ const TwoFactorOTPForm = () => {
                 </ToastAction>
               ),
             });
+
+            router.push(`/auth/2fa/verify?email=${data.email}`);
           } else {
             toast({
               variant: "destructive",

@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Slash } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import SystemMonitor from "@/components/pages/admin/dashboard/system-monitor";
 import { withAuth } from "@/stores/auth/middleware.store";
 import { Roles, useUserStore } from "@/stores/auth/auth.store";
 import Overview from "@/components/pages/schools/dashboard/overview";

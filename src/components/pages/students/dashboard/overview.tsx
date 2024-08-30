@@ -7,7 +7,7 @@ function Overview() {
       <div className="flex flex-col gap-2 cursor-pointer">
         <div className="w-full flex items-center justify-between gap-3">
           <h3 className="font-semibold text-sm capitalize text-foreground">
-            Total Rounds Judged
+            Total Tournaments
           </h3>
           <div className="flex items-center bg-destructive-foreground px-0.5 rounded-full">
             <Icons.chevronUp size={14} className="text-success-foreground" />
@@ -15,7 +15,7 @@ function Overview() {
           </div>
         </div>
         <p className="text-xl font-bold text-primary tracking-widest">2000</p>
-        <p className="capitalize text-sm text-muted-text">Lifetime</p>
+        <p className="capitalize text-sm text-muted-text">Attended and Unattended</p>
       </div>
       <div className="border-transparent md:border-l border-dashed md:border-border md:pl-3 ">
         <div className="flex flex-col gap-2">

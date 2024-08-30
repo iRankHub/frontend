@@ -1,6 +1,33 @@
 import validator from "validator";
 import { z } from "zod";
 
+export const studentProfileSchemaStep1 = z.object({
+    first_name: z.string().min(2, {
+        message: "First name too short"
+    }),
+    last_name: z.string().min(2, {
+        message: "Last name too short"
+    }),
+    school_id: z.string().min(1, {
+        message: "Please select a school"
+    }),
+    bio: z.string().min(10, {
+        message: "Bio too short"
+    })
+});
+
+export const studentProfileSchemaStep2 = z.object({
+    name: z.string().min(2, {
+        message: "name too short"
+    }).max(200, {
+        message: "name too long"
+    }),
+    role: z.string().min(2, {
+        message: "role too short"
+    }),
+    email: z.string().email(),
+});
+
 export const schoolProfileSchemaStep1 = z.object({
     name: z.string().min(2, {
         message: "name too short"
@@ -83,14 +110,28 @@ export const volunteerProfileSchemaStep1 = z.object({
 });
 
 export const volunteerProfileSchemaStep2 = z.object({
+    name: z.string().min(2, {
+        message: "name too short"
+    }).max(200, {
+        message: "name too long"
+    }),
     email: z.string().email(),
     national_id: z.string().min(6, {
         message: "National ID too short"
+    }),
+    hasInternship: z.enum(["yes", "no"], {
+        message: "Please select an option"
     }),
     dob: z.date({
         required_error: "A date of birth is required.",
     }),
     gender: z.string().min(4, {
         message: "Please select gender",
+    }),
+});
+
+export const twoFactorEnableSchema = z.object({
+    password: z.string().min(8, {
+        message: "Password must be atleast 8 characters long"
     }),
 });

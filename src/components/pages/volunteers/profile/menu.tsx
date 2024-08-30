@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
-import { CollapseMenuButton } from "@/components/layout/students-panel/collapse-menu-button";
+import { CollapseMenuButton } from "@/components/layout/volunteer-panel/collapse-menu-button";
 import { getMenuList } from "@/lib/utils/volunteer/accounts-menu-list";
 
 export function Menu() {

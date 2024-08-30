@@ -73,8 +73,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
               requiredPasswordReset: res.requirePasswordReset,
               requireTwoFactor: res.requireTwoFactor,
             };
-            authLogin(user, role);
-            router.push("/schools/dashboard");
+
+            if (res.requireTwoFactor) {
+              router.push("/auth/2fa");
+            } else {
+              authLogin(user, role);
+              router.push("/schools/dashboard");
+            }
           } else {
             toast({
               variant: "success",

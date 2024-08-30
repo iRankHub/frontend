@@ -23,11 +23,11 @@ export interface UpdateUserProfile {
     userID: number;
     name: string;
     email: string;
-    gender: string;
-    address: string;
-    phone: string;
-    bio: string;
-    profilePicture: string | Uint8Array;
+    gender?: string;
+    address?: string;
+    phone?: string;
+    bio?: string;
+    profilePicture?: string | Uint8Array;
     password?: string;
     schoolDetails?: SchoolDetails.AsObject;
     studentDetails?: StudentDetails.AsObject;
@@ -55,4 +55,10 @@ export interface VolunteerDetailsType {
     safeguardcertificate: boolean;
     hasinternship: boolean;
     isenrolledinuniversity: boolean;
+}
+
+export interface TwoFactor {
+    userID: number;
+    token: string;
+    disable: boolean;
 }

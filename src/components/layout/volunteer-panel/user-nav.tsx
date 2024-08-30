@@ -22,15 +22,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Icons } from "@/components/icons";
 import { useUserStore } from "@/stores/auth/auth.store";
-import { useEffect, useState } from "react";
 import { getUserProfile } from "@/core/users/users";
+import { useEffect, useState } from "react";
 import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 
 export function UserNav() {
   const { logout, user } = useUserStore((state) => state);
-  const [currentUser, setCurrentUser] = useState<UserProfile.AsObject | undefined>(
-    undefined
-  );
+  const [currentUser, setCurrentUser] = useState<
+    UserProfile.AsObject | undefined
+  >(undefined);
 
   useEffect(() => {
     if (!user) return;

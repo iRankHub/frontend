@@ -1,9 +1,12 @@
-import { Icons } from "@/components/icons";
 import {
   Users,
   LucideIcon,
   List,
   Mails,
+  Network,
+  DoorOpen,
+  BookText,
+  BarChart,
   KeyRound,
 } from "lucide-react";
 
@@ -32,30 +35,30 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: "",
       menus: [
         {
-          href: `/schools/profile`,
+          href: `/students/profile`,
           label: "Profile",
-          active: pathname === `/schools/profile`,
+          active: pathname === `/students/profile`,
           icon: List,
           submenus: [],
         },
         {
-          href: `/schools/profile/account`,
+          href: `/students/profile/account`,
           label: "Account",
-          active: pathname === `/schools/profile/account`,
+          active: pathname === `/students/profile/account`,
           icon: Mails,
           submenus: [],
         },
         {
-          href: `/schools/profile/passwords`,
+          href: `/students/profile/passwords`,
           label: "Passwords",
-          active: pathname === `/schools/profile/passwords`,
+          active: pathname === `/students/profile/passwords`,
           icon: Users,
           submenus: [],
         },
         {
-          href: `/schools/profile/two-factor`,
+          href: `/students/profile/two-factor`,
           label: "2 Factor Authentication",
-          active: pathname === `/schools/profile/two-factor`,
+          active: pathname === `/students/profile/two-factor`,
           icon: KeyRound,
           submenus: [],
         }

@@ -62,20 +62,20 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
   const [openCountries, setOpenCountries] = React.useState(false);
   const { toast } = useToast();
   const [activeStep, setActiveStep] = React.useState(1);
-  const [schools, setSchools] = React.useState<School.AsObject[]>([]);
+  // const [schools, setSchools] = React.useState<School.AsObject[]>([]);
 
-  React.useEffect(() => {
-    getSchoolsNoAuth({
-      pageSize: 100,
-      page: 1,
-    })
-      .then((res) => {
-        setSchools(res.schoolsList);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
-  }, []);
+  // React.useEffect(() => {
+  //   getSchoolsNoAuth({
+  //     pageSize: 100,
+  //     page: 1,
+  //   })
+  //     .then((res) => {
+  //       setSchools(res.schoolsList);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err.message);
+  //     });
+  // }, []);
   // react-hook-form
   const form = useForm<Inputs>({
     resolver: zodResolver(volunteerSchema),
@@ -95,7 +95,7 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
       isEnrolledInUniversity: data.enrolled === "yes",
       safeguardingCertificate: false,
       gender: data.gender,
-      schoolId: parseInt(data.secondary_school),
+      // schoolId: parseInt(data.secondary_school),
     })
       .then((res) => {
         form.reset();
@@ -472,7 +472,7 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
           )}
           {activeStep === 3 && (
             <>
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="secondary_school"
                 render={({ field }) => (
@@ -501,7 +501,7 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
               <FormField
                 control={form.control}
                 name="enrolled"

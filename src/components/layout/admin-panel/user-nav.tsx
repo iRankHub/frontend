@@ -22,15 +22,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Icons } from "@/components/icons";
 import { useUserStore } from "@/stores/auth/auth.store";
+import { getUserProfile } from "@/core/users/users";
 import { useEffect, useState } from "react";
 import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
-import { getUserProfile } from "@/core/users/users";
 
 export function UserNav() {
   const { logout, user } = useUserStore((state) => state);
-  const [currentUser, setCurrentUser] = useState<UserProfile.AsObject | undefined>(
-    undefined
-  );
+  const [currentUser, setCurrentUser] = useState<
+    UserProfile.AsObject | undefined
+  >(undefined);
 
   useEffect(() => {
     if (!user) return;
@@ -85,15 +85,15 @@ export function UserNav() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Link href="/dashboard" className="flex items-center">
+            <Link href="/admin/dashboard" className="flex items-center">
               <LayoutGrid className="w-4 h-4 mr-3 text-muted-foreground" />
               Dashboard
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Link href="/dashboard/account" className="flex items-center">
+            <Link href="/admin/profile" className="flex items-center">
               <User className="w-4 h-4 mr-3 text-muted-foreground" />
-              Account
+              Profile
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>

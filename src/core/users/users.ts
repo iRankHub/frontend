@@ -5,8 +5,6 @@ import {
     ApproveUserResponse,
     DeactivateAccountRequest,
     DeactivateAccountResponse,
-    DeleteUsersRequest,
-    DeleteUsersResponse,
     GetAllUsersRequest,
     GetAllUsersResponse,
     GetUserProfileRequest,
@@ -191,11 +189,11 @@ export const updateUserProfile = async ({
         request.setUserid(userID);
         request.setName(name);
         request.setEmail(email);
-        request.setGender(gender);
-        request.setAddress(address);
-        request.setPhone(phone);
-        request.setBio(bio);
-        request.setProfilepicture(profilePicture);
+        request.setGender(gender || "");
+        request.setAddress(address || "");
+        request.setPhone(phone || "");
+        request.setBio(bio || "");
+        request.setProfilepicture(profilePicture || "");
 
         // if password is provided, set it in the request
         if (password) {

@@ -1,5 +1,21 @@
-import { GenerateTwoFactorOTPRequest, GenerateTwoFactorOTPResponse, LoginRequest, LoginResponse, PasswordResetRequest, PasswordResetResponse, ResetPasswordRequest, ResetPasswordResponse, SignUpRequest, SignUpResponse, VerifyTwoFactorRequest } from "@/lib/grpc/proto/authentication/auth_pb";
+import {
+    DisableTwoFactorRequest,
+    EnableTwoFactorRequest,
+    EnableTwoFactorResponse,
+    GenerateTwoFactorOTPRequest,
+    GenerateTwoFactorOTPResponse,
+    LoginRequest,
+    LoginResponse,
+    PasswordResetRequest,
+    PasswordResetResponse,
+    ResetPasswordRequest,
+    ResetPasswordResponse,
+    SignUpRequest,
+    SignUpResponse,
+    VerifyTwoFactorRequest
+} from "@/lib/grpc/proto/authentication/auth_pb";
 import { authClient } from "../grpc-clients";
+import { TwoFactor } from "@/types/user_management/users";
 
 export const signUp = (data: {
     firstName?: string;
@@ -139,7 +155,7 @@ export const generateTwoFactorOTP = (data: {
 export const verifyTwoFactor = (data: {
     email: string;
     otp: string;
-}): Promise<GenerateTwoFactorOTPResponse.AsObject> => {
+}): Promise<LoginResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new VerifyTwoFactorRequest();
         request.setEmail(data.email);
@@ -155,3 +171,42 @@ export const verifyTwoFactor = (data: {
         });
     });
 };
+
+
+export const handleTwoFactor = async ({
+    userID,
+    token,
+    disable
+}: TwoFactor): Promise<EnableTwoFactorResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        if (!token) {
+            reject(new Error("Token is missing"));
+        }
+
+        if (!disable) {
+            const request = new DisableTwoFactorRequest();
+            request.setUserid(userID);
+            request.setToken(token);
+
+            authClient.disableTwoFactor(request, {}, (err, response) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(response.toObject());
+                }
+            });
+        } else {
+            const request = new EnableTwoFactorRequest();
+            request.setUserid(userID);
+            request.setToken(token);
+
+            authClient.enableTwoFactor(request, {}, (err, response) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(response.toObject());
+                }
+            });
+        }
+    });
+}

@@ -7,6 +7,7 @@ import {
   DoorOpen,
   BookText,
   BarChart,
+  KeyRound,
 } from "lucide-react";
 
 type Submenu = {
@@ -54,6 +55,13 @@ export function getMenuList(pathname: string): Group[] {
           icon: Users,
           submenus: [],
         },
+        {
+          href: `/volunteers/profile/two-factor`,
+          label: "2 Factor Authentication",
+          active: pathname === `/volunteers/profile/two-factor`,
+          icon: KeyRound,
+          submenus: [],
+        }
       ],
     },
   ];

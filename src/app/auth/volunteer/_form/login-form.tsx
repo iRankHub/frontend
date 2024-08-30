@@ -76,13 +76,19 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
                 requiredPasswordReset: res.requirePasswordReset,
                 requireTwoFactor: res.requireTwoFactor,
               };
-              authLogin(user, role);
-              router.push("/volunteers/dashboard");
+
+              if (res.requireTwoFactor) {
+                router.push("/auth/2fa");
+              } else {
+                authLogin(user, role);
+                router.push("/volunteers/dashboard");
+              }
             } else {
               toast({
                 variant: "success",
                 title: "Success",
-                description: "Your account is pending approval. You will be notified once your account is approved",
+                description:
+                  "Your account is pending approval. You will be notified once your account is approved",
                 action: (
                   <ToastAction
                     altText="Close"

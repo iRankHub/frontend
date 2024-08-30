@@ -6,7 +6,6 @@ import SidePanel, {
 } from "@/components/layout/admin-panel/side-panel";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { getTournamentMenuList } from "@/lib/utils/volunteer/tournament-menu-list";
 import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";

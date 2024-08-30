@@ -10,17 +10,17 @@ import {
 import { Roles, useUserStore } from "@/stores/auth/auth.store";
 import { withAuth } from "@/stores/auth/middleware.store";
 import { Slash } from "lucide-react";
-import AccountMenuWrapper from "@/components/pages/volunteers/profile/accounts-menu-wrapper";
-import AccountForm from "@/components/pages/volunteers/profile/account-form";
-import { useToast } from "@/components/ui/use-toast";
+import AccountMenuWrapper from "@/components/pages/students/profile/accounts-menu-wrapper";
+import TwoFactor from "@/components/pages/schools/profile/two-factor";
 import { useEffect, useState } from "react";
-import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
+import { useToast } from "@/components/ui/use-toast";
 import { getUserProfile } from "@/core/users/users";
+import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 import { ToastAction } from "@/components/ui/toast";
 
 const page = withAuth(() => {
   return <Page />;
-}, [Roles.VOLUNTEER]);
+}, [Roles.SCHOOL]);
 
 function Page() {
   const { toast } = useToast();
@@ -35,6 +35,7 @@ function Page() {
         token: storeUser.token,
       }).then((res) => {
         if (res.profile) {
+          console.log(res.profile);
           setUser(res.profile);
         }
       });
@@ -64,15 +65,7 @@ function Page() {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbPage className="text-muted-foreground text-base">
-                Volunteer
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator>
-              <Slash className="-rotate-12" />
-            </BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbPage className="text-muted-foreground text-base">
-                Profile
+                School
               </BreadcrumbPage>
             </BreadcrumbItem>
             <BreadcrumbSeparator>
@@ -80,14 +73,14 @@ function Page() {
             </BreadcrumbSeparator>
             <BreadcrumbItem>
               <BreadcrumbPage className="text-primary text-base">
-                Account
+                Two Factor
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
       <AccountMenuWrapper>
-        <AccountForm user={user} />
+        <TwoFactor user={user} />
       </AccountMenuWrapper>
     </ContentLayout>
   );

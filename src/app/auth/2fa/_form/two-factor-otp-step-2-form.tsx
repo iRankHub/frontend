@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
@@ -11,30 +10,32 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { forgotPassword, verifyTwoFactor } from "@/core/authentication/auth";
+import { verifyTwoFactor } from "@/core/authentication/auth";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { useRouter, useSearchParams } from "next/navigation";
+import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
 
 type Inputs = z.infer<typeof twoFactorSchema>;
 
 const TwoFactorStep2 = () => {
   const router = useRouter();
+  const pathname = useSearchParams();
+  const email = pathname.get("email");
   const [isPending, setIsPending] = React.useState(false);
   const { toast } = useToast();
+  const { login: authLogin } = useUserStore((state) => state);
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -42,24 +43,70 @@ const TwoFactorStep2 = () => {
   });
 
   async function onSubmit(data: Inputs) {
+    if (!email) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Email not found. Please try again later",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
+      });
+
+      router.push("/auth/2fa");
+      return;
+    }
     try {
       setIsPending(true);
-      await verifyTwoFactor({ email: "hirwaauguste@gmail.com", otp: data.code })
+      await verifyTwoFactor({ email, otp: data.code })
         .then((res) => {
           if (res.success) {
             form.reset();
             toast({
               variant: "success",
               title: "Success",
-              description: "Two-factor authentication enabled",
+              description: res.message,
               action: (
                 <ToastAction altText="Close" className="bg-primary text-white">
                   Close
                 </ToastAction>
               ),
             });
+
+            if (res.status !== "pending") {
+              const role = getRole(res.userrole);
+
+              if (!role) {
+                toast({
+                  variant: "destructive",
+                  title: "Error",
+                  description: "Something went wrong. Please try again later",
+                  action: (
+                    <ToastAction
+                      altText="Close"
+                      className="bg-primary text-white"
+                    >
+                      Close
+                    </ToastAction>
+                  ),
+                });
+                return;
+              }
+
+              const user: AuthStateUser = {
+                userId: res.userid,
+                token: res.token,
+                status: "idle",
+                requiredPasswordReset: res.requirePasswordReset,
+                requireTwoFactor: res.requireTwoFactor,
+              };
+
+              authLogin(user, role);
+              handleNavigationByRole(role);
+            }
           } else {
-            console.error("Error:", res);
             toast({
               variant: "destructive",
               title: "Error",
@@ -104,6 +151,48 @@ const TwoFactorStep2 = () => {
     }
   }
 
+  const getRole = (role: string) => {
+    switch (role) {
+      case "admin":
+        return Roles.ADMIN;
+      case "student":
+        return Roles.STUDENT;
+      case "school":
+        return Roles.SCHOOL;
+      case "volunteer":
+        return Roles.VOLUNTEER;
+      default:
+        return null;
+    }
+  };
+
+  const handleNavigationByRole = (role: string) => {
+    switch (role) {
+      case "admin":
+        router.push("/admin/dashboard");
+        break;
+      case "student":
+        router.push("/students/dashboard");
+        break;
+      case "school":
+        router.push("/schools/dashboard");
+        break;
+      case "volunteer":
+        router.push("/volunteers/dashboard");
+        break;
+      default:
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Something went wrong. Please try again later",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+    }
+  };
   return (
     <Form {...form}>
       <form

@@ -1,11 +1,9 @@
 import Link from "next/link";
-import { PanelsTopLeft } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { useStore } from "@/hooks/use-store";
 import { Button } from "@/components/ui/button";
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
-import { SidebarToggle } from "./sidebar-toggle";
 import { Menu } from "./Menu";
 import Image from "next/image";
 

@@ -68,20 +68,20 @@ const SignupForm = ({ activeStep, setActiveStep }: SignupFormProps) => {
   const [isPending, setIsPending] = React.useState(false);
   const [openCountries, setOpenCountries] = React.useState(false);
   const { toast } = useToast();
-  const [school, setSchool] = React.useState<School.AsObject[]>([]);
+  // const [school, setSchool] = React.useState<School.AsObject[]>([]);
 
-  React.useEffect(() => {
-    getSchoolsNoAuth({
-      pageSize: 100,
-      page: 1,
-    })
-      .then((res) => {
-        setSchool(res.schoolsList);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
-  }, []);
+  // React.useEffect(() => {
+  //   getSchoolsNoAuth({
+  //     pageSize: 100,
+  //     page: 1,
+  //   })
+  //     .then((res) => {
+  //       setSchool(res.schoolsList);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err.message);
+  //     });
+  // }, []);
 
   const steps = [1, 2, 3, 4];
 
@@ -532,7 +532,7 @@ const SignupForm = ({ activeStep, setActiveStep }: SignupFormProps) => {
           )}
           {activeStep === 3 && (
             <>
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="secondary_school"
                 render={({ field }) => (
@@ -547,7 +547,37 @@ const SignupForm = ({ activeStep, setActiveStep }: SignupFormProps) => {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
+              {/* <FormField
+                control={form.control}
+                name="secondary_school"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Choose School
+                      <b className="text-primary font-light"> *</b>
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select school..." />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {school.map((school) => (
+                          <SelectItem value={String(school.schoolid)} key={school.schoolid}>
+                            {school.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              /> */}
               <FormField
                 control={form.control}
                 name="graduation_year"

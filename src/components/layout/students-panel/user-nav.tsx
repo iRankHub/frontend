@@ -22,24 +22,42 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Icons } from "@/components/icons";
 import { useUserStore } from "@/stores/auth/auth.store";
+import { getUserProfile } from "@/core/users/users";
+import { useEffect, useState } from "react";
+import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 
 export function UserNav() {
-  const { logout } = useUserStore((state) => state);
+  const { logout, user } = useUserStore((state) => state);
+  const [currentUser, setCurrentUser] = useState<
+    UserProfile.AsObject | undefined
+  >(undefined);
+
+  useEffect(() => {
+    if (!user) return;
+
+    getUserProfile({
+      userID: user.userId,
+      token: user.token,
+    })
+      .then((res) => {
+        setCurrentUser(res.profile);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, [user]);
   return (
     <DropdownMenu>
       <TooltipProvider disableHoverableContent>
         <Tooltip delayDuration={100}>
           <TooltipTrigger asChild>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="relative border-none p-2"
-              >
+              <Button variant="ghost" className="relative border-none p-2">
                 <div className="hidden md:flex flex-col items-end mr-2">
                   <h3 className="text-sm text-[#212B36] dark:text-foreground capitalize leading-4">
-                    Thomas Anree
+                    {currentUser ? currentUser.name : "loading..."}
                   </h3>
-                  <span className="text-xs text-[#637381]">Student</span>
+                  <span className="text-xs text-[#637381]">Students</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Avatar className="w-8 h-8">
@@ -58,22 +76,22 @@ export function UserNav() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">John Doe</p>
+            <p className="text-sm font-medium leading-none">{currentUser?.name}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              johndoe@example.com
+              {currentUser?.email}
             </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Link href="/dashboard" className="flex items-center">
+            <Link href="/students/dashboard" className="flex items-center">
               <LayoutGrid className="w-4 h-4 mr-3 text-muted-foreground" />
               Dashboard
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Link href="/dashboard/account" className="flex items-center">
+            <Link href="/students/profile" className="flex items-center">
               <User className="w-4 h-4 mr-3 text-muted-foreground" />
               Profile
             </Link>

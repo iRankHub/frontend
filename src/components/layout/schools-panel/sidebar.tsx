@@ -1,11 +1,9 @@
 import Link from "next/link";
-import { PanelsTopLeft } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { useStore } from "@/hooks/use-store";
 import { Button } from "@/components/ui/button";
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
-import { SidebarToggle } from "./sidebar-toggle";
 import { Menu } from "./Menu";
 import Image from "next/image";
 
@@ -30,7 +28,7 @@ export function Sidebar() {
           variant="link"
           asChild
         >
-          <Link href="/admin/dashboard" className="flex items-center gap-4">
+          <Link href="/schools/dashboard" className="flex items-center gap-4">
             <Image
               src="/static/images/logo-big.png"
               alt="logo"
@@ -40,7 +38,7 @@ export function Sidebar() {
             />
             <h1
               className={cn(
-                "font-bold text-lg whitespace-nowrap transition-[transform,opacity,display] ease-in-out duration-300 text-background",
+                "font-bold text-lg whitespace-nowrap transition-[transform,opacity,display] ease-in-out duration-300 text-background dark:text-foreground",
                 sidebar?.isOpen === false
                   ? "-translate-x-96 opacity-0 hidden"
                   : "translate-x-0 opacity-100"

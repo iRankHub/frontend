@@ -42,7 +42,7 @@ export function Menu({ isOpen }: MenuProps) {
                             <Button
                               variant={active ? "secondary" : "ghost"}
                               className={cn(
-                                "w-full justify-start h-10 mb-1 text-background font-bold group",
+                                "w-full justify-start h-10 mb-1 text-background font-bold group hover:dark:bg-foreground",
                                 active && "bg-[#F5AE73] hover:bg-[#F5AE73]"
                               )}
                               asChild
@@ -54,7 +54,7 @@ export function Menu({ isOpen }: MenuProps) {
                                   <Icon
                                     size={18}
                                     className={cn(
-                                      !active && "group-hover:text-primary"
+                                      !active && "group-hover:text-primary dark:text-foreground"
                                     )}
                                   />
                                 </span>
@@ -64,7 +64,7 @@ export function Menu({ isOpen }: MenuProps) {
                                     isOpen === false
                                       ? "-translate-x-96 opacity-0"
                                       : "translate-x-0 opacity-100",
-                                    !active && "group-hover:text-primary"
+                                    !active && "group-hover:text-primary dark:text-foreground"
                                   )}
                                 >
                                   {label}
@@ -101,7 +101,7 @@ export function Menu({ isOpen }: MenuProps) {
                   <Button
                     onClick={logout}
                     variant="outline"
-                    className="w-full justify-center h-10 mt-5 group"
+                    className="w-full justify-center h-10 mt-5 group dark:bg-foreground outline-none ring-0 border-0"
                   >
                     <span className={cn(isOpen === false ? "" : "mr-4")}>
                       <LogOut
