@@ -157,6 +157,12 @@ export class Tournament extends jspb.Message {
   getImageUrl(): string;
   setImageUrl(value: string): Tournament;
 
+  getNumberOfSchools(): number;
+  setNumberOfSchools(value: number): Tournament;
+
+  getNumberOfTeams(): number;
+  setNumberOfTeams(value: number): Tournament;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Tournament.AsObject;
   static toObject(includeInstance: boolean, msg: Tournament): Tournament.AsObject;
@@ -181,6 +187,8 @@ export namespace Tournament {
     judgesPerDebateElimination: number,
     tournamentFee: number,
     imageUrl: string,
+    numberOfSchools: number,
+    numberOfTeams: number,
   }
 }
 

@@ -116,8 +116,8 @@ function ProfileForm({ user }: ProfileFormProps) {
         graduateyear: Number(data.graduation_year),
         role: String(user.volunteerdetails?.role),
         hasinternship: Boolean(user.volunteerdetails?.hasinternship),
-        isenrolledinuniversity: Boolean(user.volunteerdetails?.isenrolledinuniversity),
-        safeguardcertificate: Boolean(user.volunteerdetails?.safeguardcertificate),
+        isenrolledinuniversity: Boolean(user.volunteerdetails?.isenrolledinuniversity ?? false),
+        safeguardcertificate: user.volunteerdetails?.safeguardcertificate || "",
       },
       role: UserRole.VOLUNTEER,
     };

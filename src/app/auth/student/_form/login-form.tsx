@@ -86,7 +86,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
               toast({
                 variant: "success",
                 title: "Success",
-                description: res.message,
+                description: "Your account is pending approval. You will be notified once your account is approved.",
                 action: (
                   <ToastAction
                     altText="Close"

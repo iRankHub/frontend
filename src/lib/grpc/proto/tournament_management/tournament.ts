@@ -479,6 +479,8 @@ export namespace tournament_management {
             judges_per_debate_elimination?: number;
             tournament_fee?: number;
             image_url?: string;
+            number_of_schools?: number;
+            number_of_teams?: number;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -524,6 +526,12 @@ export namespace tournament_management {
                 }
                 if ("image_url" in data && data.image_url != undefined) {
                     this.image_url = data.image_url;
+                }
+                if ("number_of_schools" in data && data.number_of_schools != undefined) {
+                    this.number_of_schools = data.number_of_schools;
+                }
+                if ("number_of_teams" in data && data.number_of_teams != undefined) {
+                    this.number_of_teams = data.number_of_teams;
                 }
             }
         }
@@ -611,6 +619,18 @@ export namespace tournament_management {
         set image_url(value: string) {
             pb_1.Message.setField(this, 14, value);
         }
+        get number_of_schools() {
+            return pb_1.Message.getFieldWithDefault(this, 15, 0) as number;
+        }
+        set number_of_schools(value: number) {
+            pb_1.Message.setField(this, 15, value);
+        }
+        get number_of_teams() {
+            return pb_1.Message.getFieldWithDefault(this, 16, 0) as number;
+        }
+        set number_of_teams(value: number) {
+            pb_1.Message.setField(this, 16, value);
+        }
         static fromObject(data: {
             tournament_id?: number;
             name?: string;
@@ -626,6 +646,8 @@ export namespace tournament_management {
             judges_per_debate_elimination?: number;
             tournament_fee?: number;
             image_url?: string;
+            number_of_schools?: number;
+            number_of_teams?: number;
         }): Tournament {
             const message = new Tournament({});
             if (data.tournament_id != null) {
@@ -670,6 +692,12 @@ export namespace tournament_management {
             if (data.image_url != null) {
                 message.image_url = data.image_url;
             }
+            if (data.number_of_schools != null) {
+                message.number_of_schools = data.number_of_schools;
+            }
+            if (data.number_of_teams != null) {
+                message.number_of_teams = data.number_of_teams;
+            }
             return message;
         }
         toObject() {
@@ -688,6 +716,8 @@ export namespace tournament_management {
                 judges_per_debate_elimination?: number;
                 tournament_fee?: number;
                 image_url?: string;
+                number_of_schools?: number;
+                number_of_teams?: number;
             } = {};
             if (this.tournament_id != null) {
                 data.tournament_id = this.tournament_id;
@@ -731,6 +761,12 @@ export namespace tournament_management {
             if (this.image_url != null) {
                 data.image_url = this.image_url;
             }
+            if (this.number_of_schools != null) {
+                data.number_of_schools = this.number_of_schools;
+            }
+            if (this.number_of_teams != null) {
+                data.number_of_teams = this.number_of_teams;
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -765,6 +801,10 @@ export namespace tournament_management {
                 writer.writeDouble(13, this.tournament_fee);
             if (this.image_url.length)
                 writer.writeString(14, this.image_url);
+            if (this.number_of_schools != 0)
+                writer.writeInt32(15, this.number_of_schools);
+            if (this.number_of_teams != 0)
+                writer.writeInt32(16, this.number_of_teams);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -815,6 +855,12 @@ export namespace tournament_management {
                         break;
                     case 14:
                         message.image_url = reader.readString();
+                        break;
+                    case 15:
+                        message.number_of_schools = reader.readInt32();
+                        break;
+                    case 16:
+                        message.number_of_teams = reader.readInt32();
                         break;
                     default: reader.skipField();
                 }

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
@@ -19,29 +19,47 @@ import {
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
 import { PasswordInput } from "@/components/ui/password-Input";
-import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
-import { login, resetPassword } from "@/core/authentication/auth";
+import { resetPassword } from "@/core/authentication/auth";
 
 type Inputs = z.infer<typeof resetPasswordSchema>;
 
-interface ResetPasswordFormProps {
-  token: string;
-}
-
-const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ token }) => {
+const ResetPasswordForm = () => {
   const router = useRouter();
   const [isPending, setIsPending] = React.useState(false);
   const { toast } = useToast();
+  const searchParams = useSearchParams();
 
   // react-hook-form
   const form = useForm<Inputs>({
     resolver: zodResolver(resetPasswordSchema),
   });
 
+  const token = searchParams.get("token");
+
+  if (!token) {
+    return (
+      <div className="w-full min-h-screen flex flex-col items-center justify-center px-10">
+        <h3 className="text-3xl font-semibold text-foreground">
+          Token Invalid.
+        </h3>
+        <p className="text-darkBlue text-lg my-3">
+          The token provided is invalid or has expired. Please request a new
+          one.
+        </p>
+        <Button
+          variant="default"
+          onClick={() => router.push("/auth/volunteer/forgot")}
+        >
+          Request New Token
+        </Button>
+      </div>
+    );
+  }
+
   async function onSubmit(data: Inputs) {
+    if (!token) return;
     try {
       if (data.password !== data.confirm_password) {
         toast({

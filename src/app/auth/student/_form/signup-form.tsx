@@ -99,7 +99,7 @@ const SignupForm = () => {
             ),
           });
           form.reset();
-          router.push("/auth/school/login");
+          router.push("/auth/student/login");
         } else {
           console.error(res.message);
           toast({

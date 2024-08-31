@@ -3,14 +3,16 @@
 import Image from "next/image";
 import { Rubik } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { Suspense } from "react";
 import TwoFactorStep2 from "../_form/two-factor-otp-step-2-form";
+import { Icons } from "@/components/icons";
 
 const rubik = Rubik({
   weight: "500",
   subsets: ["latin"],
 });
 
-function ForgotPassword() {
+function Page() {
   return (
     <div className="grid grid-cols-2 gap-5 p-5 px-10 min-h-screen">
       <div className="max-w-md mx-auto w-full flex flex-col">
@@ -25,8 +27,9 @@ function ForgotPassword() {
             Please enter the 6-digit code sent to your email.
           </p>
         </div>
-
-        <TwoFactorStep2 />
+        <Suspense fallback={<Fallback />}>
+          <TwoFactorStep2 />
+        </Suspense>
         <div className="mt-auto w-full text-center">
           <span className="text-base text-darkBlue uppercase text-center">
             © 2024 ALL RIGHTS RESERVED
@@ -42,4 +45,12 @@ function ForgotPassword() {
   );
 }
 
-export default ForgotPassword;
+const Fallback = () => {
+  return (
+    <div className="flex items-center justify-center w-full h-full">
+      <Icons.spinner className="h-12 w-12 animate-spin" />
+    </div>
+  );
+};
+
+export default Page;

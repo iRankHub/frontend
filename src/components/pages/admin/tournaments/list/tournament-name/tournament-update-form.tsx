@@ -128,6 +128,7 @@ function TournamentUpdateForm({ tournament }: Props) {
       startTime: new Date(formatStartDate()),
       endDate: new Date(formatEndDate()),
       endTime: new Date(formatEndDate()),
+      coordinator: String(tournament.coordinatorId),
     },
   });
 

@@ -147,7 +147,7 @@ function LeagueCard({ league, setLeagues }: Props) {
     //   });
   };
 
-  const deleteFormat = async () => {
+  const deleteLeague = async () => {
     if (!user) return;
 
     const options: DeleteTournamentLeague = {
@@ -307,7 +307,7 @@ function LeagueCard({ league, setLeagues }: Props) {
                           size={"sm"}
                           variant={"destructive"}
                           className="max-w-32"
-                          onClick={deleteFormat}
+                          onClick={deleteLeague}
                         >
                           Delete
                           {deleteLoading && (

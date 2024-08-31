@@ -112,6 +112,9 @@ export class UserSummary extends jspb.Message {
   getStatus(): string;
   setStatus(value: string): UserSummary;
 
+  getIdebateid(): string;
+  setIdebateid(value: string): UserSummary;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UserSummary.AsObject;
   static toObject(includeInstance: boolean, msg: UserSummary): UserSummary.AsObject;
@@ -129,6 +132,7 @@ export namespace UserSummary {
     signupdate: string,
     gender: string,
     status: string,
+    idebateid: string,
   }
 }
 
@@ -613,101 +617,348 @@ export namespace GetUserProfileResponse {
   }
 }
 
-export class UpdateUserProfileRequest extends jspb.Message {
+export class UpdateAdminProfileRequest extends jspb.Message {
   getToken(): string;
-  setToken(value: string): UpdateUserProfileRequest;
+  setToken(value: string): UpdateAdminProfileRequest;
 
   getUserid(): number;
-  setUserid(value: number): UpdateUserProfileRequest;
+  setUserid(value: number): UpdateAdminProfileRequest;
 
   getName(): string;
-  setName(value: string): UpdateUserProfileRequest;
-
-  getEmail(): string;
-  setEmail(value: string): UpdateUserProfileRequest;
+  setName(value: string): UpdateAdminProfileRequest;
 
   getGender(): string;
-  setGender(value: string): UpdateUserProfileRequest;
+  setGender(value: string): UpdateAdminProfileRequest;
 
   getAddress(): string;
-  setAddress(value: string): UpdateUserProfileRequest;
-
-  getPhone(): string;
-  setPhone(value: string): UpdateUserProfileRequest;
+  setAddress(value: string): UpdateAdminProfileRequest;
 
   getBio(): string;
-  setBio(value: string): UpdateUserProfileRequest;
+  setBio(value: string): UpdateAdminProfileRequest;
+
+  getPhone(): string;
+  setPhone(value: string): UpdateAdminProfileRequest;
 
   getProfilepicture(): Uint8Array | string;
   getProfilepicture_asU8(): Uint8Array;
   getProfilepicture_asB64(): string;
-  setProfilepicture(value: Uint8Array | string): UpdateUserProfileRequest;
+  setProfilepicture(value: Uint8Array | string): UpdateAdminProfileRequest;
 
-  getStudentdetails(): StudentDetails | undefined;
-  setStudentdetails(value?: StudentDetails): UpdateUserProfileRequest;
-  hasStudentdetails(): boolean;
-  clearStudentdetails(): UpdateUserProfileRequest;
-
-  getSchooldetails(): SchoolDetails | undefined;
-  setSchooldetails(value?: SchoolDetails): UpdateUserProfileRequest;
-  hasSchooldetails(): boolean;
-  clearSchooldetails(): UpdateUserProfileRequest;
-
-  getVolunteerdetails(): VolunteerDetails | undefined;
-  setVolunteerdetails(value?: VolunteerDetails): UpdateUserProfileRequest;
-  hasVolunteerdetails(): boolean;
-  clearVolunteerdetails(): UpdateUserProfileRequest;
-
-  getRoleSpecificDetailsCase(): UpdateUserProfileRequest.RoleSpecificDetailsCase;
+  getEmail(): string;
+  setEmail(value: string): UpdateAdminProfileRequest;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): UpdateUserProfileRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: UpdateUserProfileRequest): UpdateUserProfileRequest.AsObject;
-  static serializeBinaryToWriter(message: UpdateUserProfileRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): UpdateUserProfileRequest;
-  static deserializeBinaryFromReader(message: UpdateUserProfileRequest, reader: jspb.BinaryReader): UpdateUserProfileRequest;
+  toObject(includeInstance?: boolean): UpdateAdminProfileRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateAdminProfileRequest): UpdateAdminProfileRequest.AsObject;
+  static serializeBinaryToWriter(message: UpdateAdminProfileRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateAdminProfileRequest;
+  static deserializeBinaryFromReader(message: UpdateAdminProfileRequest, reader: jspb.BinaryReader): UpdateAdminProfileRequest;
 }
 
-export namespace UpdateUserProfileRequest {
+export namespace UpdateAdminProfileRequest {
   export type AsObject = {
     token: string,
     userid: number,
     name: string,
-    email: string,
     gender: string,
     address: string,
-    phone: string,
     bio: string,
+    phone: string,
     profilepicture: Uint8Array | string,
-    studentdetails?: StudentDetails.AsObject,
-    schooldetails?: SchoolDetails.AsObject,
-    volunteerdetails?: VolunteerDetails.AsObject,
-  }
-
-  export enum RoleSpecificDetailsCase { 
-    ROLE_SPECIFIC_DETAILS_NOT_SET = 0,
-    STUDENTDETAILS = 10,
-    SCHOOLDETAILS = 11,
-    VOLUNTEERDETAILS = 12,
+    email: string,
   }
 }
 
-export class UpdateUserProfileResponse extends jspb.Message {
+export class UpdateAdminProfileResponse extends jspb.Message {
   getSuccess(): boolean;
-  setSuccess(value: boolean): UpdateUserProfileResponse;
+  setSuccess(value: boolean): UpdateAdminProfileResponse;
 
   getMessage(): string;
-  setMessage(value: string): UpdateUserProfileResponse;
+  setMessage(value: string): UpdateAdminProfileResponse;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): UpdateUserProfileResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: UpdateUserProfileResponse): UpdateUserProfileResponse.AsObject;
-  static serializeBinaryToWriter(message: UpdateUserProfileResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): UpdateUserProfileResponse;
-  static deserializeBinaryFromReader(message: UpdateUserProfileResponse, reader: jspb.BinaryReader): UpdateUserProfileResponse;
+  toObject(includeInstance?: boolean): UpdateAdminProfileResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateAdminProfileResponse): UpdateAdminProfileResponse.AsObject;
+  static serializeBinaryToWriter(message: UpdateAdminProfileResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateAdminProfileResponse;
+  static deserializeBinaryFromReader(message: UpdateAdminProfileResponse, reader: jspb.BinaryReader): UpdateAdminProfileResponse;
 }
 
-export namespace UpdateUserProfileResponse {
+export namespace UpdateAdminProfileResponse {
+  export type AsObject = {
+    success: boolean,
+    message: string,
+  }
+}
+
+export class UpdateSchoolProfileRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): UpdateSchoolProfileRequest;
+
+  getUserid(): number;
+  setUserid(value: number): UpdateSchoolProfileRequest;
+
+  getContactpersonname(): string;
+  setContactpersonname(value: string): UpdateSchoolProfileRequest;
+
+  getGender(): string;
+  setGender(value: string): UpdateSchoolProfileRequest;
+
+  getAddress(): string;
+  setAddress(value: string): UpdateSchoolProfileRequest;
+
+  getSchoolname(): string;
+  setSchoolname(value: string): UpdateSchoolProfileRequest;
+
+  getSchoolemail(): string;
+  setSchoolemail(value: string): UpdateSchoolProfileRequest;
+
+  getSchooltype(): string;
+  setSchooltype(value: string): UpdateSchoolProfileRequest;
+
+  getContactemail(): string;
+  setContactemail(value: string): UpdateSchoolProfileRequest;
+
+  getContactpersonnationalid(): string;
+  setContactpersonnationalid(value: string): UpdateSchoolProfileRequest;
+
+  getPhone(): string;
+  setPhone(value: string): UpdateSchoolProfileRequest;
+
+  getProfilepicture(): Uint8Array | string;
+  getProfilepicture_asU8(): Uint8Array;
+  getProfilepicture_asB64(): string;
+  setProfilepicture(value: Uint8Array | string): UpdateSchoolProfileRequest;
+
+  getBio(): string;
+  setBio(value: string): UpdateSchoolProfileRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateSchoolProfileRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateSchoolProfileRequest): UpdateSchoolProfileRequest.AsObject;
+  static serializeBinaryToWriter(message: UpdateSchoolProfileRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateSchoolProfileRequest;
+  static deserializeBinaryFromReader(message: UpdateSchoolProfileRequest, reader: jspb.BinaryReader): UpdateSchoolProfileRequest;
+}
+
+export namespace UpdateSchoolProfileRequest {
+  export type AsObject = {
+    token: string,
+    userid: number,
+    contactpersonname: string,
+    gender: string,
+    address: string,
+    schoolname: string,
+    schoolemail: string,
+    schooltype: string,
+    contactemail: string,
+    contactpersonnationalid: string,
+    phone: string,
+    profilepicture: Uint8Array | string,
+    bio: string,
+  }
+}
+
+export class UpdateSchoolProfileResponse extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): UpdateSchoolProfileResponse;
+
+  getMessage(): string;
+  setMessage(value: string): UpdateSchoolProfileResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateSchoolProfileResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateSchoolProfileResponse): UpdateSchoolProfileResponse.AsObject;
+  static serializeBinaryToWriter(message: UpdateSchoolProfileResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateSchoolProfileResponse;
+  static deserializeBinaryFromReader(message: UpdateSchoolProfileResponse, reader: jspb.BinaryReader): UpdateSchoolProfileResponse;
+}
+
+export namespace UpdateSchoolProfileResponse {
+  export type AsObject = {
+    success: boolean,
+    message: string,
+  }
+}
+
+export class UpdateStudentProfileRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): UpdateStudentProfileRequest;
+
+  getUserid(): number;
+  setUserid(value: number): UpdateStudentProfileRequest;
+
+  getFirstname(): string;
+  setFirstname(value: string): UpdateStudentProfileRequest;
+
+  getLastname(): string;
+  setLastname(value: string): UpdateStudentProfileRequest;
+
+  getGender(): string;
+  setGender(value: string): UpdateStudentProfileRequest;
+
+  getEmail(): string;
+  setEmail(value: string): UpdateStudentProfileRequest;
+
+  getGrade(): string;
+  setGrade(value: string): UpdateStudentProfileRequest;
+
+  getDateofbirth(): string;
+  setDateofbirth(value: string): UpdateStudentProfileRequest;
+
+  getAddress(): string;
+  setAddress(value: string): UpdateStudentProfileRequest;
+
+  getBio(): string;
+  setBio(value: string): UpdateStudentProfileRequest;
+
+  getProfilepicture(): Uint8Array | string;
+  getProfilepicture_asU8(): Uint8Array;
+  getProfilepicture_asB64(): string;
+  setProfilepicture(value: Uint8Array | string): UpdateStudentProfileRequest;
+
+  getPhone(): string;
+  setPhone(value: string): UpdateStudentProfileRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateStudentProfileRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateStudentProfileRequest): UpdateStudentProfileRequest.AsObject;
+  static serializeBinaryToWriter(message: UpdateStudentProfileRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateStudentProfileRequest;
+  static deserializeBinaryFromReader(message: UpdateStudentProfileRequest, reader: jspb.BinaryReader): UpdateStudentProfileRequest;
+}
+
+export namespace UpdateStudentProfileRequest {
+  export type AsObject = {
+    token: string,
+    userid: number,
+    firstname: string,
+    lastname: string,
+    gender: string,
+    email: string,
+    grade: string,
+    dateofbirth: string,
+    address: string,
+    bio: string,
+    profilepicture: Uint8Array | string,
+    phone: string,
+  }
+}
+
+export class UpdateStudentProfileResponse extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): UpdateStudentProfileResponse;
+
+  getMessage(): string;
+  setMessage(value: string): UpdateStudentProfileResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateStudentProfileResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateStudentProfileResponse): UpdateStudentProfileResponse.AsObject;
+  static serializeBinaryToWriter(message: UpdateStudentProfileResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateStudentProfileResponse;
+  static deserializeBinaryFromReader(message: UpdateStudentProfileResponse, reader: jspb.BinaryReader): UpdateStudentProfileResponse;
+}
+
+export namespace UpdateStudentProfileResponse {
+  export type AsObject = {
+    success: boolean,
+    message: string,
+  }
+}
+
+export class UpdateVolunteerProfileRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): UpdateVolunteerProfileRequest;
+
+  getUserid(): number;
+  setUserid(value: number): UpdateVolunteerProfileRequest;
+
+  getFirstname(): string;
+  setFirstname(value: string): UpdateVolunteerProfileRequest;
+
+  getLastname(): string;
+  setLastname(value: string): UpdateVolunteerProfileRequest;
+
+  getGender(): string;
+  setGender(value: string): UpdateVolunteerProfileRequest;
+
+  getEmail(): string;
+  setEmail(value: string): UpdateVolunteerProfileRequest;
+
+  getNationalid(): string;
+  setNationalid(value: string): UpdateVolunteerProfileRequest;
+
+  getGraduateyear(): number;
+  setGraduateyear(value: number): UpdateVolunteerProfileRequest;
+
+  getIsenrolledinuniversity(): boolean;
+  setIsenrolledinuniversity(value: boolean): UpdateVolunteerProfileRequest;
+
+  getHasinternship(): boolean;
+  setHasinternship(value: boolean): UpdateVolunteerProfileRequest;
+
+  getAddress(): string;
+  setAddress(value: string): UpdateVolunteerProfileRequest;
+
+  getBio(): string;
+  setBio(value: string): UpdateVolunteerProfileRequest;
+
+  getProfilepicture(): Uint8Array | string;
+  getProfilepicture_asU8(): Uint8Array;
+  getProfilepicture_asB64(): string;
+  setProfilepicture(value: Uint8Array | string): UpdateVolunteerProfileRequest;
+
+  getRole(): string;
+  setRole(value: string): UpdateVolunteerProfileRequest;
+
+  getPhone(): string;
+  setPhone(value: string): UpdateVolunteerProfileRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateVolunteerProfileRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateVolunteerProfileRequest): UpdateVolunteerProfileRequest.AsObject;
+  static serializeBinaryToWriter(message: UpdateVolunteerProfileRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateVolunteerProfileRequest;
+  static deserializeBinaryFromReader(message: UpdateVolunteerProfileRequest, reader: jspb.BinaryReader): UpdateVolunteerProfileRequest;
+}
+
+export namespace UpdateVolunteerProfileRequest {
+  export type AsObject = {
+    token: string,
+    userid: number,
+    firstname: string,
+    lastname: string,
+    gender: string,
+    email: string,
+    nationalid: string,
+    graduateyear: number,
+    isenrolledinuniversity: boolean,
+    hasinternship: boolean,
+    address: string,
+    bio: string,
+    profilepicture: Uint8Array | string,
+    role: string,
+    phone: string,
+  }
+}
+
+export class UpdateVolunteerProfileResponse extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): UpdateVolunteerProfileResponse;
+
+  getMessage(): string;
+  setMessage(value: string): UpdateVolunteerProfileResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateVolunteerProfileResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateVolunteerProfileResponse): UpdateVolunteerProfileResponse.AsObject;
+  static serializeBinaryToWriter(message: UpdateVolunteerProfileResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateVolunteerProfileResponse;
+  static deserializeBinaryFromReader(message: UpdateVolunteerProfileResponse, reader: jspb.BinaryReader): UpdateVolunteerProfileResponse;
+}
+
+export namespace UpdateVolunteerProfileResponse {
   export type AsObject = {
     success: boolean,
     message: string,

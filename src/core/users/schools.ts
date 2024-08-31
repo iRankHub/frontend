@@ -24,7 +24,6 @@ export const getSchools = ({
 
     userClient.getSchools(request, {}, (err, response) => {
       if (err) {
-        console.log(err);
         reject(err);
       } else {
         console.log(err);
@@ -45,7 +44,6 @@ export const getSchoolsNoAuth = ({
 
     userClient.getSchoolsNoAuth(request, {}, (err, response) => {
       if (err) {
-        console.log(err);
         reject(err);
       } else {
         console.log(err);

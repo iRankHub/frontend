@@ -4,6 +4,14 @@ import Image from "next/image";
 import LoginForm from "../_form/login-form";
 import { useState } from "react";
 import LoginFormEmail from "../_form/login-form-email";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Card, CardContent } from "@/components/ui/card";
 
 function Login() {
   const [isUsingEmail, setIsUsingEmail] = useState(false);
@@ -33,11 +41,58 @@ function Login() {
           </span>
         </div>
       </div>
-      <div className="flex justify-end">
-        <div className="relative max-w-3xl w-full h-full rounded-md">
-          <Image src="/static/images/Login-Art.png" alt="Login Art" fill />
-        </div>
-      </div>
+      <Carousel>
+        <CarouselContent>
+          <CarouselItem className="w-full">
+            <Card className="border-transparent">
+              <CardContent className="flex aspect-square items-center justify-center p-6 relative w-full h-full rounded-md overflow-hidden">
+                <Image
+                  src="/static/images/volunteers/signup-step-5.jpg"
+                  alt="Login Art"
+                  fill
+                  className="object-cover"
+                />
+              </CardContent>
+            </Card>
+          </CarouselItem>
+          <CarouselItem>
+            <Card className="border-transparent">
+              <CardContent className="flex aspect-square items-center justify-center p-6 relative w-full h-full rounded-md overflow-hidden">
+                <Image
+                  src="/static/images/volunteers/signup-step-6.jpg"
+                  alt="Login Art"
+                  fill
+                  className="object-cover"
+                />
+              </CardContent>
+            </Card>
+          </CarouselItem>
+          <CarouselItem>
+            <Card className="border-transparent">
+              <CardContent className="flex aspect-square items-center justify-center p-6 relative w-full h-full rounded-md overflow-hidden">
+                <Image
+                  src="/static/images/volunteers/signup-step-7.jpg"
+                  alt="Login Art"
+                  fill
+                  className="object-cover"
+                />
+              </CardContent>
+            </Card>
+          </CarouselItem>
+          <CarouselItem>
+            <Card className="border-transparent">
+              <CardContent className="flex aspect-square items-center justify-center p-6 relative w-full h-full rounded-md overflow-hidden">
+                <Image
+                  src="/static/images/volunteers/signup-step-8.jpg"
+                  alt="Login Art"
+                  fill
+                  className="object-cover"
+                />
+              </CardContent>
+            </Card>
+          </CarouselItem>
+        </CarouselContent>
+      </Carousel>
     </div>
   );
 }

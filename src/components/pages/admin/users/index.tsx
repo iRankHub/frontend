@@ -22,7 +22,6 @@ function Users() {
     };
     getAllUsers({ ...options })
       .then((res) => {
-        console.log(res.usersList);
         setUsers(res.usersList);
       })
       .catch((err) => {

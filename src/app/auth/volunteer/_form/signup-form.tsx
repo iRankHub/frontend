@@ -102,7 +102,7 @@ const SignupForm = ({ activeStep, setActiveStep }: SignupFormProps) => {
       roleInterestedIn: "Mentor",
       hasInternship: true,
       isEnrolledInUniversity: true,
-      safeguardingCertificate: true,
+      safeguardingCertificate: "",
       gender: data.gender,
     })
       .then((res) => {
@@ -356,7 +356,7 @@ const SignupForm = ({ activeStep, setActiveStep }: SignupFormProps) => {
                     Already have an account?
                   </span>
                   <Link
-                    href="/auth/volunteer/signup"
+                    href="/auth/volunteer/login"
                     className="text-lg text-blue hover:underline"
                   >
                     Login
@@ -521,7 +521,7 @@ const SignupForm = ({ activeStep, setActiveStep }: SignupFormProps) => {
                     Already have an account?
                   </span>
                   <Link
-                    href="/auth/volunteer/signup"
+                    href="/auth/volunteer/login"
                     className="text-lg text-blue hover:underline"
                   >
                     Login
@@ -677,7 +677,7 @@ const SignupForm = ({ activeStep, setActiveStep }: SignupFormProps) => {
                     Already have an account?
                   </span>
                   <Link
-                    href="/auth/volunteer/signup"
+                    href="/auth/volunteer/login"
                     className="text-lg text-blue hover:underline"
                   >
                     Login

@@ -93,12 +93,13 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
       roleInterestedIn: "Mentor",
       hasInternship: false,
       isEnrolledInUniversity: data.enrolled === "yes",
-      safeguardingCertificate: false,
+      safeguardingCertificate: "",
       gender: data.gender,
       // schoolId: parseInt(data.secondary_school),
     })
       .then((res) => {
         form.reset();
+        setSheetOpen(false);
         toast({
           variant: "success",
           title: "Success",
@@ -274,8 +275,7 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
                       <SelectContent>
                         <SelectItem value="male">Male</SelectItem>
                         <SelectItem value="female">Female</SelectItem>
-                        <SelectItem value="they/them">Them / Them</SelectItem>
-                        <SelectItem value="none">Prefer not to say</SelectItem>
+                        <SelectItem value="non-binary">Prefer not to say</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

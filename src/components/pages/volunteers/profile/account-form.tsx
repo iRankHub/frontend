@@ -90,7 +90,7 @@ function AccountForm({ user }: AccountFormProps) {
       volunteerDetails: {
         hasinternship: data.hasInternship === "yes",
         role: String(user.volunteerdetails?.role),
-        safeguardcertificate: Boolean(user.volunteerdetails?.safeguardcertificate),
+        safeguardcertificate: user.volunteerdetails?.safeguardcertificate || "",
         graduateyear: Number(user.volunteerdetails?.graduateyear),
         isenrolledinuniversity: Boolean(user.volunteerdetails?.isenrolledinuniversity),
       },

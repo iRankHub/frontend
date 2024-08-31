@@ -27,10 +27,10 @@ function Page() {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink
-                href="/admin/dashboard"
+                href="/students/dashboard"
                 className="text-muted-foreground"
               >
-                Admin
+                Student
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator>

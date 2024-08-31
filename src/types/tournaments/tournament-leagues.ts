@@ -17,7 +17,10 @@ export interface UpdateTournamentLeague {
     league_id: number;
     name: string;
     league_type: LeagueType;
-    local_details: LocalDetails;
+    local_details: {
+        districtsList: string[];
+        provincesList: string[];
+    };
     token: string;
 }
 

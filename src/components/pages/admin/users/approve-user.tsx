@@ -30,7 +30,6 @@ export const ApproveUser = ({ userid }: ApproveUserProps) => {
       ...options,
     })
       .then((res) => {
-        console.log(res);
         if (res.success) {
           updateUserStatus(Number(userid), "approved");
           toast({

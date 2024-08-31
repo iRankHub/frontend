@@ -54,7 +54,7 @@ interface CreateUserProps {
 
 type Inputs = z.infer<typeof StudentSchema>;
 
-function CreateStudentAccount({ type }: CreateUserProps) {
+function CreateStudentAccount({ type, setSheetOpen }: CreateUserProps) {
   const [isPending, setIsPending] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState<Number>(0);
@@ -93,6 +93,7 @@ function CreateStudentAccount({ type }: CreateUserProps) {
     })
       .then((res) => {
         form.reset();
+        setSheetOpen(false);
         toast({
           variant: "success",
           title: "Success",

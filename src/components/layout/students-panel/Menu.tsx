@@ -106,12 +106,12 @@ export function Menu({ isOpen }: MenuProps) {
                     <span className={cn(isOpen === false ? "" : "mr-4")}>
                       <LogOut
                         size={18}
-                        className={cn("group-hover:text-primary")}
+                        className={cn("group-hover:text-primary text-foreground dark:text-background")}
                       />
                     </span>
                     <p
                       className={cn(
-                        "whitespace-nowrap",
+                        "whitespace-nowrap text-foreground dark:text-background",
                         isOpen === false ? "opacity-0 hidden" : "opacity-100",
                         "group-hover:text-primary"
                       )}

@@ -4,8 +4,8 @@ import Image from "next/image";
 import { Rubik } from "next/font/google";
 import { cn } from "@/lib/utils";
 import ResetPasswordForm from "./_form/reset-password-form";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Suspense } from "react";
+import { Icons } from "@/components/icons";
 
 const rubik = Rubik({
   weight: "500",
@@ -13,29 +13,6 @@ const rubik = Rubik({
 });
 
 function Reset() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  const token = searchParams.get("token");
-
-  if (!token) {
-    return (
-      <div className="w-full min-h-screen flex flex-col items-center justify-center px-10">
-        <h3 className="text-3xl font-semibold text-foreground">Token Invalid.</h3>
-        <p className="text-darkBlue text-lg my-3">
-          The token provided is invalid or has expired. Please request a new
-          one.
-        </p>
-        <Button
-          variant="default"
-          onClick={() => router.push("/auth/volunteer/forgot")}
-
-        >
-          Request New Token
-        </Button>
-      </div>
-    );
-  }
   return (
     <div className="grid grid-cols-2 gap-5 p-5 px-10 min-h-screen">
       <div className="max-w-md mx-auto w-full flex flex-col">
@@ -51,7 +28,9 @@ function Reset() {
           </p>
         </div>
 
-        <ResetPasswordForm token={token} />
+        <Suspense fallback={<Fallback />}>
+          <ResetPasswordForm />
+        </Suspense>
         <div className="mt-auto w-full text-center">
           <span className="text-base text-darkBlue uppercase text-center">
             © 2024 ALL RIGHTS RESERVED
@@ -66,5 +45,13 @@ function Reset() {
     </div>
   );
 }
+
+const Fallback = () => {
+  return (
+    <div className="flex items-center justify-center w-full h-full">
+      <Icons.spinner className="h-12 w-12 animate-spin" />
+    </div>
+  );
+};
 
 export default Reset;

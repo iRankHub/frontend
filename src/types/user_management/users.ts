@@ -52,7 +52,7 @@ export interface StudentDetailsType {
 export interface VolunteerDetailsType {
     role: string;
     graduateyear: number;
-    safeguardcertificate: boolean;
+    safeguardcertificate: string | Uint8Array;
     hasinternship: boolean;
     isenrolledinuniversity: boolean;
 }

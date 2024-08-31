@@ -136,7 +136,7 @@ function TournamentCard({ setTournaments, tournament }: TournamentCardProps) {
               >
                 <Link
                   className="no-underline"
-                  href={`/schools/tournaments/${tournament.tournamentId}`}
+                  href={`/students/tournaments/${tournament.tournamentId}`}
                 >
                   Go To Tournament
                 </Link>

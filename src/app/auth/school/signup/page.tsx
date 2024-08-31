@@ -7,8 +7,12 @@ function Signup() {
   return (
     <div className="grid grid-cols-2 gap-5 p-5 px-10 min-h-screen">
       <div className="flex justify-start">
-        <div className="relative w-full h-full rounded-md">
-          <Image src="/static/images/schools/schools.png" alt="Login Art" fill className="object-contain" />
+        <div className="relative max-w-3xl w-full h-full rounded-md overflow-hidden">
+          <Image
+            src="/static/images/schools/school-signup.png"
+            alt="Login Art"
+            fill
+          />
         </div>
       </div>
       <div className="max-w-md mx-auto w-full flex flex-col items-center">

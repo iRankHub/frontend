@@ -10,7 +10,7 @@ const rubik = Rubik({
   subsets: ["latin"],
 });
 
-function ForgotPassword() {
+function TwoFactor() {
   return (
     <div className="grid grid-cols-2 gap-5 p-5 px-10 min-h-screen">
       <div className="max-w-md mx-auto w-full flex flex-col">
@@ -42,4 +42,4 @@ function ForgotPassword() {
   );
 }
 
-export default ForgotPassword;
+export default TwoFactor;

@@ -48,10 +48,17 @@ export const columns: ColumnDef<UserSummary.AsObject>[] = [
   },
   {
     accessorKey: "userid",
+    enableSorting: false,
+    enableHiding: false,
+    header: () => null,
+    cell: () => null,
+  },
+  {
+    accessorKey: "idebateid",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="IDebate ID" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("userid")}</div>,
+    cell: ({ row }) => <div className="w-[80px]">{row.getValue("idebateid")}</div>,
     enableSorting: false,
     enableHiding: false,
   },
@@ -128,7 +135,7 @@ export const columns: ColumnDef<UserSummary.AsObject>[] = [
           variant = "secondary";
       }
       return (
-        <div className="w-full pr-10 text-center">
+        <div className="w-full pr-5 text-center">
           <Badge
             variant="default"
             className={`bg-${variant} hover:bg-${variant}`}

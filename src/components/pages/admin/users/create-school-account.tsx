@@ -81,6 +81,8 @@ function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
       schoolType: data.type,
     })
       .then((res) => {
+        form.reset();
+        setSheetOpen(false);
         toast({
           variant: "success",
           title: "Success",
@@ -91,7 +93,6 @@ function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
             </ToastAction>
           ),
         });
-        form.reset();
       })
       .catch((err) => {
         console.error(err.message);

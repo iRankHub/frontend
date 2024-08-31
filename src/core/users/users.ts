@@ -7,6 +7,8 @@ import {
     DeactivateAccountResponse,
     GetAllUsersRequest,
     GetAllUsersResponse,
+    GetStudentsRequest,
+    GetStudentsResponse,
     GetUserProfileRequest,
     GetUserProfileResponse,
     GetVolunteersAndAdminsRequest,
@@ -97,6 +99,27 @@ export const getAllUsers = async ({
         });
     });
 };
+
+export const getStudents = async ({
+    token,
+    page,
+    pageSize,
+}: GetAllUsers): Promise<GetStudentsResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new GetStudentsRequest();
+        request.setToken(token);
+        request.setPage(page);
+        request.setPagesize(pageSize);
+
+        userClient.getStudents(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
 
 export const getVolunteersAndAdmins = async ({
     token,
@@ -194,11 +217,6 @@ export const updateUserProfile = async ({
         request.setPhone(phone || "");
         request.setBio(bio || "");
         request.setProfilepicture(profilePicture || "");
-
-        // if password is provided, set it in the request
-        if (password) {
-            request.setPassword(password);
-        }
 
         switch (role) {
             case "school":

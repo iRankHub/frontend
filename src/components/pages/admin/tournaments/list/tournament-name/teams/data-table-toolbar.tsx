@@ -1,12 +1,17 @@
 "use client";
 
 import { Icons } from "@/components/icons";
+import SidePanel, {
+  Panelheader,
+} from "@/components/layout/admin-panel/side-panel";
 import { DataTableFacetedFilter } from "@/components/tables/data-table-faceted-filter";
 import { priorities, statuses, teams } from "@/components/tables/data/data";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
+import AddTeamForm from "./add-team-form";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -46,7 +51,23 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <div className="mx-5">
+      <div className="mx-5 flex items-center gap-5">
+        <Sheet>
+          <SheetTrigger>
+            <Button
+              type="button"
+              className="border border-dashed border-white text-white gap-2 text-sm font-bold h-8 hover:bg-white hover:text-foreground group"
+            >
+              <Icons.fileUp className="text-white w-3.5 h-3.5 group-hover:text-foreground" />
+              Add Team
+              <span className="sr-only">Add Team</span>
+            </Button>
+          </SheetTrigger>
+          <SidePanel>
+            <Panelheader>Add Team</Panelheader>
+            <AddTeamForm />
+          </SidePanel>
+        </Sheet>
         <Button
           type="button"
           className="border border-dashed border-white text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground group"

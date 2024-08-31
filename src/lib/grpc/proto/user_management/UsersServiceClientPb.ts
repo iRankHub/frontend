@@ -340,47 +340,176 @@ export class UserManagementServiceClient {
     this.methodDescriptorGetUserProfile);
   }
 
-  methodDescriptorUpdateUserProfile = new grpcWeb.MethodDescriptor(
-    '/user_management.UserManagementService/UpdateUserProfile',
+  methodDescriptorUpdateAdminProfile = new grpcWeb.MethodDescriptor(
+    '/user_management.UserManagementService/UpdateAdminProfile',
     grpcWeb.MethodType.UNARY,
-    user_management_users_pb.UpdateUserProfileRequest,
-    user_management_users_pb.UpdateUserProfileResponse,
-    (request: user_management_users_pb.UpdateUserProfileRequest) => {
+    user_management_users_pb.UpdateAdminProfileRequest,
+    user_management_users_pb.UpdateAdminProfileResponse,
+    (request: user_management_users_pb.UpdateAdminProfileRequest) => {
       return request.serializeBinary();
     },
-    user_management_users_pb.UpdateUserProfileResponse.deserializeBinary
+    user_management_users_pb.UpdateAdminProfileResponse.deserializeBinary
   );
 
-  updateUserProfile(
-    request: user_management_users_pb.UpdateUserProfileRequest,
-    metadata?: grpcWeb.Metadata | null): Promise<user_management_users_pb.UpdateUserProfileResponse>;
+  updateAdminProfile(
+    request: user_management_users_pb.UpdateAdminProfileRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<user_management_users_pb.UpdateAdminProfileResponse>;
 
-  updateUserProfile(
-    request: user_management_users_pb.UpdateUserProfileRequest,
+  updateAdminProfile(
+    request: user_management_users_pb.UpdateAdminProfileRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.RpcError,
-               response: user_management_users_pb.UpdateUserProfileResponse) => void): grpcWeb.ClientReadableStream<user_management_users_pb.UpdateUserProfileResponse>;
+               response: user_management_users_pb.UpdateAdminProfileResponse) => void): grpcWeb.ClientReadableStream<user_management_users_pb.UpdateAdminProfileResponse>;
 
-  updateUserProfile(
-    request: user_management_users_pb.UpdateUserProfileRequest,
+  updateAdminProfile(
+    request: user_management_users_pb.UpdateAdminProfileRequest,
     metadata?: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.RpcError,
-               response: user_management_users_pb.UpdateUserProfileResponse) => void) {
+               response: user_management_users_pb.UpdateAdminProfileResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/user_management.UserManagementService/UpdateUserProfile',
+          '/user_management.UserManagementService/UpdateAdminProfile',
         request,
         metadata || {},
-        this.methodDescriptorUpdateUserProfile,
+        this.methodDescriptorUpdateAdminProfile,
         callback);
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/user_management.UserManagementService/UpdateUserProfile',
+      '/user_management.UserManagementService/UpdateAdminProfile',
     request,
     metadata || {},
-    this.methodDescriptorUpdateUserProfile);
+    this.methodDescriptorUpdateAdminProfile);
+  }
+
+  methodDescriptorUpdateSchoolProfile = new grpcWeb.MethodDescriptor(
+    '/user_management.UserManagementService/UpdateSchoolProfile',
+    grpcWeb.MethodType.UNARY,
+    user_management_users_pb.UpdateSchoolProfileRequest,
+    user_management_users_pb.UpdateSchoolProfileResponse,
+    (request: user_management_users_pb.UpdateSchoolProfileRequest) => {
+      return request.serializeBinary();
+    },
+    user_management_users_pb.UpdateSchoolProfileResponse.deserializeBinary
+  );
+
+  updateSchoolProfile(
+    request: user_management_users_pb.UpdateSchoolProfileRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<user_management_users_pb.UpdateSchoolProfileResponse>;
+
+  updateSchoolProfile(
+    request: user_management_users_pb.UpdateSchoolProfileRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.UpdateSchoolProfileResponse) => void): grpcWeb.ClientReadableStream<user_management_users_pb.UpdateSchoolProfileResponse>;
+
+  updateSchoolProfile(
+    request: user_management_users_pb.UpdateSchoolProfileRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.UpdateSchoolProfileResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/user_management.UserManagementService/UpdateSchoolProfile',
+        request,
+        metadata || {},
+        this.methodDescriptorUpdateSchoolProfile,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/user_management.UserManagementService/UpdateSchoolProfile',
+    request,
+    metadata || {},
+    this.methodDescriptorUpdateSchoolProfile);
+  }
+
+  methodDescriptorUpdateStudentProfile = new grpcWeb.MethodDescriptor(
+    '/user_management.UserManagementService/UpdateStudentProfile',
+    grpcWeb.MethodType.UNARY,
+    user_management_users_pb.UpdateStudentProfileRequest,
+    user_management_users_pb.UpdateStudentProfileResponse,
+    (request: user_management_users_pb.UpdateStudentProfileRequest) => {
+      return request.serializeBinary();
+    },
+    user_management_users_pb.UpdateStudentProfileResponse.deserializeBinary
+  );
+
+  updateStudentProfile(
+    request: user_management_users_pb.UpdateStudentProfileRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<user_management_users_pb.UpdateStudentProfileResponse>;
+
+  updateStudentProfile(
+    request: user_management_users_pb.UpdateStudentProfileRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.UpdateStudentProfileResponse) => void): grpcWeb.ClientReadableStream<user_management_users_pb.UpdateStudentProfileResponse>;
+
+  updateStudentProfile(
+    request: user_management_users_pb.UpdateStudentProfileRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.UpdateStudentProfileResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/user_management.UserManagementService/UpdateStudentProfile',
+        request,
+        metadata || {},
+        this.methodDescriptorUpdateStudentProfile,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/user_management.UserManagementService/UpdateStudentProfile',
+    request,
+    metadata || {},
+    this.methodDescriptorUpdateStudentProfile);
+  }
+
+  methodDescriptorUpdateVolunteerProfile = new grpcWeb.MethodDescriptor(
+    '/user_management.UserManagementService/UpdateVolunteerProfile',
+    grpcWeb.MethodType.UNARY,
+    user_management_users_pb.UpdateVolunteerProfileRequest,
+    user_management_users_pb.UpdateVolunteerProfileResponse,
+    (request: user_management_users_pb.UpdateVolunteerProfileRequest) => {
+      return request.serializeBinary();
+    },
+    user_management_users_pb.UpdateVolunteerProfileResponse.deserializeBinary
+  );
+
+  updateVolunteerProfile(
+    request: user_management_users_pb.UpdateVolunteerProfileRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<user_management_users_pb.UpdateVolunteerProfileResponse>;
+
+  updateVolunteerProfile(
+    request: user_management_users_pb.UpdateVolunteerProfileRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.UpdateVolunteerProfileResponse) => void): grpcWeb.ClientReadableStream<user_management_users_pb.UpdateVolunteerProfileResponse>;
+
+  updateVolunteerProfile(
+    request: user_management_users_pb.UpdateVolunteerProfileRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.UpdateVolunteerProfileResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/user_management.UserManagementService/UpdateVolunteerProfile',
+        request,
+        metadata || {},
+        this.methodDescriptorUpdateVolunteerProfile,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/user_management.UserManagementService/UpdateVolunteerProfile',
+    request,
+    metadata || {},
+    this.methodDescriptorUpdateVolunteerProfile);
   }
 
   methodDescriptorDeleteUserProfile = new grpcWeb.MethodDescriptor(

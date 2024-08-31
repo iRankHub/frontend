@@ -353,6 +353,7 @@ export namespace user_management {
             signUpDate?: string;
             gender?: string;
             status?: string;
+            idebateID?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -377,6 +378,9 @@ export namespace user_management {
                 }
                 if ("status" in data && data.status != undefined) {
                     this.status = data.status;
+                }
+                if ("idebateID" in data && data.idebateID != undefined) {
+                    this.idebateID = data.idebateID;
                 }
             }
         }
@@ -422,6 +426,12 @@ export namespace user_management {
         set status(value: string) {
             pb_1.Message.setField(this, 7, value);
         }
+        get idebateID() {
+            return pb_1.Message.getFieldWithDefault(this, 8, "") as string;
+        }
+        set idebateID(value: string) {
+            pb_1.Message.setField(this, 8, value);
+        }
         static fromObject(data: {
             userID?: number;
             name?: string;
@@ -430,6 +440,7 @@ export namespace user_management {
             signUpDate?: string;
             gender?: string;
             status?: string;
+            idebateID?: string;
         }): UserSummary {
             const message = new UserSummary({});
             if (data.userID != null) {
@@ -453,6 +464,9 @@ export namespace user_management {
             if (data.status != null) {
                 message.status = data.status;
             }
+            if (data.idebateID != null) {
+                message.idebateID = data.idebateID;
+            }
             return message;
         }
         toObject() {
@@ -464,6 +478,7 @@ export namespace user_management {
                 signUpDate?: string;
                 gender?: string;
                 status?: string;
+                idebateID?: string;
             } = {};
             if (this.userID != null) {
                 data.userID = this.userID;
@@ -486,6 +501,9 @@ export namespace user_management {
             if (this.status != null) {
                 data.status = this.status;
             }
+            if (this.idebateID != null) {
+                data.idebateID = this.idebateID;
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -506,6 +524,8 @@ export namespace user_management {
                 writer.writeString(6, this.gender);
             if (this.status.length)
                 writer.writeString(7, this.status);
+            if (this.idebateID.length)
+                writer.writeString(8, this.idebateID);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -535,6 +555,9 @@ export namespace user_management {
                         break;
                     case 7:
                         message.status = reader.readString();
+                        break;
+                    case 8:
+                        message.idebateID = reader.readString();
                         break;
                     default: reader.skipField();
                 }
@@ -2572,31 +2595,19 @@ export namespace user_management {
             return GetUserProfileResponse.deserialize(bytes);
         }
     }
-    export class UpdateUserProfileRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [[10, 11, 12]];
-        constructor(data?: any[] | ({
+    export class UpdateAdminProfileRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
             token?: string;
             userID?: number;
             name?: string;
-            email?: string;
             gender?: string;
             address?: string;
-            phone?: string;
             bio?: string;
+            phone?: string;
             profilePicture?: Uint8Array;
-        } & (({
-            studentDetails?: StudentDetails;
-            schoolDetails?: never;
-            volunteerDetails?: never;
-        } | {
-            studentDetails?: never;
-            schoolDetails?: SchoolDetails;
-            volunteerDetails?: never;
-        } | {
-            studentDetails?: never;
-            schoolDetails?: never;
-            volunteerDetails?: VolunteerDetails;
-        })))) {
+            email?: string;
+        }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
@@ -2609,32 +2620,23 @@ export namespace user_management {
                 if ("name" in data && data.name != undefined) {
                     this.name = data.name;
                 }
-                if ("email" in data && data.email != undefined) {
-                    this.email = data.email;
-                }
                 if ("gender" in data && data.gender != undefined) {
                     this.gender = data.gender;
                 }
                 if ("address" in data && data.address != undefined) {
                     this.address = data.address;
                 }
-                if ("phone" in data && data.phone != undefined) {
-                    this.phone = data.phone;
-                }
                 if ("bio" in data && data.bio != undefined) {
                     this.bio = data.bio;
+                }
+                if ("phone" in data && data.phone != undefined) {
+                    this.phone = data.phone;
                 }
                 if ("profilePicture" in data && data.profilePicture != undefined) {
                     this.profilePicture = data.profilePicture;
                 }
-                if ("studentDetails" in data && data.studentDetails != undefined) {
-                    this.studentDetails = data.studentDetails;
-                }
-                if ("schoolDetails" in data && data.schoolDetails != undefined) {
-                    this.schoolDetails = data.schoolDetails;
-                }
-                if ("volunteerDetails" in data && data.volunteerDetails != undefined) {
-                    this.volunteerDetails = data.volunteerDetails;
+                if ("email" in data && data.email != undefined) {
+                    this.email = data.email;
                 }
             }
         }
@@ -2656,22 +2658,22 @@ export namespace user_management {
         set name(value: string) {
             pb_1.Message.setField(this, 3, value);
         }
-        get email() {
+        get gender() {
             return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
         }
-        set email(value: string) {
+        set gender(value: string) {
             pb_1.Message.setField(this, 4, value);
         }
-        get gender() {
+        get address() {
             return pb_1.Message.getFieldWithDefault(this, 5, "") as string;
         }
-        set gender(value: string) {
+        set address(value: string) {
             pb_1.Message.setField(this, 5, value);
         }
-        get address() {
+        get bio() {
             return pb_1.Message.getFieldWithDefault(this, 6, "") as string;
         }
-        set address(value: string) {
+        set bio(value: string) {
             pb_1.Message.setField(this, 6, value);
         }
         get phone() {
@@ -2680,71 +2682,30 @@ export namespace user_management {
         set phone(value: string) {
             pb_1.Message.setField(this, 7, value);
         }
-        get bio() {
-            return pb_1.Message.getFieldWithDefault(this, 8, "") as string;
-        }
-        set bio(value: string) {
-            pb_1.Message.setField(this, 8, value);
-        }
         get profilePicture() {
-            return pb_1.Message.getFieldWithDefault(this, 9, new Uint8Array(0)) as Uint8Array;
+            return pb_1.Message.getFieldWithDefault(this, 8, new Uint8Array(0)) as Uint8Array;
         }
         set profilePicture(value: Uint8Array) {
+            pb_1.Message.setField(this, 8, value);
+        }
+        get email() {
+            return pb_1.Message.getFieldWithDefault(this, 9, "") as string;
+        }
+        set email(value: string) {
             pb_1.Message.setField(this, 9, value);
-        }
-        get studentDetails() {
-            return pb_1.Message.getWrapperField(this, StudentDetails, 10) as StudentDetails;
-        }
-        set studentDetails(value: StudentDetails) {
-            pb_1.Message.setOneofWrapperField(this, 10, this.#one_of_decls[0], value);
-        }
-        get has_studentDetails() {
-            return pb_1.Message.getField(this, 10) != null;
-        }
-        get schoolDetails() {
-            return pb_1.Message.getWrapperField(this, SchoolDetails, 11) as SchoolDetails;
-        }
-        set schoolDetails(value: SchoolDetails) {
-            pb_1.Message.setOneofWrapperField(this, 11, this.#one_of_decls[0], value);
-        }
-        get has_schoolDetails() {
-            return pb_1.Message.getField(this, 11) != null;
-        }
-        get volunteerDetails() {
-            return pb_1.Message.getWrapperField(this, VolunteerDetails, 12) as VolunteerDetails;
-        }
-        set volunteerDetails(value: VolunteerDetails) {
-            pb_1.Message.setOneofWrapperField(this, 12, this.#one_of_decls[0], value);
-        }
-        get has_volunteerDetails() {
-            return pb_1.Message.getField(this, 12) != null;
-        }
-        get role_specific_details() {
-            const cases: {
-                [index: number]: "none" | "studentDetails" | "schoolDetails" | "volunteerDetails";
-            } = {
-                0: "none",
-                10: "studentDetails",
-                11: "schoolDetails",
-                12: "volunteerDetails"
-            };
-            return cases[pb_1.Message.computeOneofCase(this, [10, 11, 12])];
         }
         static fromObject(data: {
             token?: string;
             userID?: number;
             name?: string;
-            email?: string;
             gender?: string;
             address?: string;
-            phone?: string;
             bio?: string;
+            phone?: string;
             profilePicture?: Uint8Array;
-            studentDetails?: ReturnType<typeof StudentDetails.prototype.toObject>;
-            schoolDetails?: ReturnType<typeof SchoolDetails.prototype.toObject>;
-            volunteerDetails?: ReturnType<typeof VolunteerDetails.prototype.toObject>;
-        }): UpdateUserProfileRequest {
-            const message = new UpdateUserProfileRequest({});
+            email?: string;
+        }): UpdateAdminProfileRequest {
+            const message = new UpdateAdminProfileRequest({});
             if (data.token != null) {
                 message.token = data.token;
             }
@@ -2754,32 +2715,23 @@ export namespace user_management {
             if (data.name != null) {
                 message.name = data.name;
             }
-            if (data.email != null) {
-                message.email = data.email;
-            }
             if (data.gender != null) {
                 message.gender = data.gender;
             }
             if (data.address != null) {
                 message.address = data.address;
             }
-            if (data.phone != null) {
-                message.phone = data.phone;
-            }
             if (data.bio != null) {
                 message.bio = data.bio;
+            }
+            if (data.phone != null) {
+                message.phone = data.phone;
             }
             if (data.profilePicture != null) {
                 message.profilePicture = data.profilePicture;
             }
-            if (data.studentDetails != null) {
-                message.studentDetails = StudentDetails.fromObject(data.studentDetails);
-            }
-            if (data.schoolDetails != null) {
-                message.schoolDetails = SchoolDetails.fromObject(data.schoolDetails);
-            }
-            if (data.volunteerDetails != null) {
-                message.volunteerDetails = VolunteerDetails.fromObject(data.volunteerDetails);
+            if (data.email != null) {
+                message.email = data.email;
             }
             return message;
         }
@@ -2788,15 +2740,12 @@ export namespace user_management {
                 token?: string;
                 userID?: number;
                 name?: string;
-                email?: string;
                 gender?: string;
                 address?: string;
-                phone?: string;
                 bio?: string;
+                phone?: string;
                 profilePicture?: Uint8Array;
-                studentDetails?: ReturnType<typeof StudentDetails.prototype.toObject>;
-                schoolDetails?: ReturnType<typeof SchoolDetails.prototype.toObject>;
-                volunteerDetails?: ReturnType<typeof VolunteerDetails.prototype.toObject>;
+                email?: string;
             } = {};
             if (this.token != null) {
                 data.token = this.token;
@@ -2807,32 +2756,23 @@ export namespace user_management {
             if (this.name != null) {
                 data.name = this.name;
             }
-            if (this.email != null) {
-                data.email = this.email;
-            }
             if (this.gender != null) {
                 data.gender = this.gender;
             }
             if (this.address != null) {
                 data.address = this.address;
             }
-            if (this.phone != null) {
-                data.phone = this.phone;
-            }
             if (this.bio != null) {
                 data.bio = this.bio;
+            }
+            if (this.phone != null) {
+                data.phone = this.phone;
             }
             if (this.profilePicture != null) {
                 data.profilePicture = this.profilePicture;
             }
-            if (this.studentDetails != null) {
-                data.studentDetails = this.studentDetails.toObject();
-            }
-            if (this.schoolDetails != null) {
-                data.schoolDetails = this.schoolDetails.toObject();
-            }
-            if (this.volunteerDetails != null) {
-                data.volunteerDetails = this.volunteerDetails.toObject();
+            if (this.email != null) {
+                data.email = this.email;
             }
             return data;
         }
@@ -2846,29 +2786,23 @@ export namespace user_management {
                 writer.writeInt32(2, this.userID);
             if (this.name.length)
                 writer.writeString(3, this.name);
-            if (this.email.length)
-                writer.writeString(4, this.email);
             if (this.gender.length)
-                writer.writeString(5, this.gender);
+                writer.writeString(4, this.gender);
             if (this.address.length)
-                writer.writeString(6, this.address);
+                writer.writeString(5, this.address);
+            if (this.bio.length)
+                writer.writeString(6, this.bio);
             if (this.phone.length)
                 writer.writeString(7, this.phone);
-            if (this.bio.length)
-                writer.writeString(8, this.bio);
             if (this.profilePicture.length)
-                writer.writeBytes(9, this.profilePicture);
-            if (this.has_studentDetails)
-                writer.writeMessage(10, this.studentDetails, () => this.studentDetails.serialize(writer));
-            if (this.has_schoolDetails)
-                writer.writeMessage(11, this.schoolDetails, () => this.schoolDetails.serialize(writer));
-            if (this.has_volunteerDetails)
-                writer.writeMessage(12, this.volunteerDetails, () => this.volunteerDetails.serialize(writer));
+                writer.writeBytes(8, this.profilePicture);
+            if (this.email.length)
+                writer.writeString(9, this.email);
             if (!w)
                 return writer.getResultBuffer();
         }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateUserProfileRequest {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateUserProfileRequest();
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateAdminProfileRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateAdminProfileRequest();
             while (reader.nextField()) {
                 if (reader.isEndGroup())
                     break;
@@ -2883,31 +2817,22 @@ export namespace user_management {
                         message.name = reader.readString();
                         break;
                     case 4:
-                        message.email = reader.readString();
-                        break;
-                    case 5:
                         message.gender = reader.readString();
                         break;
-                    case 6:
+                    case 5:
                         message.address = reader.readString();
+                        break;
+                    case 6:
+                        message.bio = reader.readString();
                         break;
                     case 7:
                         message.phone = reader.readString();
                         break;
                     case 8:
-                        message.bio = reader.readString();
-                        break;
-                    case 9:
                         message.profilePicture = reader.readBytes();
                         break;
-                    case 10:
-                        reader.readMessage(message.studentDetails, () => message.studentDetails = StudentDetails.deserialize(reader));
-                        break;
-                    case 11:
-                        reader.readMessage(message.schoolDetails, () => message.schoolDetails = SchoolDetails.deserialize(reader));
-                        break;
-                    case 12:
-                        reader.readMessage(message.volunteerDetails, () => message.volunteerDetails = VolunteerDetails.deserialize(reader));
+                    case 9:
+                        message.email = reader.readString();
                         break;
                     default: reader.skipField();
                 }
@@ -2917,11 +2842,11 @@ export namespace user_management {
         serializeBinary(): Uint8Array {
             return this.serialize();
         }
-        static deserializeBinary(bytes: Uint8Array): UpdateUserProfileRequest {
-            return UpdateUserProfileRequest.deserialize(bytes);
+        static deserializeBinary(bytes: Uint8Array): UpdateAdminProfileRequest {
+            return UpdateAdminProfileRequest.deserialize(bytes);
         }
     }
-    export class UpdateUserProfileResponse extends pb_1.Message {
+    export class UpdateAdminProfileResponse extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             success?: boolean;
@@ -2953,8 +2878,8 @@ export namespace user_management {
         static fromObject(data: {
             success?: boolean;
             message?: string;
-        }): UpdateUserProfileResponse {
-            const message = new UpdateUserProfileResponse({});
+        }): UpdateAdminProfileResponse {
+            const message = new UpdateAdminProfileResponse({});
             if (data.success != null) {
                 message.success = data.success;
             }
@@ -2987,8 +2912,8 @@ export namespace user_management {
             if (!w)
                 return writer.getResultBuffer();
         }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateUserProfileResponse {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateUserProfileResponse();
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateAdminProfileResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateAdminProfileResponse();
             while (reader.nextField()) {
                 if (reader.isEndGroup())
                     break;
@@ -3007,8 +2932,1330 @@ export namespace user_management {
         serializeBinary(): Uint8Array {
             return this.serialize();
         }
-        static deserializeBinary(bytes: Uint8Array): UpdateUserProfileResponse {
-            return UpdateUserProfileResponse.deserialize(bytes);
+        static deserializeBinary(bytes: Uint8Array): UpdateAdminProfileResponse {
+            return UpdateAdminProfileResponse.deserialize(bytes);
+        }
+    }
+    export class UpdateSchoolProfileRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            token?: string;
+            userID?: number;
+            contactPersonName?: string;
+            gender?: string;
+            address?: string;
+            schoolName?: string;
+            schoolEmail?: string;
+            schoolType?: string;
+            contactEmail?: string;
+            contactPersonNationalId?: string;
+            phone?: string;
+            profilePicture?: Uint8Array;
+            bio?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+                if ("userID" in data && data.userID != undefined) {
+                    this.userID = data.userID;
+                }
+                if ("contactPersonName" in data && data.contactPersonName != undefined) {
+                    this.contactPersonName = data.contactPersonName;
+                }
+                if ("gender" in data && data.gender != undefined) {
+                    this.gender = data.gender;
+                }
+                if ("address" in data && data.address != undefined) {
+                    this.address = data.address;
+                }
+                if ("schoolName" in data && data.schoolName != undefined) {
+                    this.schoolName = data.schoolName;
+                }
+                if ("schoolEmail" in data && data.schoolEmail != undefined) {
+                    this.schoolEmail = data.schoolEmail;
+                }
+                if ("schoolType" in data && data.schoolType != undefined) {
+                    this.schoolType = data.schoolType;
+                }
+                if ("contactEmail" in data && data.contactEmail != undefined) {
+                    this.contactEmail = data.contactEmail;
+                }
+                if ("contactPersonNationalId" in data && data.contactPersonNationalId != undefined) {
+                    this.contactPersonNationalId = data.contactPersonNationalId;
+                }
+                if ("phone" in data && data.phone != undefined) {
+                    this.phone = data.phone;
+                }
+                if ("profilePicture" in data && data.profilePicture != undefined) {
+                    this.profilePicture = data.profilePicture;
+                }
+                if ("bio" in data && data.bio != undefined) {
+                    this.bio = data.bio;
+                }
+            }
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get userID() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set userID(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get contactPersonName() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set contactPersonName(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get gender() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set gender(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get address() {
+            return pb_1.Message.getFieldWithDefault(this, 5, "") as string;
+        }
+        set address(value: string) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        get schoolName() {
+            return pb_1.Message.getFieldWithDefault(this, 6, "") as string;
+        }
+        set schoolName(value: string) {
+            pb_1.Message.setField(this, 6, value);
+        }
+        get schoolEmail() {
+            return pb_1.Message.getFieldWithDefault(this, 7, "") as string;
+        }
+        set schoolEmail(value: string) {
+            pb_1.Message.setField(this, 7, value);
+        }
+        get schoolType() {
+            return pb_1.Message.getFieldWithDefault(this, 8, "") as string;
+        }
+        set schoolType(value: string) {
+            pb_1.Message.setField(this, 8, value);
+        }
+        get contactEmail() {
+            return pb_1.Message.getFieldWithDefault(this, 9, "") as string;
+        }
+        set contactEmail(value: string) {
+            pb_1.Message.setField(this, 9, value);
+        }
+        get contactPersonNationalId() {
+            return pb_1.Message.getFieldWithDefault(this, 10, "") as string;
+        }
+        set contactPersonNationalId(value: string) {
+            pb_1.Message.setField(this, 10, value);
+        }
+        get phone() {
+            return pb_1.Message.getFieldWithDefault(this, 11, "") as string;
+        }
+        set phone(value: string) {
+            pb_1.Message.setField(this, 11, value);
+        }
+        get profilePicture() {
+            return pb_1.Message.getFieldWithDefault(this, 12, new Uint8Array(0)) as Uint8Array;
+        }
+        set profilePicture(value: Uint8Array) {
+            pb_1.Message.setField(this, 12, value);
+        }
+        get bio() {
+            return pb_1.Message.getFieldWithDefault(this, 13, "") as string;
+        }
+        set bio(value: string) {
+            pb_1.Message.setField(this, 13, value);
+        }
+        static fromObject(data: {
+            token?: string;
+            userID?: number;
+            contactPersonName?: string;
+            gender?: string;
+            address?: string;
+            schoolName?: string;
+            schoolEmail?: string;
+            schoolType?: string;
+            contactEmail?: string;
+            contactPersonNationalId?: string;
+            phone?: string;
+            profilePicture?: Uint8Array;
+            bio?: string;
+        }): UpdateSchoolProfileRequest {
+            const message = new UpdateSchoolProfileRequest({});
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            if (data.userID != null) {
+                message.userID = data.userID;
+            }
+            if (data.contactPersonName != null) {
+                message.contactPersonName = data.contactPersonName;
+            }
+            if (data.gender != null) {
+                message.gender = data.gender;
+            }
+            if (data.address != null) {
+                message.address = data.address;
+            }
+            if (data.schoolName != null) {
+                message.schoolName = data.schoolName;
+            }
+            if (data.schoolEmail != null) {
+                message.schoolEmail = data.schoolEmail;
+            }
+            if (data.schoolType != null) {
+                message.schoolType = data.schoolType;
+            }
+            if (data.contactEmail != null) {
+                message.contactEmail = data.contactEmail;
+            }
+            if (data.contactPersonNationalId != null) {
+                message.contactPersonNationalId = data.contactPersonNationalId;
+            }
+            if (data.phone != null) {
+                message.phone = data.phone;
+            }
+            if (data.profilePicture != null) {
+                message.profilePicture = data.profilePicture;
+            }
+            if (data.bio != null) {
+                message.bio = data.bio;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                token?: string;
+                userID?: number;
+                contactPersonName?: string;
+                gender?: string;
+                address?: string;
+                schoolName?: string;
+                schoolEmail?: string;
+                schoolType?: string;
+                contactEmail?: string;
+                contactPersonNationalId?: string;
+                phone?: string;
+                profilePicture?: Uint8Array;
+                bio?: string;
+            } = {};
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            if (this.userID != null) {
+                data.userID = this.userID;
+            }
+            if (this.contactPersonName != null) {
+                data.contactPersonName = this.contactPersonName;
+            }
+            if (this.gender != null) {
+                data.gender = this.gender;
+            }
+            if (this.address != null) {
+                data.address = this.address;
+            }
+            if (this.schoolName != null) {
+                data.schoolName = this.schoolName;
+            }
+            if (this.schoolEmail != null) {
+                data.schoolEmail = this.schoolEmail;
+            }
+            if (this.schoolType != null) {
+                data.schoolType = this.schoolType;
+            }
+            if (this.contactEmail != null) {
+                data.contactEmail = this.contactEmail;
+            }
+            if (this.contactPersonNationalId != null) {
+                data.contactPersonNationalId = this.contactPersonNationalId;
+            }
+            if (this.phone != null) {
+                data.phone = this.phone;
+            }
+            if (this.profilePicture != null) {
+                data.profilePicture = this.profilePicture;
+            }
+            if (this.bio != null) {
+                data.bio = this.bio;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.token.length)
+                writer.writeString(1, this.token);
+            if (this.userID != 0)
+                writer.writeInt32(2, this.userID);
+            if (this.contactPersonName.length)
+                writer.writeString(3, this.contactPersonName);
+            if (this.gender.length)
+                writer.writeString(4, this.gender);
+            if (this.address.length)
+                writer.writeString(5, this.address);
+            if (this.schoolName.length)
+                writer.writeString(6, this.schoolName);
+            if (this.schoolEmail.length)
+                writer.writeString(7, this.schoolEmail);
+            if (this.schoolType.length)
+                writer.writeString(8, this.schoolType);
+            if (this.contactEmail.length)
+                writer.writeString(9, this.contactEmail);
+            if (this.contactPersonNationalId.length)
+                writer.writeString(10, this.contactPersonNationalId);
+            if (this.phone.length)
+                writer.writeString(11, this.phone);
+            if (this.profilePicture.length)
+                writer.writeBytes(12, this.profilePicture);
+            if (this.bio.length)
+                writer.writeString(13, this.bio);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateSchoolProfileRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateSchoolProfileRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.token = reader.readString();
+                        break;
+                    case 2:
+                        message.userID = reader.readInt32();
+                        break;
+                    case 3:
+                        message.contactPersonName = reader.readString();
+                        break;
+                    case 4:
+                        message.gender = reader.readString();
+                        break;
+                    case 5:
+                        message.address = reader.readString();
+                        break;
+                    case 6:
+                        message.schoolName = reader.readString();
+                        break;
+                    case 7:
+                        message.schoolEmail = reader.readString();
+                        break;
+                    case 8:
+                        message.schoolType = reader.readString();
+                        break;
+                    case 9:
+                        message.contactEmail = reader.readString();
+                        break;
+                    case 10:
+                        message.contactPersonNationalId = reader.readString();
+                        break;
+                    case 11:
+                        message.phone = reader.readString();
+                        break;
+                    case 12:
+                        message.profilePicture = reader.readBytes();
+                        break;
+                    case 13:
+                        message.bio = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): UpdateSchoolProfileRequest {
+            return UpdateSchoolProfileRequest.deserialize(bytes);
+        }
+    }
+    export class UpdateSchoolProfileResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            success?: boolean;
+            message?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("success" in data && data.success != undefined) {
+                    this.success = data.success;
+                }
+                if ("message" in data && data.message != undefined) {
+                    this.message = data.message;
+                }
+            }
+        }
+        get success() {
+            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
+        }
+        set success(value: boolean) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get message() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set message(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            success?: boolean;
+            message?: string;
+        }): UpdateSchoolProfileResponse {
+            const message = new UpdateSchoolProfileResponse({});
+            if (data.success != null) {
+                message.success = data.success;
+            }
+            if (data.message != null) {
+                message.message = data.message;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                success?: boolean;
+                message?: string;
+            } = {};
+            if (this.success != null) {
+                data.success = this.success;
+            }
+            if (this.message != null) {
+                data.message = this.message;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.success != false)
+                writer.writeBool(1, this.success);
+            if (this.message.length)
+                writer.writeString(2, this.message);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateSchoolProfileResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateSchoolProfileResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.success = reader.readBool();
+                        break;
+                    case 2:
+                        message.message = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): UpdateSchoolProfileResponse {
+            return UpdateSchoolProfileResponse.deserialize(bytes);
+        }
+    }
+    export class UpdateStudentProfileRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            token?: string;
+            userID?: number;
+            firstName?: string;
+            lastName?: string;
+            gender?: string;
+            email?: string;
+            grade?: string;
+            dateOfBirth?: string;
+            address?: string;
+            bio?: string;
+            profilePicture?: Uint8Array;
+            phone?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+                if ("userID" in data && data.userID != undefined) {
+                    this.userID = data.userID;
+                }
+                if ("firstName" in data && data.firstName != undefined) {
+                    this.firstName = data.firstName;
+                }
+                if ("lastName" in data && data.lastName != undefined) {
+                    this.lastName = data.lastName;
+                }
+                if ("gender" in data && data.gender != undefined) {
+                    this.gender = data.gender;
+                }
+                if ("email" in data && data.email != undefined) {
+                    this.email = data.email;
+                }
+                if ("grade" in data && data.grade != undefined) {
+                    this.grade = data.grade;
+                }
+                if ("dateOfBirth" in data && data.dateOfBirth != undefined) {
+                    this.dateOfBirth = data.dateOfBirth;
+                }
+                if ("address" in data && data.address != undefined) {
+                    this.address = data.address;
+                }
+                if ("bio" in data && data.bio != undefined) {
+                    this.bio = data.bio;
+                }
+                if ("profilePicture" in data && data.profilePicture != undefined) {
+                    this.profilePicture = data.profilePicture;
+                }
+                if ("phone" in data && data.phone != undefined) {
+                    this.phone = data.phone;
+                }
+            }
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get userID() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set userID(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get firstName() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set firstName(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get lastName() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set lastName(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get gender() {
+            return pb_1.Message.getFieldWithDefault(this, 5, "") as string;
+        }
+        set gender(value: string) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        get email() {
+            return pb_1.Message.getFieldWithDefault(this, 6, "") as string;
+        }
+        set email(value: string) {
+            pb_1.Message.setField(this, 6, value);
+        }
+        get grade() {
+            return pb_1.Message.getFieldWithDefault(this, 7, "") as string;
+        }
+        set grade(value: string) {
+            pb_1.Message.setField(this, 7, value);
+        }
+        get dateOfBirth() {
+            return pb_1.Message.getFieldWithDefault(this, 8, "") as string;
+        }
+        set dateOfBirth(value: string) {
+            pb_1.Message.setField(this, 8, value);
+        }
+        get address() {
+            return pb_1.Message.getFieldWithDefault(this, 9, "") as string;
+        }
+        set address(value: string) {
+            pb_1.Message.setField(this, 9, value);
+        }
+        get bio() {
+            return pb_1.Message.getFieldWithDefault(this, 10, "") as string;
+        }
+        set bio(value: string) {
+            pb_1.Message.setField(this, 10, value);
+        }
+        get profilePicture() {
+            return pb_1.Message.getFieldWithDefault(this, 11, new Uint8Array(0)) as Uint8Array;
+        }
+        set profilePicture(value: Uint8Array) {
+            pb_1.Message.setField(this, 11, value);
+        }
+        get phone() {
+            return pb_1.Message.getFieldWithDefault(this, 12, "") as string;
+        }
+        set phone(value: string) {
+            pb_1.Message.setField(this, 12, value);
+        }
+        static fromObject(data: {
+            token?: string;
+            userID?: number;
+            firstName?: string;
+            lastName?: string;
+            gender?: string;
+            email?: string;
+            grade?: string;
+            dateOfBirth?: string;
+            address?: string;
+            bio?: string;
+            profilePicture?: Uint8Array;
+            phone?: string;
+        }): UpdateStudentProfileRequest {
+            const message = new UpdateStudentProfileRequest({});
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            if (data.userID != null) {
+                message.userID = data.userID;
+            }
+            if (data.firstName != null) {
+                message.firstName = data.firstName;
+            }
+            if (data.lastName != null) {
+                message.lastName = data.lastName;
+            }
+            if (data.gender != null) {
+                message.gender = data.gender;
+            }
+            if (data.email != null) {
+                message.email = data.email;
+            }
+            if (data.grade != null) {
+                message.grade = data.grade;
+            }
+            if (data.dateOfBirth != null) {
+                message.dateOfBirth = data.dateOfBirth;
+            }
+            if (data.address != null) {
+                message.address = data.address;
+            }
+            if (data.bio != null) {
+                message.bio = data.bio;
+            }
+            if (data.profilePicture != null) {
+                message.profilePicture = data.profilePicture;
+            }
+            if (data.phone != null) {
+                message.phone = data.phone;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                token?: string;
+                userID?: number;
+                firstName?: string;
+                lastName?: string;
+                gender?: string;
+                email?: string;
+                grade?: string;
+                dateOfBirth?: string;
+                address?: string;
+                bio?: string;
+                profilePicture?: Uint8Array;
+                phone?: string;
+            } = {};
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            if (this.userID != null) {
+                data.userID = this.userID;
+            }
+            if (this.firstName != null) {
+                data.firstName = this.firstName;
+            }
+            if (this.lastName != null) {
+                data.lastName = this.lastName;
+            }
+            if (this.gender != null) {
+                data.gender = this.gender;
+            }
+            if (this.email != null) {
+                data.email = this.email;
+            }
+            if (this.grade != null) {
+                data.grade = this.grade;
+            }
+            if (this.dateOfBirth != null) {
+                data.dateOfBirth = this.dateOfBirth;
+            }
+            if (this.address != null) {
+                data.address = this.address;
+            }
+            if (this.bio != null) {
+                data.bio = this.bio;
+            }
+            if (this.profilePicture != null) {
+                data.profilePicture = this.profilePicture;
+            }
+            if (this.phone != null) {
+                data.phone = this.phone;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.token.length)
+                writer.writeString(1, this.token);
+            if (this.userID != 0)
+                writer.writeInt32(2, this.userID);
+            if (this.firstName.length)
+                writer.writeString(3, this.firstName);
+            if (this.lastName.length)
+                writer.writeString(4, this.lastName);
+            if (this.gender.length)
+                writer.writeString(5, this.gender);
+            if (this.email.length)
+                writer.writeString(6, this.email);
+            if (this.grade.length)
+                writer.writeString(7, this.grade);
+            if (this.dateOfBirth.length)
+                writer.writeString(8, this.dateOfBirth);
+            if (this.address.length)
+                writer.writeString(9, this.address);
+            if (this.bio.length)
+                writer.writeString(10, this.bio);
+            if (this.profilePicture.length)
+                writer.writeBytes(11, this.profilePicture);
+            if (this.phone.length)
+                writer.writeString(12, this.phone);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateStudentProfileRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateStudentProfileRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.token = reader.readString();
+                        break;
+                    case 2:
+                        message.userID = reader.readInt32();
+                        break;
+                    case 3:
+                        message.firstName = reader.readString();
+                        break;
+                    case 4:
+                        message.lastName = reader.readString();
+                        break;
+                    case 5:
+                        message.gender = reader.readString();
+                        break;
+                    case 6:
+                        message.email = reader.readString();
+                        break;
+                    case 7:
+                        message.grade = reader.readString();
+                        break;
+                    case 8:
+                        message.dateOfBirth = reader.readString();
+                        break;
+                    case 9:
+                        message.address = reader.readString();
+                        break;
+                    case 10:
+                        message.bio = reader.readString();
+                        break;
+                    case 11:
+                        message.profilePicture = reader.readBytes();
+                        break;
+                    case 12:
+                        message.phone = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): UpdateStudentProfileRequest {
+            return UpdateStudentProfileRequest.deserialize(bytes);
+        }
+    }
+    export class UpdateStudentProfileResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            success?: boolean;
+            message?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("success" in data && data.success != undefined) {
+                    this.success = data.success;
+                }
+                if ("message" in data && data.message != undefined) {
+                    this.message = data.message;
+                }
+            }
+        }
+        get success() {
+            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
+        }
+        set success(value: boolean) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get message() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set message(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            success?: boolean;
+            message?: string;
+        }): UpdateStudentProfileResponse {
+            const message = new UpdateStudentProfileResponse({});
+            if (data.success != null) {
+                message.success = data.success;
+            }
+            if (data.message != null) {
+                message.message = data.message;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                success?: boolean;
+                message?: string;
+            } = {};
+            if (this.success != null) {
+                data.success = this.success;
+            }
+            if (this.message != null) {
+                data.message = this.message;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.success != false)
+                writer.writeBool(1, this.success);
+            if (this.message.length)
+                writer.writeString(2, this.message);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateStudentProfileResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateStudentProfileResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.success = reader.readBool();
+                        break;
+                    case 2:
+                        message.message = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): UpdateStudentProfileResponse {
+            return UpdateStudentProfileResponse.deserialize(bytes);
+        }
+    }
+    export class UpdateVolunteerProfileRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            token?: string;
+            userID?: number;
+            firstName?: string;
+            lastName?: string;
+            gender?: string;
+            email?: string;
+            nationalID?: string;
+            graduateYear?: number;
+            isEnrolledInUniversity?: boolean;
+            hasInternship?: boolean;
+            address?: string;
+            bio?: string;
+            profilePicture?: Uint8Array;
+            role?: string;
+            phone?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+                if ("userID" in data && data.userID != undefined) {
+                    this.userID = data.userID;
+                }
+                if ("firstName" in data && data.firstName != undefined) {
+                    this.firstName = data.firstName;
+                }
+                if ("lastName" in data && data.lastName != undefined) {
+                    this.lastName = data.lastName;
+                }
+                if ("gender" in data && data.gender != undefined) {
+                    this.gender = data.gender;
+                }
+                if ("email" in data && data.email != undefined) {
+                    this.email = data.email;
+                }
+                if ("nationalID" in data && data.nationalID != undefined) {
+                    this.nationalID = data.nationalID;
+                }
+                if ("graduateYear" in data && data.graduateYear != undefined) {
+                    this.graduateYear = data.graduateYear;
+                }
+                if ("isEnrolledInUniversity" in data && data.isEnrolledInUniversity != undefined) {
+                    this.isEnrolledInUniversity = data.isEnrolledInUniversity;
+                }
+                if ("hasInternship" in data && data.hasInternship != undefined) {
+                    this.hasInternship = data.hasInternship;
+                }
+                if ("address" in data && data.address != undefined) {
+                    this.address = data.address;
+                }
+                if ("bio" in data && data.bio != undefined) {
+                    this.bio = data.bio;
+                }
+                if ("profilePicture" in data && data.profilePicture != undefined) {
+                    this.profilePicture = data.profilePicture;
+                }
+                if ("role" in data && data.role != undefined) {
+                    this.role = data.role;
+                }
+                if ("phone" in data && data.phone != undefined) {
+                    this.phone = data.phone;
+                }
+            }
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get userID() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set userID(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get firstName() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set firstName(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get lastName() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set lastName(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get gender() {
+            return pb_1.Message.getFieldWithDefault(this, 5, "") as string;
+        }
+        set gender(value: string) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        get email() {
+            return pb_1.Message.getFieldWithDefault(this, 6, "") as string;
+        }
+        set email(value: string) {
+            pb_1.Message.setField(this, 6, value);
+        }
+        get nationalID() {
+            return pb_1.Message.getFieldWithDefault(this, 7, "") as string;
+        }
+        set nationalID(value: string) {
+            pb_1.Message.setField(this, 7, value);
+        }
+        get graduateYear() {
+            return pb_1.Message.getFieldWithDefault(this, 8, 0) as number;
+        }
+        set graduateYear(value: number) {
+            pb_1.Message.setField(this, 8, value);
+        }
+        get isEnrolledInUniversity() {
+            return pb_1.Message.getFieldWithDefault(this, 9, false) as boolean;
+        }
+        set isEnrolledInUniversity(value: boolean) {
+            pb_1.Message.setField(this, 9, value);
+        }
+        get hasInternship() {
+            return pb_1.Message.getFieldWithDefault(this, 10, false) as boolean;
+        }
+        set hasInternship(value: boolean) {
+            pb_1.Message.setField(this, 10, value);
+        }
+        get address() {
+            return pb_1.Message.getFieldWithDefault(this, 11, "") as string;
+        }
+        set address(value: string) {
+            pb_1.Message.setField(this, 11, value);
+        }
+        get bio() {
+            return pb_1.Message.getFieldWithDefault(this, 12, "") as string;
+        }
+        set bio(value: string) {
+            pb_1.Message.setField(this, 12, value);
+        }
+        get profilePicture() {
+            return pb_1.Message.getFieldWithDefault(this, 13, new Uint8Array(0)) as Uint8Array;
+        }
+        set profilePicture(value: Uint8Array) {
+            pb_1.Message.setField(this, 13, value);
+        }
+        get role() {
+            return pb_1.Message.getFieldWithDefault(this, 14, "") as string;
+        }
+        set role(value: string) {
+            pb_1.Message.setField(this, 14, value);
+        }
+        get phone() {
+            return pb_1.Message.getFieldWithDefault(this, 15, "") as string;
+        }
+        set phone(value: string) {
+            pb_1.Message.setField(this, 15, value);
+        }
+        static fromObject(data: {
+            token?: string;
+            userID?: number;
+            firstName?: string;
+            lastName?: string;
+            gender?: string;
+            email?: string;
+            nationalID?: string;
+            graduateYear?: number;
+            isEnrolledInUniversity?: boolean;
+            hasInternship?: boolean;
+            address?: string;
+            bio?: string;
+            profilePicture?: Uint8Array;
+            role?: string;
+            phone?: string;
+        }): UpdateVolunteerProfileRequest {
+            const message = new UpdateVolunteerProfileRequest({});
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            if (data.userID != null) {
+                message.userID = data.userID;
+            }
+            if (data.firstName != null) {
+                message.firstName = data.firstName;
+            }
+            if (data.lastName != null) {
+                message.lastName = data.lastName;
+            }
+            if (data.gender != null) {
+                message.gender = data.gender;
+            }
+            if (data.email != null) {
+                message.email = data.email;
+            }
+            if (data.nationalID != null) {
+                message.nationalID = data.nationalID;
+            }
+            if (data.graduateYear != null) {
+                message.graduateYear = data.graduateYear;
+            }
+            if (data.isEnrolledInUniversity != null) {
+                message.isEnrolledInUniversity = data.isEnrolledInUniversity;
+            }
+            if (data.hasInternship != null) {
+                message.hasInternship = data.hasInternship;
+            }
+            if (data.address != null) {
+                message.address = data.address;
+            }
+            if (data.bio != null) {
+                message.bio = data.bio;
+            }
+            if (data.profilePicture != null) {
+                message.profilePicture = data.profilePicture;
+            }
+            if (data.role != null) {
+                message.role = data.role;
+            }
+            if (data.phone != null) {
+                message.phone = data.phone;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                token?: string;
+                userID?: number;
+                firstName?: string;
+                lastName?: string;
+                gender?: string;
+                email?: string;
+                nationalID?: string;
+                graduateYear?: number;
+                isEnrolledInUniversity?: boolean;
+                hasInternship?: boolean;
+                address?: string;
+                bio?: string;
+                profilePicture?: Uint8Array;
+                role?: string;
+                phone?: string;
+            } = {};
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            if (this.userID != null) {
+                data.userID = this.userID;
+            }
+            if (this.firstName != null) {
+                data.firstName = this.firstName;
+            }
+            if (this.lastName != null) {
+                data.lastName = this.lastName;
+            }
+            if (this.gender != null) {
+                data.gender = this.gender;
+            }
+            if (this.email != null) {
+                data.email = this.email;
+            }
+            if (this.nationalID != null) {
+                data.nationalID = this.nationalID;
+            }
+            if (this.graduateYear != null) {
+                data.graduateYear = this.graduateYear;
+            }
+            if (this.isEnrolledInUniversity != null) {
+                data.isEnrolledInUniversity = this.isEnrolledInUniversity;
+            }
+            if (this.hasInternship != null) {
+                data.hasInternship = this.hasInternship;
+            }
+            if (this.address != null) {
+                data.address = this.address;
+            }
+            if (this.bio != null) {
+                data.bio = this.bio;
+            }
+            if (this.profilePicture != null) {
+                data.profilePicture = this.profilePicture;
+            }
+            if (this.role != null) {
+                data.role = this.role;
+            }
+            if (this.phone != null) {
+                data.phone = this.phone;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.token.length)
+                writer.writeString(1, this.token);
+            if (this.userID != 0)
+                writer.writeInt32(2, this.userID);
+            if (this.firstName.length)
+                writer.writeString(3, this.firstName);
+            if (this.lastName.length)
+                writer.writeString(4, this.lastName);
+            if (this.gender.length)
+                writer.writeString(5, this.gender);
+            if (this.email.length)
+                writer.writeString(6, this.email);
+            if (this.nationalID.length)
+                writer.writeString(7, this.nationalID);
+            if (this.graduateYear != 0)
+                writer.writeInt32(8, this.graduateYear);
+            if (this.isEnrolledInUniversity != false)
+                writer.writeBool(9, this.isEnrolledInUniversity);
+            if (this.hasInternship != false)
+                writer.writeBool(10, this.hasInternship);
+            if (this.address.length)
+                writer.writeString(11, this.address);
+            if (this.bio.length)
+                writer.writeString(12, this.bio);
+            if (this.profilePicture.length)
+                writer.writeBytes(13, this.profilePicture);
+            if (this.role.length)
+                writer.writeString(14, this.role);
+            if (this.phone.length)
+                writer.writeString(15, this.phone);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateVolunteerProfileRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateVolunteerProfileRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.token = reader.readString();
+                        break;
+                    case 2:
+                        message.userID = reader.readInt32();
+                        break;
+                    case 3:
+                        message.firstName = reader.readString();
+                        break;
+                    case 4:
+                        message.lastName = reader.readString();
+                        break;
+                    case 5:
+                        message.gender = reader.readString();
+                        break;
+                    case 6:
+                        message.email = reader.readString();
+                        break;
+                    case 7:
+                        message.nationalID = reader.readString();
+                        break;
+                    case 8:
+                        message.graduateYear = reader.readInt32();
+                        break;
+                    case 9:
+                        message.isEnrolledInUniversity = reader.readBool();
+                        break;
+                    case 10:
+                        message.hasInternship = reader.readBool();
+                        break;
+                    case 11:
+                        message.address = reader.readString();
+                        break;
+                    case 12:
+                        message.bio = reader.readString();
+                        break;
+                    case 13:
+                        message.profilePicture = reader.readBytes();
+                        break;
+                    case 14:
+                        message.role = reader.readString();
+                        break;
+                    case 15:
+                        message.phone = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): UpdateVolunteerProfileRequest {
+            return UpdateVolunteerProfileRequest.deserialize(bytes);
+        }
+    }
+    export class UpdateVolunteerProfileResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            success?: boolean;
+            message?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("success" in data && data.success != undefined) {
+                    this.success = data.success;
+                }
+                if ("message" in data && data.message != undefined) {
+                    this.message = data.message;
+                }
+            }
+        }
+        get success() {
+            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
+        }
+        set success(value: boolean) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get message() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set message(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            success?: boolean;
+            message?: string;
+        }): UpdateVolunteerProfileResponse {
+            const message = new UpdateVolunteerProfileResponse({});
+            if (data.success != null) {
+                message.success = data.success;
+            }
+            if (data.message != null) {
+                message.message = data.message;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                success?: boolean;
+                message?: string;
+            } = {};
+            if (this.success != null) {
+                data.success = this.success;
+            }
+            if (this.message != null) {
+                data.message = this.message;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.success != false)
+                writer.writeBool(1, this.success);
+            if (this.message.length)
+                writer.writeString(2, this.message);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateVolunteerProfileResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateVolunteerProfileResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.success = reader.readBool();
+                        break;
+                    case 2:
+                        message.message = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): UpdateVolunteerProfileResponse {
+            return UpdateVolunteerProfileResponse.deserialize(bytes);
         }
     }
     export class DeleteUserProfileRequest extends pb_1.Message {
@@ -6149,14 +7396,41 @@ export namespace user_management {
                 responseSerialize: (message: GetUserProfileResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => GetUserProfileResponse.deserialize(new Uint8Array(bytes))
             },
-            UpdateUserProfile: {
-                path: "/user_management.UserManagementService/UpdateUserProfile",
+            UpdateAdminProfile: {
+                path: "/user_management.UserManagementService/UpdateAdminProfile",
                 requestStream: false,
                 responseStream: false,
-                requestSerialize: (message: UpdateUserProfileRequest) => Buffer.from(message.serialize()),
-                requestDeserialize: (bytes: Buffer) => UpdateUserProfileRequest.deserialize(new Uint8Array(bytes)),
-                responseSerialize: (message: UpdateUserProfileResponse) => Buffer.from(message.serialize()),
-                responseDeserialize: (bytes: Buffer) => UpdateUserProfileResponse.deserialize(new Uint8Array(bytes))
+                requestSerialize: (message: UpdateAdminProfileRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => UpdateAdminProfileRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: UpdateAdminProfileResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => UpdateAdminProfileResponse.deserialize(new Uint8Array(bytes))
+            },
+            UpdateSchoolProfile: {
+                path: "/user_management.UserManagementService/UpdateSchoolProfile",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: UpdateSchoolProfileRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => UpdateSchoolProfileRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: UpdateSchoolProfileResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => UpdateSchoolProfileResponse.deserialize(new Uint8Array(bytes))
+            },
+            UpdateStudentProfile: {
+                path: "/user_management.UserManagementService/UpdateStudentProfile",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: UpdateStudentProfileRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => UpdateStudentProfileRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: UpdateStudentProfileResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => UpdateStudentProfileResponse.deserialize(new Uint8Array(bytes))
+            },
+            UpdateVolunteerProfile: {
+                path: "/user_management.UserManagementService/UpdateVolunteerProfile",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: UpdateVolunteerProfileRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => UpdateVolunteerProfileRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: UpdateVolunteerProfileResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => UpdateVolunteerProfileResponse.deserialize(new Uint8Array(bytes))
             },
             DeleteUserProfile: {
                 path: "/user_management.UserManagementService/DeleteUserProfile",
@@ -6284,7 +7558,10 @@ export namespace user_management {
         abstract RejectUsers(call: grpc_1.ServerUnaryCall<RejectUsersRequest, RejectUsersResponse>, callback: grpc_1.sendUnaryData<RejectUsersResponse>): void;
         abstract DeleteUsers(call: grpc_1.ServerUnaryCall<DeleteUsersRequest, DeleteUsersResponse>, callback: grpc_1.sendUnaryData<DeleteUsersResponse>): void;
         abstract GetUserProfile(call: grpc_1.ServerUnaryCall<GetUserProfileRequest, GetUserProfileResponse>, callback: grpc_1.sendUnaryData<GetUserProfileResponse>): void;
-        abstract UpdateUserProfile(call: grpc_1.ServerUnaryCall<UpdateUserProfileRequest, UpdateUserProfileResponse>, callback: grpc_1.sendUnaryData<UpdateUserProfileResponse>): void;
+        abstract UpdateAdminProfile(call: grpc_1.ServerUnaryCall<UpdateAdminProfileRequest, UpdateAdminProfileResponse>, callback: grpc_1.sendUnaryData<UpdateAdminProfileResponse>): void;
+        abstract UpdateSchoolProfile(call: grpc_1.ServerUnaryCall<UpdateSchoolProfileRequest, UpdateSchoolProfileResponse>, callback: grpc_1.sendUnaryData<UpdateSchoolProfileResponse>): void;
+        abstract UpdateStudentProfile(call: grpc_1.ServerUnaryCall<UpdateStudentProfileRequest, UpdateStudentProfileResponse>, callback: grpc_1.sendUnaryData<UpdateStudentProfileResponse>): void;
+        abstract UpdateVolunteerProfile(call: grpc_1.ServerUnaryCall<UpdateVolunteerProfileRequest, UpdateVolunteerProfileResponse>, callback: grpc_1.sendUnaryData<UpdateVolunteerProfileResponse>): void;
         abstract DeleteUserProfile(call: grpc_1.ServerUnaryCall<DeleteUserProfileRequest, DeleteUserProfileResponse>, callback: grpc_1.sendUnaryData<DeleteUserProfileResponse>): void;
         abstract DeactivateAccount(call: grpc_1.ServerUnaryCall<DeactivateAccountRequest, DeactivateAccountResponse>, callback: grpc_1.sendUnaryData<DeactivateAccountResponse>): void;
         abstract ReactivateAccount(call: grpc_1.ServerUnaryCall<ReactivateAccountRequest, ReactivateAccountResponse>, callback: grpc_1.sendUnaryData<ReactivateAccountResponse>): void;
@@ -6324,8 +7601,17 @@ export namespace user_management {
         GetUserProfile: GrpcUnaryServiceInterface<GetUserProfileRequest, GetUserProfileResponse> = (message: GetUserProfileRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetUserProfileResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetUserProfileResponse>, callback?: grpc_1.requestCallback<GetUserProfileResponse>): grpc_1.ClientUnaryCall => {
             return super.GetUserProfile(message, metadata, options, callback);
         };
-        UpdateUserProfile: GrpcUnaryServiceInterface<UpdateUserProfileRequest, UpdateUserProfileResponse> = (message: UpdateUserProfileRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<UpdateUserProfileResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<UpdateUserProfileResponse>, callback?: grpc_1.requestCallback<UpdateUserProfileResponse>): grpc_1.ClientUnaryCall => {
-            return super.UpdateUserProfile(message, metadata, options, callback);
+        UpdateAdminProfile: GrpcUnaryServiceInterface<UpdateAdminProfileRequest, UpdateAdminProfileResponse> = (message: UpdateAdminProfileRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<UpdateAdminProfileResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<UpdateAdminProfileResponse>, callback?: grpc_1.requestCallback<UpdateAdminProfileResponse>): grpc_1.ClientUnaryCall => {
+            return super.UpdateAdminProfile(message, metadata, options, callback);
+        };
+        UpdateSchoolProfile: GrpcUnaryServiceInterface<UpdateSchoolProfileRequest, UpdateSchoolProfileResponse> = (message: UpdateSchoolProfileRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<UpdateSchoolProfileResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<UpdateSchoolProfileResponse>, callback?: grpc_1.requestCallback<UpdateSchoolProfileResponse>): grpc_1.ClientUnaryCall => {
+            return super.UpdateSchoolProfile(message, metadata, options, callback);
+        };
+        UpdateStudentProfile: GrpcUnaryServiceInterface<UpdateStudentProfileRequest, UpdateStudentProfileResponse> = (message: UpdateStudentProfileRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<UpdateStudentProfileResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<UpdateStudentProfileResponse>, callback?: grpc_1.requestCallback<UpdateStudentProfileResponse>): grpc_1.ClientUnaryCall => {
+            return super.UpdateStudentProfile(message, metadata, options, callback);
+        };
+        UpdateVolunteerProfile: GrpcUnaryServiceInterface<UpdateVolunteerProfileRequest, UpdateVolunteerProfileResponse> = (message: UpdateVolunteerProfileRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<UpdateVolunteerProfileResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<UpdateVolunteerProfileResponse>, callback?: grpc_1.requestCallback<UpdateVolunteerProfileResponse>): grpc_1.ClientUnaryCall => {
+            return super.UpdateVolunteerProfile(message, metadata, options, callback);
         };
         DeleteUserProfile: GrpcUnaryServiceInterface<DeleteUserProfileRequest, DeleteUserProfileResponse> = (message: DeleteUserProfileRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<DeleteUserProfileResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<DeleteUserProfileResponse>, callback?: grpc_1.requestCallback<DeleteUserProfileResponse>): grpc_1.ClientUnaryCall => {
             return super.DeleteUserProfile(message, metadata, options, callback);

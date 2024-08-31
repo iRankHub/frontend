@@ -10,15 +10,15 @@ function Signup() {
   const volunteerImage = () => {
     switch (activeStep) {
       case 1:
-        return "/static/images/volunteers/signup-step-1.png";
+        return "/static/images/volunteers/signup-step-1.jpg";
       case 2:
-        return "/static/images/volunteers/signup-step-2.png";
+        return "/static/images/volunteers/signup-step-2.jpg";
       case 3:
-        return "/static/images/volunteers/signup-step-3.png";
+        return "/static/images/volunteers/signup-step-3.jpg";
       case 4:
-        return "/static/images/volunteers/signup-step-4.png";
+        return "/static/images/volunteers/signup-step-4.jpg";
       default:
-        return "/static/images/volunteers/signup-step-1.png";
+        return "/static/images/volunteers/signup-step-1.jpg";
     }
   };
 

@@ -1,11 +1,12 @@
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import TournamentCard from "./tournament-card";
 import { useEffect, useState } from "react";
 import { tournamentsList } from "@/core/tournament/list";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import { DataCardView } from "@/components/cards-with-filter/data-card";
+import { DataTableToolbar } from "./data-table-toolbar";
+import { columns } from "./columns";
 
 function Tournaments({}) {
   const [pageLoading, setPageLoading] = useState<boolean>(true);
@@ -31,53 +32,28 @@ function Tournaments({}) {
       });
   }, [user]);
   return (
-    <div className="w-full mt-5 rounded-md overflow-hidden border border-muted">
-      <div className="flex items-center justify-between flex-wrap gap-5 p-5 bg-brown">
-        <form action="#" className="flex items-center gap-3">
-          <Input
-            type="search"
-            placeholder="Search name..."
-            className="w-72 h-8"
-          />
-          <Button
-            type="submit"
-            className="border border-dashed border-white gap-2 h-8 font-semibold hover:bg-white hover:text-foreground group"
-          >
-            <Icons.addCircle className="text-white w-3.5 h-3.5 group-hover:text-foreground" />
-            League
-          </Button>
-          <Button
-            type="submit"
-            className="border border-dashed border-white gap-2 h-8 font-semibold hover:bg-white hover:text-foreground group"
-          >
-            <Icons.addCircle className="text-white w-3.5 h-3.5 group-hover:text-foreground" />
-            Coordinator
-          </Button>
-        </form>
-      </div>
-      <div className="w-full bg-background p-8 grid">
-        {pageLoading ? (
-          <div className="flex items-center justify-center w-full h-96">
-            <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
-          </div>
-        ) : tournaments.length ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-            {tournaments.map((tournament, index) => (
-              <TournamentCard
-                key={index}
-                tournament={tournament}
-                setTournaments={setTournaments}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="flex items-center justify-center w-full h-96">
-            <p className="text-darkBlue text-lg font-semibold">
-              No tournaments available
-            </p>
-          </div>
-        )}
+    <div className="w-full mt-5 rounded-md overflow-hidden border border-muted bg-background">
+      {pageLoading ? (
+        <div className="flex items-center justify-center w-full h-96">
+          <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
+        </div>
+      ) : tournaments.length ? (
+        <DataCardView
+          data={tournaments}
+          columns={columns}
+          DataTableToolbar={DataTableToolbar}
+          setTournaments={setTournaments}
+          cardType="tournament"
+        />
+      ) : (
+        <div className="flex items-center justify-center w-full h-96">
+          <p className="text-darkBlue text-lg font-semibold">
+            No tournaments available
+          </p>
+        </div>
+      )}
 
+      <div className="p-5">
         {tournaments.length > 0 && (
           <Button
             type="button"

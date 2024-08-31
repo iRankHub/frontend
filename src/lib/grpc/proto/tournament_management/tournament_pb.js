@@ -1975,7 +1975,9 @@ proto.tournament_management.Tournament.toObject = function(includeInstance, msg)
     judgesPerDebatePreliminary: jspb.Message.getFieldWithDefault(msg, 11, 0),
     judgesPerDebateElimination: jspb.Message.getFieldWithDefault(msg, 12, 0),
     tournamentFee: jspb.Message.getFloatingPointFieldWithDefault(msg, 13, 0.0),
-    imageUrl: jspb.Message.getFieldWithDefault(msg, 14, "")
+    imageUrl: jspb.Message.getFieldWithDefault(msg, 14, ""),
+    numberOfSchools: jspb.Message.getFieldWithDefault(msg, 15, 0),
+    numberOfTeams: jspb.Message.getFieldWithDefault(msg, 16, 0)
   };
 
   if (includeInstance) {
@@ -2067,6 +2069,14 @@ proto.tournament_management.Tournament.deserializeBinaryFromReader = function(ms
     case 14:
       var value = /** @type {string} */ (reader.readString());
       msg.setImageUrl(value);
+      break;
+    case 15:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setNumberOfSchools(value);
+      break;
+    case 16:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setNumberOfTeams(value);
       break;
     default:
       reader.skipField();
@@ -2192,6 +2202,20 @@ proto.tournament_management.Tournament.serializeBinaryToWriter = function(messag
   if (f.length > 0) {
     writer.writeString(
       14,
+      f
+    );
+  }
+  f = message.getNumberOfSchools();
+  if (f !== 0) {
+    writer.writeInt32(
+      15,
+      f
+    );
+  }
+  f = message.getNumberOfTeams();
+  if (f !== 0) {
+    writer.writeInt32(
+      16,
       f
     );
   }
@@ -2447,6 +2471,42 @@ proto.tournament_management.Tournament.prototype.getImageUrl = function() {
  */
 proto.tournament_management.Tournament.prototype.setImageUrl = function(value) {
   return jspb.Message.setProto3StringField(this, 14, value);
+};
+
+
+/**
+ * optional int32 number_of_schools = 15;
+ * @return {number}
+ */
+proto.tournament_management.Tournament.prototype.getNumberOfSchools = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 15, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.Tournament} returns this
+ */
+proto.tournament_management.Tournament.prototype.setNumberOfSchools = function(value) {
+  return jspb.Message.setProto3IntField(this, 15, value);
+};
+
+
+/**
+ * optional int32 number_of_teams = 16;
+ * @return {number}
+ */
+proto.tournament_management.Tournament.prototype.getNumberOfTeams = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 16, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.Tournament} returns this
+ */
+proto.tournament_management.Tournament.prototype.setNumberOfTeams = function(value) {
+  return jspb.Message.setProto3IntField(this, 16, value);
 };
 
 

@@ -132,6 +132,8 @@ export const deleteTournament = async ({
     });
 }
 
+export const getTournamentCoordinator = async (token: string): Promise<any> => {}
+
 // invitations
 export const getInvitationsByTournament = async (
     token: string,

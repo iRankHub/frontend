@@ -81,8 +81,16 @@ export const updateTournamentLeague = async ({
         request.setLeagueId(league_id);
         request.setName(name);
         request.setLeagueType(league_type);
-        request.setLocalDetails(local_details);
         request.setToken(token);
+
+        const localDetails = new LocalDetails();
+        local_details.districtsList.forEach((district) => {
+            localDetails.addDistricts(district);
+        });
+        local_details.provincesList.forEach((province) => {
+            localDetails.addProvinces(province);
+        });
+        request.setLocalDetails(localDetails);
 
         tournamentClient.updateLeague(request, {}, (err, response) => {
             if (err) {
