@@ -23,7 +23,7 @@ import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
-import { login } from "@/core/authentication/auth";
+import { adminLogin } from "@/core/authentication/auth";
 
 type Inputs = z.infer<typeof emailLoginSchema>;
 
@@ -44,7 +44,7 @@ const LoginFormEmail = () => {
 
   async function onSubmit(data: Inputs) {
     setIsPending(true);
-    await login({ emailOrId: data.email, password: data.password })
+    await adminLogin({ emailOrId: data.email, password: data.password })
       .then((res) => {
         if (res.success) {
           form.reset();

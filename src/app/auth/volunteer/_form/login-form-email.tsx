@@ -22,7 +22,7 @@ import { PasswordInput } from "@/components/ui/password-Input";
 import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { login } from "@/core/authentication/auth";
+import { volunteerLogin } from "@/core/authentication/auth";
 import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
 
 type Inputs = z.infer<typeof emailLoginSchema>;
@@ -49,7 +49,7 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
   async function onSubmit(data: Inputs) {
     try {
       setIsPending(true);
-      await login({ emailOrId: data.email, password: data.password })
+      await volunteerLogin({ emailOrId: data.email, password: data.password })
         .then((res) => {
           if (res.success) {
             // form.reset();

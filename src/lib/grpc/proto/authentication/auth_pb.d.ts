@@ -68,8 +68,13 @@ export class UserData extends jspb.Message {
   getRoleinterestedin(): string;
   setRoleinterestedin(value: string): UserData;
 
-  getSafeguardingcertificate(): boolean;
-  setSafeguardingcertificate(value: boolean): UserData;
+  getNationalid(): string;
+  setNationalid(value: string): UserData;
+
+  getSafeguardingcertificate(): Uint8Array | string;
+  getSafeguardingcertificate_asU8(): Uint8Array;
+  getSafeguardingcertificate_asB64(): string;
+  setSafeguardingcertificate(value: Uint8Array | string): UserData;
 
   getGrade(): string;
   setGrade(value: string): UserData;
@@ -108,7 +113,8 @@ export namespace UserData {
     contactemail: string,
     graduationyear: number,
     roleinterestedin: string,
-    safeguardingcertificate: boolean,
+    nationalid: string,
+    safeguardingcertificate: Uint8Array | string,
     grade: string,
     hasinternship: boolean,
     isenrolledinuniversity: boolean,
@@ -209,9 +215,6 @@ export class SignUpRequest extends jspb.Message {
   getRoleinterestedin(): string;
   setRoleinterestedin(value: string): SignUpRequest;
 
-  getSafeguardingcertificate(): boolean;
-  setSafeguardingcertificate(value: boolean): SignUpRequest;
-
   getGrade(): string;
   setGrade(value: string): SignUpRequest;
 
@@ -223,6 +226,11 @@ export class SignUpRequest extends jspb.Message {
 
   getGender(): string;
   setGender(value: string): SignUpRequest;
+
+  getSafeguardingcertificate(): Uint8Array | string;
+  getSafeguardingcertificate_asU8(): Uint8Array;
+  getSafeguardingcertificate_asB64(): string;
+  setSafeguardingcertificate(value: Uint8Array | string): SignUpRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SignUpRequest.AsObject;
@@ -254,11 +262,11 @@ export namespace SignUpRequest {
     schoolattended: string,
     graduationyear: number,
     roleinterestedin: string,
-    safeguardingcertificate: boolean,
     grade: string,
     hasinternship: boolean,
     isenrolledinuniversity: boolean,
     gender: string,
+    safeguardingcertificate: Uint8Array | string,
   }
 }
 

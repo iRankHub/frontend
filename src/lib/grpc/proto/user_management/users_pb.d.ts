@@ -298,8 +298,10 @@ export class VolunteerDetails extends jspb.Message {
   getGraduateyear(): number;
   setGraduateyear(value: number): VolunteerDetails;
 
-  getSafeguardcertificate(): boolean;
-  setSafeguardcertificate(value: boolean): VolunteerDetails;
+  getSafeguardcertificate(): Uint8Array | string;
+  getSafeguardcertificate_asU8(): Uint8Array;
+  getSafeguardcertificate_asB64(): string;
+  setSafeguardcertificate(value: Uint8Array | string): VolunteerDetails;
 
   getHasinternship(): boolean;
   setHasinternship(value: boolean): VolunteerDetails;
@@ -319,7 +321,7 @@ export namespace VolunteerDetails {
   export type AsObject = {
     role: string,
     graduateyear: number,
-    safeguardcertificate: boolean,
+    safeguardcertificate: Uint8Array | string,
     hasinternship: boolean,
     isenrolledinuniversity: boolean,
   }
@@ -641,12 +643,6 @@ export class UpdateUserProfileRequest extends jspb.Message {
   getProfilepicture_asB64(): string;
   setProfilepicture(value: Uint8Array | string): UpdateUserProfileRequest;
 
-  getTwofactorenabled(): boolean;
-  setTwofactorenabled(value: boolean): UpdateUserProfileRequest;
-
-  getPassword(): string;
-  setPassword(value: string): UpdateUserProfileRequest;
-
   getStudentdetails(): StudentDetails | undefined;
   setStudentdetails(value?: StudentDetails): UpdateUserProfileRequest;
   hasStudentdetails(): boolean;
@@ -683,8 +679,6 @@ export namespace UpdateUserProfileRequest {
     phone: string,
     bio: string,
     profilepicture: Uint8Array | string,
-    twofactorenabled: boolean,
-    password: string,
     studentdetails?: StudentDetails.AsObject,
     schooldetails?: SchoolDetails.AsObject,
     volunteerdetails?: VolunteerDetails.AsObject,
@@ -692,9 +686,9 @@ export namespace UpdateUserProfileRequest {
 
   export enum RoleSpecificDetailsCase { 
     ROLE_SPECIFIC_DETAILS_NOT_SET = 0,
-    STUDENTDETAILS = 12,
-    SCHOOLDETAILS = 13,
-    VOLUNTEERDETAILS = 14,
+    STUDENTDETAILS = 10,
+    SCHOOLDETAILS = 11,
+    VOLUNTEERDETAILS = 12,
   }
 }
 
@@ -1221,8 +1215,10 @@ export class Volunteer extends jspb.Message {
   getGraduateyear(): number;
   setGraduateyear(value: number): Volunteer;
 
-  getSafeguardcertificate(): boolean;
-  setSafeguardcertificate(value: boolean): Volunteer;
+  getSafeguardcertificate(): Uint8Array | string;
+  getSafeguardcertificate_asU8(): Uint8Array;
+  getSafeguardcertificate_asB64(): string;
+  setSafeguardcertificate(value: Uint8Array | string): Volunteer;
 
   getEmail(): string;
   setEmail(value: string): Volunteer;
@@ -1243,7 +1239,7 @@ export namespace Volunteer {
     dateofbirth: string,
     role: string,
     graduateyear: number,
-    safeguardcertificate: boolean,
+    safeguardcertificate: Uint8Array | string,
     email: string,
   }
 }
@@ -1341,6 +1337,102 @@ export namespace GetSchoolsNoAuthResponse {
   export type AsObject = {
     schoolsList: Array<School.AsObject>,
     totalcount: number,
+  }
+}
+
+export class InitiatePasswordUpdateRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): InitiatePasswordUpdateRequest;
+
+  getUserid(): number;
+  setUserid(value: number): InitiatePasswordUpdateRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InitiatePasswordUpdateRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: InitiatePasswordUpdateRequest): InitiatePasswordUpdateRequest.AsObject;
+  static serializeBinaryToWriter(message: InitiatePasswordUpdateRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InitiatePasswordUpdateRequest;
+  static deserializeBinaryFromReader(message: InitiatePasswordUpdateRequest, reader: jspb.BinaryReader): InitiatePasswordUpdateRequest;
+}
+
+export namespace InitiatePasswordUpdateRequest {
+  export type AsObject = {
+    token: string,
+    userid: number,
+  }
+}
+
+export class InitiatePasswordUpdateResponse extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): InitiatePasswordUpdateResponse;
+
+  getMessage(): string;
+  setMessage(value: string): InitiatePasswordUpdateResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InitiatePasswordUpdateResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: InitiatePasswordUpdateResponse): InitiatePasswordUpdateResponse.AsObject;
+  static serializeBinaryToWriter(message: InitiatePasswordUpdateResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InitiatePasswordUpdateResponse;
+  static deserializeBinaryFromReader(message: InitiatePasswordUpdateResponse, reader: jspb.BinaryReader): InitiatePasswordUpdateResponse;
+}
+
+export namespace InitiatePasswordUpdateResponse {
+  export type AsObject = {
+    success: boolean,
+    message: string,
+  }
+}
+
+export class VerifyAndUpdatePasswordRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): VerifyAndUpdatePasswordRequest;
+
+  getUserid(): number;
+  setUserid(value: number): VerifyAndUpdatePasswordRequest;
+
+  getVerificationcode(): string;
+  setVerificationcode(value: string): VerifyAndUpdatePasswordRequest;
+
+  getNewpassword(): string;
+  setNewpassword(value: string): VerifyAndUpdatePasswordRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): VerifyAndUpdatePasswordRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: VerifyAndUpdatePasswordRequest): VerifyAndUpdatePasswordRequest.AsObject;
+  static serializeBinaryToWriter(message: VerifyAndUpdatePasswordRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): VerifyAndUpdatePasswordRequest;
+  static deserializeBinaryFromReader(message: VerifyAndUpdatePasswordRequest, reader: jspb.BinaryReader): VerifyAndUpdatePasswordRequest;
+}
+
+export namespace VerifyAndUpdatePasswordRequest {
+  export type AsObject = {
+    token: string,
+    userid: number,
+    verificationcode: string,
+    newpassword: string,
+  }
+}
+
+export class VerifyAndUpdatePasswordResponse extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): VerifyAndUpdatePasswordResponse;
+
+  getMessage(): string;
+  setMessage(value: string): VerifyAndUpdatePasswordResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): VerifyAndUpdatePasswordResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: VerifyAndUpdatePasswordResponse): VerifyAndUpdatePasswordResponse.AsObject;
+  static serializeBinaryToWriter(message: VerifyAndUpdatePasswordResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): VerifyAndUpdatePasswordResponse;
+  static deserializeBinaryFromReader(message: VerifyAndUpdatePasswordResponse, reader: jspb.BinaryReader): VerifyAndUpdatePasswordResponse;
+}
+
+export namespace VerifyAndUpdatePasswordResponse {
+  export type AsObject = {
+    success: boolean,
+    message: string,
   }
 }
 

@@ -125,8 +125,8 @@ export class AuthServiceClient {
     this.methodDescriptorBatchImportUsers);
   }
 
-  methodDescriptorLogin = new grpcWeb.MethodDescriptor(
-    '/auth.AuthService/Login',
+  methodDescriptorAdminLogin = new grpcWeb.MethodDescriptor(
+    '/auth.AuthService/AdminLogin',
     grpcWeb.MethodType.UNARY,
     authentication_auth_pb.LoginRequest,
     authentication_auth_pb.LoginResponse,
@@ -136,17 +136,17 @@ export class AuthServiceClient {
     authentication_auth_pb.LoginResponse.deserializeBinary
   );
 
-  login(
+  adminLogin(
     request: authentication_auth_pb.LoginRequest,
     metadata?: grpcWeb.Metadata | null): Promise<authentication_auth_pb.LoginResponse>;
 
-  login(
+  adminLogin(
     request: authentication_auth_pb.LoginRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.RpcError,
                response: authentication_auth_pb.LoginResponse) => void): grpcWeb.ClientReadableStream<authentication_auth_pb.LoginResponse>;
 
-  login(
+  adminLogin(
     request: authentication_auth_pb.LoginRequest,
     metadata?: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.RpcError,
@@ -154,18 +154,147 @@ export class AuthServiceClient {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/auth.AuthService/Login',
+          '/auth.AuthService/AdminLogin',
         request,
         metadata || {},
-        this.methodDescriptorLogin,
+        this.methodDescriptorAdminLogin,
         callback);
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/auth.AuthService/Login',
+      '/auth.AuthService/AdminLogin',
     request,
     metadata || {},
-    this.methodDescriptorLogin);
+    this.methodDescriptorAdminLogin);
+  }
+
+  methodDescriptorStudentLogin = new grpcWeb.MethodDescriptor(
+    '/auth.AuthService/StudentLogin',
+    grpcWeb.MethodType.UNARY,
+    authentication_auth_pb.LoginRequest,
+    authentication_auth_pb.LoginResponse,
+    (request: authentication_auth_pb.LoginRequest) => {
+      return request.serializeBinary();
+    },
+    authentication_auth_pb.LoginResponse.deserializeBinary
+  );
+
+  studentLogin(
+    request: authentication_auth_pb.LoginRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<authentication_auth_pb.LoginResponse>;
+
+  studentLogin(
+    request: authentication_auth_pb.LoginRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: authentication_auth_pb.LoginResponse) => void): grpcWeb.ClientReadableStream<authentication_auth_pb.LoginResponse>;
+
+  studentLogin(
+    request: authentication_auth_pb.LoginRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: authentication_auth_pb.LoginResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/auth.AuthService/StudentLogin',
+        request,
+        metadata || {},
+        this.methodDescriptorStudentLogin,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/auth.AuthService/StudentLogin',
+    request,
+    metadata || {},
+    this.methodDescriptorStudentLogin);
+  }
+
+  methodDescriptorVolunteerLogin = new grpcWeb.MethodDescriptor(
+    '/auth.AuthService/VolunteerLogin',
+    grpcWeb.MethodType.UNARY,
+    authentication_auth_pb.LoginRequest,
+    authentication_auth_pb.LoginResponse,
+    (request: authentication_auth_pb.LoginRequest) => {
+      return request.serializeBinary();
+    },
+    authentication_auth_pb.LoginResponse.deserializeBinary
+  );
+
+  volunteerLogin(
+    request: authentication_auth_pb.LoginRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<authentication_auth_pb.LoginResponse>;
+
+  volunteerLogin(
+    request: authentication_auth_pb.LoginRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: authentication_auth_pb.LoginResponse) => void): grpcWeb.ClientReadableStream<authentication_auth_pb.LoginResponse>;
+
+  volunteerLogin(
+    request: authentication_auth_pb.LoginRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: authentication_auth_pb.LoginResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/auth.AuthService/VolunteerLogin',
+        request,
+        metadata || {},
+        this.methodDescriptorVolunteerLogin,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/auth.AuthService/VolunteerLogin',
+    request,
+    metadata || {},
+    this.methodDescriptorVolunteerLogin);
+  }
+
+  methodDescriptorSchoolLogin = new grpcWeb.MethodDescriptor(
+    '/auth.AuthService/SchoolLogin',
+    grpcWeb.MethodType.UNARY,
+    authentication_auth_pb.LoginRequest,
+    authentication_auth_pb.LoginResponse,
+    (request: authentication_auth_pb.LoginRequest) => {
+      return request.serializeBinary();
+    },
+    authentication_auth_pb.LoginResponse.deserializeBinary
+  );
+
+  schoolLogin(
+    request: authentication_auth_pb.LoginRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<authentication_auth_pb.LoginResponse>;
+
+  schoolLogin(
+    request: authentication_auth_pb.LoginRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: authentication_auth_pb.LoginResponse) => void): grpcWeb.ClientReadableStream<authentication_auth_pb.LoginResponse>;
+
+  schoolLogin(
+    request: authentication_auth_pb.LoginRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: authentication_auth_pb.LoginResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/auth.AuthService/SchoolLogin',
+        request,
+        metadata || {},
+        this.methodDescriptorSchoolLogin,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/auth.AuthService/SchoolLogin',
+    request,
+    metadata || {},
+    this.methodDescriptorSchoolLogin);
   }
 
   methodDescriptorEnableTwoFactor = new grpcWeb.MethodDescriptor(

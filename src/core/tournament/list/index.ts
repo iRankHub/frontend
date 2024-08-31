@@ -8,6 +8,8 @@ import {
     DeleteTournamentResponse,
     GetInvitationsByTournamentRequest,
     GetInvitationsByTournamentResponse,
+    GetInvitationsByUserRequest,
+    GetInvitationsByUserResponse,
     GetTournamentRequest,
     GetTournamentResponse,
     ListTournamentsRequest,
@@ -141,6 +143,23 @@ export const getInvitationsByTournament = async (
         request.setTournamentId(tournament_id);
 
         tournamentClient.getInvitationsByTournament(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const getInvitationsByUser = async (
+    token: string
+): Promise<GetInvitationsByUserResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new GetInvitationsByUserRequest();
+        request.setToken(token);
+
+        tournamentClient.getInvitationsByUser(request, {}, (err, response) => {
             if (err) {
                 reject(err);
             } else {

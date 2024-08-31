@@ -844,11 +844,12 @@ proto.auth.UserData.toObject = function(includeInstance, msg) {
     contactemail: jspb.Message.getFieldWithDefault(msg, 13, ""),
     graduationyear: jspb.Message.getFieldWithDefault(msg, 14, 0),
     roleinterestedin: jspb.Message.getFieldWithDefault(msg, 15, ""),
-    safeguardingcertificate: jspb.Message.getBooleanFieldWithDefault(msg, 16, false),
-    grade: jspb.Message.getFieldWithDefault(msg, 17, ""),
-    hasinternship: jspb.Message.getBooleanFieldWithDefault(msg, 18, false),
-    isenrolledinuniversity: jspb.Message.getBooleanFieldWithDefault(msg, 19, false),
-    gender: jspb.Message.getFieldWithDefault(msg, 20, "")
+    nationalid: jspb.Message.getFieldWithDefault(msg, 16, ""),
+    safeguardingcertificate: msg.getSafeguardingcertificate_asB64(),
+    grade: jspb.Message.getFieldWithDefault(msg, 18, ""),
+    hasinternship: jspb.Message.getBooleanFieldWithDefault(msg, 19, false),
+    isenrolledinuniversity: jspb.Message.getBooleanFieldWithDefault(msg, 20, false),
+    gender: jspb.Message.getFieldWithDefault(msg, 21, "")
   };
 
   if (includeInstance) {
@@ -946,22 +947,26 @@ proto.auth.UserData.deserializeBinaryFromReader = function(msg, reader) {
       msg.setRoleinterestedin(value);
       break;
     case 16:
-      var value = /** @type {boolean} */ (reader.readBool());
-      msg.setSafeguardingcertificate(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNationalid(value);
       break;
     case 17:
+      var value = /** @type {!Uint8Array} */ (reader.readBytes());
+      msg.setSafeguardingcertificate(value);
+      break;
+    case 18:
       var value = /** @type {string} */ (reader.readString());
       msg.setGrade(value);
       break;
-    case 18:
+    case 19:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setHasinternship(value);
       break;
-    case 19:
+    case 20:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setIsenrolledinuniversity(value);
       break;
-    case 20:
+    case 21:
       var value = /** @type {string} */ (reader.readString());
       msg.setGender(value);
       break;
@@ -1099,38 +1104,45 @@ proto.auth.UserData.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getSafeguardingcertificate();
-  if (f) {
-    writer.writeBool(
+  f = message.getNationalid();
+  if (f.length > 0) {
+    writer.writeString(
       16,
+      f
+    );
+  }
+  f = message.getSafeguardingcertificate_asU8();
+  if (f.length > 0) {
+    writer.writeBytes(
+      17,
       f
     );
   }
   f = message.getGrade();
   if (f.length > 0) {
     writer.writeString(
-      17,
+      18,
       f
     );
   }
   f = message.getHasinternship();
   if (f) {
     writer.writeBool(
-      18,
+      19,
       f
     );
   }
   f = message.getIsenrolledinuniversity();
   if (f) {
     writer.writeBool(
-      19,
+      20,
       f
     );
   }
   f = message.getGender();
   if (f.length > 0) {
     writer.writeString(
-      20,
+      21,
       f
     );
   }
@@ -1408,29 +1420,71 @@ proto.auth.UserData.prototype.setRoleinterestedin = function(value) {
 
 
 /**
- * optional bool safeguardingCertificate = 16;
- * @return {boolean}
+ * optional string nationalID = 16;
+ * @return {string}
  */
-proto.auth.UserData.prototype.getSafeguardingcertificate = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 16, false));
+proto.auth.UserData.prototype.getNationalid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 16, ""));
 };
 
 
 /**
- * @param {boolean} value
+ * @param {string} value
+ * @return {!proto.auth.UserData} returns this
+ */
+proto.auth.UserData.prototype.setNationalid = function(value) {
+  return jspb.Message.setProto3StringField(this, 16, value);
+};
+
+
+/**
+ * optional bytes safeguardingCertificate = 17;
+ * @return {!(string|Uint8Array)}
+ */
+proto.auth.UserData.prototype.getSafeguardingcertificate = function() {
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 17, ""));
+};
+
+
+/**
+ * optional bytes safeguardingCertificate = 17;
+ * This is a type-conversion wrapper around `getSafeguardingcertificate()`
+ * @return {string}
+ */
+proto.auth.UserData.prototype.getSafeguardingcertificate_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getSafeguardingcertificate()));
+};
+
+
+/**
+ * optional bytes safeguardingCertificate = 17;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getSafeguardingcertificate()`
+ * @return {!Uint8Array}
+ */
+proto.auth.UserData.prototype.getSafeguardingcertificate_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getSafeguardingcertificate()));
+};
+
+
+/**
+ * @param {!(string|Uint8Array)} value
  * @return {!proto.auth.UserData} returns this
  */
 proto.auth.UserData.prototype.setSafeguardingcertificate = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 16, value);
+  return jspb.Message.setProto3BytesField(this, 17, value);
 };
 
 
 /**
- * optional string grade = 17;
+ * optional string grade = 18;
  * @return {string}
  */
 proto.auth.UserData.prototype.getGrade = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 17, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 18, ""));
 };
 
 
@@ -1439,33 +1493,15 @@ proto.auth.UserData.prototype.getGrade = function() {
  * @return {!proto.auth.UserData} returns this
  */
 proto.auth.UserData.prototype.setGrade = function(value) {
-  return jspb.Message.setProto3StringField(this, 17, value);
+  return jspb.Message.setProto3StringField(this, 18, value);
 };
 
 
 /**
- * optional bool hasInternship = 18;
+ * optional bool hasInternship = 19;
  * @return {boolean}
  */
 proto.auth.UserData.prototype.getHasinternship = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 18, false));
-};
-
-
-/**
- * @param {boolean} value
- * @return {!proto.auth.UserData} returns this
- */
-proto.auth.UserData.prototype.setHasinternship = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 18, value);
-};
-
-
-/**
- * optional bool isEnrolledInUniversity = 19;
- * @return {boolean}
- */
-proto.auth.UserData.prototype.getIsenrolledinuniversity = function() {
   return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 19, false));
 };
 
@@ -1474,17 +1510,35 @@ proto.auth.UserData.prototype.getIsenrolledinuniversity = function() {
  * @param {boolean} value
  * @return {!proto.auth.UserData} returns this
  */
-proto.auth.UserData.prototype.setIsenrolledinuniversity = function(value) {
+proto.auth.UserData.prototype.setHasinternship = function(value) {
   return jspb.Message.setProto3BooleanField(this, 19, value);
 };
 
 
 /**
- * optional string gender = 20;
+ * optional bool isEnrolledInUniversity = 20;
+ * @return {boolean}
+ */
+proto.auth.UserData.prototype.getIsenrolledinuniversity = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 20, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.auth.UserData} returns this
+ */
+proto.auth.UserData.prototype.setIsenrolledinuniversity = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 20, value);
+};
+
+
+/**
+ * optional string gender = 21;
  * @return {string}
  */
 proto.auth.UserData.prototype.getGender = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 20, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 21, ""));
 };
 
 
@@ -1493,7 +1547,7 @@ proto.auth.UserData.prototype.getGender = function() {
  * @return {!proto.auth.UserData} returns this
  */
 proto.auth.UserData.prototype.setGender = function(value) {
-  return jspb.Message.setProto3StringField(this, 20, value);
+  return jspb.Message.setProto3StringField(this, 21, value);
 };
 
 
@@ -1795,11 +1849,11 @@ proto.auth.SignUpRequest.toObject = function(includeInstance, msg) {
     schoolattended: jspb.Message.getFieldWithDefault(msg, 18, ""),
     graduationyear: jspb.Message.getFieldWithDefault(msg, 19, 0),
     roleinterestedin: jspb.Message.getFieldWithDefault(msg, 20, ""),
-    safeguardingcertificate: jspb.Message.getBooleanFieldWithDefault(msg, 21, false),
-    grade: jspb.Message.getFieldWithDefault(msg, 22, ""),
-    hasinternship: jspb.Message.getBooleanFieldWithDefault(msg, 23, false),
-    isenrolledinuniversity: jspb.Message.getBooleanFieldWithDefault(msg, 24, false),
-    gender: jspb.Message.getFieldWithDefault(msg, 25, "")
+    grade: jspb.Message.getFieldWithDefault(msg, 21, ""),
+    hasinternship: jspb.Message.getBooleanFieldWithDefault(msg, 22, false),
+    isenrolledinuniversity: jspb.Message.getBooleanFieldWithDefault(msg, 23, false),
+    gender: jspb.Message.getFieldWithDefault(msg, 24, ""),
+    safeguardingcertificate: msg.getSafeguardingcertificate_asB64()
   };
 
   if (includeInstance) {
@@ -1917,24 +1971,24 @@ proto.auth.SignUpRequest.deserializeBinaryFromReader = function(msg, reader) {
       msg.setRoleinterestedin(value);
       break;
     case 21:
-      var value = /** @type {boolean} */ (reader.readBool());
-      msg.setSafeguardingcertificate(value);
-      break;
-    case 22:
       var value = /** @type {string} */ (reader.readString());
       msg.setGrade(value);
       break;
-    case 23:
+    case 22:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setHasinternship(value);
       break;
-    case 24:
+    case 23:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setIsenrolledinuniversity(value);
       break;
-    case 25:
+    case 24:
       var value = /** @type {string} */ (reader.readString());
       msg.setGender(value);
+      break;
+    case 25:
+      var value = /** @type {!Uint8Array} */ (reader.readBytes());
+      msg.setSafeguardingcertificate(value);
       break;
     default:
       reader.skipField();
@@ -2105,37 +2159,37 @@ proto.auth.SignUpRequest.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getSafeguardingcertificate();
-  if (f) {
-    writer.writeBool(
-      21,
-      f
-    );
-  }
   f = message.getGrade();
   if (f.length > 0) {
     writer.writeString(
-      22,
+      21,
       f
     );
   }
   f = message.getHasinternship();
   if (f) {
     writer.writeBool(
-      23,
+      22,
       f
     );
   }
   f = message.getIsenrolledinuniversity();
   if (f) {
     writer.writeBool(
-      24,
+      23,
       f
     );
   }
   f = message.getGender();
   if (f.length > 0) {
     writer.writeString(
+      24,
+      f
+    );
+  }
+  f = message.getSafeguardingcertificate_asU8();
+  if (f.length > 0) {
+    writer.writeBytes(
       25,
       f
     );
@@ -2504,29 +2558,11 @@ proto.auth.SignUpRequest.prototype.setRoleinterestedin = function(value) {
 
 
 /**
- * optional bool safeguardingCertificate = 21;
- * @return {boolean}
- */
-proto.auth.SignUpRequest.prototype.getSafeguardingcertificate = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 21, false));
-};
-
-
-/**
- * @param {boolean} value
- * @return {!proto.auth.SignUpRequest} returns this
- */
-proto.auth.SignUpRequest.prototype.setSafeguardingcertificate = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 21, value);
-};
-
-
-/**
- * optional string grade = 22;
+ * optional string grade = 21;
  * @return {string}
  */
 proto.auth.SignUpRequest.prototype.getGrade = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 22, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 21, ""));
 };
 
 
@@ -2535,16 +2571,16 @@ proto.auth.SignUpRequest.prototype.getGrade = function() {
  * @return {!proto.auth.SignUpRequest} returns this
  */
 proto.auth.SignUpRequest.prototype.setGrade = function(value) {
-  return jspb.Message.setProto3StringField(this, 22, value);
+  return jspb.Message.setProto3StringField(this, 21, value);
 };
 
 
 /**
- * optional bool hasInternship = 23;
+ * optional bool hasInternship = 22;
  * @return {boolean}
  */
 proto.auth.SignUpRequest.prototype.getHasinternship = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 23, false));
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 22, false));
 };
 
 
@@ -2553,16 +2589,16 @@ proto.auth.SignUpRequest.prototype.getHasinternship = function() {
  * @return {!proto.auth.SignUpRequest} returns this
  */
 proto.auth.SignUpRequest.prototype.setHasinternship = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 23, value);
+  return jspb.Message.setProto3BooleanField(this, 22, value);
 };
 
 
 /**
- * optional bool isEnrolledInUniversity = 24;
+ * optional bool isEnrolledInUniversity = 23;
  * @return {boolean}
  */
 proto.auth.SignUpRequest.prototype.getIsenrolledinuniversity = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 24, false));
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 23, false));
 };
 
 
@@ -2571,16 +2607,16 @@ proto.auth.SignUpRequest.prototype.getIsenrolledinuniversity = function() {
  * @return {!proto.auth.SignUpRequest} returns this
  */
 proto.auth.SignUpRequest.prototype.setIsenrolledinuniversity = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 24, value);
+  return jspb.Message.setProto3BooleanField(this, 23, value);
 };
 
 
 /**
- * optional string gender = 25;
+ * optional string gender = 24;
  * @return {string}
  */
 proto.auth.SignUpRequest.prototype.getGender = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 25, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 24, ""));
 };
 
 
@@ -2589,7 +2625,49 @@ proto.auth.SignUpRequest.prototype.getGender = function() {
  * @return {!proto.auth.SignUpRequest} returns this
  */
 proto.auth.SignUpRequest.prototype.setGender = function(value) {
-  return jspb.Message.setProto3StringField(this, 25, value);
+  return jspb.Message.setProto3StringField(this, 24, value);
+};
+
+
+/**
+ * optional bytes safeguardingCertificate = 25;
+ * @return {!(string|Uint8Array)}
+ */
+proto.auth.SignUpRequest.prototype.getSafeguardingcertificate = function() {
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 25, ""));
+};
+
+
+/**
+ * optional bytes safeguardingCertificate = 25;
+ * This is a type-conversion wrapper around `getSafeguardingcertificate()`
+ * @return {string}
+ */
+proto.auth.SignUpRequest.prototype.getSafeguardingcertificate_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getSafeguardingcertificate()));
+};
+
+
+/**
+ * optional bytes safeguardingCertificate = 25;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getSafeguardingcertificate()`
+ * @return {!Uint8Array}
+ */
+proto.auth.SignUpRequest.prototype.getSafeguardingcertificate_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getSafeguardingcertificate()));
+};
+
+
+/**
+ * @param {!(string|Uint8Array)} value
+ * @return {!proto.auth.SignUpRequest} returns this
+ */
+proto.auth.SignUpRequest.prototype.setSafeguardingcertificate = function(value) {
+  return jspb.Message.setProto3BytesField(this, 25, value);
 };
 
 

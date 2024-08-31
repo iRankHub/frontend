@@ -15,7 +15,6 @@ import {
   getTournament,
 } from "@/core/tournament/list";
 import {
-  InvitationInfo,
   Tournament,
 } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { useInvitationsStore } from "@/stores/admin/tournaments/invitations.store";

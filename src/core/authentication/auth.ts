@@ -37,7 +37,7 @@ export const signUp = (data: {
     contactEmail?: string;
     hasInternship?: boolean;
     isEnrolledInUniversity?: boolean;
-    safeguardingCertificate?: boolean;
+    safeguardingCertificate?: string;
     gender?: string;
 }): Promise<SignUpResponse.AsObject> => {
     return new Promise((resolve, reject) => {
@@ -61,7 +61,7 @@ export const signUp = (data: {
         request.setSchoolid(data.schoolId ?? 0)
         request.setHasinternship(data.hasInternship ?? false)
         request.setIsenrolledinuniversity(data.isEnrolledInUniversity ?? false)
-        request.setSafeguardingcertificate(data.safeguardingCertificate ?? false)
+        request.setSafeguardingcertificate(data.safeguardingCertificate ?? "")
         request.setGender(data.gender ?? "male")
         // Set other fields as necessary
 
@@ -77,7 +77,7 @@ export const signUp = (data: {
     });
 };
 
-export const login = (
+export const adminLogin = (
     data: {
         emailOrId: string;
         password: string;
@@ -88,7 +88,70 @@ export const login = (
         request.setEmailOrId(data.emailOrId);
         request.setPassword(data.password)
 
-        authClient.login(request, {}, (err, response) => {
+        authClient.adminLogin(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject())
+            }
+        })
+    })
+}
+
+export const studentLogin = (
+    data: {
+        emailOrId: string;
+        password: string;
+    }
+): Promise<LoginResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new LoginRequest();
+        request.setEmailOrId(data.emailOrId);
+        request.setPassword(data.password)
+
+        authClient.studentLogin(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject())
+            }
+        })
+    })
+}
+
+export const volunteerLogin = (
+    data: {
+        emailOrId: string;
+        password: string;
+    }
+): Promise<LoginResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new LoginRequest();
+        request.setEmailOrId(data.emailOrId);
+        request.setPassword(data.password)
+
+        authClient.volunteerLogin(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject())
+            }
+        })
+    })
+}
+
+export const schoolLogin = (
+    data: {
+        emailOrId: string;
+        password: string;
+    }
+): Promise<LoginResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new LoginRequest();
+        request.setEmailOrId(data.emailOrId);
+        request.setPassword(data.password)
+
+        authClient.schoolLogin(request, {}, (err, response) => {
             if (err) {
                 reject(err);
             } else {

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Rubik, Lato, Spline_Sans_Mono } from "next/font/google";
+import { Lato } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/providers/theme-provider";
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
   viewport:
     "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover",
   icons: [
-    { rel: "apple-touch-icon", url: "icons/icon-128x128.png" },
-    { rel: "icon", url: "icons/icon-128x128.png" },
+    { rel: "apple-touch-icon", url: "static/icons/icon-128x128.png" },
+    { rel: "icon", url: "static/icons/icon-128x128.png" },
   ],
 };
 

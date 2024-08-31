@@ -91,7 +91,8 @@ export namespace auth {
             contactEmail?: string;
             graduationYear?: number;
             roleInterestedIn?: string;
-            safeguardingCertificate?: boolean;
+            nationalID?: string;
+            safeguardingCertificate?: Uint8Array;
             grade?: string;
             hasInternship?: boolean;
             isEnrolledInUniversity?: boolean;
@@ -144,6 +145,9 @@ export namespace auth {
                 }
                 if ("roleInterestedIn" in data && data.roleInterestedIn != undefined) {
                     this.roleInterestedIn = data.roleInterestedIn;
+                }
+                if ("nationalID" in data && data.nationalID != undefined) {
+                    this.nationalID = data.nationalID;
                 }
                 if ("safeguardingCertificate" in data && data.safeguardingCertificate != undefined) {
                     this.safeguardingCertificate = data.safeguardingCertificate;
@@ -252,35 +256,41 @@ export namespace auth {
         set roleInterestedIn(value: string) {
             pb_1.Message.setField(this, 15, value);
         }
-        get safeguardingCertificate() {
-            return pb_1.Message.getFieldWithDefault(this, 16, false) as boolean;
+        get nationalID() {
+            return pb_1.Message.getFieldWithDefault(this, 16, "") as string;
         }
-        set safeguardingCertificate(value: boolean) {
+        set nationalID(value: string) {
             pb_1.Message.setField(this, 16, value);
         }
-        get grade() {
-            return pb_1.Message.getFieldWithDefault(this, 17, "") as string;
+        get safeguardingCertificate() {
+            return pb_1.Message.getFieldWithDefault(this, 17, new Uint8Array(0)) as Uint8Array;
         }
-        set grade(value: string) {
+        set safeguardingCertificate(value: Uint8Array) {
             pb_1.Message.setField(this, 17, value);
         }
-        get hasInternship() {
-            return pb_1.Message.getFieldWithDefault(this, 18, false) as boolean;
+        get grade() {
+            return pb_1.Message.getFieldWithDefault(this, 18, "") as string;
         }
-        set hasInternship(value: boolean) {
+        set grade(value: string) {
             pb_1.Message.setField(this, 18, value);
         }
-        get isEnrolledInUniversity() {
+        get hasInternship() {
             return pb_1.Message.getFieldWithDefault(this, 19, false) as boolean;
         }
-        set isEnrolledInUniversity(value: boolean) {
+        set hasInternship(value: boolean) {
             pb_1.Message.setField(this, 19, value);
         }
+        get isEnrolledInUniversity() {
+            return pb_1.Message.getFieldWithDefault(this, 20, false) as boolean;
+        }
+        set isEnrolledInUniversity(value: boolean) {
+            pb_1.Message.setField(this, 20, value);
+        }
         get gender() {
-            return pb_1.Message.getFieldWithDefault(this, 20, "") as string;
+            return pb_1.Message.getFieldWithDefault(this, 21, "") as string;
         }
         set gender(value: string) {
-            pb_1.Message.setField(this, 20, value);
+            pb_1.Message.setField(this, 21, value);
         }
         static fromObject(data: {
             firstName?: string;
@@ -298,7 +308,8 @@ export namespace auth {
             contactEmail?: string;
             graduationYear?: number;
             roleInterestedIn?: string;
-            safeguardingCertificate?: boolean;
+            nationalID?: string;
+            safeguardingCertificate?: Uint8Array;
             grade?: string;
             hasInternship?: boolean;
             isEnrolledInUniversity?: boolean;
@@ -350,6 +361,9 @@ export namespace auth {
             if (data.roleInterestedIn != null) {
                 message.roleInterestedIn = data.roleInterestedIn;
             }
+            if (data.nationalID != null) {
+                message.nationalID = data.nationalID;
+            }
             if (data.safeguardingCertificate != null) {
                 message.safeguardingCertificate = data.safeguardingCertificate;
             }
@@ -384,7 +398,8 @@ export namespace auth {
                 contactEmail?: string;
                 graduationYear?: number;
                 roleInterestedIn?: string;
-                safeguardingCertificate?: boolean;
+                nationalID?: string;
+                safeguardingCertificate?: Uint8Array;
                 grade?: string;
                 hasInternship?: boolean;
                 isEnrolledInUniversity?: boolean;
@@ -434,6 +449,9 @@ export namespace auth {
             }
             if (this.roleInterestedIn != null) {
                 data.roleInterestedIn = this.roleInterestedIn;
+            }
+            if (this.nationalID != null) {
+                data.nationalID = this.nationalID;
             }
             if (this.safeguardingCertificate != null) {
                 data.safeguardingCertificate = this.safeguardingCertificate;
@@ -486,16 +504,18 @@ export namespace auth {
                 writer.writeInt32(14, this.graduationYear);
             if (this.roleInterestedIn.length)
                 writer.writeString(15, this.roleInterestedIn);
-            if (this.safeguardingCertificate != false)
-                writer.writeBool(16, this.safeguardingCertificate);
+            if (this.nationalID.length)
+                writer.writeString(16, this.nationalID);
+            if (this.safeguardingCertificate.length)
+                writer.writeBytes(17, this.safeguardingCertificate);
             if (this.grade.length)
-                writer.writeString(17, this.grade);
+                writer.writeString(18, this.grade);
             if (this.hasInternship != false)
-                writer.writeBool(18, this.hasInternship);
+                writer.writeBool(19, this.hasInternship);
             if (this.isEnrolledInUniversity != false)
-                writer.writeBool(19, this.isEnrolledInUniversity);
+                writer.writeBool(20, this.isEnrolledInUniversity);
             if (this.gender.length)
-                writer.writeString(20, this.gender);
+                writer.writeString(21, this.gender);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -551,18 +571,21 @@ export namespace auth {
                         message.roleInterestedIn = reader.readString();
                         break;
                     case 16:
-                        message.safeguardingCertificate = reader.readBool();
+                        message.nationalID = reader.readString();
                         break;
                     case 17:
-                        message.grade = reader.readString();
+                        message.safeguardingCertificate = reader.readBytes();
                         break;
                     case 18:
-                        message.hasInternship = reader.readBool();
+                        message.grade = reader.readString();
                         break;
                     case 19:
-                        message.isEnrolledInUniversity = reader.readBool();
+                        message.hasInternship = reader.readBool();
                         break;
                     case 20:
+                        message.isEnrolledInUniversity = reader.readBool();
+                        break;
+                    case 21:
                         message.gender = reader.readString();
                         break;
                     default: reader.skipField();
@@ -736,11 +759,11 @@ export namespace auth {
             schoolAttended?: string;
             graduationYear?: number;
             roleInterestedIn?: string;
-            safeguardingCertificate?: boolean;
             grade?: string;
             hasInternship?: boolean;
             isEnrolledInUniversity?: boolean;
             gender?: string;
+            safeguardingCertificate?: Uint8Array;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -805,9 +828,6 @@ export namespace auth {
                 if ("roleInterestedIn" in data && data.roleInterestedIn != undefined) {
                     this.roleInterestedIn = data.roleInterestedIn;
                 }
-                if ("safeguardingCertificate" in data && data.safeguardingCertificate != undefined) {
-                    this.safeguardingCertificate = data.safeguardingCertificate;
-                }
                 if ("grade" in data && data.grade != undefined) {
                     this.grade = data.grade;
                 }
@@ -819,6 +839,9 @@ export namespace auth {
                 }
                 if ("gender" in data && data.gender != undefined) {
                     this.gender = data.gender;
+                }
+                if ("safeguardingCertificate" in data && data.safeguardingCertificate != undefined) {
+                    this.safeguardingCertificate = data.safeguardingCertificate;
                 }
             }
         }
@@ -942,34 +965,34 @@ export namespace auth {
         set roleInterestedIn(value: string) {
             pb_1.Message.setField(this, 20, value);
         }
-        get safeguardingCertificate() {
-            return pb_1.Message.getFieldWithDefault(this, 21, false) as boolean;
-        }
-        set safeguardingCertificate(value: boolean) {
-            pb_1.Message.setField(this, 21, value);
-        }
         get grade() {
-            return pb_1.Message.getFieldWithDefault(this, 22, "") as string;
+            return pb_1.Message.getFieldWithDefault(this, 21, "") as string;
         }
         set grade(value: string) {
-            pb_1.Message.setField(this, 22, value);
+            pb_1.Message.setField(this, 21, value);
         }
         get hasInternship() {
-            return pb_1.Message.getFieldWithDefault(this, 23, false) as boolean;
+            return pb_1.Message.getFieldWithDefault(this, 22, false) as boolean;
         }
         set hasInternship(value: boolean) {
-            pb_1.Message.setField(this, 23, value);
+            pb_1.Message.setField(this, 22, value);
         }
         get isEnrolledInUniversity() {
-            return pb_1.Message.getFieldWithDefault(this, 24, false) as boolean;
+            return pb_1.Message.getFieldWithDefault(this, 23, false) as boolean;
         }
         set isEnrolledInUniversity(value: boolean) {
-            pb_1.Message.setField(this, 24, value);
+            pb_1.Message.setField(this, 23, value);
         }
         get gender() {
-            return pb_1.Message.getFieldWithDefault(this, 25, "") as string;
+            return pb_1.Message.getFieldWithDefault(this, 24, "") as string;
         }
         set gender(value: string) {
+            pb_1.Message.setField(this, 24, value);
+        }
+        get safeguardingCertificate() {
+            return pb_1.Message.getFieldWithDefault(this, 25, new Uint8Array(0)) as Uint8Array;
+        }
+        set safeguardingCertificate(value: Uint8Array) {
             pb_1.Message.setField(this, 25, value);
         }
         static fromObject(data: {
@@ -993,11 +1016,11 @@ export namespace auth {
             schoolAttended?: string;
             graduationYear?: number;
             roleInterestedIn?: string;
-            safeguardingCertificate?: boolean;
             grade?: string;
             hasInternship?: boolean;
             isEnrolledInUniversity?: boolean;
             gender?: string;
+            safeguardingCertificate?: Uint8Array;
         }): SignUpRequest {
             const message = new SignUpRequest({});
             if (data.firstName != null) {
@@ -1060,9 +1083,6 @@ export namespace auth {
             if (data.roleInterestedIn != null) {
                 message.roleInterestedIn = data.roleInterestedIn;
             }
-            if (data.safeguardingCertificate != null) {
-                message.safeguardingCertificate = data.safeguardingCertificate;
-            }
             if (data.grade != null) {
                 message.grade = data.grade;
             }
@@ -1074,6 +1094,9 @@ export namespace auth {
             }
             if (data.gender != null) {
                 message.gender = data.gender;
+            }
+            if (data.safeguardingCertificate != null) {
+                message.safeguardingCertificate = data.safeguardingCertificate;
             }
             return message;
         }
@@ -1099,11 +1122,11 @@ export namespace auth {
                 schoolAttended?: string;
                 graduationYear?: number;
                 roleInterestedIn?: string;
-                safeguardingCertificate?: boolean;
                 grade?: string;
                 hasInternship?: boolean;
                 isEnrolledInUniversity?: boolean;
                 gender?: string;
+                safeguardingCertificate?: Uint8Array;
             } = {};
             if (this.firstName != null) {
                 data.firstName = this.firstName;
@@ -1165,9 +1188,6 @@ export namespace auth {
             if (this.roleInterestedIn != null) {
                 data.roleInterestedIn = this.roleInterestedIn;
             }
-            if (this.safeguardingCertificate != null) {
-                data.safeguardingCertificate = this.safeguardingCertificate;
-            }
             if (this.grade != null) {
                 data.grade = this.grade;
             }
@@ -1179,6 +1199,9 @@ export namespace auth {
             }
             if (this.gender != null) {
                 data.gender = this.gender;
+            }
+            if (this.safeguardingCertificate != null) {
+                data.safeguardingCertificate = this.safeguardingCertificate;
             }
             return data;
         }
@@ -1226,16 +1249,16 @@ export namespace auth {
                 writer.writeInt32(19, this.graduationYear);
             if (this.roleInterestedIn.length)
                 writer.writeString(20, this.roleInterestedIn);
-            if (this.safeguardingCertificate != false)
-                writer.writeBool(21, this.safeguardingCertificate);
             if (this.grade.length)
-                writer.writeString(22, this.grade);
+                writer.writeString(21, this.grade);
             if (this.hasInternship != false)
-                writer.writeBool(23, this.hasInternship);
+                writer.writeBool(22, this.hasInternship);
             if (this.isEnrolledInUniversity != false)
-                writer.writeBool(24, this.isEnrolledInUniversity);
+                writer.writeBool(23, this.isEnrolledInUniversity);
             if (this.gender.length)
-                writer.writeString(25, this.gender);
+                writer.writeString(24, this.gender);
+            if (this.safeguardingCertificate.length)
+                writer.writeBytes(25, this.safeguardingCertificate);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1306,19 +1329,19 @@ export namespace auth {
                         message.roleInterestedIn = reader.readString();
                         break;
                     case 21:
-                        message.safeguardingCertificate = reader.readBool();
-                        break;
-                    case 22:
                         message.grade = reader.readString();
                         break;
-                    case 23:
+                    case 22:
                         message.hasInternship = reader.readBool();
                         break;
-                    case 24:
+                    case 23:
                         message.isEnrolledInUniversity = reader.readBool();
                         break;
-                    case 25:
+                    case 24:
                         message.gender = reader.readString();
+                        break;
+                    case 25:
+                        message.safeguardingCertificate = reader.readBytes();
                         break;
                     default: reader.skipField();
                 }
@@ -3536,8 +3559,35 @@ export namespace auth {
                 responseSerialize: (message: BatchImportUsersResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => BatchImportUsersResponse.deserialize(new Uint8Array(bytes))
             },
-            Login: {
-                path: "/auth.AuthService/Login",
+            AdminLogin: {
+                path: "/auth.AuthService/AdminLogin",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: LoginRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => LoginRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: LoginResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => LoginResponse.deserialize(new Uint8Array(bytes))
+            },
+            StudentLogin: {
+                path: "/auth.AuthService/StudentLogin",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: LoginRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => LoginRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: LoginResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => LoginResponse.deserialize(new Uint8Array(bytes))
+            },
+            VolunteerLogin: {
+                path: "/auth.AuthService/VolunteerLogin",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: LoginRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => LoginRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: LoginResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => LoginResponse.deserialize(new Uint8Array(bytes))
+            },
+            SchoolLogin: {
+                path: "/auth.AuthService/SchoolLogin",
                 requestStream: false,
                 responseStream: false,
                 requestSerialize: (message: LoginRequest) => Buffer.from(message.serialize()),
@@ -3648,7 +3698,10 @@ export namespace auth {
         [method: string]: grpc_1.UntypedHandleCall;
         abstract SignUp(call: grpc_1.ServerUnaryCall<SignUpRequest, SignUpResponse>, callback: grpc_1.sendUnaryData<SignUpResponse>): void;
         abstract BatchImportUsers(call: grpc_1.ServerUnaryCall<BatchImportUsersRequest, BatchImportUsersResponse>, callback: grpc_1.sendUnaryData<BatchImportUsersResponse>): void;
-        abstract Login(call: grpc_1.ServerUnaryCall<LoginRequest, LoginResponse>, callback: grpc_1.sendUnaryData<LoginResponse>): void;
+        abstract AdminLogin(call: grpc_1.ServerUnaryCall<LoginRequest, LoginResponse>, callback: grpc_1.sendUnaryData<LoginResponse>): void;
+        abstract StudentLogin(call: grpc_1.ServerUnaryCall<LoginRequest, LoginResponse>, callback: grpc_1.sendUnaryData<LoginResponse>): void;
+        abstract VolunteerLogin(call: grpc_1.ServerUnaryCall<LoginRequest, LoginResponse>, callback: grpc_1.sendUnaryData<LoginResponse>): void;
+        abstract SchoolLogin(call: grpc_1.ServerUnaryCall<LoginRequest, LoginResponse>, callback: grpc_1.sendUnaryData<LoginResponse>): void;
         abstract EnableTwoFactor(call: grpc_1.ServerUnaryCall<EnableTwoFactorRequest, EnableTwoFactorResponse>, callback: grpc_1.sendUnaryData<EnableTwoFactorResponse>): void;
         abstract DisableTwoFactor(call: grpc_1.ServerUnaryCall<DisableTwoFactorRequest, DisableTwoFactorResponse>, callback: grpc_1.sendUnaryData<DisableTwoFactorResponse>): void;
         abstract GenerateTwoFactorOTP(call: grpc_1.ServerUnaryCall<GenerateTwoFactorOTPRequest, GenerateTwoFactorOTPResponse>, callback: grpc_1.sendUnaryData<GenerateTwoFactorOTPResponse>): void;
@@ -3671,8 +3724,17 @@ export namespace auth {
         BatchImportUsers: GrpcUnaryServiceInterface<BatchImportUsersRequest, BatchImportUsersResponse> = (message: BatchImportUsersRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<BatchImportUsersResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<BatchImportUsersResponse>, callback?: grpc_1.requestCallback<BatchImportUsersResponse>): grpc_1.ClientUnaryCall => {
             return super.BatchImportUsers(message, metadata, options, callback);
         };
-        Login: GrpcUnaryServiceInterface<LoginRequest, LoginResponse> = (message: LoginRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<LoginResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<LoginResponse>, callback?: grpc_1.requestCallback<LoginResponse>): grpc_1.ClientUnaryCall => {
-            return super.Login(message, metadata, options, callback);
+        AdminLogin: GrpcUnaryServiceInterface<LoginRequest, LoginResponse> = (message: LoginRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<LoginResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<LoginResponse>, callback?: grpc_1.requestCallback<LoginResponse>): grpc_1.ClientUnaryCall => {
+            return super.AdminLogin(message, metadata, options, callback);
+        };
+        StudentLogin: GrpcUnaryServiceInterface<LoginRequest, LoginResponse> = (message: LoginRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<LoginResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<LoginResponse>, callback?: grpc_1.requestCallback<LoginResponse>): grpc_1.ClientUnaryCall => {
+            return super.StudentLogin(message, metadata, options, callback);
+        };
+        VolunteerLogin: GrpcUnaryServiceInterface<LoginRequest, LoginResponse> = (message: LoginRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<LoginResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<LoginResponse>, callback?: grpc_1.requestCallback<LoginResponse>): grpc_1.ClientUnaryCall => {
+            return super.VolunteerLogin(message, metadata, options, callback);
+        };
+        SchoolLogin: GrpcUnaryServiceInterface<LoginRequest, LoginResponse> = (message: LoginRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<LoginResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<LoginResponse>, callback?: grpc_1.requestCallback<LoginResponse>): grpc_1.ClientUnaryCall => {
+            return super.SchoolLogin(message, metadata, options, callback);
         };
         EnableTwoFactor: GrpcUnaryServiceInterface<EnableTwoFactorRequest, EnableTwoFactorResponse> = (message: EnableTwoFactorRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<EnableTwoFactorResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<EnableTwoFactorResponse>, callback?: grpc_1.requestCallback<EnableTwoFactorResponse>): grpc_1.ClientUnaryCall => {
             return super.EnableTwoFactor(message, metadata, options, callback);

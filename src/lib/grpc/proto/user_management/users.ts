@@ -1289,7 +1289,7 @@ export namespace user_management {
         constructor(data?: any[] | {
             role?: string;
             graduateYear?: number;
-            safeGuardCertificate?: boolean;
+            safeGuardCertificate?: Uint8Array;
             hasInternship?: boolean;
             isEnrolledInUniversity?: boolean;
         }) {
@@ -1326,9 +1326,9 @@ export namespace user_management {
             pb_1.Message.setField(this, 2, value);
         }
         get safeGuardCertificate() {
-            return pb_1.Message.getFieldWithDefault(this, 3, false) as boolean;
+            return pb_1.Message.getFieldWithDefault(this, 3, new Uint8Array(0)) as Uint8Array;
         }
-        set safeGuardCertificate(value: boolean) {
+        set safeGuardCertificate(value: Uint8Array) {
             pb_1.Message.setField(this, 3, value);
         }
         get hasInternship() {
@@ -1346,7 +1346,7 @@ export namespace user_management {
         static fromObject(data: {
             role?: string;
             graduateYear?: number;
-            safeGuardCertificate?: boolean;
+            safeGuardCertificate?: Uint8Array;
             hasInternship?: boolean;
             isEnrolledInUniversity?: boolean;
         }): VolunteerDetails {
@@ -1372,7 +1372,7 @@ export namespace user_management {
             const data: {
                 role?: string;
                 graduateYear?: number;
-                safeGuardCertificate?: boolean;
+                safeGuardCertificate?: Uint8Array;
                 hasInternship?: boolean;
                 isEnrolledInUniversity?: boolean;
             } = {};
@@ -1401,8 +1401,8 @@ export namespace user_management {
                 writer.writeString(1, this.role);
             if (this.graduateYear != 0)
                 writer.writeInt32(2, this.graduateYear);
-            if (this.safeGuardCertificate != false)
-                writer.writeBool(3, this.safeGuardCertificate);
+            if (this.safeGuardCertificate.length)
+                writer.writeBytes(3, this.safeGuardCertificate);
             if (this.hasInternship != false)
                 writer.writeBool(4, this.hasInternship);
             if (this.isEnrolledInUniversity != false)
@@ -1423,7 +1423,7 @@ export namespace user_management {
                         message.graduateYear = reader.readInt32();
                         break;
                     case 3:
-                        message.safeGuardCertificate = reader.readBool();
+                        message.safeGuardCertificate = reader.readBytes();
                         break;
                     case 4:
                         message.hasInternship = reader.readBool();
@@ -2573,7 +2573,7 @@ export namespace user_management {
         }
     }
     export class UpdateUserProfileRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [[12, 13, 14]];
+        #one_of_decls: number[][] = [[10, 11, 12]];
         constructor(data?: any[] | ({
             token?: string;
             userID?: number;
@@ -2584,8 +2584,6 @@ export namespace user_management {
             phone?: string;
             bio?: string;
             profilePicture?: Uint8Array;
-            twoFactorEnabled?: boolean;
-            password?: string;
         } & (({
             studentDetails?: StudentDetails;
             schoolDetails?: never;
@@ -2628,12 +2626,6 @@ export namespace user_management {
                 }
                 if ("profilePicture" in data && data.profilePicture != undefined) {
                     this.profilePicture = data.profilePicture;
-                }
-                if ("twoFactorEnabled" in data && data.twoFactorEnabled != undefined) {
-                    this.twoFactorEnabled = data.twoFactorEnabled;
-                }
-                if ("password" in data && data.password != undefined) {
-                    this.password = data.password;
                 }
                 if ("studentDetails" in data && data.studentDetails != undefined) {
                     this.studentDetails = data.studentDetails;
@@ -2700,55 +2692,43 @@ export namespace user_management {
         set profilePicture(value: Uint8Array) {
             pb_1.Message.setField(this, 9, value);
         }
-        get twoFactorEnabled() {
-            return pb_1.Message.getFieldWithDefault(this, 10, false) as boolean;
-        }
-        set twoFactorEnabled(value: boolean) {
-            pb_1.Message.setField(this, 10, value);
-        }
-        get password() {
-            return pb_1.Message.getFieldWithDefault(this, 11, "") as string;
-        }
-        set password(value: string) {
-            pb_1.Message.setField(this, 11, value);
-        }
         get studentDetails() {
-            return pb_1.Message.getWrapperField(this, StudentDetails, 12) as StudentDetails;
+            return pb_1.Message.getWrapperField(this, StudentDetails, 10) as StudentDetails;
         }
         set studentDetails(value: StudentDetails) {
-            pb_1.Message.setOneofWrapperField(this, 12, this.#one_of_decls[0], value);
+            pb_1.Message.setOneofWrapperField(this, 10, this.#one_of_decls[0], value);
         }
         get has_studentDetails() {
-            return pb_1.Message.getField(this, 12) != null;
+            return pb_1.Message.getField(this, 10) != null;
         }
         get schoolDetails() {
-            return pb_1.Message.getWrapperField(this, SchoolDetails, 13) as SchoolDetails;
+            return pb_1.Message.getWrapperField(this, SchoolDetails, 11) as SchoolDetails;
         }
         set schoolDetails(value: SchoolDetails) {
-            pb_1.Message.setOneofWrapperField(this, 13, this.#one_of_decls[0], value);
+            pb_1.Message.setOneofWrapperField(this, 11, this.#one_of_decls[0], value);
         }
         get has_schoolDetails() {
-            return pb_1.Message.getField(this, 13) != null;
+            return pb_1.Message.getField(this, 11) != null;
         }
         get volunteerDetails() {
-            return pb_1.Message.getWrapperField(this, VolunteerDetails, 14) as VolunteerDetails;
+            return pb_1.Message.getWrapperField(this, VolunteerDetails, 12) as VolunteerDetails;
         }
         set volunteerDetails(value: VolunteerDetails) {
-            pb_1.Message.setOneofWrapperField(this, 14, this.#one_of_decls[0], value);
+            pb_1.Message.setOneofWrapperField(this, 12, this.#one_of_decls[0], value);
         }
         get has_volunteerDetails() {
-            return pb_1.Message.getField(this, 14) != null;
+            return pb_1.Message.getField(this, 12) != null;
         }
         get role_specific_details() {
             const cases: {
                 [index: number]: "none" | "studentDetails" | "schoolDetails" | "volunteerDetails";
             } = {
                 0: "none",
-                12: "studentDetails",
-                13: "schoolDetails",
-                14: "volunteerDetails"
+                10: "studentDetails",
+                11: "schoolDetails",
+                12: "volunteerDetails"
             };
-            return cases[pb_1.Message.computeOneofCase(this, [12, 13, 14])];
+            return cases[pb_1.Message.computeOneofCase(this, [10, 11, 12])];
         }
         static fromObject(data: {
             token?: string;
@@ -2760,8 +2740,6 @@ export namespace user_management {
             phone?: string;
             bio?: string;
             profilePicture?: Uint8Array;
-            twoFactorEnabled?: boolean;
-            password?: string;
             studentDetails?: ReturnType<typeof StudentDetails.prototype.toObject>;
             schoolDetails?: ReturnType<typeof SchoolDetails.prototype.toObject>;
             volunteerDetails?: ReturnType<typeof VolunteerDetails.prototype.toObject>;
@@ -2794,12 +2772,6 @@ export namespace user_management {
             if (data.profilePicture != null) {
                 message.profilePicture = data.profilePicture;
             }
-            if (data.twoFactorEnabled != null) {
-                message.twoFactorEnabled = data.twoFactorEnabled;
-            }
-            if (data.password != null) {
-                message.password = data.password;
-            }
             if (data.studentDetails != null) {
                 message.studentDetails = StudentDetails.fromObject(data.studentDetails);
             }
@@ -2822,8 +2794,6 @@ export namespace user_management {
                 phone?: string;
                 bio?: string;
                 profilePicture?: Uint8Array;
-                twoFactorEnabled?: boolean;
-                password?: string;
                 studentDetails?: ReturnType<typeof StudentDetails.prototype.toObject>;
                 schoolDetails?: ReturnType<typeof SchoolDetails.prototype.toObject>;
                 volunteerDetails?: ReturnType<typeof VolunteerDetails.prototype.toObject>;
@@ -2854,12 +2824,6 @@ export namespace user_management {
             }
             if (this.profilePicture != null) {
                 data.profilePicture = this.profilePicture;
-            }
-            if (this.twoFactorEnabled != null) {
-                data.twoFactorEnabled = this.twoFactorEnabled;
-            }
-            if (this.password != null) {
-                data.password = this.password;
             }
             if (this.studentDetails != null) {
                 data.studentDetails = this.studentDetails.toObject();
@@ -2894,16 +2858,12 @@ export namespace user_management {
                 writer.writeString(8, this.bio);
             if (this.profilePicture.length)
                 writer.writeBytes(9, this.profilePicture);
-            if (this.twoFactorEnabled != false)
-                writer.writeBool(10, this.twoFactorEnabled);
-            if (this.password.length)
-                writer.writeString(11, this.password);
             if (this.has_studentDetails)
-                writer.writeMessage(12, this.studentDetails, () => this.studentDetails.serialize(writer));
+                writer.writeMessage(10, this.studentDetails, () => this.studentDetails.serialize(writer));
             if (this.has_schoolDetails)
-                writer.writeMessage(13, this.schoolDetails, () => this.schoolDetails.serialize(writer));
+                writer.writeMessage(11, this.schoolDetails, () => this.schoolDetails.serialize(writer));
             if (this.has_volunteerDetails)
-                writer.writeMessage(14, this.volunteerDetails, () => this.volunteerDetails.serialize(writer));
+                writer.writeMessage(12, this.volunteerDetails, () => this.volunteerDetails.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -2941,18 +2901,12 @@ export namespace user_management {
                         message.profilePicture = reader.readBytes();
                         break;
                     case 10:
-                        message.twoFactorEnabled = reader.readBool();
-                        break;
-                    case 11:
-                        message.password = reader.readString();
-                        break;
-                    case 12:
                         reader.readMessage(message.studentDetails, () => message.studentDetails = StudentDetails.deserialize(reader));
                         break;
-                    case 13:
+                    case 11:
                         reader.readMessage(message.schoolDetails, () => message.schoolDetails = SchoolDetails.deserialize(reader));
                         break;
-                    case 14:
+                    case 12:
                         reader.readMessage(message.volunteerDetails, () => message.volunteerDetails = VolunteerDetails.deserialize(reader));
                         break;
                     default: reader.skipField();
@@ -5098,7 +5052,7 @@ export namespace user_management {
             dateOfBirth?: string;
             role?: string;
             graduateYear?: number;
-            safeGuardCertificate?: boolean;
+            safeGuardCertificate?: Uint8Array;
             email?: string;
         }) {
             super();
@@ -5167,9 +5121,9 @@ export namespace user_management {
             pb_1.Message.setField(this, 6, value);
         }
         get safeGuardCertificate() {
-            return pb_1.Message.getFieldWithDefault(this, 7, false) as boolean;
+            return pb_1.Message.getFieldWithDefault(this, 7, new Uint8Array(0)) as Uint8Array;
         }
-        set safeGuardCertificate(value: boolean) {
+        set safeGuardCertificate(value: Uint8Array) {
             pb_1.Message.setField(this, 7, value);
         }
         get email() {
@@ -5185,7 +5139,7 @@ export namespace user_management {
             dateOfBirth?: string;
             role?: string;
             graduateYear?: number;
-            safeGuardCertificate?: boolean;
+            safeGuardCertificate?: Uint8Array;
             email?: string;
         }): Volunteer {
             const message = new Volunteer({});
@@ -5223,7 +5177,7 @@ export namespace user_management {
                 dateOfBirth?: string;
                 role?: string;
                 graduateYear?: number;
-                safeGuardCertificate?: boolean;
+                safeGuardCertificate?: Uint8Array;
                 email?: string;
             } = {};
             if (this.volunteerID != null) {
@@ -5268,8 +5222,8 @@ export namespace user_management {
                 writer.writeString(5, this.role);
             if (this.graduateYear != 0)
                 writer.writeInt32(6, this.graduateYear);
-            if (this.safeGuardCertificate != false)
-                writer.writeBool(7, this.safeGuardCertificate);
+            if (this.safeGuardCertificate.length)
+                writer.writeBytes(7, this.safeGuardCertificate);
             if (this.email.length)
                 writer.writeString(8, this.email);
             if (!w)
@@ -5300,7 +5254,7 @@ export namespace user_management {
                         message.graduateYear = reader.readInt32();
                         break;
                     case 7:
-                        message.safeGuardCertificate = reader.readBool();
+                        message.safeGuardCertificate = reader.readBytes();
                         break;
                     case 8:
                         message.email = reader.readString();
@@ -5700,6 +5654,412 @@ export namespace user_management {
             return GetSchoolsNoAuthResponse.deserialize(bytes);
         }
     }
+    export class InitiatePasswordUpdateRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            token?: string;
+            userID?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+                if ("userID" in data && data.userID != undefined) {
+                    this.userID = data.userID;
+                }
+            }
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get userID() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set userID(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            token?: string;
+            userID?: number;
+        }): InitiatePasswordUpdateRequest {
+            const message = new InitiatePasswordUpdateRequest({});
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            if (data.userID != null) {
+                message.userID = data.userID;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                token?: string;
+                userID?: number;
+            } = {};
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            if (this.userID != null) {
+                data.userID = this.userID;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.token.length)
+                writer.writeString(1, this.token);
+            if (this.userID != 0)
+                writer.writeInt32(2, this.userID);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): InitiatePasswordUpdateRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new InitiatePasswordUpdateRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.token = reader.readString();
+                        break;
+                    case 2:
+                        message.userID = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): InitiatePasswordUpdateRequest {
+            return InitiatePasswordUpdateRequest.deserialize(bytes);
+        }
+    }
+    export class InitiatePasswordUpdateResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            success?: boolean;
+            message?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("success" in data && data.success != undefined) {
+                    this.success = data.success;
+                }
+                if ("message" in data && data.message != undefined) {
+                    this.message = data.message;
+                }
+            }
+        }
+        get success() {
+            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
+        }
+        set success(value: boolean) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get message() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set message(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            success?: boolean;
+            message?: string;
+        }): InitiatePasswordUpdateResponse {
+            const message = new InitiatePasswordUpdateResponse({});
+            if (data.success != null) {
+                message.success = data.success;
+            }
+            if (data.message != null) {
+                message.message = data.message;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                success?: boolean;
+                message?: string;
+            } = {};
+            if (this.success != null) {
+                data.success = this.success;
+            }
+            if (this.message != null) {
+                data.message = this.message;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.success != false)
+                writer.writeBool(1, this.success);
+            if (this.message.length)
+                writer.writeString(2, this.message);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): InitiatePasswordUpdateResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new InitiatePasswordUpdateResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.success = reader.readBool();
+                        break;
+                    case 2:
+                        message.message = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): InitiatePasswordUpdateResponse {
+            return InitiatePasswordUpdateResponse.deserialize(bytes);
+        }
+    }
+    export class VerifyAndUpdatePasswordRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            token?: string;
+            userID?: number;
+            verificationCode?: string;
+            newPassword?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+                if ("userID" in data && data.userID != undefined) {
+                    this.userID = data.userID;
+                }
+                if ("verificationCode" in data && data.verificationCode != undefined) {
+                    this.verificationCode = data.verificationCode;
+                }
+                if ("newPassword" in data && data.newPassword != undefined) {
+                    this.newPassword = data.newPassword;
+                }
+            }
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get userID() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set userID(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get verificationCode() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set verificationCode(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get newPassword() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set newPassword(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        static fromObject(data: {
+            token?: string;
+            userID?: number;
+            verificationCode?: string;
+            newPassword?: string;
+        }): VerifyAndUpdatePasswordRequest {
+            const message = new VerifyAndUpdatePasswordRequest({});
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            if (data.userID != null) {
+                message.userID = data.userID;
+            }
+            if (data.verificationCode != null) {
+                message.verificationCode = data.verificationCode;
+            }
+            if (data.newPassword != null) {
+                message.newPassword = data.newPassword;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                token?: string;
+                userID?: number;
+                verificationCode?: string;
+                newPassword?: string;
+            } = {};
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            if (this.userID != null) {
+                data.userID = this.userID;
+            }
+            if (this.verificationCode != null) {
+                data.verificationCode = this.verificationCode;
+            }
+            if (this.newPassword != null) {
+                data.newPassword = this.newPassword;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.token.length)
+                writer.writeString(1, this.token);
+            if (this.userID != 0)
+                writer.writeInt32(2, this.userID);
+            if (this.verificationCode.length)
+                writer.writeString(3, this.verificationCode);
+            if (this.newPassword.length)
+                writer.writeString(4, this.newPassword);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): VerifyAndUpdatePasswordRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new VerifyAndUpdatePasswordRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.token = reader.readString();
+                        break;
+                    case 2:
+                        message.userID = reader.readInt32();
+                        break;
+                    case 3:
+                        message.verificationCode = reader.readString();
+                        break;
+                    case 4:
+                        message.newPassword = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): VerifyAndUpdatePasswordRequest {
+            return VerifyAndUpdatePasswordRequest.deserialize(bytes);
+        }
+    }
+    export class VerifyAndUpdatePasswordResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            success?: boolean;
+            message?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("success" in data && data.success != undefined) {
+                    this.success = data.success;
+                }
+                if ("message" in data && data.message != undefined) {
+                    this.message = data.message;
+                }
+            }
+        }
+        get success() {
+            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
+        }
+        set success(value: boolean) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get message() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set message(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            success?: boolean;
+            message?: string;
+        }): VerifyAndUpdatePasswordResponse {
+            const message = new VerifyAndUpdatePasswordResponse({});
+            if (data.success != null) {
+                message.success = data.success;
+            }
+            if (data.message != null) {
+                message.message = data.message;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                success?: boolean;
+                message?: string;
+            } = {};
+            if (this.success != null) {
+                data.success = this.success;
+            }
+            if (this.message != null) {
+                data.message = this.message;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.success != false)
+                writer.writeBool(1, this.success);
+            if (this.message.length)
+                writer.writeString(2, this.message);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): VerifyAndUpdatePasswordResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new VerifyAndUpdatePasswordResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.success = reader.readBool();
+                        break;
+                    case 2:
+                        message.message = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): VerifyAndUpdatePasswordResponse {
+            return VerifyAndUpdatePasswordResponse.deserialize(bytes);
+        }
+    }
     interface GrpcUnaryServiceInterface<P, R> {
         (message: P, metadata: grpc_1.Metadata, options: grpc_1.CallOptions, callback: grpc_1.requestCallback<R>): grpc_1.ClientUnaryCall;
         (message: P, metadata: grpc_1.Metadata, callback: grpc_1.requestCallback<R>): grpc_1.ClientUnaryCall;
@@ -5896,6 +6256,24 @@ export namespace user_management {
                 requestDeserialize: (bytes: Buffer) => GetSchoolsNoAuthRequest.deserialize(new Uint8Array(bytes)),
                 responseSerialize: (message: GetSchoolsNoAuthResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => GetSchoolsNoAuthResponse.deserialize(new Uint8Array(bytes))
+            },
+            InitiatePasswordUpdate: {
+                path: "/user_management.UserManagementService/InitiatePasswordUpdate",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: InitiatePasswordUpdateRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => InitiatePasswordUpdateRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: InitiatePasswordUpdateResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => InitiatePasswordUpdateResponse.deserialize(new Uint8Array(bytes))
+            },
+            VerifyAndUpdatePassword: {
+                path: "/user_management.UserManagementService/VerifyAndUpdatePassword",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: VerifyAndUpdatePasswordRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => VerifyAndUpdatePasswordRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: VerifyAndUpdatePasswordResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => VerifyAndUpdatePasswordResponse.deserialize(new Uint8Array(bytes))
             }
         };
         [method: string]: grpc_1.UntypedHandleCall;
@@ -5918,6 +6296,8 @@ export namespace user_management {
         abstract GetAllUsers(call: grpc_1.ServerUnaryCall<GetAllUsersRequest, GetAllUsersResponse>, callback: grpc_1.sendUnaryData<GetAllUsersResponse>): void;
         abstract GetVolunteersAndAdmins(call: grpc_1.ServerUnaryCall<GetVolunteersAndAdminsRequest, GetVolunteersAndAdminsResponse>, callback: grpc_1.sendUnaryData<GetVolunteersAndAdminsResponse>): void;
         abstract GetSchoolsNoAuth(call: grpc_1.ServerUnaryCall<GetSchoolsNoAuthRequest, GetSchoolsNoAuthResponse>, callback: grpc_1.sendUnaryData<GetSchoolsNoAuthResponse>): void;
+        abstract InitiatePasswordUpdate(call: grpc_1.ServerUnaryCall<InitiatePasswordUpdateRequest, InitiatePasswordUpdateResponse>, callback: grpc_1.sendUnaryData<InitiatePasswordUpdateResponse>): void;
+        abstract VerifyAndUpdatePassword(call: grpc_1.ServerUnaryCall<VerifyAndUpdatePasswordRequest, VerifyAndUpdatePasswordResponse>, callback: grpc_1.sendUnaryData<VerifyAndUpdatePasswordResponse>): void;
     }
     export class UserManagementServiceClient extends grpc_1.makeGenericClientConstructor(UnimplementedUserManagementServiceService.definition, "UserManagementService", {}) {
         constructor(address: string, credentials: grpc_1.ChannelCredentials, options?: Partial<grpc_1.ChannelOptions>) {
@@ -5979,6 +6359,12 @@ export namespace user_management {
         };
         GetSchoolsNoAuth: GrpcUnaryServiceInterface<GetSchoolsNoAuthRequest, GetSchoolsNoAuthResponse> = (message: GetSchoolsNoAuthRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetSchoolsNoAuthResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetSchoolsNoAuthResponse>, callback?: grpc_1.requestCallback<GetSchoolsNoAuthResponse>): grpc_1.ClientUnaryCall => {
             return super.GetSchoolsNoAuth(message, metadata, options, callback);
+        };
+        InitiatePasswordUpdate: GrpcUnaryServiceInterface<InitiatePasswordUpdateRequest, InitiatePasswordUpdateResponse> = (message: InitiatePasswordUpdateRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<InitiatePasswordUpdateResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<InitiatePasswordUpdateResponse>, callback?: grpc_1.requestCallback<InitiatePasswordUpdateResponse>): grpc_1.ClientUnaryCall => {
+            return super.InitiatePasswordUpdate(message, metadata, options, callback);
+        };
+        VerifyAndUpdatePassword: GrpcUnaryServiceInterface<VerifyAndUpdatePasswordRequest, VerifyAndUpdatePasswordResponse> = (message: VerifyAndUpdatePasswordRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<VerifyAndUpdatePasswordResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<VerifyAndUpdatePasswordResponse>, callback?: grpc_1.requestCallback<VerifyAndUpdatePasswordResponse>): grpc_1.ClientUnaryCall => {
+            return super.VerifyAndUpdatePassword(message, metadata, options, callback);
         };
     }
 }

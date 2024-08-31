@@ -856,5 +856,91 @@ export class UserManagementServiceClient {
     this.methodDescriptorGetSchoolsNoAuth);
   }
 
+  methodDescriptorInitiatePasswordUpdate = new grpcWeb.MethodDescriptor(
+    '/user_management.UserManagementService/InitiatePasswordUpdate',
+    grpcWeb.MethodType.UNARY,
+    user_management_users_pb.InitiatePasswordUpdateRequest,
+    user_management_users_pb.InitiatePasswordUpdateResponse,
+    (request: user_management_users_pb.InitiatePasswordUpdateRequest) => {
+      return request.serializeBinary();
+    },
+    user_management_users_pb.InitiatePasswordUpdateResponse.deserializeBinary
+  );
+
+  initiatePasswordUpdate(
+    request: user_management_users_pb.InitiatePasswordUpdateRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<user_management_users_pb.InitiatePasswordUpdateResponse>;
+
+  initiatePasswordUpdate(
+    request: user_management_users_pb.InitiatePasswordUpdateRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.InitiatePasswordUpdateResponse) => void): grpcWeb.ClientReadableStream<user_management_users_pb.InitiatePasswordUpdateResponse>;
+
+  initiatePasswordUpdate(
+    request: user_management_users_pb.InitiatePasswordUpdateRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.InitiatePasswordUpdateResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/user_management.UserManagementService/InitiatePasswordUpdate',
+        request,
+        metadata || {},
+        this.methodDescriptorInitiatePasswordUpdate,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/user_management.UserManagementService/InitiatePasswordUpdate',
+    request,
+    metadata || {},
+    this.methodDescriptorInitiatePasswordUpdate);
+  }
+
+  methodDescriptorVerifyAndUpdatePassword = new grpcWeb.MethodDescriptor(
+    '/user_management.UserManagementService/VerifyAndUpdatePassword',
+    grpcWeb.MethodType.UNARY,
+    user_management_users_pb.VerifyAndUpdatePasswordRequest,
+    user_management_users_pb.VerifyAndUpdatePasswordResponse,
+    (request: user_management_users_pb.VerifyAndUpdatePasswordRequest) => {
+      return request.serializeBinary();
+    },
+    user_management_users_pb.VerifyAndUpdatePasswordResponse.deserializeBinary
+  );
+
+  verifyAndUpdatePassword(
+    request: user_management_users_pb.VerifyAndUpdatePasswordRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<user_management_users_pb.VerifyAndUpdatePasswordResponse>;
+
+  verifyAndUpdatePassword(
+    request: user_management_users_pb.VerifyAndUpdatePasswordRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.VerifyAndUpdatePasswordResponse) => void): grpcWeb.ClientReadableStream<user_management_users_pb.VerifyAndUpdatePasswordResponse>;
+
+  verifyAndUpdatePassword(
+    request: user_management_users_pb.VerifyAndUpdatePasswordRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.VerifyAndUpdatePasswordResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/user_management.UserManagementService/VerifyAndUpdatePassword',
+        request,
+        metadata || {},
+        this.methodDescriptorVerifyAndUpdatePassword,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/user_management.UserManagementService/VerifyAndUpdatePassword',
+    request,
+    metadata || {},
+    this.methodDescriptorVerifyAndUpdatePassword);
+  }
+
 }
 

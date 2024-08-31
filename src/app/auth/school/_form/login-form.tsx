@@ -23,7 +23,7 @@ import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
-import { login } from "@/core/authentication/auth";
+import { schoolLogin } from "@/core/authentication/auth";
 
 type Inputs = z.infer<typeof loginSchema>;
 
@@ -49,7 +49,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
   async function onSubmit(data: Inputs) {
     setIsPending(true);
     console.log("hello");
-    await login({ emailOrId: data.id, password: data.password })
+    await schoolLogin({ emailOrId: data.id, password: data.password })
       .then((res) => {
         if (res.success) {
           form.reset();
