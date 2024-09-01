@@ -1071,5 +1071,48 @@ export class UserManagementServiceClient {
     this.methodDescriptorVerifyAndUpdatePassword);
   }
 
+  methodDescriptorGetSchoolIDsByNames = new grpcWeb.MethodDescriptor(
+    '/user_management.UserManagementService/GetSchoolIDsByNames',
+    grpcWeb.MethodType.UNARY,
+    user_management_users_pb.GetSchoolIDsByNamesRequest,
+    user_management_users_pb.GetSchoolIDsByNamesResponse,
+    (request: user_management_users_pb.GetSchoolIDsByNamesRequest) => {
+      return request.serializeBinary();
+    },
+    user_management_users_pb.GetSchoolIDsByNamesResponse.deserializeBinary
+  );
+
+  getSchoolIDsByNames(
+    request: user_management_users_pb.GetSchoolIDsByNamesRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<user_management_users_pb.GetSchoolIDsByNamesResponse>;
+
+  getSchoolIDsByNames(
+    request: user_management_users_pb.GetSchoolIDsByNamesRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.GetSchoolIDsByNamesResponse) => void): grpcWeb.ClientReadableStream<user_management_users_pb.GetSchoolIDsByNamesResponse>;
+
+  getSchoolIDsByNames(
+    request: user_management_users_pb.GetSchoolIDsByNamesRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.GetSchoolIDsByNamesResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/user_management.UserManagementService/GetSchoolIDsByNames',
+        request,
+        metadata || {},
+        this.methodDescriptorGetSchoolIDsByNames,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/user_management.UserManagementService/GetSchoolIDsByNames',
+    request,
+    metadata || {},
+    this.methodDescriptorGetSchoolIDsByNames);
+  }
+
 }
 

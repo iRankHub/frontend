@@ -49,11 +49,7 @@ import { createTournamentTeam, updateTournamentTeam } from "@/core/tournament/te
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useState } from "react";
 import { useTeamsStore } from "@/stores/admin/debate/teams.store";
-
-const inter = Inter({
-  weight: "600",
-  subsets: ["latin"],
-});
+import DeleteTeam from "./delete-team";
 
 export const columns: ColumnDef<Team.AsObject>[] = [
   {
@@ -114,60 +110,7 @@ export const columns: ColumnDef<Team.AsObject>[] = [
       return (
         <div className="w-full pr-5 text-center gap-3">
           <UpdateTeamForm team={row.original} />
-          <Sheet>
-            <SheetTrigger>
-              <Button
-                type="button"
-                variant={"secondary"}
-                size={"icon"}
-                className="w-full bg-transparent hover:bg-transparent m-0"
-              >
-                <Icons.trash2 className="w-5 h-5 text-destructive" />
-              </Button>
-            </SheetTrigger>
-            <SidePanel>
-              <Panelheader>
-                <div className="flex items-center gap-1">
-                  <h3 className="text-sm font-bold capitalize">
-                    {row.getValue("name")}
-                  </h3>
-                  <Button
-                    type="button"
-                    className="rounded-full m-0 p-0 w-6 h-6 hover:bg-primary"
-                    size={"icon"}
-                  >
-                    <Icons.pencilLine className="w-4 h-4" />
-                  </Button>
-                </div>
-              </Panelheader>
-              <div className="w-full h-[calc(100%_-_70px)] p-5 flex flex-col">
-                <div className="w-full flex-1">
-                  <div className="w-full leading-6 mb-3">
-                    <div className="flex items-center gap-3">
-                      <h3 className="text-lg font-bold text-foreground">
-                        Green Hills Team 1
-                      </h3>
-                      <Badge className="bg-primary hover:bg-primary text-sm text-white">
-                        Negative
-                      </Badge>
-                    </div>
-                    <p
-                      className={cn(
-                        "text-sm text-muted-foreground font-medium",
-                        inter
-                      )}
-                    >
-                      Speakers
-                    </p>
-                  </div>
-                </div>
-                <Button>
-                  Continue
-                  <span className="sr-only">Continue</span>
-                </Button>
-              </div>
-            </SidePanel>
-          </Sheet>
+          <DeleteTeam team={row.original} />
         </div>
       );
     },
@@ -196,8 +139,8 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
     defaultValues: {
       name: team.name,
       speaker_1: String(team.speakersList[0].speakerId),
-      speaker_2: String(team.speakersList[1].speakerId),
-      speaker_3: String(team.speakersList[2].speakerId),
+      speaker_2: String(team.speakersList[1].speakerId || ""),
+      speaker_3: String(team.speakersList[2].speakerId || ""),
     },
   });
 
@@ -249,27 +192,6 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
             setLoading(false);
         });
   };
-
-  const deleteTeam = async () => {
-    if (!user) return;
-
-    // setLoading(true);
-    // await deleteTournamentTeam({ token: user.token, team_id: team.teamId })
-    //     .then(() => {
-    //         deleteTeam(team.teamId);
-    //         toast({
-    //             title: "Team deleted successfully",
-    //             description: "Team has been deleted successfully.",
-    //             variant: "success",
-    //         });
-    //     })
-    //     .catch((err) => {
-    //         console.error(err.message);
-    //     })
-    //     .finally(() => {
-    //         setLoading(false);
-    //     });
-  }
 
   useEffect(() => {
     if (!user) return;

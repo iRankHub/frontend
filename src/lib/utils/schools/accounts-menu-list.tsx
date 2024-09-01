@@ -38,13 +38,13 @@ export function getMenuList(pathname: string): Group[] {
           icon: List,
           submenus: [],
         },
-        {
-          href: `/schools/profile/account`,
-          label: "Account",
-          active: pathname === `/schools/profile/account`,
-          icon: Mails,
-          submenus: [],
-        },
+        // {
+        //   href: `/schools/profile/account`,
+        //   label: "Account",
+        //   active: pathname === `/schools/profile/account`,
+        //   icon: Mails,
+        //   submenus: [],
+        // },
         {
           href: `/schools/profile/passwords`,
           label: "Passwords",

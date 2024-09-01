@@ -684,6 +684,92 @@ export class TournamentServiceClient {
     this.methodDescriptorDeleteTournament);
   }
 
+  methodDescriptorGetTournamentStats = new grpcWeb.MethodDescriptor(
+    '/tournament_management.TournamentService/GetTournamentStats',
+    grpcWeb.MethodType.UNARY,
+    tournament_management_tournament_pb.GetTournamentStatsRequest,
+    tournament_management_tournament_pb.GetTournamentStatsResponse,
+    (request: tournament_management_tournament_pb.GetTournamentStatsRequest) => {
+      return request.serializeBinary();
+    },
+    tournament_management_tournament_pb.GetTournamentStatsResponse.deserializeBinary
+  );
+
+  getTournamentStats(
+    request: tournament_management_tournament_pb.GetTournamentStatsRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<tournament_management_tournament_pb.GetTournamentStatsResponse>;
+
+  getTournamentStats(
+    request: tournament_management_tournament_pb.GetTournamentStatsRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: tournament_management_tournament_pb.GetTournamentStatsResponse) => void): grpcWeb.ClientReadableStream<tournament_management_tournament_pb.GetTournamentStatsResponse>;
+
+  getTournamentStats(
+    request: tournament_management_tournament_pb.GetTournamentStatsRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: tournament_management_tournament_pb.GetTournamentStatsResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/tournament_management.TournamentService/GetTournamentStats',
+        request,
+        metadata || {},
+        this.methodDescriptorGetTournamentStats,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/tournament_management.TournamentService/GetTournamentStats',
+    request,
+    metadata || {},
+    this.methodDescriptorGetTournamentStats);
+  }
+
+  methodDescriptorGetTournamentRegistrations = new grpcWeb.MethodDescriptor(
+    '/tournament_management.TournamentService/GetTournamentRegistrations',
+    grpcWeb.MethodType.UNARY,
+    tournament_management_tournament_pb.GetTournamentRegistrationsRequest,
+    tournament_management_tournament_pb.GetTournamentRegistrationsResponse,
+    (request: tournament_management_tournament_pb.GetTournamentRegistrationsRequest) => {
+      return request.serializeBinary();
+    },
+    tournament_management_tournament_pb.GetTournamentRegistrationsResponse.deserializeBinary
+  );
+
+  getTournamentRegistrations(
+    request: tournament_management_tournament_pb.GetTournamentRegistrationsRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<tournament_management_tournament_pb.GetTournamentRegistrationsResponse>;
+
+  getTournamentRegistrations(
+    request: tournament_management_tournament_pb.GetTournamentRegistrationsRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: tournament_management_tournament_pb.GetTournamentRegistrationsResponse) => void): grpcWeb.ClientReadableStream<tournament_management_tournament_pb.GetTournamentRegistrationsResponse>;
+
+  getTournamentRegistrations(
+    request: tournament_management_tournament_pb.GetTournamentRegistrationsRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: tournament_management_tournament_pb.GetTournamentRegistrationsResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/tournament_management.TournamentService/GetTournamentRegistrations',
+        request,
+        metadata || {},
+        this.methodDescriptorGetTournamentRegistrations,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/tournament_management.TournamentService/GetTournamentRegistrations',
+    request,
+    metadata || {},
+    this.methodDescriptorGetTournamentRegistrations);
+  }
+
   methodDescriptorGetInvitationsByUser = new grpcWeb.MethodDescriptor(
     '/tournament_management.TournamentService/GetInvitationsByUser',
     grpcWeb.MethodType.UNARY,

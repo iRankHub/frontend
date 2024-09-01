@@ -136,8 +136,8 @@ export class Tournament extends jspb.Message {
   getLeagueId(): number;
   setLeagueId(value: number): Tournament;
 
-  getCoordinatorId(): number;
-  setCoordinatorId(value: number): Tournament;
+  getCoordinatorName(): string;
+  setCoordinatorName(value: string): Tournament;
 
   getNumberOfPreliminaryRounds(): number;
   setNumberOfPreliminaryRounds(value: number): Tournament;
@@ -163,6 +163,9 @@ export class Tournament extends jspb.Message {
   getNumberOfTeams(): number;
   setNumberOfTeams(value: number): Tournament;
 
+  getLeagueName(): string;
+  setLeagueName(value: string): Tournament;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Tournament.AsObject;
   static toObject(includeInstance: boolean, msg: Tournament): Tournament.AsObject;
@@ -180,7 +183,7 @@ export namespace Tournament {
     location: string,
     formatId: number,
     leagueId: number,
-    coordinatorId: number,
+    coordinatorName: string,
     numberOfPreliminaryRounds: number,
     numberOfEliminationRounds: number,
     judgesPerDebatePreliminary: number,
@@ -189,6 +192,107 @@ export namespace Tournament {
     imageUrl: string,
     numberOfSchools: number,
     numberOfTeams: number,
+    leagueName: string,
+  }
+}
+
+export class GetTournamentStatsRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): GetTournamentStatsRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetTournamentStatsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetTournamentStatsRequest): GetTournamentStatsRequest.AsObject;
+  static serializeBinaryToWriter(message: GetTournamentStatsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetTournamentStatsRequest;
+  static deserializeBinaryFromReader(message: GetTournamentStatsRequest, reader: jspb.BinaryReader): GetTournamentStatsRequest;
+}
+
+export namespace GetTournamentStatsRequest {
+  export type AsObject = {
+    token: string,
+  }
+}
+
+export class GetTournamentStatsResponse extends jspb.Message {
+  getTotalTournaments(): number;
+  setTotalTournaments(value: number): GetTournamentStatsResponse;
+
+  getUpcomingTournaments(): number;
+  setUpcomingTournaments(value: number): GetTournamentStatsResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetTournamentStatsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetTournamentStatsResponse): GetTournamentStatsResponse.AsObject;
+  static serializeBinaryToWriter(message: GetTournamentStatsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetTournamentStatsResponse;
+  static deserializeBinaryFromReader(message: GetTournamentStatsResponse, reader: jspb.BinaryReader): GetTournamentStatsResponse;
+}
+
+export namespace GetTournamentStatsResponse {
+  export type AsObject = {
+    totalTournaments: number,
+    upcomingTournaments: number,
+  }
+}
+
+export class GetTournamentRegistrationsRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): GetTournamentRegistrationsRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetTournamentRegistrationsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetTournamentRegistrationsRequest): GetTournamentRegistrationsRequest.AsObject;
+  static serializeBinaryToWriter(message: GetTournamentRegistrationsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetTournamentRegistrationsRequest;
+  static deserializeBinaryFromReader(message: GetTournamentRegistrationsRequest, reader: jspb.BinaryReader): GetTournamentRegistrationsRequest;
+}
+
+export namespace GetTournamentRegistrationsRequest {
+  export type AsObject = {
+    token: string,
+  }
+}
+
+export class DailyRegistration extends jspb.Message {
+  getDate(): string;
+  setDate(value: string): DailyRegistration;
+
+  getCount(): number;
+  setCount(value: number): DailyRegistration;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DailyRegistration.AsObject;
+  static toObject(includeInstance: boolean, msg: DailyRegistration): DailyRegistration.AsObject;
+  static serializeBinaryToWriter(message: DailyRegistration, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DailyRegistration;
+  static deserializeBinaryFromReader(message: DailyRegistration, reader: jspb.BinaryReader): DailyRegistration;
+}
+
+export namespace DailyRegistration {
+  export type AsObject = {
+    date: string,
+    count: number,
+  }
+}
+
+export class GetTournamentRegistrationsResponse extends jspb.Message {
+  getRegistrationsList(): Array<DailyRegistration>;
+  setRegistrationsList(value: Array<DailyRegistration>): GetTournamentRegistrationsResponse;
+  clearRegistrationsList(): GetTournamentRegistrationsResponse;
+  addRegistrations(value?: DailyRegistration, index?: number): DailyRegistration;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetTournamentRegistrationsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetTournamentRegistrationsResponse): GetTournamentRegistrationsResponse.AsObject;
+  static serializeBinaryToWriter(message: GetTournamentRegistrationsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetTournamentRegistrationsResponse;
+  static deserializeBinaryFromReader(message: GetTournamentRegistrationsResponse, reader: jspb.BinaryReader): GetTournamentRegistrationsResponse;
+}
+
+export namespace GetTournamentRegistrationsResponse {
+  export type AsObject = {
+    registrationsList: Array<DailyRegistration.AsObject>,
   }
 }
 

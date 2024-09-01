@@ -770,6 +770,49 @@ export class DebateServiceClient {
     this.methodDescriptorGetTeamsByTournament);
   }
 
+  methodDescriptorDeleteTeam = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/DeleteTeam',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.DeleteTeamRequest,
+    debate_management_debate_pb.DeleteTeamResponse,
+    (request: debate_management_debate_pb.DeleteTeamRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.DeleteTeamResponse.deserializeBinary
+  );
+
+  deleteTeam(
+    request: debate_management_debate_pb.DeleteTeamRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.DeleteTeamResponse>;
+
+  deleteTeam(
+    request: debate_management_debate_pb.DeleteTeamRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.DeleteTeamResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.DeleteTeamResponse>;
+
+  deleteTeam(
+    request: debate_management_debate_pb.DeleteTeamRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.DeleteTeamResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/DeleteTeam',
+        request,
+        metadata || {},
+        this.methodDescriptorDeleteTeam,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/DeleteTeam',
+    request,
+    metadata || {},
+    this.methodDescriptorDeleteTeam);
+  }
+
   methodDescriptorRegeneratePairings = new grpcWeb.MethodDescriptor(
     '/debate_management.DebateService/RegeneratePairings',
     grpcWeb.MethodType.UNARY,

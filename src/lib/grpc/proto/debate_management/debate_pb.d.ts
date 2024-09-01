@@ -381,6 +381,9 @@ export class Team extends jspb.Message {
   getTotalPoints(): number;
   setTotalPoints(value: number): Team;
 
+  getLeagueName(): string;
+  setLeagueName(value: string): Team;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Team.AsObject;
   static toObject(includeInstance: boolean, msg: Team): Team.AsObject;
@@ -395,6 +398,7 @@ export namespace Team {
     name: string,
     speakersList: Array<Speaker.AsObject>,
     totalPoints: number,
+    leagueName: string,
   }
 }
 
@@ -946,6 +950,50 @@ export namespace UpdateTeamRequest {
   }
 }
 
+export class DeleteTeamRequest extends jspb.Message {
+  getTeamId(): number;
+  setTeamId(value: number): DeleteTeamRequest;
+
+  getToken(): string;
+  setToken(value: string): DeleteTeamRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DeleteTeamRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: DeleteTeamRequest): DeleteTeamRequest.AsObject;
+  static serializeBinaryToWriter(message: DeleteTeamRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DeleteTeamRequest;
+  static deserializeBinaryFromReader(message: DeleteTeamRequest, reader: jspb.BinaryReader): DeleteTeamRequest;
+}
+
+export namespace DeleteTeamRequest {
+  export type AsObject = {
+    teamId: number,
+    token: string,
+  }
+}
+
+export class DeleteTeamResponse extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): DeleteTeamResponse;
+
+  getMessage(): string;
+  setMessage(value: string): DeleteTeamResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DeleteTeamResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: DeleteTeamResponse): DeleteTeamResponse.AsObject;
+  static serializeBinaryToWriter(message: DeleteTeamResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DeleteTeamResponse;
+  static deserializeBinaryFromReader(message: DeleteTeamResponse, reader: jspb.BinaryReader): DeleteTeamResponse;
+}
+
+export namespace DeleteTeamResponse {
+  export type AsObject = {
+    success: boolean,
+    message: string,
+  }
+}
+
 export class GetTeamsByTournamentRequest extends jspb.Message {
   getTournamentId(): number;
   setTournamentId(value: number): GetTeamsByTournamentRequest;
@@ -992,6 +1040,9 @@ export class RegeneratePairingsRequest extends jspb.Message {
   getTournamentId(): number;
   setTournamentId(value: number): RegeneratePairingsRequest;
 
+  getIsEliminationRound(): boolean;
+  setIsEliminationRound(value: boolean): RegeneratePairingsRequest;
+
   getToken(): string;
   setToken(value: string): RegeneratePairingsRequest;
 
@@ -1006,6 +1057,7 @@ export class RegeneratePairingsRequest extends jspb.Message {
 export namespace RegeneratePairingsRequest {
   export type AsObject = {
     tournamentId: number,
+    isEliminationRound: boolean,
     token: string,
   }
 }

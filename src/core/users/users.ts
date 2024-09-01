@@ -1,5 +1,5 @@
 import { userClient } from "../grpc-clients";
-import { DeactivateUser, GetAllUsers, GetUserDetails, SchoolDetailsType, StudentDetailsType, UpdateUserProfile, VolunteerDetailsType } from "@/types/user_management/users";
+import { DeactivateUser, GetAllUsers, GetUserDetails, UpdateAdminProfile, UpdateSchoolProfile, UpdateStudentProfile, UpdateVolunteerProfile } from "@/types/user_management/users";
 import {
     ApproveUserRequest,
     ApproveUserResponse,
@@ -13,13 +13,20 @@ import {
     GetUserProfileResponse,
     GetVolunteersAndAdminsRequest,
     GetVolunteersAndAdminsResponse,
+    InitiatePasswordUpdateRequest,
+    InitiatePasswordUpdateResponse,
     RejectUserRequest,
     RejectUserResponse,
-    SchoolDetails,
-    StudentDetails,
-    UpdateUserProfileRequest,
-    UpdateUserProfileResponse,
-    VolunteerDetails
+    UpdateAdminProfileRequest,
+    UpdateAdminProfileResponse,
+    UpdateSchoolProfileRequest,
+    UpdateSchoolProfileResponse,
+    UpdateStudentProfileRequest,
+    UpdateStudentProfileResponse,
+    UpdateVolunteerProfileRequest,
+    UpdateVolunteerProfileResponse,
+    VerifyAndUpdatePasswordRequest,
+    VerifyAndUpdatePasswordResponse,
 } from "@/lib/grpc/proto/user_management/users_pb";
 
 export const approveUser = async ({
@@ -162,75 +169,281 @@ export const getUserProfile = async ({
 };
 
 // Helper functions to set the school, student and volunteer details in the request
-const setSchoolDetails = (request: UpdateUserProfileRequest, schoolDetails: SchoolDetailsType) => {
-    const schoolDetailsObj = new SchoolDetails();
-    schoolDetailsObj.setSchoolname(schoolDetails.schoolname);
-    schoolDetailsObj.setCountry(schoolDetails.country);
-    schoolDetailsObj.setProvince(schoolDetails.province);
-    schoolDetailsObj.setDistrict(schoolDetails.district);
-    schoolDetailsObj.setSchooltype(schoolDetails.schooltype);
-    request.setSchooldetails(schoolDetailsObj);
-};
+// const setSchoolDetails = (request: UpdateUserProfileRequest, schoolDetails: SchoolDetailsType) => {
+//     const schoolDetailsObj = new SchoolDetails();
+//     schoolDetailsObj.setSchoolname(schoolDetails.schoolname);
+//     schoolDetailsObj.setCountry(schoolDetails.country);
+//     schoolDetailsObj.setProvince(schoolDetails.province);
+//     schoolDetailsObj.setDistrict(schoolDetails.district);
+//     schoolDetailsObj.setSchooltype(schoolDetails.schooltype);
+//     request.setSchooldetails(schoolDetailsObj);
+// };
 
-const setStudentDetails = (request: UpdateUserProfileRequest, studentDetails: StudentDetailsType) => {
-    const studentDetailsObj = new StudentDetails();
-    studentDetailsObj.setGrade(studentDetails.grade);
-    studentDetailsObj.setDateofbirth(studentDetails.dateofbirth);
-    studentDetailsObj.setSchoolid(studentDetails.schoolid);
-    request.setStudentdetails(studentDetailsObj);
-};
+// const setStudentDetails = (request: UpdateUserProfileRequest, studentDetails: StudentDetailsType) => {
+//     const studentDetailsObj = new StudentDetails();
+//     studentDetailsObj.setGrade(studentDetails.grade);
+//     studentDetailsObj.setDateofbirth(studentDetails.dateofbirth);
+//     studentDetailsObj.setSchoolid(studentDetails.schoolid);
+//     request.setStudentdetails(studentDetailsObj);
+// };
 
-const setVolunteerDetails = (request: UpdateUserProfileRequest, volunteerDetails: VolunteerDetailsType) => {
-    const volunteerDetailsObj = new VolunteerDetails();
-    volunteerDetailsObj.setGraduateyear(volunteerDetails.graduateyear);
-    volunteerDetailsObj.setSafeguardcertificate(volunteerDetails.safeguardcertificate);
-    volunteerDetailsObj.setHasinternship(volunteerDetails.hasinternship);
-    volunteerDetailsObj.setIsenrolledinuniversity(volunteerDetails.isenrolledinuniversity);
-    volunteerDetailsObj.setRole(volunteerDetails.role);
-    request.setVolunteerdetails(volunteerDetailsObj);
-};
+// const setVolunteerDetails = (request: UpdateUserProfileRequest, volunteerDetails: VolunteerDetailsType) => {
+//     const volunteerDetailsObj = new VolunteerDetails();
+//     volunteerDetailsObj.setGraduateyear(volunteerDetails.graduateyear);
+//     volunteerDetailsObj.setSafeguardcertificate(volunteerDetails.safeguardcertificate);
+//     volunteerDetailsObj.setHasinternship(volunteerDetails.hasinternship);
+//     volunteerDetailsObj.setIsenrolledinuniversity(volunteerDetails.isenrolledinuniversity);
+//     volunteerDetailsObj.setRole(volunteerDetails.role);
+//     request.setVolunteerdetails(volunteerDetailsObj);
+// };
 
-export const updateUserProfile = async ({
+// export const updateUserProfile = async ({
+//     userID,
+//     token,
+//     name,
+//     email,
+//     address,
+//     phone,
+//     bio,
+//     profilePicture,
+//     gender,
+//     password,
+//     schoolDetails,
+//     studentDetails,
+//     volunteerDetails,
+//     role,
+// }: UpdateUserProfile): Promise<UpdateUserProfileResponse.AsObject> => {
+//     return new Promise((resolve, reject) => {
+//         const request = new UpdateUserProfileRequest();
+//         request.setToken(token);
+//         request.setUserid(userID);
+//         request.setName(name);
+//         request.setEmail(email);
+//         request.setGender(gender || "");
+//         request.setAddress(address || "");
+//         request.setPhone(phone || "");
+//         request.setBio(bio || "");
+//         request.setProfilepicture(profilePicture || "");
+
+//         switch (role) {
+//             case "school":
+//                 if (schoolDetails) setSchoolDetails(request, schoolDetails);
+//                 break;
+//             case "student":
+//                 if (studentDetails) setStudentDetails(request, studentDetails);
+//                 break;
+//             case "volunteer":
+//                 if (volunteerDetails) setVolunteerDetails(request, volunteerDetails);
+//                 break;
+//         }
+
+//         userClient.updateUserProfile(request, {}, (err, response) => {
+//             if (err) {
+//                 reject(err);
+//             } else {
+//                 resolve(response.toObject());
+//             }
+//         });
+//     });
+// }
+
+export const updateAdminProfile = async ({
     userID,
     token,
     name,
-    email,
     address,
-    phone,
+    gender,
     bio,
     profilePicture,
-    gender,
-    password,
-    schoolDetails,
-    studentDetails,
-    volunteerDetails,
-    role,
-}: UpdateUserProfile): Promise<UpdateUserProfileResponse.AsObject> => {
+    phone,
+}: UpdateAdminProfile): Promise<UpdateAdminProfileResponse.AsObject> => {
     return new Promise((resolve, reject) => {
-        const request = new UpdateUserProfileRequest();
+        const request = new UpdateAdminProfileRequest();
         request.setToken(token);
         request.setUserid(userID);
         request.setName(name);
-        request.setEmail(email);
-        request.setGender(gender || "");
+        request.setGender(gender || "male");
         request.setAddress(address || "");
         request.setPhone(phone || "");
         request.setBio(bio || "");
         request.setProfilepicture(profilePicture || "");
 
-        switch (role) {
-            case "school":
-                if (schoolDetails) setSchoolDetails(request, schoolDetails);
-                break;
-            case "student":
-                if (studentDetails) setStudentDetails(request, studentDetails);
-                break;
-            case "volunteer":
-                if (volunteerDetails) setVolunteerDetails(request, volunteerDetails);
-                break;
-        }
+        userClient.updateAdminProfile(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
 
-        userClient.updateUserProfile(request, {}, (err, response) => {
+export const updateSchoolProfile = async ({
+    address,
+    bio,
+    contactEmail,
+    contactPersonName,
+    contactPersonNationalId,
+    gender,
+    phone,
+    profilePicture,
+    schoolEmail,
+    schoolName,
+    schoolType,
+    token,
+    userID,
+}: UpdateSchoolProfile): Promise<UpdateSchoolProfileResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new UpdateSchoolProfileRequest();
+        request.setToken(token);
+        request.setUserid(userID);
+        address && request.setAddress(address);
+        bio && request.setBio(bio);
+        contactEmail && request.setContactemail(contactEmail);
+        contactPersonName && request.setContactpersonname(contactPersonName);
+        contactPersonNationalId && request.setContactpersonnationalid(contactPersonNationalId);
+        gender && request.setGender(gender);
+        phone && request.setPhone(phone);
+        profilePicture && request.setProfilepicture(profilePicture);
+        schoolEmail && request.setSchoolemail(schoolEmail);
+        schoolName && request.setSchoolname(schoolName);
+        schoolType && request.setSchooltype(schoolType);
+
+        userClient.updateSchoolProfile(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const updateVolunteerProfile = async ({
+    address,
+    bio,
+    gender,
+    phone,
+    profilePicture,
+    token,
+    userID,
+    email,
+    firstName,
+    graduateYear,
+    hasInternship,
+    isEnrolledInUniversity,
+    lastName,
+    nationalID,
+    role,
+}: UpdateVolunteerProfile): Promise<UpdateVolunteerProfileResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new UpdateVolunteerProfileRequest();
+        request.setToken(token);
+        request.setUserid(userID);
+        address && request.setAddress(address);
+        bio && request.setBio(bio);
+        gender && request.setGender(gender);
+        phone && request.setPhone(phone);
+        profilePicture && request.setProfilepicture(profilePicture);
+        request.setEmail(email);
+        firstName && request.setFirstname(firstName);
+        graduateYear && request.setGraduateyear(graduateYear);
+        hasInternship && request.setHasinternship(hasInternship);
+        isEnrolledInUniversity && request.setIsenrolledinuniversity(isEnrolledInUniversity);
+        lastName && request.setLastname(lastName);
+        nationalID && request.setNationalid(nationalID);
+        role && request.setRole(role);
+
+        userClient.updateVolunteerProfile(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const updateStudentsProfile = async ({
+    address,
+    bio,
+    gender,
+    phone,
+    profilePicture,
+    token,
+    userID,
+    email,
+    firstName,
+    grade,
+    dateOfBirth,
+    lastName,
+}: UpdateStudentProfile): Promise<UpdateStudentProfileResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new UpdateStudentProfileRequest();
+        request.setToken(token);
+        request.setUserid(userID);
+        address && request.setAddress(address);
+        bio && request.setBio(bio);
+        gender && request.setGender(gender);
+        phone && request.setPhone(phone);
+        profilePicture && request.setProfilepicture(profilePicture);
+        email && request.setEmail(email);
+        firstName && request.setFirstname(firstName);
+        lastName && request.setLastname(lastName);
+        grade && request.setGrade(grade);
+        dateOfBirth && request.setDateofbirth(dateOfBirth);
+
+        userClient.updateStudentProfile(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const initiatePasswordReset = async ({
+    token,
+    userID
+}: {
+    token: string;
+    userID: number;
+}): Promise<InitiatePasswordUpdateResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new InitiatePasswordUpdateRequest();
+        request.setToken(token);
+        request.setUserid(userID);
+
+        userClient.initiatePasswordUpdate(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const updatePassword = async ({
+    token,
+    userID,
+    verificationCode,
+    password
+}: {
+    token: string;
+    userID: number;
+    verificationCode: string;
+    password: string;
+}): Promise<VerifyAndUpdatePasswordResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new VerifyAndUpdatePasswordRequest();
+        request.setToken(token);
+        request.setUserid(userID);
+        request.setNewpassword(password);
+        request.setVerificationcode(verificationCode);
+
+        userClient.verifyAndUpdatePassword(request, {}, (err, response) => {
             if (err) {
                 reject(err);
             } else {

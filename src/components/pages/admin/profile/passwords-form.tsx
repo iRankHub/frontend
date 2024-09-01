@@ -22,7 +22,6 @@ import { PasswordInput } from "@/components/ui/password-Input";
 import { Separator } from "@/components/ui/separator";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { updateUserProfile } from "@/core/users/users";
 import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 import { schoolProfileSchemaStep3 } from "@/lib/validations/admin/accounts/profile-update.schema";
 import { useUserStore } from "@/stores/auth/auth.store";

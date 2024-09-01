@@ -1,4 +1,6 @@
 import {
+    BatchImportUsersRequest,
+    BatchImportUsersResponse,
     DisableTwoFactorRequest,
     EnableTwoFactorRequest,
     EnableTwoFactorResponse,
@@ -12,10 +14,12 @@ import {
     ResetPasswordResponse,
     SignUpRequest,
     SignUpResponse,
+    UserData,
     VerifyTwoFactorRequest
 } from "@/lib/grpc/proto/authentication/auth_pb";
 import { authClient } from "../grpc-clients";
 import { TwoFactor } from "@/types/user_management/users";
+import { excelSerialToDate, ParsedDataAdmin, ParsedDataSchool, ParsedDataStudent, ParsedDataVolunteer } from "@/file-parser/parse-excel-file";
 
 export const signUp = (data: {
     firstName?: string;
@@ -67,10 +71,8 @@ export const signUp = (data: {
 
         authClient.signUp(request, {}, (err, response) => {
             if (err) {
-                console.log(err);
                 reject(err);
             } else {
-                console.log(err);
                 resolve(response.toObject());
             }
         });
@@ -272,4 +274,87 @@ export const handleTwoFactor = async ({
             });
         }
     });
+}
+
+// batch operations
+export const batchCreateUsers = (data: {
+    admin: ParsedDataAdmin[];
+    student: ParsedDataStudent[];
+    school: ParsedDataSchool[];
+    volunteer: ParsedDataVolunteer[];
+}): Promise<BatchImportUsersResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new BatchImportUsersRequest();
+
+        data.admin.forEach((admin) => {
+            const userData = new UserData();
+            userData.setFirstname(admin.firstName);
+            userData.setLastname(admin.lastName);
+            userData.setEmail(admin.email);
+            userData.setGender(admin.gender)
+            userData.setUserrole("admin")
+
+            request.addUsers(userData);
+        });
+
+        data.student.forEach((student) => {
+            const userData = new UserData();
+            userData.setFirstname(student.firstName);
+            userData.setLastname(student.lastName);
+            userData.setEmail(student.email);
+            userData.setGender(student.gender.toLocaleLowerCase())
+            userData.setDateofbirth(excelSerialToDate(Number(student.dateOfBirth)))
+            userData.setGrade(student.grade)
+            userData.setSchoolid(Number(student.schoolID))
+            userData.setUserrole("student")
+            userData.setSchoolname(student.schoolName)
+
+            request.addUsers(userData);
+        });
+
+        data.school.forEach((school) => {
+            const userData = new UserData();
+            userData.setFirstname(school.firstName);
+            userData.setLastname(school.lastName);
+            userData.setEmail(school.email);
+            userData.setUserrole("school")
+            userData.setGender("female")
+            userData.setNationalid(school.nationalID)
+            userData.setSchoolname(school.schoolName)
+            userData.setAddress(school.address)
+            userData.setCountry(school.country)
+            userData.setProvince(school.province)
+            userData.setDistrict(school.district)
+            userData.setContactemail(school.contactEmail)
+            userData.setSchooltype(school.schoolType)
+
+            request.addUsers(userData);
+        });
+
+        data.volunteer.forEach((volunteer) => {
+            const userData = new UserData();
+            userData.setFirstname(volunteer.firstName);
+            userData.setLastname(volunteer.lastName);
+            userData.setEmail(volunteer.email);
+            userData.setGender(volunteer.gender.toLocaleLowerCase())
+            userData.setDateofbirth(excelSerialToDate(Number(volunteer.dateOfBirth)))
+            userData.setNationalid(volunteer.nationalID)
+            userData.setRoleinterestedin(volunteer.roleInterestedIn)
+            userData.setGraduationyear(Number(volunteer.graduationYear))
+            userData.setHasinternship(volunteer.hasInternship.toLocaleLowerCase() === "yes")
+            userData.setIsenrolledinuniversity(volunteer.isEnrolledInUniversity.toLocaleLowerCase() === "yes")
+            userData.setUserrole("volunteer")
+            userData.setSafeguardingcertificate("")
+
+            request.addUsers(userData);
+        });
+
+        authClient.batchImportUsers(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    })
 }

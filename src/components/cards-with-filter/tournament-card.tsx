@@ -38,7 +38,7 @@ const TournamentCard = ({
   getColumnValue,
   setTournaments,
 }: TournamentCardProps) => {
-  const { user } = useUserStore((state) => state);
+  const { user, userRole } = useUserStore((state) => state);
   const [deleteLoading, setDeleteLoading] = React.useState(false);
   const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -99,6 +99,19 @@ const TournamentCard = ({
       });
   };
 
+  const linkRole = () => {
+    switch (userRole) {
+      case "admin":
+        return "/admin/tournaments/list";
+      case "school":
+        return "/schools/tournaments";
+      case "student":
+        return "/students/tournaments";
+      default:
+        return "/volunteers/tournaments";
+    }
+  };
+
   return (
     <Card key={row.id} className="p-3">
       <div className="flex items-center justify-between gap-5">
@@ -134,7 +147,7 @@ const TournamentCard = ({
                 >
                   <Link
                     className="no-underline"
-                    href={`/admin/tournaments/list/${getColumnValue(
+                    href={`${linkRole()}/${getColumnValue(
                       row,
                       "tournamentId"
                     )}`}

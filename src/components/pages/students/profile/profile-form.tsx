@@ -41,7 +41,6 @@ import {
 } from "@/components/ui/select";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { getUserProfile, updateUserProfile } from "@/core/users/users";
 import { countries } from "@/lib/data";
 import { Districts, Provinces } from "@/lib/get-provinces-and-districts";
 import {
@@ -113,36 +112,36 @@ function ProfileForm({ user }: ProfileFormProps) {
       role: UserRole.SCHOOL,
     };
 
-    await updateUserProfile(NewProfile)
-      .then((res) => {
-        toast({
-          variant: "success",
-          title: "Success",
-          description: res.message,
-          action: (
-            <ToastAction altText="Close" className="bg-primary text-white">
-              Close
-            </ToastAction>
-          ),
-        });
-      })
-      .catch((err) => {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description:
-            "Something went wrong. Please check your credentials and try again later",
-          action: (
-            <ToastAction altText="Close" className="bg-primary text-white">
-              Close
-            </ToastAction>
-          ),
-        });
-      })
-      .finally(() => {
-        setIsPending(false);
-        setDialogOpen(false);
-      });
+    // await updateUserProfile(NewProfile)
+    //   .then((res) => {
+    //     toast({
+    //       variant: "success",
+    //       title: "Success",
+    //       description: res.message,
+    //       action: (
+    //         <ToastAction altText="Close" className="bg-primary text-white">
+    //           Close
+    //         </ToastAction>
+    //       ),
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     toast({
+    //       variant: "destructive",
+    //       title: "Error",
+    //       description:
+    //         "Something went wrong. Please check your credentials and try again later",
+    //       action: (
+    //         <ToastAction altText="Close" className="bg-primary text-white">
+    //           Close
+    //         </ToastAction>
+    //       ),
+    //     });
+    //   })
+    //   .finally(() => {
+    //     setIsPending(false);
+    //     setDialogOpen(false);
+    //   });
   };
 
   const handleUserProfile = (): string => {

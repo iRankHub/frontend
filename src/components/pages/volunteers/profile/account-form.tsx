@@ -22,7 +22,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 import {
-  schoolProfileSchemaStep2,
   volunteerProfileSchemaStep2,
 } from "@/lib/validations/admin/accounts/profile-update.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,9 +30,8 @@ import { z } from "zod";
 import { ToastAction } from "@/components/ui/toast";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { useToast } from "@/components/ui/use-toast";
-import { UpdateUserProfile } from "@/types/user_management/users";
-import { UserRole } from "@/types";
-import { updateUserProfile } from "@/core/users/users";
+import { UpdateVolunteerProfile } from "@/types/user_management/users";
+import { updateVolunteerProfile } from "@/core/users/users";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
@@ -42,15 +40,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
 
 interface AccountFormProps {
   user: UserProfile.AsObject;
@@ -81,23 +70,21 @@ function AccountForm({ user }: AccountFormProps) {
     if (!storeUser) return;
     setIsPending(true);
 
-    const NewProfile: UpdateUserProfile = {
-      name: user.name,
-      email: user.email,
+    const NewProfile: UpdateVolunteerProfile = {
       token: storeUser.token,
       userID: user.userid,
+      email: user.email,
+      phone: user.phone,
+      address: user.address,
+      bio: user.bio,
       gender: data.gender,
-      volunteerDetails: {
-        hasinternship: data.hasInternship === "yes",
-        role: String(user.volunteerdetails?.role),
-        safeguardcertificate: user.volunteerdetails?.safeguardcertificate || "",
-        graduateyear: Number(user.volunteerdetails?.graduateyear),
-        isenrolledinuniversity: Boolean(user.volunteerdetails?.isenrolledinuniversity),
-      },
-      role: UserRole.VOLUNTEER,
+      profilePicture: user.profilepicture,
+      hasInternship: data.hasInternship === "yes" || user.volunteerdetails?.hasinternship,
+      isEnrolledInUniversity: user.volunteerdetails?.isenrolledinuniversity || false,
+      nationalID: "",
     };
 
-    await updateUserProfile(NewProfile)
+    await updateVolunteerProfile(NewProfile)
       .then((res) => {
         toast({
           variant: "success",
@@ -238,7 +225,7 @@ function AccountForm({ user }: AccountFormProps) {
               )}
             />
 
-            <FormField
+            {/* <FormField
               control={form.control}
               name="dob"
               render={({ field }) => (
@@ -288,7 +275,7 @@ function AccountForm({ user }: AccountFormProps) {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="gender"

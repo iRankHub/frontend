@@ -79,6 +79,7 @@ function TournamentUpdateForm({ tournament }: Props) {
   >([]);
   const router = useRouter();
   const { toast } = useToast();
+  const [coordinatorId, setCoordinatorId] = useState<string>("");
 
   useEffect(() => {
     if (!user) return;
@@ -89,6 +90,12 @@ function TournamentUpdateForm({ tournament }: Props) {
       token: user.token,
     };
     getVolunteersAndAdmins({ ...options }).then((res) => {
+      const coordinatorName = tournament.coordinatorName;
+
+      const coordinator = res.usersList.find(
+        (user) => user.name === coordinatorName
+      );
+      setCoordinatorId(String(coordinator?.userid || ""));
       setCoordinators(res.usersList);
     });
   }, [user]);
@@ -128,7 +135,7 @@ function TournamentUpdateForm({ tournament }: Props) {
       startTime: new Date(formatStartDate()),
       endDate: new Date(formatEndDate()),
       endTime: new Date(formatEndDate()),
-      coordinator: String(tournament.coordinatorId),
+      coordinator: coordinatorId,
     },
   });
 

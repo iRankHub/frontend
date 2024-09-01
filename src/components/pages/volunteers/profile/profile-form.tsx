@@ -1,14 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -28,11 +20,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -41,26 +28,20 @@ import {
 } from "@/components/ui/select";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { getUserProfile, updateUserProfile } from "@/core/users/users";
-import { countries } from "@/lib/data";
-import { Districts, Provinces } from "@/lib/get-provinces-and-districts";
+import {
+  updateVolunteerProfile,
+} from "@/core/users/users";
 import {
   School,
-  SchoolDetails,
   UserProfile,
 } from "@/lib/grpc/proto/user_management/users_pb";
-import { cn } from "@/lib/utils";
-import {
-  schoolProfileSchemaStep1,
-  volunteerProfileSchemaStep1,
-} from "@/lib/validations/admin/accounts/profile-update.schema";
+import { volunteerProfileSchemaStep1 } from "@/lib/validations/admin/accounts/profile-update.schema";
 import { useUserStore } from "@/stores/auth/auth.store";
-import { UserRole } from "@/types";
-import { UpdateUserProfile } from "@/types/user_management/users";
+import { UpdateVolunteerProfile } from "@/types/user_management/users";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Camera, CheckIcon, ChevronsUpDown } from "lucide-react";
+import { Camera } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { boolean, z } from "zod";
 import FileUpload from "../tournaments/tournament-name/file-upload";
@@ -76,7 +57,7 @@ type Inputs = z.infer<typeof volunteerProfileSchemaStep1>;
 function ProfileForm({ user }: ProfileFormProps) {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [isPending, setIsPending] = React.useState(false);
-  const { user: storeUser,  } = useUserStore((state) => state);
+  const { user: storeUser } = useUserStore((state) => state);
   const { toast } = useToast();
   const [schools, setSchools] = React.useState<School.AsObject[]>([]);
 
@@ -98,7 +79,7 @@ function ProfileForm({ user }: ProfileFormProps) {
     defaultValues: {
       first_name: splitName(user?.name).first_name,
       last_name: splitName(user?.name).last_name,
-      school_id: String(user?.studentdetails?.schoolid),
+      school_id: String(1),
       graduation_year: String(user?.volunteerdetails?.graduateyear),
     },
   });
@@ -107,22 +88,25 @@ function ProfileForm({ user }: ProfileFormProps) {
     if (!storeUser) return;
     setIsPending(true);
 
-    const NewProfile: UpdateUserProfile = {
-      name: `${data.first_name} ${data.last_name}`,
+    const NewProfile: UpdateVolunteerProfile = {
       token: storeUser.token,
       userID: user.userid,
       email: user.email,
-      volunteerDetails: {
-        graduateyear: Number(data.graduation_year),
-        role: String(user.volunteerdetails?.role),
-        hasinternship: Boolean(user.volunteerdetails?.hasinternship),
-        isenrolledinuniversity: Boolean(user.volunteerdetails?.isenrolledinuniversity ?? false),
-        safeguardcertificate: user.volunteerdetails?.safeguardcertificate || "",
-      },
-      role: UserRole.VOLUNTEER,
+      phone: user.phone,
+      address: user.address,
+      bio: user.bio,
+      gender: user.gender,
+      profilePicture: user.profilepicture,
+      firstName: data.first_name,
+      lastName: data.last_name,
+      graduateYear: Number(data.graduation_year),
+      hasInternship: user.volunteerdetails?.hasinternship || false,
+      isEnrolledInUniversity: user.volunteerdetails?.isenrolledinuniversity || false,
+      nationalID: "",
+      role: "Menntor",
     };
 
-    await updateUserProfile(NewProfile)
+    await updateVolunteerProfile(NewProfile)
       .then((res) => {
         toast({
           variant: "success",
@@ -264,7 +248,7 @@ function ProfileForm({ user }: ProfileFormProps) {
                   </FormItem>
                 )}
               />
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="school_id"
                 render={({ field }) => (
@@ -300,7 +284,7 @@ function ProfileForm({ user }: ProfileFormProps) {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
               <FormField
                 control={form.control}
                 name="graduation_year"

@@ -41,7 +41,10 @@ import {
 } from "@/components/ui/select";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { getUserProfile, updateUserProfile } from "@/core/users/users";
+import {
+  getUserProfile,
+  updateSchoolProfile,
+} from "@/core/users/users";
 import { countries } from "@/lib/data";
 import { Districts, Provinces } from "@/lib/get-provinces-and-districts";
 import {
@@ -52,7 +55,10 @@ import { cn } from "@/lib/utils";
 import { schoolProfileSchemaStep1 } from "@/lib/validations/admin/accounts/profile-update.schema";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { UserRole } from "@/types";
-import { UpdateUserProfile } from "@/types/user_management/users";
+import {
+  UpdateSchoolProfile,
+  UpdateUserProfile,
+} from "@/types/user_management/users";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Camera, CheckIcon, ChevronsUpDown } from "lucide-react";
 import Image from "next/image";
@@ -92,28 +98,14 @@ function ProfileForm({ user }: ProfileFormProps) {
     if (!storeUser) return;
     setIsPending(true);
 
-    const NewProfile: UpdateUserProfile = {
-      name: data.name,
-      address: user.address,
-      bio: user.bio,
-      email: user.email,
-      phone: user.phone,
-      profilePicture: user.profilepicture,
+    const NewProfile: UpdateSchoolProfile = {
       token: storeUser.token,
       userID: user.userid,
-      gender: user.gender,
-      schoolDetails: {
-        schoolname: data.name,
-        address: user.address,
-        country: data.country,
-        province: data.province_state,
-        district: data.district_region,
-        schooltype: data.type,
-      },
-      role: UserRole.SCHOOL,
+      schoolType: data.type,
+      schoolName: data.name,
     };
 
-    await updateUserProfile(NewProfile)
+    await updateSchoolProfile(NewProfile)
       .then((res) => {
         toast({
           variant: "success",
@@ -248,9 +240,11 @@ function ProfileForm({ user }: ProfileFormProps) {
                           <Button
                             variant="outline"
                             role="combobox"
+                            disabled
                             className={cn(
                               "w-full justify-between",
-                              !field.value && "text-muted-foreground"
+                              !field.value && "text-muted-foreground",
+                              "disabled:opacity-100 disabled:cursor-not-allowed"
                             )}
                           >
                             {field.value
@@ -316,9 +310,11 @@ function ProfileForm({ user }: ProfileFormProps) {
                           <Button
                             variant="outline"
                             role="combobox"
+                            disabled
                             className={cn(
                               "w-full justify-between",
-                              !field.value && "text-muted-foreground"
+                              !field.value && "text-muted-foreground",
+                              "disabled:opacity-100 disabled:cursor-not-allowed"
                             )}
                           >
                             {field.value
@@ -384,9 +380,11 @@ function ProfileForm({ user }: ProfileFormProps) {
                           <Button
                             variant="outline"
                             role="combobox"
+                            disabled
                             className={cn(
                               "w-full justify-between",
-                              !field.value && "text-muted-foreground"
+                              !field.value && "text-muted-foreground",
+                              "disabled:opacity-100 disabled:cursor-not-allowed"
                             )}
                           >
                             {field.value

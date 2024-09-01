@@ -26,20 +26,13 @@ export function DataTableToolbar<TData>({
     <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown">
       <div className="flex flex-1 items-center space-x-3 p-5 py-4">
         <Input
-          placeholder="Search schools..."
-          value={(table.getColumn("school")?.getFilterValue() as string) ?? ""}
+          placeholder="Search name..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("school")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[280px]"
         />
-        {table.getColumn("no_of_teams") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("no_of_teams")}
-            title="No.of Teams"
-            options={teams}
-          />
-        )}
         {isFiltered && (
           <Button
             variant="ghost"

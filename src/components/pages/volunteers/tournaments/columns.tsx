@@ -115,4 +115,13 @@ export const columns: ColumnDef<Tournament.AsObject>[] = [
     },
     enableHiding: false,
   },
+  {
+    accessorKey: "leagueName",
+    header: ({ column }) => null,
+    cell: ({ row }) => null,
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+    enableHiding: false,
+  },
 ];

@@ -59,6 +59,7 @@ import { ToastAction } from "@/components/ui/toast";
 // @ts-ignore
 import { Provinces, Districts } from "rwanda";
 import { Icons } from "@/components/icons";
+import { useLeaguesStore } from "@/stores/admin/tournaments/leagues.store";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -73,7 +74,7 @@ export function DataTableToolbar<TData>({
   const [pageLoading, setPageLoading] = useState<boolean>(true);
   const [selectedProvinces, setSelectedProvinces] = useState<string[]>([]);
   const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
-  const [leagues, setLeagues] = useState<League.AsObject[]>([]);
+  const { addLeague } = useLeaguesStore((state) => state);
   const [loading, setLoading] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const { user } = useUserStore((state) => state);
@@ -139,7 +140,7 @@ export function DataTableToolbar<TData>({
       .then((res) => {
         setLoading(false);
         form.reset();
-        setLeagues((prev) => [...prev, res.league as League.AsObject]);
+        addLeague(res.league as League.AsObject);
 
         // clear states
         setSelectedProvinces([]);
@@ -165,14 +166,13 @@ export function DataTableToolbar<TData>({
         setLoading(false);
       });
   };
+  
   return (
     <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown">
       <div className="flex flex-1 items-center space-x-3 p-5 py-4">
         <Input
           placeholder="Search name..."
-          value={
-            (table.getColumn("name")?.getFilterValue() as string) ?? ""
-          }
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
@@ -182,7 +182,12 @@ export function DataTableToolbar<TData>({
           <DataTableFacetedFilter
             column={table.getColumn("leagueType")}
             title="League Type"
-            options={userRoles}
+            options={[
+              // @ts-ignore
+              { value: 0, label: "Local" },
+              // @ts-ignore
+              { value: 1, label: "International" },
+            ]}
           />
         )}
         {isFiltered && (

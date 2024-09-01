@@ -113,7 +113,7 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
   };
 
   const form = useForm<TournamentLeagueInput>({
-    resolver: zodResolver(createTournamentFormatSchema),
+    resolver: zodResolver(createTournamentLeagueSchema),
     defaultValues: {
       league_type: leagueType().toLocaleLowerCase(),
       name: getColumnValue(row, "name"),
@@ -140,7 +140,7 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
         provincesList: selectedProvinces,
       },
     };
-    console.log("called")
+
     setLoading(true);
     await updateTournamentLeague({ ...options })
       .then((res) => {
@@ -148,6 +148,17 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
         setIsEdit(false);
 
         updateLeague(options.league_id, res.league as League.AsObject);
+
+        toast({
+          variant: "success",
+          title: "Success",
+          description: "League updated successfully",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
       })
       .catch((err) => {
         setLoading(false);
@@ -205,6 +216,8 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
         setDeleteLoading(false);
       });
   };
+
+  console.log(form.formState["errors"])
 
   return (
     <Card key={row.id} className="p-3 hover:shadow-lg">
@@ -444,12 +457,13 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
                     </MultiSelector>
                   </div>
                 </div>
+                {/* {form.formState["errors"].name && <p>{}</p>} */}
                 {isEdit && (
                   <Button
                     type="submit"
                     size={"sm"}
                     className="w-full hover:bg-primary"
-  
+
                   >
                     Update League
                     {loading && (

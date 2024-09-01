@@ -13,25 +13,28 @@ import { Slash } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Overview from "@/components/pages/admin/dashboard/overview";
 import UserCategoryOverview from "@/components/pages/admin/dashboard/user-category-overview";
-import dynamic from "next/dynamic";
 import SystemMonitor from "@/components/pages/admin/dashboard/system-monitor";
 import { withAuth } from "@/stores/auth/middleware.store";
 import { Roles, useUserStore } from "@/stores/auth/auth.store";
-import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
-import { getUserProfile } from "@/core/users/users";
-
-// ProgressView contains the recharts chart. There is a bug in the library so we have to use dynamic to avoid hydration errors
-// This will be reviewed later on
-const TournamentInsights = dynamic(
-  () => import("@/components/pages/admin/dashboard/tournament-insights"),
-  { ssr: false }
-);
+import {
+  UserProfile,
+  UserSummary,
+} from "@/lib/grpc/proto/user_management/users_pb";
+import { getAllUsers, getUserProfile } from "@/core/users/users";
+import { GetSchoolsType } from "@/types/user_management/schools";
+import { tournamentsList } from "@/core/tournament/list";
+import { PerformanceTrendChart } from "@/components/pages/admin/dashboard/charts/performance-trend-chart";
 
 const page = withAuth(() => {
   return <Dashboard />;
 }, [Roles.ADMIN]);
 
 function Dashboard() {
+  const [totalUsers, setTotalUsers] = React.useState(0);
+  const [newSignups, setNewSignups] = React.useState(0);
+  const [totalTournaments, setTotalTournaments] = React.useState(0);
+  const [usersList, setUsersList] = React.useState<UserSummary.AsObject[]>([]);
+
   const { user } = useUserStore((state) => state);
   const [currentUser, setCurrentUser] = useState<
     UserProfile.AsObject | undefined
@@ -64,6 +67,32 @@ function Dashboard() {
         console.error(err.message);
       });
   }, [user]);
+
+  React.useEffect(() => {
+    if (!user) return;
+    const options: GetSchoolsType = {
+      pageSize: 200,
+      page: 1,
+      token: user.token,
+    };
+    getAllUsers({ ...options })
+      .then((res) => {
+        setTotalUsers(res.approveduserscount);
+        setNewSignups(res.recentsignupscount);
+        setUsersList(res.usersList);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+
+    tournamentsList({ token: user.token, page_size: 10, page_token: 0 })
+      .then((res) => {
+        setTotalTournaments(res.tournamentsList.length);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, []);
   return (
     <ContentLayout title="dashboard">
       <header>
@@ -99,10 +128,16 @@ function Dashboard() {
           </span>
         </div>
       </header>
-      <Overview />
+      <Overview
+        newSignups={newSignups}
+        totalTournaments={totalTournaments}
+        totalUsers={totalTournaments}
+      />
       <div className="grid grid-cols-1 md:grid-cols-3 mt-5 md:gap-3">
-        <UserCategoryOverview />
-        <TournamentInsights />
+        <UserCategoryOverview usersList={usersList} />
+        <div className="col-span-2">
+          <PerformanceTrendChart />
+        </div>
       </div>
       <SystemMonitor />
     </ContentLayout>

@@ -1,19 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -23,43 +14,19 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { updateUserProfile } from "@/core/users/users";
-import { countries } from "@/lib/data";
-import { Districts, Provinces } from "@/lib/get-provinces-and-districts";
 import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
-import { cn } from "@/lib/utils";
 import {
-  schoolProfileSchemaStep1,
   twoFactorEnableSchema,
 } from "@/lib/validations/admin/accounts/profile-update.schema";
 import { useUserStore } from "@/stores/auth/auth.store";
-import { UserRole } from "@/types";
-import { UpdateUserProfile } from "@/types/user_management/users";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Camera, CheckIcon, ChevronsUpDown } from "lucide-react";
-import Image from "next/image";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import FileUpload from "../tournaments/list/tournament-name/file-upload";
 import { PasswordInput } from "@/components/ui/password-Input";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";

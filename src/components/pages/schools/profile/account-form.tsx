@@ -28,9 +28,9 @@ import { z } from "zod";
 import { ToastAction } from "@/components/ui/toast";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { useToast } from "@/components/ui/use-toast";
-import { UpdateUserProfile } from "@/types/user_management/users";
+import { UpdateSchoolProfile, UpdateUserProfile } from "@/types/user_management/users";
 import { UserRole } from "@/types";
-import { updateUserProfile } from "@/core/users/users";
+// import { updateUserProfile } from "@/core/users/users";
 
 interface AccountFormProps {
   user: UserProfile.AsObject;
@@ -56,53 +56,53 @@ function AccountForm({ user }: AccountFormProps) {
   });
 
   const onSubmit = async (data: Inputs) => {
-    if (!storeUser) return;
-    setIsPending(true);
+    // if (!storeUser) return;
+    // setIsPending(true);
 
-    const NewProfile: UpdateUserProfile = {
-      name: data.contact_person,
-      address: user.address,
-      bio: user.bio,
-      email: data.contact_person_email,
-      phone: data.contact_person_number,
-      profilePicture: user.profilepicture,
-      token: storeUser.token,
-      userID: user.userid,
-      gender: user.gender,
-      role: UserRole.SCHOOL,
-    };
+    // const NewProfile: UpdateSchoolProfile = {
+    //   name: data.contact_person,
+    //   address: user.address,
+    //   bio: user.bio,
+    //   email: data.contact_person_email,
+    //   phone: data.contact_person_number,
+    //   profilePicture: user.profilepicture,
+    //   token: storeUser.token,
+    //   userID: user.userid,
+    //   gender: user.gender,
+    //   role: UserRole.SCHOOL,
+    // };
 
-    await updateUserProfile(NewProfile)
-      .then((res) => {
-        toast({
-          variant: "success",
-          title: "Success",
-          description: res.message,
-          action: (
-            <ToastAction altText="Close" className="bg-primary text-white">
-              Close
-            </ToastAction>
-          ),
-        });
-      })
-      .catch((err) => {
-        console.error(err.message);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description:
-            "Something went wrong. Please check your credentials and try again later",
-          action: (
-            <ToastAction altText="Close" className="bg-primary text-white">
-              Close
-            </ToastAction>
-          ),
-        });
-      })
-      .finally(() => {
-        setIsPending(false);
-        setDialogOpen(false);
-      });
+    // await updateUserProfile(NewProfile)
+    //   .then((res) => {
+    //     toast({
+    //       variant: "success",
+    //       title: "Success",
+    //       description: res.message,
+    //       action: (
+    //         <ToastAction altText="Close" className="bg-primary text-white">
+    //           Close
+    //         </ToastAction>
+    //       ),
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.error(err.message);
+    //     toast({
+    //       variant: "destructive",
+    //       title: "Error",
+    //       description:
+    //         "Something went wrong. Please check your credentials and try again later",
+    //       action: (
+    //         <ToastAction altText="Close" className="bg-primary text-white">
+    //           Close
+    //         </ToastAction>
+    //       ),
+    //     });
+    //   })
+    //   .finally(() => {
+    //     setIsPending(false);
+    //     setDialogOpen(false);
+    //   });
   };
 
   return (

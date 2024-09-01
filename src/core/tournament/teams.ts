@@ -1,4 +1,4 @@
-import { CreateTeamRequest, GetTeamsByTournamentRequest, GetTeamsByTournamentResponse, Speaker, Team, UpdateTeamRequest } from "@/lib/grpc/proto/debate_management/debate_pb";
+import { CreateTeamRequest, DeleteTeamRequest, DeleteTeamResponse, GetTeamsByTournamentRequest, GetTeamsByTournamentResponse, Speaker, Team, UpdateTeamRequest } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { debateClient } from "../grpc-clients";
 import { CreateTeamType, UpdateTeamType } from "@/types/tournaments/teams";
 
@@ -74,7 +74,7 @@ export const updateTournamentTeam = async ({
 
         request.setToken(token);
         request.setTeam(team);
-        
+
         debateClient.updateTeam(request, {}, (err, response) => {
             if (err) {
                 reject(err);
@@ -85,27 +85,25 @@ export const updateTournamentTeam = async ({
     });
 }
 
-// export const deleteTournamentTeam = async ({
-//     token,
-//     team_id,
-// }: {
-//     token: string;
-//     team_id: number;
-// }): Promise<void> => {
-//     return new Promise((resolve, reject) => {
-//         const request = new DeleteTeam();
-//         const team = new Team();
-//         team.setTeamId(team_id);
+export const deleteTournamentTeam = async ({
+    token,
+    team_id,
+}: {
+    token: string;
+    team_id: number;
+}): Promise<DeleteTeamResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new DeleteTeamRequest();
+        const team = new Team();
+        team.setTeamId(team_id);
+        request.setToken(token);
 
-//         request.setToken(token);
-//         request.setTeam(team);
-
-//         debateClient.deleteTeam(request, {}, (err, response) => {
-//             if (err) {
-//                 reject(err);
-//             } else {
-//                 resolve();
-//             }
-//         });
-//     });
-// }
+        debateClient.deleteTeam(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}

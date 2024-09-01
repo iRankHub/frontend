@@ -75,6 +75,12 @@ export class GetAllUsersResponse extends jspb.Message {
   getTotalcount(): number;
   setTotalcount(value: number): GetAllUsersResponse;
 
+  getApproveduserscount(): number;
+  setApproveduserscount(value: number): GetAllUsersResponse;
+
+  getRecentsignupscount(): number;
+  setRecentsignupscount(value: number): GetAllUsersResponse;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetAllUsersResponse.AsObject;
   static toObject(includeInstance: boolean, msg: GetAllUsersResponse): GetAllUsersResponse.AsObject;
@@ -87,6 +93,8 @@ export namespace GetAllUsersResponse {
   export type AsObject = {
     usersList: Array<UserSummary.AsObject>,
     totalcount: number,
+    approveduserscount: number,
+    recentsignupscount: number,
   }
 }
 
@@ -1684,6 +1692,48 @@ export namespace VerifyAndUpdatePasswordResponse {
   export type AsObject = {
     success: boolean,
     message: string,
+  }
+}
+
+export class GetSchoolIDsByNamesRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): GetSchoolIDsByNamesRequest;
+
+  getSchoolNamesList(): Array<string>;
+  setSchoolNamesList(value: Array<string>): GetSchoolIDsByNamesRequest;
+  clearSchoolNamesList(): GetSchoolIDsByNamesRequest;
+  addSchoolNames(value: string, index?: number): GetSchoolIDsByNamesRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetSchoolIDsByNamesRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetSchoolIDsByNamesRequest): GetSchoolIDsByNamesRequest.AsObject;
+  static serializeBinaryToWriter(message: GetSchoolIDsByNamesRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetSchoolIDsByNamesRequest;
+  static deserializeBinaryFromReader(message: GetSchoolIDsByNamesRequest, reader: jspb.BinaryReader): GetSchoolIDsByNamesRequest;
+}
+
+export namespace GetSchoolIDsByNamesRequest {
+  export type AsObject = {
+    token: string,
+    schoolNamesList: Array<string>,
+  }
+}
+
+export class GetSchoolIDsByNamesResponse extends jspb.Message {
+  getSchoolIdsMap(): jspb.Map<string, number>;
+  clearSchoolIdsMap(): GetSchoolIDsByNamesResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetSchoolIDsByNamesResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetSchoolIDsByNamesResponse): GetSchoolIDsByNamesResponse.AsObject;
+  static serializeBinaryToWriter(message: GetSchoolIDsByNamesResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetSchoolIDsByNamesResponse;
+  static deserializeBinaryFromReader(message: GetSchoolIDsByNamesResponse, reader: jspb.BinaryReader): GetSchoolIDsByNamesResponse;
+}
+
+export namespace GetSchoolIDsByNamesResponse {
+  export type AsObject = {
+    schoolIdsMap: Array<[string, number]>,
   }
 }
 

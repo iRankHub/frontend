@@ -38,7 +38,7 @@ function Login() {
       </div>
       <div className="flex justify-end">
         <div className="relative max-w-3xl w-full h-full rounded-md">
-          <Image src="/static/images/Login-Art.png" alt="Login Art" fill />
+          <Image src="/static/images/admin/admin.png" alt="Login Art" fill />
         </div>
       </div>
     </div>

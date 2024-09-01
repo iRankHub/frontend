@@ -35,6 +35,66 @@ export interface UpdateUserProfile {
     role?: UserRole;
 }
 
+export interface UpdateAdminProfile {
+    token: string;
+    userID: number;
+    name: string;
+    gender?: string;
+    address?: string;
+    bio?: string;
+    profilePicture?: string | Uint8Array;
+    phone?: string;
+}
+
+export interface UpdateSchoolProfile {
+    token: string;
+    userID: number;
+    contactPersonName?: string;
+    gender?: string;
+    address?: string;
+    schoolName?: string;
+    schoolEmail?: string;
+    schoolType?: string;
+    contactEmail?: string;
+    contactPersonNationalId?: string;
+    phone?: string;
+    profilePicture?: string | Uint8Array;
+    bio?: string;
+}
+
+export interface UpdateStudentProfile {
+    token: string;
+    userID: number;
+    firstName?: string;
+    lastName?: string;
+    gender?: string;
+    email?: string;
+    grade?: string;
+    dateOfBirth?: string;
+    address?: string;
+    bio?: string;
+    profilePicture?: string | Uint8Array;
+    phone?: string;
+}
+
+export interface UpdateVolunteerProfile {
+    token: string;
+    userID: number;
+    firstName?: string;
+    lastName?: string;
+    gender?: string;
+    email: string;
+    nationalID?: string;
+    graduateYear?: number;
+    isEnrolledInUniversity?: boolean;
+    hasInternship?: boolean;
+    address?: string;
+    bio?: string;
+    profilePicture?: string | Uint8Array;
+    role?: string;
+    phone?: string;
+}
+
 export interface SchoolDetailsType {
     schoolname: string;
     country: string;

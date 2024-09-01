@@ -115,3 +115,38 @@ export const volunteerSchema = z.object({
         message: "gender is required!"
     }),
 });
+
+export const passwordResetSchema = z.object({
+    code: z.string().min(6, {
+        message: "Code too short"
+    }).max(6, {
+        message: "Code too long"
+    }),
+    password: z.
+        string()
+        .min(8, {
+            message: "Password must be atleast 8 characters long"
+        })
+        .max(100)
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/, {
+            message:
+                "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
+        }),
+    confirm_password: z.
+        string()
+        .min(8, {
+            message: "Password must be atleast 8 characters long"
+        })
+        .max(100)
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/, {
+            message:
+                "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
+        }),
+}).superRefine(({ confirm_password, password }, ctx) => {
+    if (confirm_password !== password) {
+        ctx.addIssue({
+            code: "custom",
+            message: "The passwords did not match",
+        });
+    }
+})

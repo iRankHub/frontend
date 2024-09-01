@@ -101,17 +101,17 @@ export function Menu({ isOpen }: MenuProps) {
                   <Button
                     onClick={logout}
                     variant="outline"
-                    className="w-full justify-center h-10 mt-5 group outline-none ring-0 border-0"
+                    className="w-full justify-center h-10 mt-5 group outline-none ring-0 border-0 dark:hover:bg-foreground"
                   >
                     <span className={cn(isOpen === false ? "" : "mr-4")}>
                       <LogOut
                         size={18}
-                        className={cn("group-hover:text-primary text-foreground dark:text-background")}
+                        className={cn("group-hover:text-primary text-foreground dark:text-foreground")}
                       />
                     </span>
                     <p
                       className={cn(
-                        "whitespace-nowrap text-foreground dark:text-background",
+                        "whitespace-nowrap text-foreground dark:text-foreground",
                         isOpen === false ? "opacity-0 hidden" : "opacity-100",
                         "group-hover:text-primary"
                       )}

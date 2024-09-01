@@ -194,6 +194,7 @@ export const columns: ColumnDef<UserSummary.AsObject>[] = [
         <Options
           userid={row.getValue("userid")}
           status={row.getValue("status")}
+          user={row.original as UserSummary.AsObject}
         />
       );
     },
@@ -201,10 +202,10 @@ export const columns: ColumnDef<UserSummary.AsObject>[] = [
   },
 ];
 
-const Options = ({ userid, status }: { userid: number; status: string }) => {
+const Options = ({ userid, status, user }: { userid: number; status: string, user: UserSummary.AsObject }) => {
   return (
     <div className={cn("w-full text-end", status !== "pending" && "pr-5")}>
-      <ViewUser />
+      <ViewUser user={user} />
       {status === "pending" ? (
         <>
           <ApproveUser userid={userid} />
