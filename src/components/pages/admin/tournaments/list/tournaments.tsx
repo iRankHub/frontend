@@ -35,7 +35,7 @@ function Tournaments({}) {
   }, [user]);
 
   const loadMore = async () => {
-    if (!user) return
+    if (!user) return;
     setLoadMoreLoading(true);
     const data = {
       page_size: 20,
@@ -60,7 +60,7 @@ function Tournaments({}) {
         <div className="flex items-center justify-center w-full h-96">
           <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
         </div>
-      ) : tournaments.length ? (
+      ) : (
         <>
           <DataCardView
             data={tournaments}
@@ -76,12 +76,6 @@ function Tournaments({}) {
             </div>
           )}
         </>
-      ) : (
-        <div className="flex items-center justify-center w-full h-96">
-          <p className="text-darkBlue text-lg font-semibold">
-            No tournaments available
-          </p>
-        </div>
       )}
 
       <div className="p-5">

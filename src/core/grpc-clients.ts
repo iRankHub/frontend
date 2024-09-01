@@ -2,10 +2,9 @@ import { AuthServiceClient } from "@/lib/grpc/proto/authentication/AuthServiceCl
 import { DebateServiceClient } from "@/lib/grpc/proto/debate_management/DebateServiceClientPb";
 import { TournamentServiceClient } from "@/lib/grpc/proto/tournament_management/TournamentServiceClientPb";
 import { UserManagementServiceClient } from "@/lib/grpc/proto/user_management/UsersServiceClientPb";
-// import '../envConfig.ts'
+import '../envConfig.ts'
 
-const ENVOY_PROXY_URL = "http://64.226.82.235:10000"
-// const ENVOY_PROXY_URL = process.env.ENVOY_PROXY_URL!;
+const ENVOY_PROXY_URL = process.env.NEXT_PUBLIC_ENVOY_PROXY_URL!;
 export const authClient = new AuthServiceClient(ENVOY_PROXY_URL, null, null);
 export const tournamentClient = new TournamentServiceClient(ENVOY_PROXY_URL, null, null);
 export const userClient = new UserManagementServiceClient(ENVOY_PROXY_URL, null, null);

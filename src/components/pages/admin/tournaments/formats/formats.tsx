@@ -62,7 +62,7 @@ function Formats({}) {
         <div className="flex items-center justify-center w-full h-96">
           <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
         </div>
-      ) : formats.length ? (
+      ) : (
         <>
           <DataCardView
             data={formats}
@@ -77,12 +77,6 @@ function Formats({}) {
             </div>
           )}
         </>
-      ) : (
-        <div className="flex items-center justify-center w-full h-96">
-          <p className="text-darkBlue text-lg font-semibold">
-            No formats available
-          </p>
-        </div>
       )}
       <div className="p-5">
         {formats.length > 20 && (

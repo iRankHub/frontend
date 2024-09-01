@@ -92,7 +92,7 @@ function Dashboard() {
       .catch((err) => {
         console.error(err.message);
       });
-  }, []);
+  }, [user]);
   return (
     <ContentLayout title="dashboard">
       <header>
@@ -131,7 +131,7 @@ function Dashboard() {
       <Overview
         newSignups={newSignups}
         totalTournaments={totalTournaments}
-        totalUsers={totalTournaments}
+        totalUsers={totalUsers}
       />
       <div className="grid grid-cols-1 md:grid-cols-3 mt-5 md:gap-3">
         <UserCategoryOverview usersList={usersList} />

@@ -61,7 +61,7 @@ function Leagues({}) {
         <div className="flex items-center justify-center w-full h-96">
           <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
         </div>
-      ) : leagues.length ? (
+      ) : (
         <>
           <DataCardView
             data={leagues}
@@ -76,12 +76,6 @@ function Leagues({}) {
             </div>
           )}
         </>
-      ) : (
-        <div className="flex items-center justify-center w-full h-96">
-          <p className="text-darkBlue text-lg font-semibold">
-            No formats available
-          </p>
-        </div>
       )}
       {leagues.length > 20 && (
         <Button
