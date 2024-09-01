@@ -10,8 +10,8 @@ const rubik = Lato({
 });
 
 const APP_NAME = "iRankHub";
-const APP_DEFAULT_TITLE = "iRankHub - PWA App";
-const APP_TITLE_TEMPLATE = "iRankHub - PWA App";
+const APP_DEFAULT_TITLE = "iRankHub";
+const APP_TITLE_TEMPLATE = "iRankHub";
 const APP_DESCRIPTION = "iRankHub is an end-to-end debate management platform designed to streamline the organization, execution, and analysis of debate tournaments. It aims to provide a centralized solution for all stakeholders involved, including administrators, schools, students, volunteers, and judges. The system will leverage modern technologies and best practices to deliver a seamless and efficient experience.";
 
 export const metadata: Metadata = {

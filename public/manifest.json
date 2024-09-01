@@ -2,7 +2,6 @@
   "name": "iRankHub",
   "short_name": "iRankHub",
   "description": "iRankHub is an end-to-end debate management platform designed to streamline the organization, execution, and analysis of debate tournaments. It aims to provide a centralized solution for all stakeholders involved, including administrators, schools, students, volunteers, and judges. The system will leverage modern technologies and best practices to deliver a seamless and efficient experience.",
-  "theme_color": "#35155D",
   "background_color": "#ffffff",
   "display": "standalone",
   "orientation": "portrait",
