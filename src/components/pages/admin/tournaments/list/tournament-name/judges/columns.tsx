@@ -111,12 +111,12 @@ export const columns: ColumnDef<Judges>[] = [
       <DataTableColumnHeader
         column={column}
         title="Actions"
-        className="justify-center"
+        className="text-center"
       />
     ),
     cell: ({ row }) => {
       return (
-        <div className="w-full pr-5 text-center">
+        <div className="w-full text-center">
           <Sheet>
             <SheetTrigger>
               <Button
@@ -213,6 +213,7 @@ export const columns: ColumnDef<Judges>[] = [
       );
     },
     enableHiding: false,
+    enableSorting: false,
   },
 ];
 

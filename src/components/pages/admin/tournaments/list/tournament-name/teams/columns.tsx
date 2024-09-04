@@ -103,18 +103,19 @@ export const columns: ColumnDef<Team.AsObject>[] = [
       <DataTableColumnHeader
         column={column}
         title="Actions"
-        className="justify-center"
+        className="text-center"
       />
     ),
     cell: ({ row }) => {
       return (
-        <div className="w-full pr-5 text-center gap-3">
+        <div className="w-full text-center gap-3">
           <UpdateTeamForm team={row.original} />
           <DeleteTeam team={row.original} />
         </div>
       );
     },
     enableHiding: false,
+    enableSorting: false,
     maxSize: 20,
   },
 ];

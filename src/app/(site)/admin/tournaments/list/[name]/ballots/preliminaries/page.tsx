@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
 import Preliminaries from "@/components/pages/admin/tournaments/list/tournament-name/ballots/prelims";
 import TournamentMenuWrapper from "@/components/pages/admin/tournaments/list/tournament-name/tournament-menu-wrapper";
@@ -44,21 +44,10 @@ function Page({ params }: Iparms) {
             </BreadcrumbSeparator>
             <BreadcrumbItem>
               <BreadcrumbLink
-                href="/admin/tournaments"
-                className="text-muted-foreground text-base"
-              >
-                Tournament
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator>
-              <Slash className="-rotate-12" />
-            </BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbLink
                 href="/admin/tournaments/list"
                 className="text-muted-foreground text-base"
               >
-                List
+                Tournament
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator>

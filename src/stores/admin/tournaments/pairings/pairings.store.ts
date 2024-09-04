@@ -5,17 +5,21 @@ interface TeamSwapState {
     tableData: Pairing.AsObject[];
     changedField: { rowIndex: number; columnId: string } | null;
     affectedField: { rowIndex: number; columnId: string } | null;
+    selectedTeam: string | null; // Track selected team
     swapTeams: (
         from: { rowIndex: number; columnId: string },
         to: { rowIndex: number; columnId: string }
     ) => void;
     setTableData: (data: Pairing.AsObject[]) => void;
+    setSelectedTeam: (teamName: string | null) => void; // Action to set selected team
+    resetSwapState: () => void;
 }
 
 export const useTeamSwapStore = create<TeamSwapState>((set) => ({
-    tableData: [], // Initialize with an empty array
+    tableData: [],
     changedField: null,
     affectedField: null,
+    selectedTeam: null,
     swapTeams: (from, to) =>
         set((state) => {
             const newTableData = [...state.tableData];
@@ -36,7 +40,10 @@ export const useTeamSwapStore = create<TeamSwapState>((set) => ({
                 tableData: newTableData,
                 changedField: from,
                 affectedField: to,
+                selectedTeam: toTeam.name, // Update selected team to the new value
             };
         }),
-    setTableData: (data) => set({ tableData: data }), // Add this action to set table data
+    setTableData: (data) => set({ tableData: data }),
+    setSelectedTeam: (teamName) => set({ selectedTeam: teamName }),
+    resetSwapState: () => set({ changedField: null, affectedField: null, selectedTeam: null }),
 }));

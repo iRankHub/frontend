@@ -9,6 +9,7 @@ import { Pairing } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { getPairings } from "@/core/debates/pairings";
 import { GetPairingsProps } from "@/types/pairings";
 import { useUserStore } from "@/stores/auth/auth.store";
+import { useTeamSwapStore } from "@/stores/admin/tournaments/pairings/pairings.store";
 
 type PairingsTableProps = {
   tournamentId: number;
@@ -23,6 +24,7 @@ const PairingsTable: FC<PairingsTableProps> = ({
 }) => {
   const [pairings, setPairings] = React.useState<Pairing.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
+  const { setTableData, resetSwapState } = useTeamSwapStore();
 
   useEffect(() => {
     if (!user) return;
@@ -53,6 +55,8 @@ const PairingsTable: FC<PairingsTableProps> = ({
     getPairings(options)
       .then((res) => {
         setPairings(res);
+        setTableData(res);
+        resetSwapState(); // Reset the swap state when changing tabs
       })
       .catch((err) => {
         console.error(err.message);
@@ -77,9 +81,9 @@ const PairingsTable: FC<PairingsTableProps> = ({
           </Button>
         </form>
       </div>
-      <div className="w-full bg-background p-5">
+      <div className="w-full bg-background">
         <Tabs defaultValue="round 1">
-          <TabsList className="mb-3">
+          <TabsList className="mx-5 mt-3">
             {Array.from({ length: totalRounds }, (_, i) => i + 1).map(
               (round) => (
                 <TabsTrigger

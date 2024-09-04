@@ -379,7 +379,7 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
       <DataTableColumnHeader
         column={column}
         title="Actions"
-        className="justify-end"
+        className="text-center"
       />
     ),
     cell: ({ row, table }) => {
@@ -387,8 +387,8 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
       const columnStatus = row.getValue("status");
       const isAcceptReject = columnStatus === "pending";
       return (
-        <div className={cn("w-full flex items-center justify-end gap-2",
-          !isAcceptReject && "pr-10"
+        <div className={cn("w-full flex items-center justify-center gap-2",
+          !isAcceptReject
         )}>
           <ResendInvite invitationId={row.getValue("invitationId")} />
           {isAcceptReject && (
@@ -400,5 +400,6 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
         </div>
       );
     },
+    enableSorting: false,
   },
 ];

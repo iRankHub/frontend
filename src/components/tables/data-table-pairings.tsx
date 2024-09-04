@@ -49,29 +49,6 @@ interface DataTableProps<TData, TValue> {
   }>;
 }
 
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-];
-
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -86,8 +63,33 @@ export function DataTable<TData, TValue>({
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
+  const {
+    tableData,
+    swapTeams,
+    changedField,
+    affectedField,
+    setTableData,
+    selectedTeam,
+    setSelectedTeam,
+    resetSwapState,
+  } = useTeamSwapStore((state) => ({
+    tableData: state.tableData,
+    swapTeams: state.swapTeams,
+    changedField: state.changedField,
+    affectedField: state.affectedField,
+    setTableData: state.setTableData,
+    selectedTeam: state.selectedTeam,
+    setSelectedTeam: state.setSelectedTeam,
+    resetSwapState: state.resetSwapState,
+  }));
+
+  React.useEffect(() => {
+    setTableData(data as Pairing.AsObject[]);
+    resetSwapState(); // Reset swap state when data changes
+  }, [data, setTableData, resetSwapState]);
+
   const table = useReactTable({
-    data,
+    data: tableData as any,
     columns,
     state: {
       sorting,
@@ -108,19 +110,6 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  const { tableData, swapTeams, changedField, affectedField, setTableData } =
-    useTeamSwapStore((state) => ({
-      tableData: state.tableData,
-      swapTeams: state.swapTeams,
-      changedField: state.changedField,
-      affectedField: state.affectedField,
-      setTableData: state.setTableData,
-    }));
-
-  React.useEffect(() => {
-    setTableData(data as Pairing.AsObject[]);
-  }, [data, setTableData]);
-
   // Gather all teams from the entire table
   const allTeams = React.useMemo(() => {
     return table.getRowModel().rows.reduce((acc, row) => {
@@ -138,7 +127,7 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       {DataTableToolbar && <DataTableToolbar table={table} />}
-      <div className="w-full bg-background p-8 px-5">
+      <div className="w-full bg-background p-5">
         <div className="rounded-md border mb-10">
           <Table>
             <TableHeader>
@@ -170,8 +159,8 @@ export function DataTable<TData, TValue>({
                       const columnId = cell.column.id;
                       const isPropositionOrOpposition =
                         columnId === "team1" || columnId === "team2";
-
                       const original = row.original as Pairing.AsObject;
+
                       const currentTeam =
                         columnId === "team1"
                           ? (original.team1 as { name: string }).name
@@ -195,7 +184,8 @@ export function DataTable<TData, TValue>({
                           { rowIndex: targetRowIndex, columnId: targetColumnId }
                         );
 
-                        
+                        // Update selected team
+                        setSelectedTeam(selectedTeam);
                       };
 
                       const borderColor =
@@ -208,22 +198,19 @@ export function DataTable<TData, TValue>({
                           : "border-transparent";
 
                       return (
-                        <TableCell
-                          key={cell.id}
-                          className={`border ${borderColor}`}
-                        >
+                        <TableCell key={cell.id} className={``}>
                           {isPropositionOrOpposition ? (
                             <Popover modal>
                               <PopoverTrigger asChild>
                                 <Button
                                   variant="outline"
                                   role="combobox"
-                                  className="w-full justify-between"
-                                >
-                                  {flexRender(
-                                    cell.column.columnDef.cell,
-                                    cell.getContext()
+                                  className={cn(
+                                    "w-full justify-between",
+                                    `border ${borderColor}`
                                   )}
+                                >
+                                  {currentTeam}
                                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                 </Button>
                               </PopoverTrigger>
@@ -235,51 +222,32 @@ export function DataTable<TData, TValue>({
                                       No information found.
                                     </CommandEmpty>
                                     <CommandGroup>
-                                      {tableData.map((rowData, index) => {
-                                        const team1Name = rowData.team1?.name;
-                                        const team2Name = rowData.team2?.name;
-
-                                        return (
-                                          <>
-                                            {team1Name && (
-                                              <CommandItem
-                                                key={`team1-${index}`}
-                                                onSelect={() =>
-                                                  handleSelectTeam(team1Name)
-                                                }
-                                              >
-                                                <Check
-                                                  className={cn(
-                                                    "mr-2 h-4 w-4",
-                                                    currentTeam === team1Name
-                                                      ? "opacity-100"
-                                                      : "opacity-0"
-                                                  )}
-                                                />
-                                                {team1Name}
-                                              </CommandItem>
-                                            )}
-                                            {team2Name && (
-                                              <CommandItem
-                                                key={`team2-${index}`}
-                                                onSelect={() =>
-                                                  handleSelectTeam(team2Name)
-                                                }
-                                              >
-                                                <Check
-                                                  className={cn(
-                                                    "mr-2 h-4 w-4",
-                                                    currentTeam === team2Name
-                                                      ? "opacity-100"
-                                                      : "opacity-0"
-                                                  )}
-                                                />
-                                                {team2Name}
-                                              </CommandItem>
-                                            )}
-                                          </>
-                                        );
-                                      })}
+                                      {tableData
+                                        .flatMap((rowData) => [
+                                          rowData.team1?.name,
+                                          rowData.team2?.name,
+                                        ])
+                                        .filter(Boolean) // Remove null or undefined
+                                        .map((teamName) => (
+                                          <CommandItem
+                                            key={teamName}
+                                            onSelect={() =>
+                                              handleSelectTeam(
+                                                teamName as string
+                                              )
+                                            }
+                                          >
+                                            <Check
+                                              className={cn(
+                                                "mr-2 h-4 w-4",
+                                                currentTeam === teamName
+                                                  ? "opacity-100"
+                                                  : "opacity-0"
+                                              )}
+                                            />
+                                            {teamName}
+                                          </CommandItem>
+                                        ))}
                                     </CommandGroup>
                                   </CommandList>
                                 </Command>

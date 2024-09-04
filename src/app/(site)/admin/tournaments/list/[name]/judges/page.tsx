@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
 import Judges from "@/components/pages/admin/tournaments/list/tournament-name/judges";
 import TournamentMenuWrapper from "@/components/pages/admin/tournaments/list/tournament-name/tournament-menu-wrapper";
@@ -50,7 +50,7 @@ function Page({ params }: Iparms) {
   return (
     <ContentLayout title="format">
       <div className="w-full flex items-center justify-between gap-5">
-        <h3 className="text-2xl text-primary font-bold">{tournament?.name}</h3>
+        <h3 className="text-lg text-primary font-bold">{tournament?.name}</h3>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -66,21 +66,10 @@ function Page({ params }: Iparms) {
             </BreadcrumbSeparator>
             <BreadcrumbItem>
               <BreadcrumbLink
-                href="/admin/tournaments"
-                className="text-muted-foreground text-base"
-              >
-                Tournament
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator>
-              <Slash className="-rotate-12" />
-            </BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbLink
                 href="/admin/tournaments/list"
                 className="text-muted-foreground text-base"
               >
-                List
+                Tournament
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator>

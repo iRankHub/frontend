@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
 import Tournaments from "@/components/pages/admin/tournaments/list/tournaments";
 import {
@@ -15,7 +15,7 @@ import { Slash } from "lucide-react";
 import React from "react";
 
 const page = withAuth(() => {
-  return <Page />
+  return <Page />;
 }, [Roles.ADMIN]);
 
 function Page() {
@@ -37,19 +37,18 @@ function Page() {
               <Slash className="-rotate-12" />
             </BreadcrumbSeparator>
             <BreadcrumbItem>
-              <BreadcrumbPage
+              <BreadcrumbLink
+                href="/admin/tournaments/list"
                 className="text-muted-foreground"
               >
-                Tournament
-              </BreadcrumbPage>
+                Tournaments
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator>
               <Slash className="-rotate-12" />
             </BreadcrumbSeparator>
             <BreadcrumbItem>
-              <BreadcrumbPage className="text-primary">
-                List
-              </BreadcrumbPage>
+              <BreadcrumbPage className="text-primary">List</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
