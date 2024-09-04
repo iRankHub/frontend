@@ -84,7 +84,7 @@ export function DataTableToolbar<TData>({
             <DialogTrigger>
               <Button
                 type="button"
-                className="border border-dashed border-white text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground dark:hover:text-background group"
+                className="border border-dashed border-background text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground dark:hover:text-background group"
               >
                 <Icons.addCircle className="text-white w-3.5 h-3.5 group-hover:text-foreground dark:group-hover:text-background" />
                 Add New User
@@ -196,7 +196,7 @@ export function DataTableToolbar<TData>({
           <DialogTrigger>
             <Button
               type="button"
-              className="border border-dashed border-white text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground dark:hover:text-background group"
+              className="border border-dashed border-background text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground dark:hover:text-background group"
             >
               <Icons.addCircle className="text-white w-3.5 h-3.5 group-hover:text-foreground dark:group-hover:text-background" />
               Import Users

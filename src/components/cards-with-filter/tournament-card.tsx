@@ -112,6 +112,14 @@ const TournamentCard = ({
     }
   };
 
+  // format date from 2024-09-05 12:00 to 09/05
+  const formatDate = (date: string) => {
+    const d = new Date(date);
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${month}/${day}`;
+  };
+
   return (
     <Card key={row.id} className="p-3">
       <div className="flex items-center justify-between gap-5">
@@ -223,8 +231,8 @@ const TournamentCard = ({
           <div className="flex flex-col">
             <span className="text-xs font-medium text-muted-text">Date</span>
             <small className="text-secondary-foreground text-xs font-medium">
-              {getColumnValue(row, "startDate")} -{" "}
-              {getColumnValue(row, "endDate")}
+              {formatDate(getColumnValue(row, "startDate"))} -{" "}
+              {formatDate(getColumnValue(row, "endDate"))}
             </small>
           </div>
         </div>
@@ -250,7 +258,7 @@ const TournamentCard = ({
           </div>
           <div className="flex flex-col">
             <span className="text-xs font-medium text-primary">
-              {getColumnValue(row, "coordinator") || "Hakidu"}
+              {getColumnValue(row, "coordinatorName")}
             </span>
             <small className="text-secondary-foreground text-xs font-medium">
               coordinator

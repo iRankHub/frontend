@@ -1,4 +1,13 @@
-import { CreateTeamRequest, DeleteTeamRequest, DeleteTeamResponse, GetTeamsByTournamentRequest, GetTeamsByTournamentResponse, Speaker, Team, UpdateTeamRequest } from "@/lib/grpc/proto/debate_management/debate_pb";
+import {
+    CreateTeamRequest,
+    DeleteTeamRequest,
+    DeleteTeamResponse,
+    GetTeamsByTournamentRequest,
+    GetTeamsByTournamentResponse,
+    Speaker,
+    Team,
+    UpdateTeamRequest
+} from "@/lib/grpc/proto/debate_management/debate_pb";
 import { debateClient } from "../grpc-clients";
 import { CreateTeamType, UpdateTeamType } from "@/types/tournaments/teams";
 

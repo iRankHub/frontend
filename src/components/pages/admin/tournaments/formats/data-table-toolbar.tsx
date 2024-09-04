@@ -28,7 +28,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { createTournamentFormatSchema } from "@/lib/validations/admin/tournaments/create-tournament-format.schema";
 import { z } from "zod";
@@ -63,6 +63,35 @@ export function DataTableToolbar<TData>({
 
   const createFormat = async (data: TournamentFormatInput) => {
     if (!user) return;
+
+    if (!isNaN(Number(data.format_name))) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Format name can't only be numbers",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
+      });
+      return;
+    }
+
+    // check if speakers per team is a number
+    if (isNaN(Number(data.speakers_per_team))) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Speakers per team must be a number",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
+      });
+      return;
+    }
 
     const options = {
       token: user.token,
@@ -106,22 +135,45 @@ export function DataTableToolbar<TData>({
         setLoading(false);
       });
   };
+
+  const speakersOptions = useMemo(() => {
+    const column = table.getColumn("speakersPerTeam");
+    if (!column) return [];
+
+    const uniqueSpeakerCounts = Array.from(
+      new Set(
+        table
+          .getFilteredRowModel()
+          .rows.map((row) => row.getValue("speakersPerTeam"))
+      )
+    );
+
+    return uniqueSpeakerCounts
+      .filter((value) => typeof value === "number")
+      .sort((a, b) => (a as number) - (b as number))
+      .map((value) => ({
+        label: value.toString() + " speakers",
+        value: value as number,
+      }));
+  }, [table]);
   return (
     <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown">
       <div className="flex flex-1 items-center space-x-3 p-5 py-4">
         <Input
           placeholder="Search name..."
-          value={(table.getColumn("formatName")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("formatName")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
             table.getColumn("formatName")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[280px]"
         />
-        {table.getColumn("speakers") && (
+        {table.getColumn("speakersPerTeam") && (
           <DataTableFacetedFilter
-            column={table.getColumn("speakers")}
+            column={table.getColumn("speakersPerTeam")}
             title="speakers"
-            options={userRoles}
+            options={speakersOptions}
           />
         )}
         {isFiltered && (
@@ -135,13 +187,13 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <Dialog onOpenChange={setDialogOpen} open={dialogOpen}>
+      <Dialog onOpenChange={setDialogOpen} open={dialogOpen} modal>
         <DialogTrigger>
           <Button
             type="button"
-            className="text-white gap-2 text-sm font-semibold h-8 hover:bg-white hover:text-foreground group mr-5"
+            className="text-background dark:text-foreground dark:hover:text-background gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground group mr-5"
           >
-            <Icons.add className="text-white w-3.5 h-3.5 group-hover:text-foreground" />
+            <Icons.add className="text-white w-3.5 h-3.5 group-hover:text-foreground group-hover:dark:text-background" />
             Add New Format
           </Button>
         </DialogTrigger>
@@ -163,7 +215,7 @@ export function DataTableToolbar<TData>({
                   name="format_name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-darkBlue">
+                      <FormLabel className="text-darkBlue dark:text-foreground">
                         Format Name
                         <b className="text-primary font-light"> *</b>
                       </FormLabel>
@@ -182,7 +234,7 @@ export function DataTableToolbar<TData>({
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-darkBlue">
+                      <FormLabel className="text-darkBlue dark:text-foreground">
                         Description
                         <b className="text-primary font-light"> *</b>
                       </FormLabel>
@@ -201,12 +253,20 @@ export function DataTableToolbar<TData>({
                   name="speakers_per_team"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-darkBlue">
+                      <FormLabel className="text-darkBlue dark:text-foreground">
                         Speakers per team
                         <b className="text-primary font-light"> *</b>
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="3 speakers" {...field} />
+                        <Input
+                          placeholder="3 speakers"
+                          {...field}
+                          className="w-full"
+                          list="speakers"
+                          min="1"
+                          max="10"
+                          // onChange={(e) => field.onChange(Number(e.target.value))}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

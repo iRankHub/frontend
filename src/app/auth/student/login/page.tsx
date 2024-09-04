@@ -10,7 +10,7 @@ function Login() {
 
   const handleChange = () => setIsUsingEmail(!isUsingEmail);
   return (
-    <div className="grid grid-cols-2 gap-5 p-5 px-10 min-h-screen">
+    <div className="grid grid-cols-2 gap-5 p-5 px-10 min-h-screen bg-white">
       <div className="max-w-md mx-auto w-full flex flex-col">
         <div className="relative w-60 h-60">
           <Image src="/static/images/logo-big.png" alt="IDebate Logo" fill />

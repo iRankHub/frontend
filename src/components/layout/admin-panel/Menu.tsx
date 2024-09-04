@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState } from "react";
 import Link from "next/link";
 import { Ellipsis, LogOut } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -25,32 +26,35 @@ export function Menu({ isOpen }: MenuProps) {
   const pathname = usePathname();
   const menuList = getMenuList(pathname);
   const { logout } = useUserStore((state) => state);
+  const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null);
+
+  const handleDropdownToggle = (index: number) => {
+    setOpenDropdownIndex(openDropdownIndex === index ? null : index);
+  };
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
       <nav className="mt-8 h-full w-full">
         <ul className="flex flex-col min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1 px-2">
-          {menuList.map(({ groupLabel, menus }, index) => (
-            <li className={cn("w-full", groupLabel ? "pt-5" : "")} key={index}>
+          {menuList.map(({ groupLabel, menus }, groupIndex) => (
+            <li className={cn("w-full", groupLabel ? "pt-5" : "")} key={groupIndex}>
               {menus.map(
-                ({ href, label, icon: Icon, active, submenus }, index) =>
+                ({ href, label, icon: Icon, active, submenus }, menuIndex) =>
                   submenus.length === 0 ? (
-                    <div className="w-full" key={index}>
+                    <div className="w-full" key={menuIndex}>
                       <TooltipProvider disableHoverableContent>
                         <Tooltip delayDuration={100}>
                           <TooltipTrigger asChild>
                             <Button
                               variant={active ? "secondary" : "ghost"}
                               className={cn(
-                                "w-full justify-start h-10 mb-1 text-background dark:text-foreground font-bold group hover:dark:bg-foreground",
+                                "w-full justify-start h-10 mb-1 text-background dark:text-foreground font-bold group",
                                 active && "bg-[#F5AE73] hover:bg-[#F5AE73]"
                               )}
                               asChild
                             >
                               <Link href={href}>
-                                <span
-                                  className={cn(isOpen === false ? "" : "mr-4")}
-                                >
+                                <span className={cn(isOpen === false ? "" : "mr-4")}>
                                   <Icon
                                     size={18}
                                     className={cn(
@@ -81,13 +85,15 @@ export function Menu({ isOpen }: MenuProps) {
                       </TooltipProvider>
                     </div>
                   ) : (
-                    <div className="w-full" key={index}>
+                    <div className="w-full" key={menuIndex}>
                       <CollapseMenuButton
                         icon={Icon}
                         label={label}
                         active={active}
                         submenus={submenus}
                         isOpen={isOpen}
+                        isExpanded={openDropdownIndex === menuIndex}
+                        onToggle={() => handleDropdownToggle(menuIndex)}
                       />
                     </div>
                   )

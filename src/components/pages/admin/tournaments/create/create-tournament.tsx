@@ -48,10 +48,15 @@ function CreateTournament() {
       setCoordinators(res.usersList);
     });
   }, [user]);
+
+  if (!leagues || !coordinators) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="mt-7 flex gap-5 relative">
       <Leagues
         leagues={leagues}
+        setLeagues={setLeagues}
         setSelectedLeague={setSelectedLeague}
         selectedLeague={selectedLeague}
       />

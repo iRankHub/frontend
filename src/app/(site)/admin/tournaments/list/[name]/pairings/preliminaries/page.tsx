@@ -1,6 +1,6 @@
 "use client";
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
-import Preliminaries from "@/components/pages/admin/tournaments/list/tournament-name/pairings/prelims";
+import PairingsTable from "@/components/pages/admin/tournaments/list/tournament-name/pairings";
 import TournamentMenuWrapper from "@/components/pages/admin/tournaments/list/tournament-name/tournament-menu-wrapper";
 import {
   Breadcrumb,
@@ -29,6 +29,7 @@ const page = withAuth(
 function Page({ params }: Iparms) {
   const { name: tourn_id } = params;
   const { user } = useUserStore((state) => state);
+  const [pageLoading, setPageLoading] = React.useState(true);
   const [tournament, setTournament] = React.useState<
     Tournament.AsObject | undefined
   >(undefined);
@@ -45,8 +46,15 @@ function Page({ params }: Iparms) {
       })
       .catch((err) => {
         console.error(err.message);
+      })
+      .finally(() => {
+        setPageLoading(false);
       });
   }, [user, tourn_id]);
+
+  if (pageLoading) {
+    return <ContentLayout title="format">Loading...</ContentLayout>;
+  }
   return (
     <ContentLayout title="format">
       <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-5">
@@ -95,7 +103,11 @@ function Page({ params }: Iparms) {
         </Breadcrumb>
       </div>
       <TournamentMenuWrapper>
-        <Preliminaries />
+        <PairingsTable
+          tournamentId={Number(tournament?.tournamentId)}
+          totalRounds={tournament?.numberOfPreliminaryRounds || 0}
+          is_elimination={false}
+        />
       </TournamentMenuWrapper>
     </ContentLayout>
   );

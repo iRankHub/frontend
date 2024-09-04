@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 import React, { useEffect, useState } from "react";
-import LeagueCard from "./league-card";
 import {
   Dialog,
   DialogContent,
@@ -39,7 +38,6 @@ import { z } from "zod";
 import { createTournamentLeagueSchema } from "@/lib/validations/admin/tournaments/create-tournament-leagues.schema";
 import {
   createTournamentLeague,
-  tournamentLeagues,
 } from "@/core/tournament/leagues";
 import { CreateTournamentLeague } from "@/types/tournaments/tournament-leagues";
 import {
@@ -71,7 +69,6 @@ export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
-  const [pageLoading, setPageLoading] = useState<boolean>(true);
   const [selectedProvinces, setSelectedProvinces] = useState<string[]>([]);
   const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
   const { addLeague } = useLeaguesStore((state) => state);
@@ -80,7 +77,6 @@ export function DataTableToolbar<TData>({
   const { user } = useUserStore((state) => state);
   const { toast } = useToast();
   const [provinces, setProvinces] = useState<string[]>(Provinces());
-  const [districts, setDisctricts] = useState<string[]>(Districts());
 
   const form = useForm<TournamentLeagueInput>({
     resolver: zodResolver(createTournamentLeagueSchema),
@@ -88,6 +84,21 @@ export function DataTableToolbar<TData>({
 
   const createLeague = async (data: TournamentLeagueInput) => {
     if (!user) return;
+
+    // league name can't only be numbers
+    if (!isNaN(Number(data.name))) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "League name can't only be numbers",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
+      });
+      return;
+    }
 
     if (selectedProvinces.length === 0) {
       toast({
@@ -228,7 +239,7 @@ export function DataTableToolbar<TData>({
                   name="name"
                   render={({ field }) => (
                     <FormItem className="w-full flex items-center gap-3">
-                      <FormLabel className="mt-2 text-darkBlue">
+                      <FormLabel className="mt-2 text-darkBlue dark:text-foreground">
                         League Name
                       </FormLabel>
                       <FormControl>
@@ -247,7 +258,7 @@ export function DataTableToolbar<TData>({
                   name="league_type"
                   render={({ field }) => (
                     <FormItem className="w-full flex items-center gap-3">
-                      <FormLabel className="mt-2 text-darkBlue">
+                      <FormLabel className="mt-2 text-darkBlue dark:text-foreground">
                         League Type
                       </FormLabel>
                       <Select
@@ -272,7 +283,7 @@ export function DataTableToolbar<TData>({
                 />
 
                 <div className="w-full flex items-center gap-3">
-                  <Label htmlFor="type" className="text-sm min-w-[80px]">
+                  <Label htmlFor="type" className="text-sm min-w-[80px] text-darkBlue dark:text-foreground">
                     Province(s)
                   </Label>
                   <MultiSelector
@@ -299,7 +310,7 @@ export function DataTableToolbar<TData>({
                   </MultiSelector>
                 </div>
                 <div className="w-full flex items-center gap-3">
-                  <Label htmlFor="type" className="text-sm min-w-[80px]">
+                  <Label htmlFor="type" className="text-sm min-w-[80px] text-darkBlue dark:text-foreground">
                     District(s)
                   </Label>
                   <MultiSelector

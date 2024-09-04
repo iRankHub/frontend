@@ -1,14 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Icons } from "@/components/icons";
-import Link from "next/link";
 import {
   Card,
   CardDescription,
@@ -75,7 +66,7 @@ const FormatCard = ({ row, getColumnValue }: FormatCardProps) => {
     defaultValues: {
       description: getColumnValue(row, "description"),
       format_name: getColumnValue(row, "formatName"),
-      speakers_per_team: getColumnValue(row, "speakersPerTeam"),
+      speakers_per_team: Number(getColumnValue(row, "speakersPerTeam")),
     },
   });
 
@@ -101,10 +92,7 @@ const FormatCard = ({ row, getColumnValue }: FormatCardProps) => {
         setIsEdit(false);
         form.setValue("description", res.format?.description || "");
         form.setValue("format_name", res.format?.formatName || "");
-        form.setValue(
-          "speakers_per_team",
-          String(res.format?.speakersPerTeam) || "0"
-        );
+        form.setValue("speakers_per_team", res.format?.speakersPerTeam || 1);
       })
       .catch((err) => {
         console.error(err.message);
@@ -171,13 +159,13 @@ const FormatCard = ({ row, getColumnValue }: FormatCardProps) => {
       <CardTitle className="text-primary font-bold text-lg mb-2">
         {getColumnValue(row, "formatName")}
       </CardTitle>
-      <CardDescription className="text-sm text-muted-text mb-3">
+      <CardDescription className="text-sm text-muted-text mb-3 dark:text-foreground">
         {getColumnValue(row, "description")}
       </CardDescription>
       <CardFooter className="flex items-center gap-4 justify-between p-0 h-auto">
         <div className="flex items-center gap-3">
           <Icons.users className="text-primary w-3.5 h-3.5" />
-          <span className="text-muted-text text-sm">
+          <span className="text-muted-text text-sm dark:text-foreground">
             {getColumnValue(row, "speakersPerTeam")} speakers per team
           </span>
         </div>
@@ -287,7 +275,7 @@ const FormatCard = ({ row, getColumnValue }: FormatCardProps) => {
                   name="format_name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-darkBlue">
+                      <FormLabel className="text-darkBlue dark:text-foreground">
                         Format Name
                         <b className="text-primary font-light"> *</b>
                       </FormLabel>
@@ -308,7 +296,7 @@ const FormatCard = ({ row, getColumnValue }: FormatCardProps) => {
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-darkBlue">
+                      <FormLabel className="text-darkBlue dark:text-foreground">
                         Description
                         <b className="text-primary font-light"> *</b>
                       </FormLabel>
@@ -329,7 +317,7 @@ const FormatCard = ({ row, getColumnValue }: FormatCardProps) => {
                   name="speakers_per_team"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-darkBlue">
+                      <FormLabel className="text-darkBlue dark:text-foreground">
                         Speakers per team
                         <b className="text-primary font-light"> *</b>
                       </FormLabel>

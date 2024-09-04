@@ -230,7 +230,7 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
       <CardFooter className="flex items-center gap-4 justify-between p-0 h-auto">
         <div className="flex items-center gap-3">
           <div className="flex flex-col gap-1 justify-end">
-            <span className="text-muted-text text-sm">
+            <span className="text-muted-text text-sm dark:text-foreground">
               {leagueType() === "Local"
                 ? leagues.districts.length
                 : leagues.provinces.length}
@@ -238,7 +238,7 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
             <p className="text-sm">Province(s)</p>
           </div>
           <div className="flex flex-col gap-1 justify-end">
-            <span className="text-muted-text text-sm">
+            <span className="text-muted-text text-sm dark:text-foreground">
               {leagueType() === "Local"
                 ? leagues.districts.length
                 : leagues.provinces.length}
@@ -353,13 +353,13 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
                     name="name"
                     render={({ field }) => (
                       <FormItem className="w-full flex items-center gap-3">
-                        <FormLabel className="mt-2 text-darkBlue">
+                        <FormLabel className="mt-2 text-darkBlue dark:text-foreground">
                           League Name
                         </FormLabel>
                         <FormControl>
                           <Input
                             placeholder="E.g: Kigali Debate League"
-                            className="flex-1 placeholder:text-muted-text"
+                            className="flex-1 placeholder:text-muted-text disabled:opacity-100"
                             {...field}
                             disabled={!isEdit}
                           />
@@ -373,7 +373,7 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
                     name="league_type"
                     render={({ field }) => (
                       <FormItem className="w-full flex items-center gap-3">
-                        <FormLabel className="mt-2 text-darkBlue">
+                        <FormLabel className="mt-2 text-darkBlue dark:text-foreground">
                           League Type
                         </FormLabel>
                         <Select
@@ -382,7 +382,7 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
                         >
                           <FormControl>
                             <SelectTrigger
-                              className="flex-1"
+                              className="flex-1 disabled:opacity-100"
                               disabled={!isEdit}
                             >
                               <SelectValue placeholder="Select a league type..." />
@@ -441,13 +441,13 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
                       <MultiSelectorTrigger>
                         <MultiSelectorInput
                           placeholder="Select your district"
-                          className="placeholder:text-muted-text"
+                          className="placeholder:text-muted-text disabled:opacity-100"
                           disabled={!isEdit}
                         />
                       </MultiSelectorTrigger>
                       <MultiSelectorContent>
                         <MultiSelectorList>
-                          {districts.map((district: string) => (
+                          {Districts(selectedProvinces).map((district: string) => (
                             <MultiSelectorItem key={district} value={district}>
                               {district}
                             </MultiSelectorItem>

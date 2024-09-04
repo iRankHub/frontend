@@ -18,6 +18,7 @@ import { Icons } from "@/components/icons";
 import {
   Popover,
   PopoverContent,
+  PopoverContentWithNoPrimitivePortal,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
@@ -38,6 +39,7 @@ import { CreateTeamType } from "@/types/tournaments/teams";
 import { createTournamentTeam } from "@/core/tournament/teams";
 import { useToast } from "@/components/ui/use-toast";
 import { useTeamsStore } from "@/stores/admin/debate/teams.store";
+import { ToastAction } from "@/components/ui/toast";
 
 type TeamInput = z.infer<typeof createTeamSchema>;
 
@@ -89,10 +91,25 @@ function AddTeamForm() {
                 title: "Team created successfully",
                 description: "Team has been created successfully.",
                 variant: "success",
+                action: (
+                  <ToastAction altText="Close" className="bg-primary text-white">
+                    Close
+                  </ToastAction>
+                ),
             });
         })
         .catch((err) => {
             console.error(err.message);
+            toast({
+                title: "Error",
+                description: err.message,
+                variant: "destructive",
+                action: (
+                  <ToastAction altText="Close" className="bg-primary text-white">
+                    Close
+                  </ToastAction>
+                ),
+            });
         })
         .finally(() => {
             setLoading(false);
@@ -151,8 +168,8 @@ function AddTeamForm() {
       name={fieldName}
       render={({ field }) => (
         <FormItem className="flex flex-col">
-          <FormLabel className="font-medium text-foreground">{label}</FormLabel>
-          <Popover modal>
+          <FormLabel className="font-medium text-darkBlue dark:text-foreground">{label}</FormLabel>
+          <Popover modal={true}>
             <PopoverTrigger asChild>
               <FormControl>
                 <Button
@@ -171,7 +188,7 @@ function AddTeamForm() {
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-full p-0">
+            <PopoverContentWithNoPrimitivePortal className="w-full p-0">
               <Command>
                 <CommandInput placeholder="Search user..." />
                 <CommandList>
@@ -206,7 +223,7 @@ function AddTeamForm() {
                   </CommandGroup>
                 </CommandList>
               </Command>
-            </PopoverContent>
+            </PopoverContentWithNoPrimitivePortal>
           </Popover>
           <FormMessage />
         </FormItem>
@@ -225,7 +242,7 @@ function AddTeamForm() {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-darkBlue">
+              <FormLabel className="text-darkBlue dark:text-foreground">
                 Team Name
                 <b className="text-primary font-light"> *</b>
               </FormLabel>
@@ -237,7 +254,7 @@ function AddTeamForm() {
           )}
         />
         <div className="w-full mb-5">
-          <h3 className="text-sm text-muted-foreground font-medium my-3">Team Members</h3>
+          <h3 className="text-sm text-darkBlue dark:text-foreground font-medium my-3">Team Members</h3>
           <div className="grid grid-cols-2 gap-2">
             {renderSpeakerField("speaker_1", "1st Speaker")}
             {renderSpeakerField("speaker_2", "2nd Speaker")}

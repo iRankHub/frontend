@@ -9,7 +9,6 @@ import Image from "next/image";
 
 export function Sidebar() {
   const sidebar = useStore(useSidebarToggle, (state) => state);
-
   if (!sidebar) return null;
 
   return (

@@ -186,7 +186,7 @@ export const columns: ColumnDef<UserSummary.AsObject>[] = [
       <DataTableColumnHeader
         column={column}
         title="Actions"
-        className="justify-end"
+        className="justify-end text-end pr-5"
       />
     ),
     cell: ({ row }) => {
@@ -199,6 +199,7 @@ export const columns: ColumnDef<UserSummary.AsObject>[] = [
       );
     },
     enableHiding: false,
+    enableSorting: false,
   },
 ];
 

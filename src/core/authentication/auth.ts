@@ -43,6 +43,7 @@ export const signUp = (data: {
     isEnrolledInUniversity?: boolean;
     safeguardingCertificate?: string;
     gender?: string;
+    nationalId?: string;
 }): Promise<SignUpResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new SignUpRequest();
@@ -67,6 +68,7 @@ export const signUp = (data: {
         request.setIsenrolledinuniversity(data.isEnrolledInUniversity ?? false)
         request.setSafeguardingcertificate(data.safeguardingCertificate ?? "")
         request.setGender(data.gender ?? "male")
+        request.setNationalid(data.nationalId ?? "")
         // Set other fields as necessary
 
         authClient.signUp(request, {}, (err, response) => {
@@ -297,20 +299,20 @@ export const batchCreateUsers = (data: {
             request.addUsers(userData);
         });
 
-        data.student.forEach((student) => {
-            const userData = new UserData();
-            userData.setFirstname(student.firstName);
-            userData.setLastname(student.lastName);
-            userData.setEmail(student.email);
-            userData.setGender(student.gender.toLocaleLowerCase())
-            userData.setDateofbirth(excelSerialToDate(Number(student.dateOfBirth)))
-            userData.setGrade(student.grade)
-            userData.setSchoolid(Number(student.schoolID))
-            userData.setUserrole("student")
-            userData.setSchoolname(student.schoolName)
+        // data.student.forEach((student) => {
+        //     const userData = new UserData();
+        //     userData.setFirstname(student.firstName);
+        //     userData.setLastname(student.lastName);
+        //     userData.setEmail(student.email);
+        //     userData.setGender(student.gender.toLocaleLowerCase())
+        //     userData.setDateofbirth(excelSerialToDate(Number(student.dateOfBirth)))
+        //     userData.setGrade(student.grade)
+        //     userData.setSchoolid(Number(student.schoolID))
+        //     userData.setUserrole("student")
+        //     userData.setSchoolname(student.schoolName)
 
-            request.addUsers(userData);
-        });
+        //     request.addUsers(userData);
+        // });
 
         data.school.forEach((school) => {
             const userData = new UserData();

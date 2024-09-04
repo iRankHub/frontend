@@ -20,7 +20,7 @@ const Page = () => {
         <div className="relative w-40 h-40">
           <Image src="/static/images/logo-big.png" alt="IDebate Logo" fill />
         </div>
-        <h3 className="text-foreground font-bold text-2xl mb-2">
+        <h3 className="text-foreground dark:text-background font-bold text-2xl mb-2">
           Select your role
         </h3>
         <span className="text-base text-[#7D7878] mb-4">
@@ -40,7 +40,7 @@ const Page = () => {
               width={142}
               height={127}
             />
-            <h3 className="text-foreground group-hover:text-primary text-lg font-medium">
+            <h3 className="text-foreground dark:text-background group-hover:text-primary text-lg font-medium">
               Student
             </h3>
           </div>
@@ -57,7 +57,7 @@ const Page = () => {
               width={142}
               height={127}
             />
-            <h3 className="text-foreground group-hover:text-primary text-lg font-medium">
+            <h3 className="text-foreground dark:text-background group-hover:text-primary text-lg font-medium">
               School
             </h3>
           </div>
@@ -74,7 +74,7 @@ const Page = () => {
               width={142}
               height={127}
             />
-            <h3 className="text-foreground group-hover:text-primary text-lg font-medium">
+            <h3 className="text-foreground dark:text-background group-hover:text-primary text-lg font-medium">
               Volunteer
             </h3>
           </div>

@@ -1,6 +1,6 @@
 "use client";
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
-import Preliminaries from "@/components/pages/admin/tournaments/list/tournament-name/pairings/prelims";
+import PairingsTable from "@/components/pages/admin/tournaments/list/tournament-name/pairings";
 import TournamentMenuWrapper from "@/components/pages/admin/tournaments/list/tournament-name/tournament-menu-wrapper";
 import {
   Breadcrumb,
@@ -95,7 +95,11 @@ function Page({ params }: Iparms) {
         </Breadcrumb>
       </div>
       <TournamentMenuWrapper>
-        <Preliminaries />
+        <PairingsTable
+          tournamentId={Number(tournament?.tournamentId)}
+          totalRounds={tournament?.numberOfPreliminaryRounds || 0}
+          is_elimination={true}
+        />
       </TournamentMenuWrapper>
     </ContentLayout>
   );

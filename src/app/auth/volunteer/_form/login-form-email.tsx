@@ -159,7 +159,7 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
                 Volunteer Email<b className="text-primary font-light"> *</b>
               </FormLabel>
               <FormControl>
-                <Input placeholder="ava.wright@gmail.com" {...field} />
+                <Input placeholder="ava.wright@gmail.com" {...field} className="dark:bg-foreground dark:border-gray-300" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -174,7 +174,7 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
                 Password<b className="text-primary font-light"> *</b>
               </FormLabel>
               <FormControl>
-                <PasswordInput placeholder="**********" {...field} />
+                <PasswordInput placeholder="**********" {...field} className="dark:bg-foreground dark:border-gray-300" />
               </FormControl>
               <FormMessage />
             </FormItem>

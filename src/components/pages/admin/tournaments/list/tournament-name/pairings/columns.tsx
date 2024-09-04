@@ -8,29 +8,35 @@ import { Icons } from "@/components/icons";
 import { PairingsPreliminaries } from "@/components/tables/data/schema";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
 import { roomsPairings } from "@/components/tables/data/data";
+import { Pairing } from "@/lib/grpc/proto/debate_management/debate_pb";
 
-export const columns: ColumnDef<PairingsPreliminaries>[] = [
+export const columns: ColumnDef<Pairing.AsObject>[] = [
   {
-    accessorKey: "proposition",
+    accessorKey: "team1",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Proposition" />
+      <DataTableColumnHeader column={column} title="Affirmative" />
     ),
-    cell: ({ row }) => (
-      <div className="flex space-x-2">{row.getValue("proposition")}</div>
-    ),
-    enableSorting: false,
+    cell: ({ row }) => {
+      const team1 = row.getValue("team1") as { name: string };
+      return <div className="w-full text-center pr-5">{team1.name}</div>;
+    },
     enableHiding: false,
   },
   {
-    accessorKey: "oposition",
+    accessorKey: "team2",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Oposition" className="justify-center" />
+      <DataTableColumnHeader
+        column={column}
+        title="Negative"
+        className="justify-center"
+      />
     ),
     cell: ({ row }) => {
+      const team2 = row.getValue("team2") as { name: string };
       return (
         <div className="w-full pr-5 text-center">
           <span className="max-w-[200px] truncate font-medium">
-            {row.getValue("oposition")}
+            {team2.name}
           </span>
         </div>
       );
@@ -38,26 +44,22 @@ export const columns: ColumnDef<PairingsPreliminaries>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "room",
+    accessorKey: "roomName",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Room" className="justify-center" />
+      <DataTableColumnHeader
+        column={column}
+        title="Room"
+        className="justify-center"
+      />
     ),
     cell: ({ row }) => {
-      const debateRoom = roomsPairings.find(
-        (room) => room.value === row.getValue("room")
-      );
-
-      if (!debateRoom) {
-        return null;
-      }
-
       return (
         <div className="w-full pr-5 text-center">
           <Badge
             variant="default"
             className={`bg-primary text-white rounded-md`}
           >
-            {debateRoom.label}
+            {row.getValue("roomName")}
           </Badge>
         </div>
       );
@@ -70,13 +72,12 @@ export const columns: ColumnDef<PairingsPreliminaries>[] = [
       <DataTableColumnHeader
         column={column}
         title="Actions"
-        className="justify-center"
-        buttonClassName="ml-0"
+        className="w-full text-center"
       />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-full h-6 items-center justify-end">
+        <div className="flex w-full h-6 items-center justifycenter-">
           <Button
             type="button"
             variant={"secondary"}
@@ -89,6 +90,6 @@ export const columns: ColumnDef<PairingsPreliminaries>[] = [
       );
     },
     enableHiding: false,
-    maxSize: 20,
+    enableSorting: false,
   },
 ];

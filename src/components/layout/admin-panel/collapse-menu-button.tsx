@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { ChevronDown, Dot, LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -39,6 +38,8 @@ interface CollapseMenuButtonProps {
   active: boolean;
   submenus: Submenu[];
   isOpen: boolean | undefined;
+  isExpanded: boolean;
+  onToggle: () => void;
 }
 
 export function CollapseMenuButton({
@@ -47,14 +48,15 @@ export function CollapseMenuButton({
   active,
   submenus,
   isOpen,
+  isExpanded,
+  onToggle,
 }: CollapseMenuButtonProps) {
   const isSubmenuActive = submenus.some((submenu) => submenu.active);
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(isSubmenuActive);
 
   return isOpen ? (
     <Collapsible
-      open={isCollapsed}
-      onOpenChange={setIsCollapsed}
+      open={isExpanded}
+      onOpenChange={onToggle}
       className="w-full"
     >
       <CollapsibleTrigger
@@ -178,7 +180,7 @@ export function CollapseMenuButton({
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <DropdownMenuContent side="right" sideOffset={25} align="start">
+      <DropdownMenuContent side="right" sideOffset={25} align="start" onCloseAutoFocus={onToggle}>
         <DropdownMenuLabel className="max-w-[190px] truncate">
           {label}
         </DropdownMenuLabel>

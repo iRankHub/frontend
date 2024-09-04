@@ -99,19 +99,11 @@ export function DataCardView<TData, TValue>({
         );
       case "format":
         return (
-          <FormatCard
-            key={row.id}
-            row={row}
-            getColumnValue={getColumnValue}
-          />
+          <FormatCard key={row.id} row={row} getColumnValue={getColumnValue} />
         );
       case "league":
         return (
-          <LeagueCard
-            key={row.id}
-            row={row}
-            getColumnValue={getColumnValue}
-          />
+          <LeagueCard key={row.id} row={row} getColumnValue={getColumnValue} />
         );
     }
   };
@@ -119,27 +111,27 @@ export function DataCardView<TData, TValue>({
     <div>
       {DataTableToolbar && <DataTableToolbar table={table} />}
       <div className="w-full bg-background p-8 px-5">
-        <div
-          className={cn(
-            "grid gap-4 mb-10",
-            cardType === "tournament" &&
-              "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ",
-            cardType === "format" &&
-              "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5",
-            cardType === "league" &&
-              "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5"
-          )}
-        >
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => handleCardDisplay(row))
-          ) : (
-            <Card>
-              <div className="h-24 flex items-center justify-center">
-                No results.
-              </div>
-            </Card>
-          )}
-        </div>
+        {table.getRowModel().rows?.length ? (
+          <div
+            className={cn(
+              "grid gap-4 mb-10",
+              cardType === "tournament" &&
+                "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ",
+              cardType === "format" &&
+                "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5",
+              cardType === "league" &&
+                "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5"
+            )}
+          >
+            {table.getRowModel().rows.map((row) => handleCardDisplay(row))}
+          </div>
+        ) : (
+          <Card className="min-h-96 grid place-content-center">
+            <div className="h-24 flex items-center justify-center">
+              No results found
+            </div>
+          </Card>
+        )}
       </div>
     </div>
   );

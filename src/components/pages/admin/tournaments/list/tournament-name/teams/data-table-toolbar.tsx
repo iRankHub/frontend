@@ -45,13 +45,13 @@ export function DataTableToolbar<TData>({
         )}
       </div>
       <div className="mx-5 flex items-center gap-5">
-        <Sheet>
+        <Sheet modal>
           <SheetTrigger>
             <Button
               type="button"
-              className="border border-dashed border-white text-white gap-2 text-sm font-bold h-8 hover:bg-white hover:text-foreground group"
+              className="border border-dashed border-white text-background dark:text-foreground gap-2 text-sm font-bold h-8 hover:bg-background dark:hover:bg-foreground hover:text-foreground dark:hover:text-background group"
             >
-              <Icons.fileUp className="text-white w-3.5 h-3.5 group-hover:text-foreground" />
+              <Icons.fileUp className="text-white w-3.5 h-3.5 group-hover:text-foreground group-hover:dark:text-background" />
               Add Team
               <span className="sr-only">Add Team</span>
             </Button>
@@ -63,9 +63,9 @@ export function DataTableToolbar<TData>({
         </Sheet>
         <Button
           type="button"
-          className="border border-dashed border-white text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground group"
+          className="border border-dashed border-white text-background dark:text-foreground gap-2 text-sm font-bold h-8 hover:bg-background dark:hover:bg-foreground hover:text-foreground dark:hover:text-background group"
         >
-          <Icons.fileUp className="text-white w-3.5 h-3.5 group-hover:text-foreground" />
+          <Icons.fileUp className="text-white w-3.5 h-3.5 group-hover:text-foreground group-hover:dark:text-background" />
           Export
           <span className="sr-only">Export</span>
         </Button>

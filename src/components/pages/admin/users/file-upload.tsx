@@ -50,6 +50,7 @@ function FileUpload({}: Props) {
       try {
         const parsedData = await parseExcelFile(acceptedFiles[0]);
         setParsedData(parsedData);
+        console.log(parsedData);
 
         const uploadInterval = setInterval(() => {
           setProgress((prev) => {
@@ -64,7 +65,7 @@ function FileUpload({}: Props) {
         // Batch create users
         await batchCreateUsers(parsedData)
           .then((res) => {
-            console.log(parsedData);
+            res.message && console.log(res.message);
             console.log(res.failedemailsList);
             // Clear the interval
             clearInterval(uploadInterval);
