@@ -1,14 +1,31 @@
 import {
     GeneratePairingsRequest,
+    GetJudgesRequest,
     GetPairingsRequest,
+    GetRoomRequest,
+    GetRoomResponse,
+    GetRoomsRequest,
+    Judge,
     Pairing,
     RegeneratePairingsRequest,
+    Room,
+    RoomStatus,
     Team,
-    UpdatePairingRequest,
-    UpdatePairingResponse
+    UpdatePairingsRequest,
+    UpdatePairingsResponse,
+    UpdateRoomRequest,
+    UpdateRoomResponse,
 } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { debateClient } from "../grpc-clients";
-import { GetPairingsProps, RegeneratePairingsProps, UpdatePairingProps } from "@/types/pairings";
+import {
+    GetPairingsProps,
+    GetTournamentJudgesProps,
+    GetTournamentRoomProps,
+    GetTournamentRoomsProps,
+    RegeneratePairingsProps,
+    UpdatePairingProps,
+    UpdateRoomProps
+} from "@/types/pairings";
 
 export const generatePairings = async ({
     token,
@@ -76,9 +93,9 @@ export const getPairings = async ({
 export const updatePairing = async ({
     pairing,
     token
-}: UpdatePairingProps): Promise<UpdatePairingResponse.AsObject> => {
+}: UpdatePairingProps): Promise<UpdatePairingsResponse.AsObject> => {
     return new Promise((resolve, reject) => {
-        const request = new UpdatePairingRequest();
+        const request = new UpdatePairingsRequest();
         request.setToken(token);
 
         const updatedPairing = new Pairing();
@@ -97,9 +114,96 @@ export const updatePairing = async ({
             updatedPairing.setTeam2(team_2);
         }
 
-        request.setPairing(updatedPairing);
+        // request.setPairingsList(updatedPairing);
 
-        debateClient.updatePairing(request, {}, (err, response) => {
+        debateClient.updatePairings(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const getTournamentJudges = async ({
+    is_elimination,
+    round_number,
+    token,
+    tournament_id
+}: GetTournamentJudgesProps): Promise<Judge.AsObject[]> => {
+    return new Promise((resolve, reject) => {
+        const request = new GetJudgesRequest();
+        request.setToken(token);
+        request.setTournamentId(tournament_id);
+        request.setRoundNumber(round_number);
+        request.setIsElimination(is_elimination);
+
+        debateClient.getJudges(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject().judgesList);
+            }
+        });
+    });
+}
+
+export const getTournamentRooms = async ({
+    token,
+    tournament_id
+}: GetTournamentRoomsProps): Promise<RoomStatus.AsObject[]> => {
+    return new Promise((resolve, reject) => {
+        const request = new GetRoomsRequest();
+        request.setToken(token);
+        request.setTournamentId(tournament_id);
+
+        debateClient.getRooms(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject().roomsList);
+            }
+        });
+    });
+}
+
+export const getRoom = async ({
+    token,
+    room_id,
+    tournament_id
+}: GetTournamentRoomProps): Promise<GetRoomResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new GetRoomRequest();
+        request.setToken(token);
+        request.setRoomId(room_id);
+        request.setTournamentId(tournament_id);
+
+        debateClient.getRoom(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const updateTournamentRoom = async ({
+    name,
+    token,
+    room_id
+}: UpdateRoomProps): Promise<UpdateRoomResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new UpdateRoomRequest();
+        request.setToken(token);
+
+        const room = new Room();
+        room.setRoomName(name);
+        room.setRoomId(room_id);
+        request.setRoom(room);
+
+        debateClient.updateRoom(request, {}, (err, response) => {
             if (err) {
                 reject(err);
             } else {

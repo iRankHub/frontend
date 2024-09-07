@@ -97,7 +97,7 @@ function CreateStudentAccount({ type, setSheetOpen }: CreateUserProps) {
         toast({
           variant: "success",
           title: "Success",
-          description: res.message,
+          description: "Student account created successfully",
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close

@@ -11,10 +11,11 @@ export namespace debate_management {
         constructor(data?: any[] | {
             room_id?: number;
             room_name?: string;
-            round_status?: RoundStatus[];
+            location?: string;
+            capacity?: number;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("room_id" in data && data.room_id != undefined) {
                     this.room_id = data.room_id;
@@ -22,8 +23,11 @@ export namespace debate_management {
                 if ("room_name" in data && data.room_name != undefined) {
                     this.room_name = data.room_name;
                 }
-                if ("round_status" in data && data.round_status != undefined) {
-                    this.round_status = data.round_status;
+                if ("location" in data && data.location != undefined) {
+                    this.location = data.location;
+                }
+                if ("capacity" in data && data.capacity != undefined) {
+                    this.capacity = data.capacity;
                 }
             }
         }
@@ -39,16 +43,23 @@ export namespace debate_management {
         set room_name(value: string) {
             pb_1.Message.setField(this, 2, value);
         }
-        get round_status() {
-            return pb_1.Message.getRepeatedWrapperField(this, RoundStatus, 3) as RoundStatus[];
+        get location() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
         }
-        set round_status(value: RoundStatus[]) {
-            pb_1.Message.setRepeatedWrapperField(this, 3, value);
+        set location(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get capacity() {
+            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+        }
+        set capacity(value: number) {
+            pb_1.Message.setField(this, 4, value);
         }
         static fromObject(data: {
             room_id?: number;
             room_name?: string;
-            round_status?: ReturnType<typeof RoundStatus.prototype.toObject>[];
+            location?: string;
+            capacity?: number;
         }): Room {
             const message = new Room({});
             if (data.room_id != null) {
@@ -57,8 +68,11 @@ export namespace debate_management {
             if (data.room_name != null) {
                 message.room_name = data.room_name;
             }
-            if (data.round_status != null) {
-                message.round_status = data.round_status.map(item => RoundStatus.fromObject(item));
+            if (data.location != null) {
+                message.location = data.location;
+            }
+            if (data.capacity != null) {
+                message.capacity = data.capacity;
             }
             return message;
         }
@@ -66,7 +80,8 @@ export namespace debate_management {
             const data: {
                 room_id?: number;
                 room_name?: string;
-                round_status?: ReturnType<typeof RoundStatus.prototype.toObject>[];
+                location?: string;
+                capacity?: number;
             } = {};
             if (this.room_id != null) {
                 data.room_id = this.room_id;
@@ -74,8 +89,11 @@ export namespace debate_management {
             if (this.room_name != null) {
                 data.room_name = this.room_name;
             }
-            if (this.round_status != null) {
-                data.round_status = this.round_status.map((item: RoundStatus) => item.toObject());
+            if (this.location != null) {
+                data.location = this.location;
+            }
+            if (this.capacity != null) {
+                data.capacity = this.capacity;
             }
             return data;
         }
@@ -87,8 +105,10 @@ export namespace debate_management {
                 writer.writeInt32(1, this.room_id);
             if (this.room_name.length)
                 writer.writeString(2, this.room_name);
-            if (this.round_status.length)
-                writer.writeRepeatedMessage(3, this.round_status, (item: RoundStatus) => item.serialize(writer));
+            if (this.location.length)
+                writer.writeString(3, this.location);
+            if (this.capacity != 0)
+                writer.writeInt32(4, this.capacity);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -105,7 +125,10 @@ export namespace debate_management {
                         message.room_name = reader.readString();
                         break;
                     case 3:
-                        reader.readMessage(message.round_status, () => pb_1.Message.addToRepeatedWrapperField(message, 3, RoundStatus.deserialize(reader), RoundStatus));
+                        message.location = reader.readString();
+                        break;
+                    case 4:
+                        message.capacity = reader.readInt32();
                         break;
                     default: reader.skipField();
                 }
@@ -122,73 +145,55 @@ export namespace debate_management {
     export class RoundStatus extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            round_number?: number;
-            is_elimination?: boolean;
-            is_occupied?: boolean;
+            round?: number;
+            status?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
-                if ("round_number" in data && data.round_number != undefined) {
-                    this.round_number = data.round_number;
+                if ("round" in data && data.round != undefined) {
+                    this.round = data.round;
                 }
-                if ("is_elimination" in data && data.is_elimination != undefined) {
-                    this.is_elimination = data.is_elimination;
-                }
-                if ("is_occupied" in data && data.is_occupied != undefined) {
-                    this.is_occupied = data.is_occupied;
+                if ("status" in data && data.status != undefined) {
+                    this.status = data.status;
                 }
             }
         }
-        get round_number() {
+        get round() {
             return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
         }
-        set round_number(value: number) {
+        set round(value: number) {
             pb_1.Message.setField(this, 1, value);
         }
-        get is_elimination() {
-            return pb_1.Message.getFieldWithDefault(this, 2, false) as boolean;
+        get status() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
         }
-        set is_elimination(value: boolean) {
+        set status(value: string) {
             pb_1.Message.setField(this, 2, value);
         }
-        get is_occupied() {
-            return pb_1.Message.getFieldWithDefault(this, 3, false) as boolean;
-        }
-        set is_occupied(value: boolean) {
-            pb_1.Message.setField(this, 3, value);
-        }
         static fromObject(data: {
-            round_number?: number;
-            is_elimination?: boolean;
-            is_occupied?: boolean;
+            round?: number;
+            status?: string;
         }): RoundStatus {
             const message = new RoundStatus({});
-            if (data.round_number != null) {
-                message.round_number = data.round_number;
+            if (data.round != null) {
+                message.round = data.round;
             }
-            if (data.is_elimination != null) {
-                message.is_elimination = data.is_elimination;
-            }
-            if (data.is_occupied != null) {
-                message.is_occupied = data.is_occupied;
+            if (data.status != null) {
+                message.status = data.status;
             }
             return message;
         }
         toObject() {
             const data: {
-                round_number?: number;
-                is_elimination?: boolean;
-                is_occupied?: boolean;
+                round?: number;
+                status?: string;
             } = {};
-            if (this.round_number != null) {
-                data.round_number = this.round_number;
+            if (this.round != null) {
+                data.round = this.round;
             }
-            if (this.is_elimination != null) {
-                data.is_elimination = this.is_elimination;
-            }
-            if (this.is_occupied != null) {
-                data.is_occupied = this.is_occupied;
+            if (this.status != null) {
+                data.status = this.status;
             }
             return data;
         }
@@ -196,12 +201,10 @@ export namespace debate_management {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.round_number != 0)
-                writer.writeInt32(1, this.round_number);
-            if (this.is_elimination != false)
-                writer.writeBool(2, this.is_elimination);
-            if (this.is_occupied != false)
-                writer.writeBool(3, this.is_occupied);
+            if (this.round != 0)
+                writer.writeInt32(1, this.round);
+            if (this.status.length)
+                writer.writeString(2, this.status);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -212,13 +215,10 @@ export namespace debate_management {
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        message.round_number = reader.readInt32();
+                        message.round = reader.readInt32();
                         break;
                     case 2:
-                        message.is_elimination = reader.readBool();
-                        break;
-                    case 3:
-                        message.is_occupied = reader.readBool();
+                        message.status = reader.readString();
                         break;
                     default: reader.skipField();
                 }
@@ -232,12 +232,146 @@ export namespace debate_management {
             return RoundStatus.deserialize(bytes);
         }
     }
+    export class RoomStatus extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            room_id?: number;
+            room_name?: string;
+            preliminary?: string;
+            elimination?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("room_id" in data && data.room_id != undefined) {
+                    this.room_id = data.room_id;
+                }
+                if ("room_name" in data && data.room_name != undefined) {
+                    this.room_name = data.room_name;
+                }
+                if ("preliminary" in data && data.preliminary != undefined) {
+                    this.preliminary = data.preliminary;
+                }
+                if ("elimination" in data && data.elimination != undefined) {
+                    this.elimination = data.elimination;
+                }
+            }
+        }
+        get room_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set room_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get room_name() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set room_name(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get preliminary() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set preliminary(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get elimination() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set elimination(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        static fromObject(data: {
+            room_id?: number;
+            room_name?: string;
+            preliminary?: string;
+            elimination?: string;
+        }): RoomStatus {
+            const message = new RoomStatus({});
+            if (data.room_id != null) {
+                message.room_id = data.room_id;
+            }
+            if (data.room_name != null) {
+                message.room_name = data.room_name;
+            }
+            if (data.preliminary != null) {
+                message.preliminary = data.preliminary;
+            }
+            if (data.elimination != null) {
+                message.elimination = data.elimination;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                room_id?: number;
+                room_name?: string;
+                preliminary?: string;
+                elimination?: string;
+            } = {};
+            if (this.room_id != null) {
+                data.room_id = this.room_id;
+            }
+            if (this.room_name != null) {
+                data.room_name = this.room_name;
+            }
+            if (this.preliminary != null) {
+                data.preliminary = this.preliminary;
+            }
+            if (this.elimination != null) {
+                data.elimination = this.elimination;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.room_id != 0)
+                writer.writeInt32(1, this.room_id);
+            if (this.room_name.length)
+                writer.writeString(2, this.room_name);
+            if (this.preliminary.length)
+                writer.writeString(3, this.preliminary);
+            if (this.elimination.length)
+                writer.writeString(4, this.elimination);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): RoomStatus {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new RoomStatus();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.room_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.room_name = reader.readString();
+                        break;
+                    case 3:
+                        message.preliminary = reader.readString();
+                        break;
+                    case 4:
+                        message.elimination = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): RoomStatus {
+            return RoomStatus.deserialize(bytes);
+        }
+    }
     export class GetRoomsRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             tournament_id?: number;
-            round_number?: number;
-            is_elimination?: boolean;
             token?: string;
         }) {
             super();
@@ -245,12 +379,6 @@ export namespace debate_management {
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("tournament_id" in data && data.tournament_id != undefined) {
                     this.tournament_id = data.tournament_id;
-                }
-                if ("round_number" in data && data.round_number != undefined) {
-                    this.round_number = data.round_number;
-                }
-                if ("is_elimination" in data && data.is_elimination != undefined) {
-                    this.is_elimination = data.is_elimination;
                 }
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -263,39 +391,19 @@ export namespace debate_management {
         set tournament_id(value: number) {
             pb_1.Message.setField(this, 1, value);
         }
-        get round_number() {
-            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
-        }
-        set round_number(value: number) {
-            pb_1.Message.setField(this, 2, value);
-        }
-        get is_elimination() {
-            return pb_1.Message.getFieldWithDefault(this, 3, false) as boolean;
-        }
-        set is_elimination(value: boolean) {
-            pb_1.Message.setField(this, 3, value);
-        }
         get token() {
-            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
         }
         set token(value: string) {
-            pb_1.Message.setField(this, 4, value);
+            pb_1.Message.setField(this, 2, value);
         }
         static fromObject(data: {
             tournament_id?: number;
-            round_number?: number;
-            is_elimination?: boolean;
             token?: string;
         }): GetRoomsRequest {
             const message = new GetRoomsRequest({});
             if (data.tournament_id != null) {
                 message.tournament_id = data.tournament_id;
-            }
-            if (data.round_number != null) {
-                message.round_number = data.round_number;
-            }
-            if (data.is_elimination != null) {
-                message.is_elimination = data.is_elimination;
             }
             if (data.token != null) {
                 message.token = data.token;
@@ -305,18 +413,10 @@ export namespace debate_management {
         toObject() {
             const data: {
                 tournament_id?: number;
-                round_number?: number;
-                is_elimination?: boolean;
                 token?: string;
             } = {};
             if (this.tournament_id != null) {
                 data.tournament_id = this.tournament_id;
-            }
-            if (this.round_number != null) {
-                data.round_number = this.round_number;
-            }
-            if (this.is_elimination != null) {
-                data.is_elimination = this.is_elimination;
             }
             if (this.token != null) {
                 data.token = this.token;
@@ -329,12 +429,8 @@ export namespace debate_management {
             const writer = w || new pb_1.BinaryWriter();
             if (this.tournament_id != 0)
                 writer.writeInt32(1, this.tournament_id);
-            if (this.round_number != 0)
-                writer.writeInt32(2, this.round_number);
-            if (this.is_elimination != false)
-                writer.writeBool(3, this.is_elimination);
             if (this.token.length)
-                writer.writeString(4, this.token);
+                writer.writeString(2, this.token);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -348,12 +444,6 @@ export namespace debate_management {
                         message.tournament_id = reader.readInt32();
                         break;
                     case 2:
-                        message.round_number = reader.readInt32();
-                        break;
-                    case 3:
-                        message.is_elimination = reader.readBool();
-                        break;
-                    case 4:
                         message.token = reader.readString();
                         break;
                     default: reader.skipField();
@@ -371,7 +461,7 @@ export namespace debate_management {
     export class GetRoomsResponse extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            rooms?: Room[];
+            rooms?: RoomStatus[];
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
@@ -382,26 +472,26 @@ export namespace debate_management {
             }
         }
         get rooms() {
-            return pb_1.Message.getRepeatedWrapperField(this, Room, 1) as Room[];
+            return pb_1.Message.getRepeatedWrapperField(this, RoomStatus, 1) as RoomStatus[];
         }
-        set rooms(value: Room[]) {
+        set rooms(value: RoomStatus[]) {
             pb_1.Message.setRepeatedWrapperField(this, 1, value);
         }
         static fromObject(data: {
-            rooms?: ReturnType<typeof Room.prototype.toObject>[];
+            rooms?: ReturnType<typeof RoomStatus.prototype.toObject>[];
         }): GetRoomsResponse {
             const message = new GetRoomsResponse({});
             if (data.rooms != null) {
-                message.rooms = data.rooms.map(item => Room.fromObject(item));
+                message.rooms = data.rooms.map(item => RoomStatus.fromObject(item));
             }
             return message;
         }
         toObject() {
             const data: {
-                rooms?: ReturnType<typeof Room.prototype.toObject>[];
+                rooms?: ReturnType<typeof RoomStatus.prototype.toObject>[];
             } = {};
             if (this.rooms != null) {
-                data.rooms = this.rooms.map((item: Room) => item.toObject());
+                data.rooms = this.rooms.map((item: RoomStatus) => item.toObject());
             }
             return data;
         }
@@ -410,7 +500,7 @@ export namespace debate_management {
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
             if (this.rooms.length)
-                writer.writeRepeatedMessage(1, this.rooms, (item: Room) => item.serialize(writer));
+                writer.writeRepeatedMessage(1, this.rooms, (item: RoomStatus) => item.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -421,7 +511,7 @@ export namespace debate_management {
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        reader.readMessage(message.rooms, () => pb_1.Message.addToRepeatedWrapperField(message, 1, Room.deserialize(reader), Room));
+                        reader.readMessage(message.rooms, () => pb_1.Message.addToRepeatedWrapperField(message, 1, RoomStatus.deserialize(reader), RoomStatus));
                         break;
                     default: reader.skipField();
                 }
@@ -439,6 +529,7 @@ export namespace debate_management {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             room_id?: number;
+            tournament_id?: number;
             token?: string;
         }) {
             super();
@@ -446,6 +537,9 @@ export namespace debate_management {
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("room_id" in data && data.room_id != undefined) {
                     this.room_id = data.room_id;
+                }
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
                 }
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -458,19 +552,29 @@ export namespace debate_management {
         set room_id(value: number) {
             pb_1.Message.setField(this, 1, value);
         }
+        get tournament_id() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set tournament_id(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
         get token() {
-            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
         }
         set token(value: string) {
-            pb_1.Message.setField(this, 2, value);
+            pb_1.Message.setField(this, 3, value);
         }
         static fromObject(data: {
             room_id?: number;
+            tournament_id?: number;
             token?: string;
         }): GetRoomRequest {
             const message = new GetRoomRequest({});
             if (data.room_id != null) {
                 message.room_id = data.room_id;
+            }
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
             }
             if (data.token != null) {
                 message.token = data.token;
@@ -480,10 +584,14 @@ export namespace debate_management {
         toObject() {
             const data: {
                 room_id?: number;
+                tournament_id?: number;
                 token?: string;
             } = {};
             if (this.room_id != null) {
                 data.room_id = this.room_id;
+            }
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
             }
             if (this.token != null) {
                 data.token = this.token;
@@ -496,8 +604,10 @@ export namespace debate_management {
             const writer = w || new pb_1.BinaryWriter();
             if (this.room_id != 0)
                 writer.writeInt32(1, this.room_id);
+            if (this.tournament_id != 0)
+                writer.writeInt32(2, this.tournament_id);
             if (this.token.length)
-                writer.writeString(2, this.token);
+                writer.writeString(3, this.token);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -511,6 +621,9 @@ export namespace debate_management {
                         message.room_id = reader.readInt32();
                         break;
                     case 2:
+                        message.tournament_id = reader.readInt32();
+                        break;
+                    case 3:
                         message.token = reader.readString();
                         break;
                     default: reader.skipField();
@@ -528,40 +641,91 @@ export namespace debate_management {
     export class GetRoomResponse extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            room?: Room;
+            room_id?: number;
+            name?: string;
+            preliminary?: RoundStatus[];
+            elimination?: RoundStatus[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3, 4], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
-                if ("room" in data && data.room != undefined) {
-                    this.room = data.room;
+                if ("room_id" in data && data.room_id != undefined) {
+                    this.room_id = data.room_id;
+                }
+                if ("name" in data && data.name != undefined) {
+                    this.name = data.name;
+                }
+                if ("preliminary" in data && data.preliminary != undefined) {
+                    this.preliminary = data.preliminary;
+                }
+                if ("elimination" in data && data.elimination != undefined) {
+                    this.elimination = data.elimination;
                 }
             }
         }
-        get room() {
-            return pb_1.Message.getWrapperField(this, Room, 1) as Room;
+        get room_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
         }
-        set room(value: Room) {
-            pb_1.Message.setWrapperField(this, 1, value);
+        set room_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
         }
-        get has_room() {
-            return pb_1.Message.getField(this, 1) != null;
+        get name() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set name(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get preliminary() {
+            return pb_1.Message.getRepeatedWrapperField(this, RoundStatus, 3) as RoundStatus[];
+        }
+        set preliminary(value: RoundStatus[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 3, value);
+        }
+        get elimination() {
+            return pb_1.Message.getRepeatedWrapperField(this, RoundStatus, 4) as RoundStatus[];
+        }
+        set elimination(value: RoundStatus[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 4, value);
         }
         static fromObject(data: {
-            room?: ReturnType<typeof Room.prototype.toObject>;
+            room_id?: number;
+            name?: string;
+            preliminary?: ReturnType<typeof RoundStatus.prototype.toObject>[];
+            elimination?: ReturnType<typeof RoundStatus.prototype.toObject>[];
         }): GetRoomResponse {
             const message = new GetRoomResponse({});
-            if (data.room != null) {
-                message.room = Room.fromObject(data.room);
+            if (data.room_id != null) {
+                message.room_id = data.room_id;
+            }
+            if (data.name != null) {
+                message.name = data.name;
+            }
+            if (data.preliminary != null) {
+                message.preliminary = data.preliminary.map(item => RoundStatus.fromObject(item));
+            }
+            if (data.elimination != null) {
+                message.elimination = data.elimination.map(item => RoundStatus.fromObject(item));
             }
             return message;
         }
         toObject() {
             const data: {
-                room?: ReturnType<typeof Room.prototype.toObject>;
+                room_id?: number;
+                name?: string;
+                preliminary?: ReturnType<typeof RoundStatus.prototype.toObject>[];
+                elimination?: ReturnType<typeof RoundStatus.prototype.toObject>[];
             } = {};
-            if (this.room != null) {
-                data.room = this.room.toObject();
+            if (this.room_id != null) {
+                data.room_id = this.room_id;
+            }
+            if (this.name != null) {
+                data.name = this.name;
+            }
+            if (this.preliminary != null) {
+                data.preliminary = this.preliminary.map((item: RoundStatus) => item.toObject());
+            }
+            if (this.elimination != null) {
+                data.elimination = this.elimination.map((item: RoundStatus) => item.toObject());
             }
             return data;
         }
@@ -569,8 +733,14 @@ export namespace debate_management {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.has_room)
-                writer.writeMessage(1, this.room, () => this.room.serialize(writer));
+            if (this.room_id != 0)
+                writer.writeInt32(1, this.room_id);
+            if (this.name.length)
+                writer.writeString(2, this.name);
+            if (this.preliminary.length)
+                writer.writeRepeatedMessage(3, this.preliminary, (item: RoundStatus) => item.serialize(writer));
+            if (this.elimination.length)
+                writer.writeRepeatedMessage(4, this.elimination, (item: RoundStatus) => item.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -581,7 +751,16 @@ export namespace debate_management {
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        reader.readMessage(message.room, () => message.room = Room.deserialize(reader));
+                        message.room_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.name = reader.readString();
+                        break;
+                    case 3:
+                        reader.readMessage(message.preliminary, () => pb_1.Message.addToRepeatedWrapperField(message, 3, RoundStatus.deserialize(reader), RoundStatus));
+                        break;
+                    case 4:
+                        reader.readMessage(message.elimination, () => pb_1.Message.addToRepeatedWrapperField(message, 4, RoundStatus.deserialize(reader), RoundStatus));
                         break;
                     default: reader.skipField();
                 }
@@ -763,8 +942,9 @@ export namespace debate_management {
         constructor(data?: any[] | {
             judge_id?: number;
             name?: string;
-            email?: string;
-            is_head_judge?: boolean;
+            idebate_id?: string;
+            preliminary_debates?: number;
+            elimination_debates?: number;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -775,11 +955,14 @@ export namespace debate_management {
                 if ("name" in data && data.name != undefined) {
                     this.name = data.name;
                 }
-                if ("email" in data && data.email != undefined) {
-                    this.email = data.email;
+                if ("idebate_id" in data && data.idebate_id != undefined) {
+                    this.idebate_id = data.idebate_id;
                 }
-                if ("is_head_judge" in data && data.is_head_judge != undefined) {
-                    this.is_head_judge = data.is_head_judge;
+                if ("preliminary_debates" in data && data.preliminary_debates != undefined) {
+                    this.preliminary_debates = data.preliminary_debates;
+                }
+                if ("elimination_debates" in data && data.elimination_debates != undefined) {
+                    this.elimination_debates = data.elimination_debates;
                 }
             }
         }
@@ -795,23 +978,30 @@ export namespace debate_management {
         set name(value: string) {
             pb_1.Message.setField(this, 2, value);
         }
-        get email() {
+        get idebate_id() {
             return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
         }
-        set email(value: string) {
+        set idebate_id(value: string) {
             pb_1.Message.setField(this, 3, value);
         }
-        get is_head_judge() {
-            return pb_1.Message.getFieldWithDefault(this, 4, false) as boolean;
+        get preliminary_debates() {
+            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
         }
-        set is_head_judge(value: boolean) {
+        set preliminary_debates(value: number) {
             pb_1.Message.setField(this, 4, value);
+        }
+        get elimination_debates() {
+            return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
+        }
+        set elimination_debates(value: number) {
+            pb_1.Message.setField(this, 5, value);
         }
         static fromObject(data: {
             judge_id?: number;
             name?: string;
-            email?: string;
-            is_head_judge?: boolean;
+            idebate_id?: string;
+            preliminary_debates?: number;
+            elimination_debates?: number;
         }): Judge {
             const message = new Judge({});
             if (data.judge_id != null) {
@@ -820,11 +1010,14 @@ export namespace debate_management {
             if (data.name != null) {
                 message.name = data.name;
             }
-            if (data.email != null) {
-                message.email = data.email;
+            if (data.idebate_id != null) {
+                message.idebate_id = data.idebate_id;
             }
-            if (data.is_head_judge != null) {
-                message.is_head_judge = data.is_head_judge;
+            if (data.preliminary_debates != null) {
+                message.preliminary_debates = data.preliminary_debates;
+            }
+            if (data.elimination_debates != null) {
+                message.elimination_debates = data.elimination_debates;
             }
             return message;
         }
@@ -832,8 +1025,9 @@ export namespace debate_management {
             const data: {
                 judge_id?: number;
                 name?: string;
-                email?: string;
-                is_head_judge?: boolean;
+                idebate_id?: string;
+                preliminary_debates?: number;
+                elimination_debates?: number;
             } = {};
             if (this.judge_id != null) {
                 data.judge_id = this.judge_id;
@@ -841,11 +1035,14 @@ export namespace debate_management {
             if (this.name != null) {
                 data.name = this.name;
             }
-            if (this.email != null) {
-                data.email = this.email;
+            if (this.idebate_id != null) {
+                data.idebate_id = this.idebate_id;
             }
-            if (this.is_head_judge != null) {
-                data.is_head_judge = this.is_head_judge;
+            if (this.preliminary_debates != null) {
+                data.preliminary_debates = this.preliminary_debates;
+            }
+            if (this.elimination_debates != null) {
+                data.elimination_debates = this.elimination_debates;
             }
             return data;
         }
@@ -857,10 +1054,12 @@ export namespace debate_management {
                 writer.writeInt32(1, this.judge_id);
             if (this.name.length)
                 writer.writeString(2, this.name);
-            if (this.email.length)
-                writer.writeString(3, this.email);
-            if (this.is_head_judge != false)
-                writer.writeBool(4, this.is_head_judge);
+            if (this.idebate_id.length)
+                writer.writeString(3, this.idebate_id);
+            if (this.preliminary_debates != 0)
+                writer.writeInt32(4, this.preliminary_debates);
+            if (this.elimination_debates != 0)
+                writer.writeInt32(5, this.elimination_debates);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -877,10 +1076,13 @@ export namespace debate_management {
                         message.name = reader.readString();
                         break;
                     case 3:
-                        message.email = reader.readString();
+                        message.idebate_id = reader.readString();
                         break;
                     case 4:
-                        message.is_head_judge = reader.readBool();
+                        message.preliminary_debates = reader.readInt32();
+                        break;
+                    case 5:
+                        message.elimination_debates = reader.readInt32();
                         break;
                     default: reader.skipField();
                 }
@@ -898,8 +1100,6 @@ export namespace debate_management {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             tournament_id?: number;
-            round_number?: number;
-            is_elimination?: boolean;
             token?: string;
         }) {
             super();
@@ -907,12 +1107,6 @@ export namespace debate_management {
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("tournament_id" in data && data.tournament_id != undefined) {
                     this.tournament_id = data.tournament_id;
-                }
-                if ("round_number" in data && data.round_number != undefined) {
-                    this.round_number = data.round_number;
-                }
-                if ("is_elimination" in data && data.is_elimination != undefined) {
-                    this.is_elimination = data.is_elimination;
                 }
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -925,39 +1119,19 @@ export namespace debate_management {
         set tournament_id(value: number) {
             pb_1.Message.setField(this, 1, value);
         }
-        get round_number() {
-            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
-        }
-        set round_number(value: number) {
-            pb_1.Message.setField(this, 2, value);
-        }
-        get is_elimination() {
-            return pb_1.Message.getFieldWithDefault(this, 3, false) as boolean;
-        }
-        set is_elimination(value: boolean) {
-            pb_1.Message.setField(this, 3, value);
-        }
         get token() {
-            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
         }
         set token(value: string) {
-            pb_1.Message.setField(this, 4, value);
+            pb_1.Message.setField(this, 2, value);
         }
         static fromObject(data: {
             tournament_id?: number;
-            round_number?: number;
-            is_elimination?: boolean;
             token?: string;
         }): GetJudgesRequest {
             const message = new GetJudgesRequest({});
             if (data.tournament_id != null) {
                 message.tournament_id = data.tournament_id;
-            }
-            if (data.round_number != null) {
-                message.round_number = data.round_number;
-            }
-            if (data.is_elimination != null) {
-                message.is_elimination = data.is_elimination;
             }
             if (data.token != null) {
                 message.token = data.token;
@@ -967,18 +1141,10 @@ export namespace debate_management {
         toObject() {
             const data: {
                 tournament_id?: number;
-                round_number?: number;
-                is_elimination?: boolean;
                 token?: string;
             } = {};
             if (this.tournament_id != null) {
                 data.tournament_id = this.tournament_id;
-            }
-            if (this.round_number != null) {
-                data.round_number = this.round_number;
-            }
-            if (this.is_elimination != null) {
-                data.is_elimination = this.is_elimination;
             }
             if (this.token != null) {
                 data.token = this.token;
@@ -991,12 +1157,8 @@ export namespace debate_management {
             const writer = w || new pb_1.BinaryWriter();
             if (this.tournament_id != 0)
                 writer.writeInt32(1, this.tournament_id);
-            if (this.round_number != 0)
-                writer.writeInt32(2, this.round_number);
-            if (this.is_elimination != false)
-                writer.writeBool(3, this.is_elimination);
             if (this.token.length)
-                writer.writeString(4, this.token);
+                writer.writeString(2, this.token);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1010,12 +1172,6 @@ export namespace debate_management {
                         message.tournament_id = reader.readInt32();
                         break;
                     case 2:
-                        message.round_number = reader.readInt32();
-                        break;
-                    case 3:
-                        message.is_elimination = reader.readBool();
-                        break;
-                    case 4:
                         message.token = reader.readString();
                         break;
                     default: reader.skipField();
@@ -1097,10 +1253,182 @@ export namespace debate_management {
             return GetJudgesResponse.deserialize(bytes);
         }
     }
+    export class RoomInfo extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            room_id?: number;
+            room_name?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("room_id" in data && data.room_id != undefined) {
+                    this.room_id = data.room_id;
+                }
+                if ("room_name" in data && data.room_name != undefined) {
+                    this.room_name = data.room_name;
+                }
+            }
+        }
+        get room_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set room_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get room_name() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set room_name(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            room_id?: number;
+            room_name?: string;
+        }): RoomInfo {
+            const message = new RoomInfo({});
+            if (data.room_id != null) {
+                message.room_id = data.room_id;
+            }
+            if (data.room_name != null) {
+                message.room_name = data.room_name;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                room_id?: number;
+                room_name?: string;
+            } = {};
+            if (this.room_id != null) {
+                data.room_id = this.room_id;
+            }
+            if (this.room_name != null) {
+                data.room_name = this.room_name;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.room_id != 0)
+                writer.writeInt32(1, this.room_id);
+            if (this.room_name.length)
+                writer.writeString(2, this.room_name);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): RoomInfo {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new RoomInfo();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.room_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.room_name = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): RoomInfo {
+            return RoomInfo.deserialize(bytes);
+        }
+    }
+    export class RoundInfo extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            rooms?: Map<number, RoomInfo>;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("rooms" in data && data.rooms != undefined) {
+                    this.rooms = data.rooms;
+                }
+            }
+            if (!this.rooms)
+                this.rooms = new Map();
+        }
+        get rooms() {
+            return pb_1.Message.getField(this, 1) as any as Map<number, RoomInfo>;
+        }
+        set rooms(value: Map<number, RoomInfo>) {
+            pb_1.Message.setField(this, 1, value as any);
+        }
+        static fromObject(data: {
+            rooms?: {
+                [key: number]: ReturnType<typeof RoomInfo.prototype.toObject>;
+            };
+        }): RoundInfo {
+            const message = new RoundInfo({});
+            if (typeof data.rooms == "object") {
+                message.rooms = new Map(Object.entries(data.rooms).map(([key, value]) => [Number(key), RoomInfo.fromObject(value)]));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                rooms?: {
+                    [key: number]: ReturnType<typeof RoomInfo.prototype.toObject>;
+                };
+            } = {};
+            if (this.rooms != null) {
+                data.rooms = (Object.fromEntries)((Array.from)(this.rooms).map(([key, value]) => [key, value.toObject()]));
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            for (const [key, value] of this.rooms) {
+                writer.writeMessage(1, this.rooms, () => {
+                    writer.writeInt32(1, key);
+                    writer.writeMessage(2, value, () => value.serialize(writer));
+                });
+            }
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): RoundInfo {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new RoundInfo();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message, () => pb_1.Map.deserializeBinary(message.rooms as any, reader, reader.readInt32, () => {
+                            let value;
+                            reader.readMessage(message, () => value = RoomInfo.deserialize(reader));
+                            return value;
+                        }));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): RoundInfo {
+            return RoundInfo.deserialize(bytes);
+        }
+    }
     export class GetJudgeRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             judge_id?: number;
+            tournament_id?: number;
             token?: string;
         }) {
             super();
@@ -1108,6 +1436,9 @@ export namespace debate_management {
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("judge_id" in data && data.judge_id != undefined) {
                     this.judge_id = data.judge_id;
+                }
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
                 }
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -1120,19 +1451,29 @@ export namespace debate_management {
         set judge_id(value: number) {
             pb_1.Message.setField(this, 1, value);
         }
+        get tournament_id() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set tournament_id(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
         get token() {
-            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
         }
         set token(value: string) {
-            pb_1.Message.setField(this, 2, value);
+            pb_1.Message.setField(this, 3, value);
         }
         static fromObject(data: {
             judge_id?: number;
+            tournament_id?: number;
             token?: string;
         }): GetJudgeRequest {
             const message = new GetJudgeRequest({});
             if (data.judge_id != null) {
                 message.judge_id = data.judge_id;
+            }
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
             }
             if (data.token != null) {
                 message.token = data.token;
@@ -1142,10 +1483,14 @@ export namespace debate_management {
         toObject() {
             const data: {
                 judge_id?: number;
+                tournament_id?: number;
                 token?: string;
             } = {};
             if (this.judge_id != null) {
                 data.judge_id = this.judge_id;
+            }
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
             }
             if (this.token != null) {
                 data.token = this.token;
@@ -1158,8 +1503,10 @@ export namespace debate_management {
             const writer = w || new pb_1.BinaryWriter();
             if (this.judge_id != 0)
                 writer.writeInt32(1, this.judge_id);
+            if (this.tournament_id != 0)
+                writer.writeInt32(2, this.tournament_id);
             if (this.token.length)
-                writer.writeString(2, this.token);
+                writer.writeString(3, this.token);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1173,6 +1520,9 @@ export namespace debate_management {
                         message.judge_id = reader.readInt32();
                         break;
                     case 2:
+                        message.tournament_id = reader.readInt32();
+                        break;
+                    case 3:
                         message.token = reader.readString();
                         break;
                     default: reader.skipField();
@@ -1190,40 +1540,121 @@ export namespace debate_management {
     export class GetJudgeResponse extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            judge?: Judge;
+            judge_id?: number;
+            name?: string;
+            idebate_id?: string;
+            preliminary?: Map<number, RoomInfo>;
+            elimination?: Map<number, RoomInfo>;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
-                if ("judge" in data && data.judge != undefined) {
-                    this.judge = data.judge;
+                if ("judge_id" in data && data.judge_id != undefined) {
+                    this.judge_id = data.judge_id;
+                }
+                if ("name" in data && data.name != undefined) {
+                    this.name = data.name;
+                }
+                if ("idebate_id" in data && data.idebate_id != undefined) {
+                    this.idebate_id = data.idebate_id;
+                }
+                if ("preliminary" in data && data.preliminary != undefined) {
+                    this.preliminary = data.preliminary;
+                }
+                if ("elimination" in data && data.elimination != undefined) {
+                    this.elimination = data.elimination;
                 }
             }
+            if (!this.preliminary)
+                this.preliminary = new Map();
+            if (!this.elimination)
+                this.elimination = new Map();
         }
-        get judge() {
-            return pb_1.Message.getWrapperField(this, Judge, 1) as Judge;
+        get judge_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
         }
-        set judge(value: Judge) {
-            pb_1.Message.setWrapperField(this, 1, value);
+        set judge_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
         }
-        get has_judge() {
-            return pb_1.Message.getField(this, 1) != null;
+        get name() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set name(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get idebate_id() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set idebate_id(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get preliminary() {
+            return pb_1.Message.getField(this, 4) as any as Map<number, RoomInfo>;
+        }
+        set preliminary(value: Map<number, RoomInfo>) {
+            pb_1.Message.setField(this, 4, value as any);
+        }
+        get elimination() {
+            return pb_1.Message.getField(this, 5) as any as Map<number, RoomInfo>;
+        }
+        set elimination(value: Map<number, RoomInfo>) {
+            pb_1.Message.setField(this, 5, value as any);
         }
         static fromObject(data: {
-            judge?: ReturnType<typeof Judge.prototype.toObject>;
+            judge_id?: number;
+            name?: string;
+            idebate_id?: string;
+            preliminary?: {
+                [key: number]: ReturnType<typeof RoomInfo.prototype.toObject>;
+            };
+            elimination?: {
+                [key: number]: ReturnType<typeof RoomInfo.prototype.toObject>;
+            };
         }): GetJudgeResponse {
             const message = new GetJudgeResponse({});
-            if (data.judge != null) {
-                message.judge = Judge.fromObject(data.judge);
+            if (data.judge_id != null) {
+                message.judge_id = data.judge_id;
+            }
+            if (data.name != null) {
+                message.name = data.name;
+            }
+            if (data.idebate_id != null) {
+                message.idebate_id = data.idebate_id;
+            }
+            if (typeof data.preliminary == "object") {
+                message.preliminary = new Map(Object.entries(data.preliminary).map(([key, value]) => [Number(key), RoomInfo.fromObject(value)]));
+            }
+            if (typeof data.elimination == "object") {
+                message.elimination = new Map(Object.entries(data.elimination).map(([key, value]) => [Number(key), RoomInfo.fromObject(value)]));
             }
             return message;
         }
         toObject() {
             const data: {
-                judge?: ReturnType<typeof Judge.prototype.toObject>;
+                judge_id?: number;
+                name?: string;
+                idebate_id?: string;
+                preliminary?: {
+                    [key: number]: ReturnType<typeof RoomInfo.prototype.toObject>;
+                };
+                elimination?: {
+                    [key: number]: ReturnType<typeof RoomInfo.prototype.toObject>;
+                };
             } = {};
-            if (this.judge != null) {
-                data.judge = this.judge.toObject();
+            if (this.judge_id != null) {
+                data.judge_id = this.judge_id;
+            }
+            if (this.name != null) {
+                data.name = this.name;
+            }
+            if (this.idebate_id != null) {
+                data.idebate_id = this.idebate_id;
+            }
+            if (this.preliminary != null) {
+                data.preliminary = (Object.fromEntries)((Array.from)(this.preliminary).map(([key, value]) => [key, value.toObject()]));
+            }
+            if (this.elimination != null) {
+                data.elimination = (Object.fromEntries)((Array.from)(this.elimination).map(([key, value]) => [key, value.toObject()]));
             }
             return data;
         }
@@ -1231,8 +1662,24 @@ export namespace debate_management {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.has_judge)
-                writer.writeMessage(1, this.judge, () => this.judge.serialize(writer));
+            if (this.judge_id != 0)
+                writer.writeInt32(1, this.judge_id);
+            if (this.name.length)
+                writer.writeString(2, this.name);
+            if (this.idebate_id.length)
+                writer.writeString(3, this.idebate_id);
+            for (const [key, value] of this.preliminary) {
+                writer.writeMessage(4, this.preliminary, () => {
+                    writer.writeInt32(1, key);
+                    writer.writeMessage(2, value, () => value.serialize(writer));
+                });
+            }
+            for (const [key, value] of this.elimination) {
+                writer.writeMessage(5, this.elimination, () => {
+                    writer.writeInt32(1, key);
+                    writer.writeMessage(2, value, () => value.serialize(writer));
+                });
+            }
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1243,7 +1690,27 @@ export namespace debate_management {
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        reader.readMessage(message.judge, () => message.judge = Judge.deserialize(reader));
+                        message.judge_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.name = reader.readString();
+                        break;
+                    case 3:
+                        message.idebate_id = reader.readString();
+                        break;
+                    case 4:
+                        reader.readMessage(message, () => pb_1.Map.deserializeBinary(message.preliminary as any, reader, reader.readInt32, () => {
+                            let value;
+                            reader.readMessage(message, () => value = RoomInfo.deserialize(reader));
+                            return value;
+                        }));
+                        break;
+                    case 5:
+                        reader.readMessage(message, () => pb_1.Map.deserializeBinary(message.elimination as any, reader, reader.readInt32, () => {
+                            let value;
+                            reader.readMessage(message, () => value = RoomInfo.deserialize(reader));
+                            return value;
+                        }));
                         break;
                     default: reader.skipField();
                 }
@@ -1257,6 +1724,242 @@ export namespace debate_management {
             return GetJudgeResponse.deserialize(bytes);
         }
     }
+    export class UpdateJudgeRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            judge_id?: number;
+            tournament_id?: number;
+            room_assignments?: Map<number, number>;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("judge_id" in data && data.judge_id != undefined) {
+                    this.judge_id = data.judge_id;
+                }
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
+                }
+                if ("room_assignments" in data && data.room_assignments != undefined) {
+                    this.room_assignments = data.room_assignments;
+                }
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+            if (!this.room_assignments)
+                this.room_assignments = new Map();
+        }
+        get judge_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set judge_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get tournament_id() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set tournament_id(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get room_assignments() {
+            return pb_1.Message.getField(this, 3) as any as Map<number, number>;
+        }
+        set room_assignments(value: Map<number, number>) {
+            pb_1.Message.setField(this, 3, value as any);
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        static fromObject(data: {
+            judge_id?: number;
+            tournament_id?: number;
+            room_assignments?: {
+                [key: number]: number;
+            };
+            token?: string;
+        }): UpdateJudgeRequest {
+            const message = new UpdateJudgeRequest({});
+            if (data.judge_id != null) {
+                message.judge_id = data.judge_id;
+            }
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
+            }
+            if (typeof data.room_assignments == "object") {
+                message.room_assignments = new Map(Object.entries(data.room_assignments).map(([key, value]) => [Number(key), value]));
+            }
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                judge_id?: number;
+                tournament_id?: number;
+                room_assignments?: {
+                    [key: number]: number;
+                };
+                token?: string;
+            } = {};
+            if (this.judge_id != null) {
+                data.judge_id = this.judge_id;
+            }
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
+            }
+            if (this.room_assignments != null) {
+                data.room_assignments = (Object.fromEntries)(this.room_assignments);
+            }
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.judge_id != 0)
+                writer.writeInt32(1, this.judge_id);
+            if (this.tournament_id != 0)
+                writer.writeInt32(2, this.tournament_id);
+            for (const [key, value] of this.room_assignments) {
+                writer.writeMessage(3, this.room_assignments, () => {
+                    writer.writeInt32(1, key);
+                    writer.writeInt32(2, value);
+                });
+            }
+            if (this.token.length)
+                writer.writeString(4, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateJudgeRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateJudgeRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.judge_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.tournament_id = reader.readInt32();
+                        break;
+                    case 3:
+                        reader.readMessage(message, () => pb_1.Map.deserializeBinary(message.room_assignments as any, reader, reader.readInt32, reader.readInt32));
+                        break;
+                    case 4:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): UpdateJudgeRequest {
+            return UpdateJudgeRequest.deserialize(bytes);
+        }
+    }
+    export class UpdateJudgeResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            success?: boolean;
+            message?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("success" in data && data.success != undefined) {
+                    this.success = data.success;
+                }
+                if ("message" in data && data.message != undefined) {
+                    this.message = data.message;
+                }
+            }
+        }
+        get success() {
+            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
+        }
+        set success(value: boolean) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get message() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set message(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            success?: boolean;
+            message?: string;
+        }): UpdateJudgeResponse {
+            const message = new UpdateJudgeResponse({});
+            if (data.success != null) {
+                message.success = data.success;
+            }
+            if (data.message != null) {
+                message.message = data.message;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                success?: boolean;
+                message?: string;
+            } = {};
+            if (this.success != null) {
+                data.success = this.success;
+            }
+            if (this.message != null) {
+                data.message = this.message;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.success != false)
+                writer.writeBool(1, this.success);
+            if (this.message.length)
+                writer.writeString(2, this.message);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateJudgeResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateJudgeResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.success = reader.readBool();
+                        break;
+                    case 2:
+                        message.message = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): UpdateJudgeResponse {
+            return UpdateJudgeResponse.deserialize(bytes);
+        }
+    }
     export class Pairing extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -1267,10 +1970,11 @@ export namespace debate_management {
             room_name?: string;
             team1?: Team;
             team2?: Team;
+            head_judge_name?: string;
             judges?: Judge[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [8], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [9], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("pairing_id" in data && data.pairing_id != undefined) {
                     this.pairing_id = data.pairing_id;
@@ -1292,6 +1996,9 @@ export namespace debate_management {
                 }
                 if ("team2" in data && data.team2 != undefined) {
                     this.team2 = data.team2;
+                }
+                if ("head_judge_name" in data && data.head_judge_name != undefined) {
+                    this.head_judge_name = data.head_judge_name;
                 }
                 if ("judges" in data && data.judges != undefined) {
                     this.judges = data.judges;
@@ -1346,11 +2053,17 @@ export namespace debate_management {
         get has_team2() {
             return pb_1.Message.getField(this, 7) != null;
         }
+        get head_judge_name() {
+            return pb_1.Message.getFieldWithDefault(this, 8, "") as string;
+        }
+        set head_judge_name(value: string) {
+            pb_1.Message.setField(this, 8, value);
+        }
         get judges() {
-            return pb_1.Message.getRepeatedWrapperField(this, Judge, 8) as Judge[];
+            return pb_1.Message.getRepeatedWrapperField(this, Judge, 9) as Judge[];
         }
         set judges(value: Judge[]) {
-            pb_1.Message.setRepeatedWrapperField(this, 8, value);
+            pb_1.Message.setRepeatedWrapperField(this, 9, value);
         }
         static fromObject(data: {
             pairing_id?: number;
@@ -1360,6 +2073,7 @@ export namespace debate_management {
             room_name?: string;
             team1?: ReturnType<typeof Team.prototype.toObject>;
             team2?: ReturnType<typeof Team.prototype.toObject>;
+            head_judge_name?: string;
             judges?: ReturnType<typeof Judge.prototype.toObject>[];
         }): Pairing {
             const message = new Pairing({});
@@ -1384,6 +2098,9 @@ export namespace debate_management {
             if (data.team2 != null) {
                 message.team2 = Team.fromObject(data.team2);
             }
+            if (data.head_judge_name != null) {
+                message.head_judge_name = data.head_judge_name;
+            }
             if (data.judges != null) {
                 message.judges = data.judges.map(item => Judge.fromObject(item));
             }
@@ -1398,6 +2115,7 @@ export namespace debate_management {
                 room_name?: string;
                 team1?: ReturnType<typeof Team.prototype.toObject>;
                 team2?: ReturnType<typeof Team.prototype.toObject>;
+                head_judge_name?: string;
                 judges?: ReturnType<typeof Judge.prototype.toObject>[];
             } = {};
             if (this.pairing_id != null) {
@@ -1420,6 +2138,9 @@ export namespace debate_management {
             }
             if (this.team2 != null) {
                 data.team2 = this.team2.toObject();
+            }
+            if (this.head_judge_name != null) {
+                data.head_judge_name = this.head_judge_name;
             }
             if (this.judges != null) {
                 data.judges = this.judges.map((item: Judge) => item.toObject());
@@ -1444,8 +2165,10 @@ export namespace debate_management {
                 writer.writeMessage(6, this.team1, () => this.team1.serialize(writer));
             if (this.has_team2)
                 writer.writeMessage(7, this.team2, () => this.team2.serialize(writer));
+            if (this.head_judge_name.length)
+                writer.writeString(8, this.head_judge_name);
             if (this.judges.length)
-                writer.writeRepeatedMessage(8, this.judges, (item: Judge) => item.serialize(writer));
+                writer.writeRepeatedMessage(9, this.judges, (item: Judge) => item.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1477,7 +2200,10 @@ export namespace debate_management {
                         reader.readMessage(message.team2, () => message.team2 = Team.deserialize(reader));
                         break;
                     case 8:
-                        reader.readMessage(message.judges, () => pb_1.Message.addToRepeatedWrapperField(message, 8, Judge.deserialize(reader), Judge));
+                        message.head_judge_name = reader.readString();
+                        break;
+                    case 9:
+                        reader.readMessage(message.judges, () => pb_1.Message.addToRepeatedWrapperField(message, 9, Judge.deserialize(reader), Judge));
                         break;
                     default: reader.skipField();
                 }
@@ -1497,11 +2223,13 @@ export namespace debate_management {
             team_id?: number;
             name?: string;
             speakers?: Speaker[];
+            speaker_names?: string[];
             total_points?: number;
             league_name?: string;
+            feedback?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3, 4], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("team_id" in data && data.team_id != undefined) {
                     this.team_id = data.team_id;
@@ -1512,11 +2240,17 @@ export namespace debate_management {
                 if ("speakers" in data && data.speakers != undefined) {
                     this.speakers = data.speakers;
                 }
+                if ("speaker_names" in data && data.speaker_names != undefined) {
+                    this.speaker_names = data.speaker_names;
+                }
                 if ("total_points" in data && data.total_points != undefined) {
                     this.total_points = data.total_points;
                 }
                 if ("league_name" in data && data.league_name != undefined) {
                     this.league_name = data.league_name;
+                }
+                if ("feedback" in data && data.feedback != undefined) {
+                    this.feedback = data.feedback;
                 }
             }
         }
@@ -1538,24 +2272,38 @@ export namespace debate_management {
         set speakers(value: Speaker[]) {
             pb_1.Message.setRepeatedWrapperField(this, 3, value);
         }
-        get total_points() {
-            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+        get speaker_names() {
+            return pb_1.Message.getFieldWithDefault(this, 4, []) as string[];
         }
-        set total_points(value: number) {
+        set speaker_names(value: string[]) {
             pb_1.Message.setField(this, 4, value);
         }
+        get total_points() {
+            return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
+        }
+        set total_points(value: number) {
+            pb_1.Message.setField(this, 5, value);
+        }
         get league_name() {
-            return pb_1.Message.getFieldWithDefault(this, 5, "") as string;
+            return pb_1.Message.getFieldWithDefault(this, 6, "") as string;
         }
         set league_name(value: string) {
-            pb_1.Message.setField(this, 5, value);
+            pb_1.Message.setField(this, 6, value);
+        }
+        get feedback() {
+            return pb_1.Message.getFieldWithDefault(this, 7, "") as string;
+        }
+        set feedback(value: string) {
+            pb_1.Message.setField(this, 7, value);
         }
         static fromObject(data: {
             team_id?: number;
             name?: string;
             speakers?: ReturnType<typeof Speaker.prototype.toObject>[];
+            speaker_names?: string[];
             total_points?: number;
             league_name?: string;
+            feedback?: string;
         }): Team {
             const message = new Team({});
             if (data.team_id != null) {
@@ -1567,11 +2315,17 @@ export namespace debate_management {
             if (data.speakers != null) {
                 message.speakers = data.speakers.map(item => Speaker.fromObject(item));
             }
+            if (data.speaker_names != null) {
+                message.speaker_names = data.speaker_names;
+            }
             if (data.total_points != null) {
                 message.total_points = data.total_points;
             }
             if (data.league_name != null) {
                 message.league_name = data.league_name;
+            }
+            if (data.feedback != null) {
+                message.feedback = data.feedback;
             }
             return message;
         }
@@ -1580,8 +2334,10 @@ export namespace debate_management {
                 team_id?: number;
                 name?: string;
                 speakers?: ReturnType<typeof Speaker.prototype.toObject>[];
+                speaker_names?: string[];
                 total_points?: number;
                 league_name?: string;
+                feedback?: string;
             } = {};
             if (this.team_id != null) {
                 data.team_id = this.team_id;
@@ -1592,11 +2348,17 @@ export namespace debate_management {
             if (this.speakers != null) {
                 data.speakers = this.speakers.map((item: Speaker) => item.toObject());
             }
+            if (this.speaker_names != null) {
+                data.speaker_names = this.speaker_names;
+            }
             if (this.total_points != null) {
                 data.total_points = this.total_points;
             }
             if (this.league_name != null) {
                 data.league_name = this.league_name;
+            }
+            if (this.feedback != null) {
+                data.feedback = this.feedback;
             }
             return data;
         }
@@ -1610,10 +2372,14 @@ export namespace debate_management {
                 writer.writeString(2, this.name);
             if (this.speakers.length)
                 writer.writeRepeatedMessage(3, this.speakers, (item: Speaker) => item.serialize(writer));
+            if (this.speaker_names.length)
+                writer.writeRepeatedString(4, this.speaker_names);
             if (this.total_points != 0)
-                writer.writeDouble(4, this.total_points);
+                writer.writeDouble(5, this.total_points);
             if (this.league_name.length)
-                writer.writeString(5, this.league_name);
+                writer.writeString(6, this.league_name);
+            if (this.feedback.length)
+                writer.writeString(7, this.feedback);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1633,10 +2399,16 @@ export namespace debate_management {
                         reader.readMessage(message.speakers, () => pb_1.Message.addToRepeatedWrapperField(message, 3, Speaker.deserialize(reader), Speaker));
                         break;
                     case 4:
-                        message.total_points = reader.readDouble();
+                        pb_1.Message.addToRepeatedField(message, 4, reader.readString());
                         break;
                     case 5:
+                        message.total_points = reader.readDouble();
+                        break;
+                    case 6:
                         message.league_name = reader.readString();
+                        break;
+                    case 7:
+                        message.feedback = reader.readString();
                         break;
                     default: reader.skipField();
                 }
@@ -1659,6 +2431,8 @@ export namespace debate_management {
             rank?: number;
             points?: number;
             feedback?: string;
+            team_id?: number;
+            team_name?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -1680,6 +2454,12 @@ export namespace debate_management {
                 }
                 if ("feedback" in data && data.feedback != undefined) {
                     this.feedback = data.feedback;
+                }
+                if ("team_id" in data && data.team_id != undefined) {
+                    this.team_id = data.team_id;
+                }
+                if ("team_name" in data && data.team_name != undefined) {
+                    this.team_name = data.team_name;
                 }
             }
         }
@@ -1719,6 +2499,18 @@ export namespace debate_management {
         set feedback(value: string) {
             pb_1.Message.setField(this, 6, value);
         }
+        get team_id() {
+            return pb_1.Message.getFieldWithDefault(this, 7, 0) as number;
+        }
+        set team_id(value: number) {
+            pb_1.Message.setField(this, 7, value);
+        }
+        get team_name() {
+            return pb_1.Message.getFieldWithDefault(this, 8, "") as string;
+        }
+        set team_name(value: string) {
+            pb_1.Message.setField(this, 8, value);
+        }
         static fromObject(data: {
             speaker_id?: number;
             name?: string;
@@ -1726,6 +2518,8 @@ export namespace debate_management {
             rank?: number;
             points?: number;
             feedback?: string;
+            team_id?: number;
+            team_name?: string;
         }): Speaker {
             const message = new Speaker({});
             if (data.speaker_id != null) {
@@ -1746,6 +2540,12 @@ export namespace debate_management {
             if (data.feedback != null) {
                 message.feedback = data.feedback;
             }
+            if (data.team_id != null) {
+                message.team_id = data.team_id;
+            }
+            if (data.team_name != null) {
+                message.team_name = data.team_name;
+            }
             return message;
         }
         toObject() {
@@ -1756,6 +2556,8 @@ export namespace debate_management {
                 rank?: number;
                 points?: number;
                 feedback?: string;
+                team_id?: number;
+                team_name?: string;
             } = {};
             if (this.speaker_id != null) {
                 data.speaker_id = this.speaker_id;
@@ -1775,6 +2577,12 @@ export namespace debate_management {
             if (this.feedback != null) {
                 data.feedback = this.feedback;
             }
+            if (this.team_id != null) {
+                data.team_id = this.team_id;
+            }
+            if (this.team_name != null) {
+                data.team_name = this.team_name;
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -1793,6 +2601,10 @@ export namespace debate_management {
                 writer.writeDouble(5, this.points);
             if (this.feedback.length)
                 writer.writeString(6, this.feedback);
+            if (this.team_id != 0)
+                writer.writeInt32(7, this.team_id);
+            if (this.team_name.length)
+                writer.writeString(8, this.team_name);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1819,6 +2631,12 @@ export namespace debate_management {
                         break;
                     case 6:
                         message.feedback = reader.readString();
+                        break;
+                    case 7:
+                        message.team_id = reader.readInt32();
+                        break;
+                    case 8:
+                        message.team_name = reader.readString();
                         break;
                     default: reader.skipField();
                 }
@@ -2195,31 +3013,28 @@ export namespace debate_management {
             return GetPairingResponse.deserialize(bytes);
         }
     }
-    export class UpdatePairingRequest extends pb_1.Message {
+    export class UpdatePairingsRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            pairing?: Pairing;
+            pairings?: Pairing[];
             token?: string;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
-                if ("pairing" in data && data.pairing != undefined) {
-                    this.pairing = data.pairing;
+                if ("pairings" in data && data.pairings != undefined) {
+                    this.pairings = data.pairings;
                 }
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
                 }
             }
         }
-        get pairing() {
-            return pb_1.Message.getWrapperField(this, Pairing, 1) as Pairing;
+        get pairings() {
+            return pb_1.Message.getRepeatedWrapperField(this, Pairing, 1) as Pairing[];
         }
-        set pairing(value: Pairing) {
-            pb_1.Message.setWrapperField(this, 1, value);
-        }
-        get has_pairing() {
-            return pb_1.Message.getField(this, 1) != null;
+        set pairings(value: Pairing[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
         }
         get token() {
             return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
@@ -2228,12 +3043,12 @@ export namespace debate_management {
             pb_1.Message.setField(this, 2, value);
         }
         static fromObject(data: {
-            pairing?: ReturnType<typeof Pairing.prototype.toObject>;
+            pairings?: ReturnType<typeof Pairing.prototype.toObject>[];
             token?: string;
-        }): UpdatePairingRequest {
-            const message = new UpdatePairingRequest({});
-            if (data.pairing != null) {
-                message.pairing = Pairing.fromObject(data.pairing);
+        }): UpdatePairingsRequest {
+            const message = new UpdatePairingsRequest({});
+            if (data.pairings != null) {
+                message.pairings = data.pairings.map(item => Pairing.fromObject(item));
             }
             if (data.token != null) {
                 message.token = data.token;
@@ -2242,11 +3057,11 @@ export namespace debate_management {
         }
         toObject() {
             const data: {
-                pairing?: ReturnType<typeof Pairing.prototype.toObject>;
+                pairings?: ReturnType<typeof Pairing.prototype.toObject>[];
                 token?: string;
             } = {};
-            if (this.pairing != null) {
-                data.pairing = this.pairing.toObject();
+            if (this.pairings != null) {
+                data.pairings = this.pairings.map((item: Pairing) => item.toObject());
             }
             if (this.token != null) {
                 data.token = this.token;
@@ -2257,21 +3072,21 @@ export namespace debate_management {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.has_pairing)
-                writer.writeMessage(1, this.pairing, () => this.pairing.serialize(writer));
+            if (this.pairings.length)
+                writer.writeRepeatedMessage(1, this.pairings, (item: Pairing) => item.serialize(writer));
             if (this.token.length)
                 writer.writeString(2, this.token);
             if (!w)
                 return writer.getResultBuffer();
         }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdatePairingRequest {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdatePairingRequest();
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdatePairingsRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdatePairingsRequest();
             while (reader.nextField()) {
                 if (reader.isEndGroup())
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        reader.readMessage(message.pairing, () => message.pairing = Pairing.deserialize(reader));
+                        reader.readMessage(message.pairings, () => pb_1.Message.addToRepeatedWrapperField(message, 1, Pairing.deserialize(reader), Pairing));
                         break;
                     case 2:
                         message.token = reader.readString();
@@ -2284,47 +3099,44 @@ export namespace debate_management {
         serializeBinary(): Uint8Array {
             return this.serialize();
         }
-        static deserializeBinary(bytes: Uint8Array): UpdatePairingRequest {
-            return UpdatePairingRequest.deserialize(bytes);
+        static deserializeBinary(bytes: Uint8Array): UpdatePairingsRequest {
+            return UpdatePairingsRequest.deserialize(bytes);
         }
     }
-    export class UpdatePairingResponse extends pb_1.Message {
+    export class UpdatePairingsResponse extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            pairing?: Pairing;
+            pairings?: Pairing[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
-                if ("pairing" in data && data.pairing != undefined) {
-                    this.pairing = data.pairing;
+                if ("pairings" in data && data.pairings != undefined) {
+                    this.pairings = data.pairings;
                 }
             }
         }
-        get pairing() {
-            return pb_1.Message.getWrapperField(this, Pairing, 1) as Pairing;
+        get pairings() {
+            return pb_1.Message.getRepeatedWrapperField(this, Pairing, 1) as Pairing[];
         }
-        set pairing(value: Pairing) {
-            pb_1.Message.setWrapperField(this, 1, value);
-        }
-        get has_pairing() {
-            return pb_1.Message.getField(this, 1) != null;
+        set pairings(value: Pairing[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
         }
         static fromObject(data: {
-            pairing?: ReturnType<typeof Pairing.prototype.toObject>;
-        }): UpdatePairingResponse {
-            const message = new UpdatePairingResponse({});
-            if (data.pairing != null) {
-                message.pairing = Pairing.fromObject(data.pairing);
+            pairings?: ReturnType<typeof Pairing.prototype.toObject>[];
+        }): UpdatePairingsResponse {
+            const message = new UpdatePairingsResponse({});
+            if (data.pairings != null) {
+                message.pairings = data.pairings.map(item => Pairing.fromObject(item));
             }
             return message;
         }
         toObject() {
             const data: {
-                pairing?: ReturnType<typeof Pairing.prototype.toObject>;
+                pairings?: ReturnType<typeof Pairing.prototype.toObject>[];
             } = {};
-            if (this.pairing != null) {
-                data.pairing = this.pairing.toObject();
+            if (this.pairings != null) {
+                data.pairings = this.pairings.map((item: Pairing) => item.toObject());
             }
             return data;
         }
@@ -2332,19 +3144,19 @@ export namespace debate_management {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.has_pairing)
-                writer.writeMessage(1, this.pairing, () => this.pairing.serialize(writer));
+            if (this.pairings.length)
+                writer.writeRepeatedMessage(1, this.pairings, (item: Pairing) => item.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdatePairingResponse {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdatePairingResponse();
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdatePairingsResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdatePairingsResponse();
             while (reader.nextField()) {
                 if (reader.isEndGroup())
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        reader.readMessage(message.pairing, () => message.pairing = Pairing.deserialize(reader));
+                        reader.readMessage(message.pairings, () => pb_1.Message.addToRepeatedWrapperField(message, 1, Pairing.deserialize(reader), Pairing));
                         break;
                     default: reader.skipField();
                 }
@@ -2354,8 +3166,8 @@ export namespace debate_management {
         serializeBinary(): Uint8Array {
             return this.serialize();
         }
-        static deserializeBinary(bytes: Uint8Array): UpdatePairingResponse {
-            return UpdatePairingResponse.deserialize(bytes);
+        static deserializeBinary(bytes: Uint8Array): UpdatePairingsResponse {
+            return UpdatePairingsResponse.deserialize(bytes);
         }
     }
     export class Ballot extends pb_1.Message {
@@ -2371,6 +3183,9 @@ export namespace debate_management {
             team2?: Team;
             recording_status?: string;
             verdict?: string;
+            last_updated_by?: number;
+            last_updated_at?: string;
+            head_judge_submitted?: boolean;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [6], this.#one_of_decls);
@@ -2404,6 +3219,15 @@ export namespace debate_management {
                 }
                 if ("verdict" in data && data.verdict != undefined) {
                     this.verdict = data.verdict;
+                }
+                if ("last_updated_by" in data && data.last_updated_by != undefined) {
+                    this.last_updated_by = data.last_updated_by;
+                }
+                if ("last_updated_at" in data && data.last_updated_at != undefined) {
+                    this.last_updated_at = data.last_updated_at;
+                }
+                if ("head_judge_submitted" in data && data.head_judge_submitted != undefined) {
+                    this.head_judge_submitted = data.head_judge_submitted;
                 }
             }
         }
@@ -2473,6 +3297,24 @@ export namespace debate_management {
         set verdict(value: string) {
             pb_1.Message.setField(this, 10, value);
         }
+        get last_updated_by() {
+            return pb_1.Message.getFieldWithDefault(this, 11, 0) as number;
+        }
+        set last_updated_by(value: number) {
+            pb_1.Message.setField(this, 11, value);
+        }
+        get last_updated_at() {
+            return pb_1.Message.getFieldWithDefault(this, 12, "") as string;
+        }
+        set last_updated_at(value: string) {
+            pb_1.Message.setField(this, 12, value);
+        }
+        get head_judge_submitted() {
+            return pb_1.Message.getFieldWithDefault(this, 13, false) as boolean;
+        }
+        set head_judge_submitted(value: boolean) {
+            pb_1.Message.setField(this, 13, value);
+        }
         static fromObject(data: {
             ballot_id?: number;
             round_number?: number;
@@ -2484,6 +3326,9 @@ export namespace debate_management {
             team2?: ReturnType<typeof Team.prototype.toObject>;
             recording_status?: string;
             verdict?: string;
+            last_updated_by?: number;
+            last_updated_at?: string;
+            head_judge_submitted?: boolean;
         }): Ballot {
             const message = new Ballot({});
             if (data.ballot_id != null) {
@@ -2516,6 +3361,15 @@ export namespace debate_management {
             if (data.verdict != null) {
                 message.verdict = data.verdict;
             }
+            if (data.last_updated_by != null) {
+                message.last_updated_by = data.last_updated_by;
+            }
+            if (data.last_updated_at != null) {
+                message.last_updated_at = data.last_updated_at;
+            }
+            if (data.head_judge_submitted != null) {
+                message.head_judge_submitted = data.head_judge_submitted;
+            }
             return message;
         }
         toObject() {
@@ -2530,6 +3384,9 @@ export namespace debate_management {
                 team2?: ReturnType<typeof Team.prototype.toObject>;
                 recording_status?: string;
                 verdict?: string;
+                last_updated_by?: number;
+                last_updated_at?: string;
+                head_judge_submitted?: boolean;
             } = {};
             if (this.ballot_id != null) {
                 data.ballot_id = this.ballot_id;
@@ -2561,6 +3418,15 @@ export namespace debate_management {
             if (this.verdict != null) {
                 data.verdict = this.verdict;
             }
+            if (this.last_updated_by != null) {
+                data.last_updated_by = this.last_updated_by;
+            }
+            if (this.last_updated_at != null) {
+                data.last_updated_at = this.last_updated_at;
+            }
+            if (this.head_judge_submitted != null) {
+                data.head_judge_submitted = this.head_judge_submitted;
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -2587,6 +3453,12 @@ export namespace debate_management {
                 writer.writeString(9, this.recording_status);
             if (this.verdict.length)
                 writer.writeString(10, this.verdict);
+            if (this.last_updated_by != 0)
+                writer.writeInt32(11, this.last_updated_by);
+            if (this.last_updated_at.length)
+                writer.writeString(12, this.last_updated_at);
+            if (this.head_judge_submitted != false)
+                writer.writeBool(13, this.head_judge_submitted);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -2625,6 +3497,15 @@ export namespace debate_management {
                         break;
                     case 10:
                         message.verdict = reader.readString();
+                        break;
+                    case 11:
+                        message.last_updated_by = reader.readInt32();
+                        break;
+                    case 12:
+                        message.last_updated_at = reader.readString();
+                        break;
+                    case 13:
+                        message.head_judge_submitted = reader.readBool();
                         break;
                     default: reader.skipField();
                 }
@@ -3168,7 +4049,6 @@ export namespace debate_management {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             tournament_id?: number;
-            round_number?: number;
             is_elimination_round?: boolean;
             token?: string;
         }) {
@@ -3177,9 +4057,6 @@ export namespace debate_management {
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("tournament_id" in data && data.tournament_id != undefined) {
                     this.tournament_id = data.tournament_id;
-                }
-                if ("round_number" in data && data.round_number != undefined) {
-                    this.round_number = data.round_number;
                 }
                 if ("is_elimination_round" in data && data.is_elimination_round != undefined) {
                     this.is_elimination_round = data.is_elimination_round;
@@ -3195,12 +4072,6 @@ export namespace debate_management {
         set tournament_id(value: number) {
             pb_1.Message.setField(this, 1, value);
         }
-        get round_number() {
-            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
-        }
-        set round_number(value: number) {
-            pb_1.Message.setField(this, 2, value);
-        }
         get is_elimination_round() {
             return pb_1.Message.getFieldWithDefault(this, 3, false) as boolean;
         }
@@ -3215,16 +4086,12 @@ export namespace debate_management {
         }
         static fromObject(data: {
             tournament_id?: number;
-            round_number?: number;
             is_elimination_round?: boolean;
             token?: string;
         }): GeneratePairingsRequest {
             const message = new GeneratePairingsRequest({});
             if (data.tournament_id != null) {
                 message.tournament_id = data.tournament_id;
-            }
-            if (data.round_number != null) {
-                message.round_number = data.round_number;
             }
             if (data.is_elimination_round != null) {
                 message.is_elimination_round = data.is_elimination_round;
@@ -3237,15 +4104,11 @@ export namespace debate_management {
         toObject() {
             const data: {
                 tournament_id?: number;
-                round_number?: number;
                 is_elimination_round?: boolean;
                 token?: string;
             } = {};
             if (this.tournament_id != null) {
                 data.tournament_id = this.tournament_id;
-            }
-            if (this.round_number != null) {
-                data.round_number = this.round_number;
             }
             if (this.is_elimination_round != null) {
                 data.is_elimination_round = this.is_elimination_round;
@@ -3261,8 +4124,6 @@ export namespace debate_management {
             const writer = w || new pb_1.BinaryWriter();
             if (this.tournament_id != 0)
                 writer.writeInt32(1, this.tournament_id);
-            if (this.round_number != 0)
-                writer.writeInt32(2, this.round_number);
             if (this.is_elimination_round != false)
                 writer.writeBool(3, this.is_elimination_round);
             if (this.token.length)
@@ -3278,9 +4139,6 @@ export namespace debate_management {
                 switch (reader.getFieldNumber()) {
                     case 1:
                         message.tournament_id = reader.readInt32();
-                        break;
-                    case 2:
-                        message.round_number = reader.readInt32();
                         break;
                     case 3:
                         message.is_elimination_round = reader.readBool();
@@ -4410,6 +5268,15 @@ export namespace debate_management {
                 responseSerialize: (message: GetJudgeResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => GetJudgeResponse.deserialize(new Uint8Array(bytes))
             },
+            UpdateJudge: {
+                path: "/debate_management.DebateService/UpdateJudge",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: UpdateJudgeRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => UpdateJudgeRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: UpdateJudgeResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => UpdateJudgeResponse.deserialize(new Uint8Array(bytes))
+            },
             GetPairings: {
                 path: "/debate_management.DebateService/GetPairings",
                 requestStream: false,
@@ -4428,14 +5295,14 @@ export namespace debate_management {
                 responseSerialize: (message: GetPairingResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => GetPairingResponse.deserialize(new Uint8Array(bytes))
             },
-            UpdatePairing: {
-                path: "/debate_management.DebateService/UpdatePairing",
+            UpdatePairings: {
+                path: "/debate_management.DebateService/UpdatePairings",
                 requestStream: false,
                 responseStream: false,
-                requestSerialize: (message: UpdatePairingRequest) => Buffer.from(message.serialize()),
-                requestDeserialize: (bytes: Buffer) => UpdatePairingRequest.deserialize(new Uint8Array(bytes)),
-                responseSerialize: (message: UpdatePairingResponse) => Buffer.from(message.serialize()),
-                responseDeserialize: (bytes: Buffer) => UpdatePairingResponse.deserialize(new Uint8Array(bytes))
+                requestSerialize: (message: UpdatePairingsRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => UpdatePairingsRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: UpdatePairingsResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => UpdatePairingsResponse.deserialize(new Uint8Array(bytes))
             },
             GetBallots: {
                 path: "/debate_management.DebateService/GetBallots",
@@ -4543,9 +5410,10 @@ export namespace debate_management {
         abstract UpdateRoom(call: grpc_1.ServerUnaryCall<UpdateRoomRequest, UpdateRoomResponse>, callback: grpc_1.sendUnaryData<UpdateRoomResponse>): void;
         abstract GetJudges(call: grpc_1.ServerUnaryCall<GetJudgesRequest, GetJudgesResponse>, callback: grpc_1.sendUnaryData<GetJudgesResponse>): void;
         abstract GetJudge(call: grpc_1.ServerUnaryCall<GetJudgeRequest, GetJudgeResponse>, callback: grpc_1.sendUnaryData<GetJudgeResponse>): void;
+        abstract UpdateJudge(call: grpc_1.ServerUnaryCall<UpdateJudgeRequest, UpdateJudgeResponse>, callback: grpc_1.sendUnaryData<UpdateJudgeResponse>): void;
         abstract GetPairings(call: grpc_1.ServerUnaryCall<GetPairingsRequest, GetPairingsResponse>, callback: grpc_1.sendUnaryData<GetPairingsResponse>): void;
         abstract GetPairing(call: grpc_1.ServerUnaryCall<GetPairingRequest, GetPairingResponse>, callback: grpc_1.sendUnaryData<GetPairingResponse>): void;
-        abstract UpdatePairing(call: grpc_1.ServerUnaryCall<UpdatePairingRequest, UpdatePairingResponse>, callback: grpc_1.sendUnaryData<UpdatePairingResponse>): void;
+        abstract UpdatePairings(call: grpc_1.ServerUnaryCall<UpdatePairingsRequest, UpdatePairingsResponse>, callback: grpc_1.sendUnaryData<UpdatePairingsResponse>): void;
         abstract GetBallots(call: grpc_1.ServerUnaryCall<GetBallotsRequest, GetBallotsResponse>, callback: grpc_1.sendUnaryData<GetBallotsResponse>): void;
         abstract GetBallot(call: grpc_1.ServerUnaryCall<GetBallotRequest, GetBallotResponse>, callback: grpc_1.sendUnaryData<GetBallotResponse>): void;
         abstract UpdateBallot(call: grpc_1.ServerUnaryCall<UpdateBallotRequest, UpdateBallotResponse>, callback: grpc_1.sendUnaryData<UpdateBallotResponse>): void;
@@ -4577,14 +5445,17 @@ export namespace debate_management {
         GetJudge: GrpcUnaryServiceInterface<GetJudgeRequest, GetJudgeResponse> = (message: GetJudgeRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetJudgeResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetJudgeResponse>, callback?: grpc_1.requestCallback<GetJudgeResponse>): grpc_1.ClientUnaryCall => {
             return super.GetJudge(message, metadata, options, callback);
         };
+        UpdateJudge: GrpcUnaryServiceInterface<UpdateJudgeRequest, UpdateJudgeResponse> = (message: UpdateJudgeRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<UpdateJudgeResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<UpdateJudgeResponse>, callback?: grpc_1.requestCallback<UpdateJudgeResponse>): grpc_1.ClientUnaryCall => {
+            return super.UpdateJudge(message, metadata, options, callback);
+        };
         GetPairings: GrpcUnaryServiceInterface<GetPairingsRequest, GetPairingsResponse> = (message: GetPairingsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetPairingsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetPairingsResponse>, callback?: grpc_1.requestCallback<GetPairingsResponse>): grpc_1.ClientUnaryCall => {
             return super.GetPairings(message, metadata, options, callback);
         };
         GetPairing: GrpcUnaryServiceInterface<GetPairingRequest, GetPairingResponse> = (message: GetPairingRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetPairingResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetPairingResponse>, callback?: grpc_1.requestCallback<GetPairingResponse>): grpc_1.ClientUnaryCall => {
             return super.GetPairing(message, metadata, options, callback);
         };
-        UpdatePairing: GrpcUnaryServiceInterface<UpdatePairingRequest, UpdatePairingResponse> = (message: UpdatePairingRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<UpdatePairingResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<UpdatePairingResponse>, callback?: grpc_1.requestCallback<UpdatePairingResponse>): grpc_1.ClientUnaryCall => {
-            return super.UpdatePairing(message, metadata, options, callback);
+        UpdatePairings: GrpcUnaryServiceInterface<UpdatePairingsRequest, UpdatePairingsResponse> = (message: UpdatePairingsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<UpdatePairingsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<UpdatePairingsResponse>, callback?: grpc_1.requestCallback<UpdatePairingsResponse>): grpc_1.ClientUnaryCall => {
+            return super.UpdatePairings(message, metadata, options, callback);
         };
         GetBallots: GrpcUnaryServiceInterface<GetBallotsRequest, GetBallotsResponse> = (message: GetBallotsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetBallotsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetBallotsResponse>, callback?: grpc_1.requestCallback<GetBallotsResponse>): grpc_1.ClientUnaryCall => {
             return super.GetBallots(message, metadata, options, callback);

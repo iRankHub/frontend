@@ -25,56 +25,64 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Judges } from "@/components/tables/data/schema";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
 import { rooms } from "@/components/tables/data/data";
+import { Judge } from "@/lib/grpc/proto/debate_management/debate_pb";
 
-export const columns: ColumnDef<Judges>[] = [
+export const columns: ColumnDef<Judge.AsObject>[] = [
   {
-    accessorKey: "id",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="iDebate ID" className="justify-center" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="w-full pr-5 text-center">
-          <span className="max-w-[200px] truncate font-medium">
-            {row.getValue("id")}
-          </span>
-        </div>
-      );
-    },
-    enableHiding: false,
-  },
-  {
-    accessorKey: "names",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Names" className="justify-center" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="w-full pr-5 text-center">
-          <span className="max-w-[200px] truncate font-medium">
-            {row.getValue("names")}
-          </span>
-        </div>
-      );
-    },
-    enableHiding: false,
-  },
-  {
-    accessorKey: "preliminary",
+    accessorKey: "judgeId",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Preliminary"
+        title="iDebate ID"
+        className="justify-center"
+      />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="w-full pr-5 text-center">
+          <span className="max-w-[200px] truncate font-medium">
+            {row.getValue("judgeId")}
+          </span>
+        </div>
+      );
+    },
+    enableHiding: false,
+  },
+  {
+    accessorKey: "name",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Names"
+        className="justify-center"
+      />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="w-full pr-5 text-center">
+          <span className="max-w-[200px] truncate font-medium">
+            {row.getValue("name")}
+          </span>
+        </div>
+      );
+    },
+    enableHiding: false,
+  },
+  {
+    accessorKey: "email",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Email"
         className="justify-center"
       />
     ),
     cell: ({ row }) => {
       return (
         <div className="w-full pr-10 text-center">
-          <span className="text-sm">{row.getValue("preliminary")}</span>
+          <span className="text-sm">{row.getValue("email")}</span>
         </div>
       );
     },
@@ -86,18 +94,20 @@ export const columns: ColumnDef<Judges>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "elimination",
+    accessorKey: "isHeadJudge",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Elimination"
+        title="Head of judge"
         className="justify-center"
       />
     ),
     cell: ({ row }) => {
       return (
         <div className="w-full pr-5 text-center">
-          <span className="text-sm">{row.getValue("elimination")}</span>
+          <span className="text-sm">
+            {row.getValue("isHeadJudge") === true ? "yes" : "no"}
+          </span>
         </div>
       );
     },

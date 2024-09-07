@@ -5,6 +5,8 @@ import {
     ApproveUserResponse,
     DeactivateAccountRequest,
     DeactivateAccountResponse,
+    DeleteUsersRequest,
+    DeleteUsersResponse,
     GetAllUsersRequest,
     GetAllUsersResponse,
     GetStudentsRequest,
@@ -67,16 +69,16 @@ export const rejectUser = async ({
     });
 }
 
-export const deactivateUser = async ({
+export const deleteUser = async ({
     userID,
     token,
-}: DeactivateUser): Promise<DeactivateAccountResponse.AsObject> => {
+}: DeactivateUser): Promise<DeleteUsersResponse.AsObject> => {
     return new Promise((resolve, reject) => {
-        const request = new DeactivateAccountRequest();
-        request.setUserid(userID);
+        const request = new DeleteUsersRequest();
+        request.setUseridsList([userID]);
         request.setToken(token);
 
-        userClient.deactivateAccount(request, {}, (err, response) => {
+        userClient.deleteUsers(request, {}, (err, response) => {
             if (err) {
                 reject(err);
             } else {

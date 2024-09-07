@@ -9,6 +9,7 @@ import { PairingsPreliminaries } from "@/components/tables/data/schema";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
 import { roomsPairings } from "@/components/tables/data/data";
 import { Pairing } from "@/lib/grpc/proto/debate_management/debate_pb";
+import { useTeamSwapStore } from "@/stores/admin/debate/pairings/pairings.store";
 
 export const columns: ColumnDef<Pairing.AsObject>[] = [
   {
@@ -76,16 +77,20 @@ export const columns: ColumnDef<Pairing.AsObject>[] = [
       />
     ),
     cell: ({ row }) => {
+      const rowIndex = row.index;
+
       return (
         <div className="flex w-full h-6 items-center justifycenter-">
-          <Button
+          <EditButton rowIndex={rowIndex} />
+          {/* <Button
             type="button"
             variant={"secondary"}
             size={"icon"}
-            className=" w-full bg-transparent m-0"
+            className="w-full bg-transparent m-0"
+            onClick={() => setEditingRow(null)}
           >
-            <Icons.pencilLine className="w-4 h-4 text-primary" />
-          </Button>
+            <Icons.close className="w-4 h-4 text-primary" />
+          </Button> */}
         </div>
       );
     },
@@ -93,3 +98,24 @@ export const columns: ColumnDef<Pairing.AsObject>[] = [
     enableSorting: false,
   },
 ];
+
+const EditButton = ({ rowIndex }: { rowIndex: number }) => {
+  const { editingRow, setEditingRow } = useTeamSwapStore((state) => ({
+    editingRow: state.editingRow,
+    setEditingRow: state.setEditingRow,
+  }));
+
+  const isEditing = editingRow === rowIndex;
+
+  return (
+    <Button
+      type="button"
+      variant={"secondary"}
+      size={"icon"}
+      className=" w-full bg-transparent m-0"
+      onClick={() => setEditingRow(isEditing ? null : rowIndex)}
+    >
+      <Icons.pencilLine className="w-4 h-4 text-primary" />
+    </Button>
+  );
+}

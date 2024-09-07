@@ -3060,7 +3060,8 @@ proto.auth.LoginResponse.toObject = function(includeInstance, msg) {
     requireTwoFactor: jspb.Message.getBooleanFieldWithDefault(msg, 5, false),
     requirePasswordReset: jspb.Message.getBooleanFieldWithDefault(msg, 6, false),
     message: jspb.Message.getFieldWithDefault(msg, 7, ""),
-    status: jspb.Message.getFieldWithDefault(msg, 8, "")
+    status: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    username: jspb.Message.getFieldWithDefault(msg, 9, "")
   };
 
   if (includeInstance) {
@@ -3128,6 +3129,10 @@ proto.auth.LoginResponse.deserializeBinaryFromReader = function(msg, reader) {
     case 8:
       var value = /** @type {string} */ (reader.readString());
       msg.setStatus(value);
+      break;
+    case 9:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUsername(value);
       break;
     default:
       reader.skipField();
@@ -3211,6 +3216,13 @@ proto.auth.LoginResponse.serializeBinaryToWriter = function(message, writer) {
   if (f.length > 0) {
     writer.writeString(
       8,
+      f
+    );
+  }
+  f = message.getUsername();
+  if (f.length > 0) {
+    writer.writeString(
+      9,
       f
     );
   }
@@ -3358,6 +3370,24 @@ proto.auth.LoginResponse.prototype.getStatus = function() {
  */
 proto.auth.LoginResponse.prototype.setStatus = function(value) {
   return jspb.Message.setProto3StringField(this, 8, value);
+};
+
+
+/**
+ * optional string userName = 9;
+ * @return {string}
+ */
+proto.auth.LoginResponse.prototype.getUsername = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.auth.LoginResponse} returns this
+ */
+proto.auth.LoginResponse.prototype.setUsername = function(value) {
+  return jspb.Message.setProto3StringField(this, 9, value);
 };
 
 

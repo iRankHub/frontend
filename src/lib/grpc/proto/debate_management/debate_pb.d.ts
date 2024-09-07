@@ -9,10 +9,11 @@ export class Room extends jspb.Message {
   getRoomName(): string;
   setRoomName(value: string): Room;
 
-  getRoundStatusList(): Array<RoundStatus>;
-  setRoundStatusList(value: Array<RoundStatus>): Room;
-  clearRoundStatusList(): Room;
-  addRoundStatus(value?: RoundStatus, index?: number): RoundStatus;
+  getLocation(): string;
+  setLocation(value: string): Room;
+
+  getCapacity(): number;
+  setCapacity(value: number): Room;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Room.AsObject;
@@ -26,19 +27,17 @@ export namespace Room {
   export type AsObject = {
     roomId: number,
     roomName: string,
-    roundStatusList: Array<RoundStatus.AsObject>,
+    location: string,
+    capacity: number,
   }
 }
 
 export class RoundStatus extends jspb.Message {
-  getRoundNumber(): number;
-  setRoundNumber(value: number): RoundStatus;
+  getRound(): number;
+  setRound(value: number): RoundStatus;
 
-  getIsElimination(): boolean;
-  setIsElimination(value: boolean): RoundStatus;
-
-  getIsOccupied(): boolean;
-  setIsOccupied(value: boolean): RoundStatus;
+  getStatus(): string;
+  setStatus(value: string): RoundStatus;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): RoundStatus.AsObject;
@@ -50,21 +49,44 @@ export class RoundStatus extends jspb.Message {
 
 export namespace RoundStatus {
   export type AsObject = {
-    roundNumber: number,
-    isElimination: boolean,
-    isOccupied: boolean,
+    round: number,
+    status: string,
+  }
+}
+
+export class RoomStatus extends jspb.Message {
+  getRoomId(): number;
+  setRoomId(value: number): RoomStatus;
+
+  getRoomName(): string;
+  setRoomName(value: string): RoomStatus;
+
+  getPreliminary(): string;
+  setPreliminary(value: string): RoomStatus;
+
+  getElimination(): string;
+  setElimination(value: string): RoomStatus;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RoomStatus.AsObject;
+  static toObject(includeInstance: boolean, msg: RoomStatus): RoomStatus.AsObject;
+  static serializeBinaryToWriter(message: RoomStatus, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RoomStatus;
+  static deserializeBinaryFromReader(message: RoomStatus, reader: jspb.BinaryReader): RoomStatus;
+}
+
+export namespace RoomStatus {
+  export type AsObject = {
+    roomId: number,
+    roomName: string,
+    preliminary: string,
+    elimination: string,
   }
 }
 
 export class GetRoomsRequest extends jspb.Message {
   getTournamentId(): number;
   setTournamentId(value: number): GetRoomsRequest;
-
-  getRoundNumber(): number;
-  setRoundNumber(value: number): GetRoomsRequest;
-
-  getIsElimination(): boolean;
-  setIsElimination(value: boolean): GetRoomsRequest;
 
   getToken(): string;
   setToken(value: string): GetRoomsRequest;
@@ -80,17 +102,15 @@ export class GetRoomsRequest extends jspb.Message {
 export namespace GetRoomsRequest {
   export type AsObject = {
     tournamentId: number,
-    roundNumber: number,
-    isElimination: boolean,
     token: string,
   }
 }
 
 export class GetRoomsResponse extends jspb.Message {
-  getRoomsList(): Array<Room>;
-  setRoomsList(value: Array<Room>): GetRoomsResponse;
+  getRoomsList(): Array<RoomStatus>;
+  setRoomsList(value: Array<RoomStatus>): GetRoomsResponse;
   clearRoomsList(): GetRoomsResponse;
-  addRooms(value?: Room, index?: number): Room;
+  addRooms(value?: RoomStatus, index?: number): RoomStatus;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetRoomsResponse.AsObject;
@@ -102,13 +122,16 @@ export class GetRoomsResponse extends jspb.Message {
 
 export namespace GetRoomsResponse {
   export type AsObject = {
-    roomsList: Array<Room.AsObject>,
+    roomsList: Array<RoomStatus.AsObject>,
   }
 }
 
 export class GetRoomRequest extends jspb.Message {
   getRoomId(): number;
   setRoomId(value: number): GetRoomRequest;
+
+  getTournamentId(): number;
+  setTournamentId(value: number): GetRoomRequest;
 
   getToken(): string;
   setToken(value: string): GetRoomRequest;
@@ -124,15 +147,27 @@ export class GetRoomRequest extends jspb.Message {
 export namespace GetRoomRequest {
   export type AsObject = {
     roomId: number,
+    tournamentId: number,
     token: string,
   }
 }
 
 export class GetRoomResponse extends jspb.Message {
-  getRoom(): Room | undefined;
-  setRoom(value?: Room): GetRoomResponse;
-  hasRoom(): boolean;
-  clearRoom(): GetRoomResponse;
+  getRoomId(): number;
+  setRoomId(value: number): GetRoomResponse;
+
+  getName(): string;
+  setName(value: string): GetRoomResponse;
+
+  getPreliminaryList(): Array<RoundStatus>;
+  setPreliminaryList(value: Array<RoundStatus>): GetRoomResponse;
+  clearPreliminaryList(): GetRoomResponse;
+  addPreliminary(value?: RoundStatus, index?: number): RoundStatus;
+
+  getEliminationList(): Array<RoundStatus>;
+  setEliminationList(value: Array<RoundStatus>): GetRoomResponse;
+  clearEliminationList(): GetRoomResponse;
+  addElimination(value?: RoundStatus, index?: number): RoundStatus;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetRoomResponse.AsObject;
@@ -144,7 +179,10 @@ export class GetRoomResponse extends jspb.Message {
 
 export namespace GetRoomResponse {
   export type AsObject = {
-    room?: Room.AsObject,
+    roomId: number,
+    name: string,
+    preliminaryList: Array<RoundStatus.AsObject>,
+    eliminationList: Array<RoundStatus.AsObject>,
   }
 }
 
@@ -199,11 +237,14 @@ export class Judge extends jspb.Message {
   getName(): string;
   setName(value: string): Judge;
 
-  getEmail(): string;
-  setEmail(value: string): Judge;
+  getIdebateId(): string;
+  setIdebateId(value: string): Judge;
 
-  getIsHeadJudge(): boolean;
-  setIsHeadJudge(value: boolean): Judge;
+  getPreliminaryDebates(): number;
+  setPreliminaryDebates(value: number): Judge;
+
+  getEliminationDebates(): number;
+  setEliminationDebates(value: number): Judge;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Judge.AsObject;
@@ -217,20 +258,15 @@ export namespace Judge {
   export type AsObject = {
     judgeId: number,
     name: string,
-    email: string,
-    isHeadJudge: boolean,
+    idebateId: string,
+    preliminaryDebates: number,
+    eliminationDebates: number,
   }
 }
 
 export class GetJudgesRequest extends jspb.Message {
   getTournamentId(): number;
   setTournamentId(value: number): GetJudgesRequest;
-
-  getRoundNumber(): number;
-  setRoundNumber(value: number): GetJudgesRequest;
-
-  getIsElimination(): boolean;
-  setIsElimination(value: boolean): GetJudgesRequest;
 
   getToken(): string;
   setToken(value: string): GetJudgesRequest;
@@ -246,8 +282,6 @@ export class GetJudgesRequest extends jspb.Message {
 export namespace GetJudgesRequest {
   export type AsObject = {
     tournamentId: number,
-    roundNumber: number,
-    isElimination: boolean,
     token: string,
   }
 }
@@ -272,9 +306,52 @@ export namespace GetJudgesResponse {
   }
 }
 
+export class RoomInfo extends jspb.Message {
+  getRoomId(): number;
+  setRoomId(value: number): RoomInfo;
+
+  getRoomName(): string;
+  setRoomName(value: string): RoomInfo;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RoomInfo.AsObject;
+  static toObject(includeInstance: boolean, msg: RoomInfo): RoomInfo.AsObject;
+  static serializeBinaryToWriter(message: RoomInfo, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RoomInfo;
+  static deserializeBinaryFromReader(message: RoomInfo, reader: jspb.BinaryReader): RoomInfo;
+}
+
+export namespace RoomInfo {
+  export type AsObject = {
+    roomId: number,
+    roomName: string,
+  }
+}
+
+export class RoundInfo extends jspb.Message {
+  getRoomsMap(): jspb.Map<number, RoomInfo>;
+  clearRoomsMap(): RoundInfo;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RoundInfo.AsObject;
+  static toObject(includeInstance: boolean, msg: RoundInfo): RoundInfo.AsObject;
+  static serializeBinaryToWriter(message: RoundInfo, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RoundInfo;
+  static deserializeBinaryFromReader(message: RoundInfo, reader: jspb.BinaryReader): RoundInfo;
+}
+
+export namespace RoundInfo {
+  export type AsObject = {
+    roomsMap: Array<[number, RoomInfo.AsObject]>,
+  }
+}
+
 export class GetJudgeRequest extends jspb.Message {
   getJudgeId(): number;
   setJudgeId(value: number): GetJudgeRequest;
+
+  getTournamentId(): number;
+  setTournamentId(value: number): GetJudgeRequest;
 
   getToken(): string;
   setToken(value: string): GetJudgeRequest;
@@ -290,15 +367,26 @@ export class GetJudgeRequest extends jspb.Message {
 export namespace GetJudgeRequest {
   export type AsObject = {
     judgeId: number,
+    tournamentId: number,
     token: string,
   }
 }
 
 export class GetJudgeResponse extends jspb.Message {
-  getJudge(): Judge | undefined;
-  setJudge(value?: Judge): GetJudgeResponse;
-  hasJudge(): boolean;
-  clearJudge(): GetJudgeResponse;
+  getJudgeId(): number;
+  setJudgeId(value: number): GetJudgeResponse;
+
+  getName(): string;
+  setName(value: string): GetJudgeResponse;
+
+  getIdebateId(): string;
+  setIdebateId(value: string): GetJudgeResponse;
+
+  getPreliminaryMap(): jspb.Map<number, RoomInfo>;
+  clearPreliminaryMap(): GetJudgeResponse;
+
+  getEliminationMap(): jspb.Map<number, RoomInfo>;
+  clearEliminationMap(): GetJudgeResponse;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetJudgeResponse.AsObject;
@@ -310,7 +398,63 @@ export class GetJudgeResponse extends jspb.Message {
 
 export namespace GetJudgeResponse {
   export type AsObject = {
-    judge?: Judge.AsObject,
+    judgeId: number,
+    name: string,
+    idebateId: string,
+    preliminaryMap: Array<[number, RoomInfo.AsObject]>,
+    eliminationMap: Array<[number, RoomInfo.AsObject]>,
+  }
+}
+
+export class UpdateJudgeRequest extends jspb.Message {
+  getJudgeId(): number;
+  setJudgeId(value: number): UpdateJudgeRequest;
+
+  getTournamentId(): number;
+  setTournamentId(value: number): UpdateJudgeRequest;
+
+  getRoomAssignmentsMap(): jspb.Map<number, number>;
+  clearRoomAssignmentsMap(): UpdateJudgeRequest;
+
+  getToken(): string;
+  setToken(value: string): UpdateJudgeRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateJudgeRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateJudgeRequest): UpdateJudgeRequest.AsObject;
+  static serializeBinaryToWriter(message: UpdateJudgeRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateJudgeRequest;
+  static deserializeBinaryFromReader(message: UpdateJudgeRequest, reader: jspb.BinaryReader): UpdateJudgeRequest;
+}
+
+export namespace UpdateJudgeRequest {
+  export type AsObject = {
+    judgeId: number,
+    tournamentId: number,
+    roomAssignmentsMap: Array<[number, number]>,
+    token: string,
+  }
+}
+
+export class UpdateJudgeResponse extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): UpdateJudgeResponse;
+
+  getMessage(): string;
+  setMessage(value: string): UpdateJudgeResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateJudgeResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateJudgeResponse): UpdateJudgeResponse.AsObject;
+  static serializeBinaryToWriter(message: UpdateJudgeResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateJudgeResponse;
+  static deserializeBinaryFromReader(message: UpdateJudgeResponse, reader: jspb.BinaryReader): UpdateJudgeResponse;
+}
+
+export namespace UpdateJudgeResponse {
+  export type AsObject = {
+    success: boolean,
+    message: string,
   }
 }
 
@@ -340,6 +484,9 @@ export class Pairing extends jspb.Message {
   hasTeam2(): boolean;
   clearTeam2(): Pairing;
 
+  getHeadJudgeName(): string;
+  setHeadJudgeName(value: string): Pairing;
+
   getJudgesList(): Array<Judge>;
   setJudgesList(value: Array<Judge>): Pairing;
   clearJudgesList(): Pairing;
@@ -362,6 +509,7 @@ export namespace Pairing {
     roomName: string,
     team1?: Team.AsObject,
     team2?: Team.AsObject,
+    headJudgeName: string,
     judgesList: Array<Judge.AsObject>,
   }
 }
@@ -378,11 +526,19 @@ export class Team extends jspb.Message {
   clearSpeakersList(): Team;
   addSpeakers(value?: Speaker, index?: number): Speaker;
 
+  getSpeakerNamesList(): Array<string>;
+  setSpeakerNamesList(value: Array<string>): Team;
+  clearSpeakerNamesList(): Team;
+  addSpeakerNames(value: string, index?: number): Team;
+
   getTotalPoints(): number;
   setTotalPoints(value: number): Team;
 
   getLeagueName(): string;
   setLeagueName(value: string): Team;
+
+  getFeedback(): string;
+  setFeedback(value: string): Team;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Team.AsObject;
@@ -397,8 +553,10 @@ export namespace Team {
     teamId: number,
     name: string,
     speakersList: Array<Speaker.AsObject>,
+    speakerNamesList: Array<string>,
     totalPoints: number,
     leagueName: string,
+    feedback: string,
   }
 }
 
@@ -421,6 +579,12 @@ export class Speaker extends jspb.Message {
   getFeedback(): string;
   setFeedback(value: string): Speaker;
 
+  getTeamId(): number;
+  setTeamId(value: number): Speaker;
+
+  getTeamName(): string;
+  setTeamName(value: string): Speaker;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Speaker.AsObject;
   static toObject(includeInstance: boolean, msg: Speaker): Speaker.AsObject;
@@ -437,6 +601,8 @@ export namespace Speaker {
     rank: number,
     points: number,
     feedback: string,
+    teamId: number,
+    teamName: string,
   }
 }
 
@@ -532,47 +698,47 @@ export namespace GetPairingResponse {
   }
 }
 
-export class UpdatePairingRequest extends jspb.Message {
-  getPairing(): Pairing | undefined;
-  setPairing(value?: Pairing): UpdatePairingRequest;
-  hasPairing(): boolean;
-  clearPairing(): UpdatePairingRequest;
+export class UpdatePairingsRequest extends jspb.Message {
+  getPairingsList(): Array<Pairing>;
+  setPairingsList(value: Array<Pairing>): UpdatePairingsRequest;
+  clearPairingsList(): UpdatePairingsRequest;
+  addPairings(value?: Pairing, index?: number): Pairing;
 
   getToken(): string;
-  setToken(value: string): UpdatePairingRequest;
+  setToken(value: string): UpdatePairingsRequest;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): UpdatePairingRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: UpdatePairingRequest): UpdatePairingRequest.AsObject;
-  static serializeBinaryToWriter(message: UpdatePairingRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): UpdatePairingRequest;
-  static deserializeBinaryFromReader(message: UpdatePairingRequest, reader: jspb.BinaryReader): UpdatePairingRequest;
+  toObject(includeInstance?: boolean): UpdatePairingsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdatePairingsRequest): UpdatePairingsRequest.AsObject;
+  static serializeBinaryToWriter(message: UpdatePairingsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdatePairingsRequest;
+  static deserializeBinaryFromReader(message: UpdatePairingsRequest, reader: jspb.BinaryReader): UpdatePairingsRequest;
 }
 
-export namespace UpdatePairingRequest {
+export namespace UpdatePairingsRequest {
   export type AsObject = {
-    pairing?: Pairing.AsObject,
+    pairingsList: Array<Pairing.AsObject>,
     token: string,
   }
 }
 
-export class UpdatePairingResponse extends jspb.Message {
-  getPairing(): Pairing | undefined;
-  setPairing(value?: Pairing): UpdatePairingResponse;
-  hasPairing(): boolean;
-  clearPairing(): UpdatePairingResponse;
+export class UpdatePairingsResponse extends jspb.Message {
+  getPairingsList(): Array<Pairing>;
+  setPairingsList(value: Array<Pairing>): UpdatePairingsResponse;
+  clearPairingsList(): UpdatePairingsResponse;
+  addPairings(value?: Pairing, index?: number): Pairing;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): UpdatePairingResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: UpdatePairingResponse): UpdatePairingResponse.AsObject;
-  static serializeBinaryToWriter(message: UpdatePairingResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): UpdatePairingResponse;
-  static deserializeBinaryFromReader(message: UpdatePairingResponse, reader: jspb.BinaryReader): UpdatePairingResponse;
+  toObject(includeInstance?: boolean): UpdatePairingsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdatePairingsResponse): UpdatePairingsResponse.AsObject;
+  static serializeBinaryToWriter(message: UpdatePairingsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdatePairingsResponse;
+  static deserializeBinaryFromReader(message: UpdatePairingsResponse, reader: jspb.BinaryReader): UpdatePairingsResponse;
 }
 
-export namespace UpdatePairingResponse {
+export namespace UpdatePairingsResponse {
   export type AsObject = {
-    pairing?: Pairing.AsObject,
+    pairingsList: Array<Pairing.AsObject>,
   }
 }
 
@@ -613,6 +779,15 @@ export class Ballot extends jspb.Message {
   getVerdict(): string;
   setVerdict(value: string): Ballot;
 
+  getLastUpdatedBy(): number;
+  setLastUpdatedBy(value: number): Ballot;
+
+  getLastUpdatedAt(): string;
+  setLastUpdatedAt(value: string): Ballot;
+
+  getHeadJudgeSubmitted(): boolean;
+  setHeadJudgeSubmitted(value: boolean): Ballot;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Ballot.AsObject;
   static toObject(includeInstance: boolean, msg: Ballot): Ballot.AsObject;
@@ -633,6 +808,9 @@ export namespace Ballot {
     team2?: Team.AsObject,
     recordingStatus: string,
     verdict: string,
+    lastUpdatedBy: number,
+    lastUpdatedAt: string,
+    headJudgeSubmitted: boolean,
   }
 }
 
@@ -776,9 +954,6 @@ export class GeneratePairingsRequest extends jspb.Message {
   getTournamentId(): number;
   setTournamentId(value: number): GeneratePairingsRequest;
 
-  getRoundNumber(): number;
-  setRoundNumber(value: number): GeneratePairingsRequest;
-
   getIsEliminationRound(): boolean;
   setIsEliminationRound(value: boolean): GeneratePairingsRequest;
 
@@ -796,7 +971,6 @@ export class GeneratePairingsRequest extends jspb.Message {
 export namespace GeneratePairingsRequest {
   export type AsObject = {
     tournamentId: number,
-    roundNumber: number,
     isEliminationRound: boolean,
     token: string,
   }

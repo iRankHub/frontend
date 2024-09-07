@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { useToast } from "@/components/ui/use-toast";
-import { deactivateUser } from "@/core/users/users";
+import { deleteUser } from "@/core/users/users";
 import { DeactivateUser } from "@/types/user_management/users";
 import { ToastAction } from "@/components/ui/toast";
 import { useUsersStore } from "@/stores/admin/users/users.store";
@@ -38,11 +38,10 @@ export const DeleteUser = ({ userid }: DeleteUserProps) => {
     };
 
     setDeleteLoading(true);
-    await deactivateUser({
+    await deleteUser({
       ...options,
     })
       .then((res) => {
-        console.log(res);
         if (res.success) {
           setOpen(false);
           deleteUserInStore(Number(userid));
@@ -78,7 +77,7 @@ export const DeleteUser = ({ userid }: DeleteUserProps) => {
       });
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <Button
           type="button"

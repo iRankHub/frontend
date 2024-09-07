@@ -103,7 +103,7 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
         toast({
           variant: "success",
           title: "Success",
-          description: res.message,
+          description: "Volunteer account created successfully",
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close

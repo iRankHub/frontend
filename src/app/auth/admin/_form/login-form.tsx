@@ -66,6 +66,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
           const role = Roles.ADMIN;
           const user: AuthStateUser = {
             userId: res.userid,
+            name: "",
             token: res.token,
             status: "idle",
             requiredPasswordReset: res.requirePasswordReset,

@@ -84,7 +84,11 @@ function Page({ params }: Iparms) {
         </Breadcrumb>
       </div>
       <TournamentMenuWrapper>
-        <Judges />
+        <Judges
+          tournamentId={Number(tournament?.tournamentId)}
+          totalRounds={tournament?.numberOfPreliminaryRounds || 0}
+          is_elimination={false}
+        />
       </TournamentMenuWrapper>
     </ContentLayout>
   );

@@ -37,9 +37,9 @@ function UserCategoryOverview({ usersList }: Props) {
                 className="m-1 text-primary"
               />
             </div>
-            <span className="text-sm text-[#3A3541]">Admins</span>
+            <span className="text-sm text-[#3A3541] dark:text-foreground">Admins</span>
           </div>
-          <span className="text-sm text-[#3A3541]">
+          <span className="text-sm text-[#3A3541] dark:text-foreground">
             {adminUsersCount.length}
           </span>
         </div>
@@ -52,9 +52,9 @@ function UserCategoryOverview({ usersList }: Props) {
                 className="m-1 text-primary"
               />
             </div>
-            <span className="text-sm text-[#3A3541]">Students</span>
+            <span className="text-sm text-[#3A3541] dark:text-foreground">Students</span>
           </div>
-          <span className="text-sm text-[#3A3541]">
+          <span className="text-sm text-[#3A3541] dark:text-foreground">
             {studentUsersCount.length}
           </span>
         </div>
@@ -63,9 +63,9 @@ function UserCategoryOverview({ usersList }: Props) {
             <div className="bg-muted rounded">
               <School width={20} height={20} className="m-1 text-primary" />
             </div>
-            <span className="text-sm text-[#3A3541]">Schools</span>
+            <span className="text-sm text-[#3A3541] dark:text-foreground">Schools</span>
           </div>
-          <span className="text-sm text-[#3A3541]">
+          <span className="text-sm text-[#3A3541] dark:text-foreground">
             {schoolUsersCount.length}
           </span>
         </div>
@@ -78,9 +78,9 @@ function UserCategoryOverview({ usersList }: Props) {
                 className="m-1 text-primary"
               />
             </div>
-            <span className="text-sm text-[#3A3541]">Volunteers</span>
+            <span className="text-sm text-[#3A3541] dark:text-foreground">Volunteers</span>
           </div>
-          <span className="text-sm text-[#3A3541]">
+          <span className="text-sm text-[#3A3541] dark:text-foreground">
             {volunteerUsersCount.length}
           </span>
         </div>

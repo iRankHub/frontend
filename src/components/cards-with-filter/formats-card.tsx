@@ -72,7 +72,34 @@ const FormatCard = ({ row, getColumnValue }: FormatCardProps) => {
 
   const updateFormat = async (data: TournamentFormatInput) => {
     if (!user) return;
+    if (!isNaN(Number(data.format_name))) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Format name can't only be numbers",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
+      });
+      return;
+    }
 
+    // check if speakers per team is a number
+    if (isNaN(Number(data.speakers_per_team))) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Speakers per team must be a number",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
+      });
+      return;
+    }
     const options = {
       format_id: Number(getColumnValue(row, "formatId")),
       format_name: data.format_name,
@@ -156,10 +183,10 @@ const FormatCard = ({ row, getColumnValue }: FormatCardProps) => {
 
   return (
     <Card key={row.id} className="p-3 hover:shadow-lg">
-      <CardTitle className="text-primary font-bold text-lg mb-2">
+      <CardTitle className="text-primary font-bold text-lg mb-2 truncate">
         {getColumnValue(row, "formatName")}
       </CardTitle>
-      <CardDescription className="text-sm text-muted-text mb-3 dark:text-foreground">
+      <CardDescription className="text-sm text-muted-text mb-3 dark:text-foreground line-clamp-2">
         {getColumnValue(row, "description")}
       </CardDescription>
       <CardFooter className="flex items-center gap-4 justify-between p-0 h-auto">
@@ -182,8 +209,8 @@ const FormatCard = ({ row, getColumnValue }: FormatCardProps) => {
           </SheetTrigger>
           <SidePanel>
             <Panelheader>
-              <div className="flex items-center gap-1">
-                <h3 className="text-sm font-bold">
+              <div className="flex items-center gap-1 truncate">
+                <h3 className="text-sm font-bold truncate max-w-48">
                   {getColumnValue(row, "formatName")}
                 </h3>
                 {!isEdit && (
@@ -325,6 +352,9 @@ const FormatCard = ({ row, getColumnValue }: FormatCardProps) => {
                         <Input
                           placeholder="3 speakers"
                           {...field}
+                          list="speakers"
+                          min="1"
+                          max="10"
                           disabled={!isEdit}
                           className="disabled:opacity-100"
                         />

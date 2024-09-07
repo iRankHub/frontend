@@ -48,7 +48,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
 
   async function onSubmit(data: Inputs) {
     setIsPending(true);
-    console.log("hello");
+
     await schoolLogin({ emailOrId: data.id, password: data.password })
       .then((res) => {
         if (res.success) {
@@ -76,14 +76,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
           //     ),
           //   });
 
-          //   const role = Roles.SCHOOL;
-          //   const user: AuthStateUser = {
-          //     userId: res.userid,
-          //     token: res.token,
-          //     status: "idle",
-          //     requiredPasswordReset: res.requirePasswordReset,
-          //     requireTwoFactor: res.requireTwoFactor,
-          //   };
+            // const role = Roles.SCHOOL;
+            // const user: AuthStateUser = {
+            //   userId: res.userid,
+            //   name: res.name,
+            //   token: res.token,
+            //   status: "idle",
+            //   requiredPasswordReset: res.requirePasswordReset,
+            //   requireTwoFactor: res.requireTwoFactor,
+            // };
 
           //   if (res.requireTwoFactor) {
           //     router.push("/auth/2fa");

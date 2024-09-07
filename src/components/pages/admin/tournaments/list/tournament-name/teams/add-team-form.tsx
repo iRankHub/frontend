@@ -32,8 +32,6 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { useUserStore } from "@/stores/auth/auth.store";
-import { GetSchoolsType } from "@/types/user_management/schools";
-import { getAllUsers, getStudents } from "@/core/users/users";
 import { Student } from "@/lib/grpc/proto/user_management/users_pb";
 import { CreateTeamType } from "@/types/tournaments/teams";
 import { createTournamentTeam } from "@/core/tournament/teams";
@@ -43,16 +41,22 @@ import { ToastAction } from "@/components/ui/toast";
 
 type TeamInput = z.infer<typeof createTeamSchema>;
 
-function AddTeamForm() {
+interface AddTeamFormProps {
+  availableStudents: Student.AsObject[];
+  setAllStudents: React.Dispatch<React.SetStateAction<Student.AsObject[]>>;
+}
+
+function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
   const params = useParams<{ name: string }>();
   const { user } = useUserStore((state) => state);
-  const {addTeam} = useTeamsStore((state) => state);
-  const [users, setUsers] = useState<Student.AsObject[]>([]);
+  const { addTeam } = useTeamsStore((state) => state);
   const [loading, setLoading] = useState<boolean>(false);
-  const {toast} = useToast();
+  const { toast } = useToast();
+
   const form = useForm<TeamInput>({
     resolver: zodResolver(createTeamSchema),
   });
+
   const [selectedUsers, setSelectedUsers] = useState<{
     speaker_1: string | null;
     speaker_2: string | null;
@@ -65,6 +69,15 @@ function AddTeamForm() {
 
   const createTeam = async (data: TeamInput) => {
     if (!user) return;
+
+    // check if team name is not only numbers
+    if (!/[^0-9]/.test(data.name)) {
+      form.setError("name", {
+        type: "manual",
+        message: "Team name should contain at least one letter.",
+      });
+      return;
+    }
 
     const options: CreateTeamType = {
       name: data.name,
@@ -79,58 +92,56 @@ function AddTeamForm() {
 
     setLoading(true);
     await createTournamentTeam(options)
-        .then((res) => {
-            form.reset();
-            setSelectedUsers({
-                speaker_1: null,
-                speaker_2: null,
-                speaker_3: null,
-            });
-            addTeam(res);
-            toast({
-                title: "Team created successfully",
-                description: "Team has been created successfully.",
-                variant: "success",
-                action: (
-                  <ToastAction altText="Close" className="bg-primary text-white">
-                    Close
-                  </ToastAction>
-                ),
-            });
-        })
-        .catch((err) => {
-            console.error(err.message);
-            toast({
-                title: "Error",
-                description: err.message,
-                variant: "destructive",
-                action: (
-                  <ToastAction altText="Close" className="bg-primary text-white">
-                    Close
-                  </ToastAction>
-                ),
-            });
-        })
-        .finally(() => {
-            setLoading(false);
-        });
-  };
-
-  useEffect(() => {
-    if (!user) return;
-    const options: GetSchoolsType = {
-      pageSize: 1000,
-      page: 1,
-      token: user.token,
-    };
-    getStudents({ ...options })
       .then((res) => {
-        setUsers(res.studentsList);
+        form.reset();
+        setSelectedUsers({
+          speaker_1: null,
+          speaker_2: null,
+          speaker_3: null,
+        });
+
+        // Update the teams in the store
+        addTeam(res);
+
+        // Remove the selected users from the availableStudents list
+        const usedStudentIds = [
+          Number(data.speaker_1),
+          Number(data.speaker_2),
+          Number(data.speaker_3),
+        ];
+        const updatedStudents = availableStudents.filter(
+          (student) => !usedStudentIds.includes(student.studentid)
+        );
+        setAllStudents(updatedStudents);
+
+        toast({
+          title: "Team created successfully",
+          description: "Team has been created successfully.",
+          variant: "success",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
       })
       .catch((err) => {
         console.error(err.message);
+        toast({
+          title: "Error",
+          description: err.message,
+          variant: "destructive",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+      })
+      .finally(() => {
+        setLoading(false);
       });
-  }, [user]);
+  };
 
   const handleUserSelect = (
     userId: string,
@@ -168,7 +179,9 @@ function AddTeamForm() {
       name={fieldName}
       render={({ field }) => (
         <FormItem className="flex flex-col">
-          <FormLabel className="font-medium text-darkBlue dark:text-foreground">{label}</FormLabel>
+          <FormLabel className="font-medium text-darkBlue dark:text-foreground">
+            {label}
+          </FormLabel>
           <Popover modal={true}>
             <PopoverTrigger asChild>
               <FormControl>
@@ -181,8 +194,13 @@ function AddTeamForm() {
                   )}
                 >
                   {field.value
-                    ? users.find((user) => String(user.studentid) === field.value)
-                        ?.firstname + " " + users.find((user) => String(user.studentid) === field.value)?.lastname
+                    ? availableStudents.find(
+                        (user) => String(user.studentid) === field.value
+                      )?.firstname +
+                      " " +
+                      availableStudents.find(
+                        (user) => String(user.studentid) === field.value
+                      )?.lastname
                     : "Select user"}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -194,7 +212,7 @@ function AddTeamForm() {
                 <CommandList>
                   <CommandEmpty>No speaker found.</CommandEmpty>
                   <CommandGroup>
-                    {users.map((user) => (
+                    {availableStudents.map((user) => (
                       <CommandItem
                         value={String(user.studentid)}
                         key={String(user.studentid)}
@@ -254,7 +272,9 @@ function AddTeamForm() {
           )}
         />
         <div className="w-full mb-5">
-          <h3 className="text-sm text-darkBlue dark:text-foreground font-medium my-3">Team Members</h3>
+          <h3 className="text-sm text-darkBlue dark:text-foreground font-medium my-3">
+            Team Members
+          </h3>
           <div className="grid grid-cols-2 gap-2">
             {renderSpeakerField("speaker_1", "1st Speaker")}
             {renderSpeakerField("speaker_2", "2nd Speaker")}

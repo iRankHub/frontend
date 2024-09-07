@@ -58,7 +58,9 @@ export const columns: ColumnDef<UserSummary.AsObject>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="IDebate ID" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("idebateid")}</div>,
+    cell: ({ row }) => (
+      <div className="w-[80px]">{row.getValue("idebateid")}</div>
+    ),
     enableSorting: false,
     enableHiding: false,
   },
@@ -115,30 +117,34 @@ export const columns: ColumnDef<UserSummary.AsObject>[] = [
       const status = statuses.find(
         (status) => status.value === row.getValue("status")
       );
-
       if (!status) {
         return null;
       }
 
-      let variant;
+      let bgColor, textColor;
       switch (status.label) {
         case "Approved":
-          variant = "green-200 text-success";
+          bgColor = "bg-green-200";
+          textColor = "text-success";
           break;
         case "Rejected":
-          variant = "red-200 text-destructive";
+          bgColor = "bg-red-200";
+          textColor = "text-destructive";
           break;
         case "Pending":
-          variant = "slate-400 text-background";
+          bgColor = "bg-slate-400";
+          textColor = "text-background";
           break;
         default:
-          variant = "secondary";
+          bgColor = "bg-secondary";
+          textColor = "text-secondary";
       }
+
       return (
         <div className="w-full pr-5 text-center">
           <Badge
             variant="default"
-            className={`bg-${variant} hover:bg-${variant}`}
+            className={`${bgColor} ${textColor} hover:${bgColor}`}
           >
             {status.label}
           </Badge>
@@ -203,7 +209,15 @@ export const columns: ColumnDef<UserSummary.AsObject>[] = [
   },
 ];
 
-const Options = ({ userid, status, user }: { userid: number; status: string, user: UserSummary.AsObject }) => {
+const Options = ({
+  userid,
+  status,
+  user,
+}: {
+  userid: number;
+  status: string;
+  user: UserSummary.AsObject;
+}) => {
   return (
     <div className={cn("w-full text-end", status !== "pending" && "pr-5")}>
       <ViewUser user={user} />

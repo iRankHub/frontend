@@ -13,6 +13,7 @@ import {
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
+import { usePathname } from "next/navigation";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -21,11 +22,44 @@ interface DataTablePaginationProps<TData> {
 export function DataTablePagination<TData>({
   table,
 }: DataTablePaginationProps<TData>) {
+  const pathname = usePathname();
+  const lathPath = pathname.split("/").pop();
+
+  const handleDisplaySelectedRows = () => {
+    // this function will be used to tell if this page needs to show the selected rows
+    switch (lathPath) {
+      case "preliminaries":
+        return false;
+      case "elimination":
+        return false;
+      case "teams":
+        return false;
+      case "rooms":
+        return false;
+      case "judges":
+        return false;
+      case "speakers":
+        return false;
+      case "schools":
+        return false;
+      case "students":
+        return false;
+      case "volunteers":
+        return false;
+      default:
+        return true;
+    }
+  };
+
   return (
     <div className="flex items-center justify-between px-2">
       <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
+        {handleDisplaySelectedRows() && (
+          <>
+            {table.getFilteredSelectedRowModel().rows.length} of{" "}
+            {table.getFilteredRowModel().rows.length} row(s) selected.
+          </>
+        )}
       </div>
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">

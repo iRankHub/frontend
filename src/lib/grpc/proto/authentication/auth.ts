@@ -1569,6 +1569,7 @@ export namespace auth {
             require_password_reset?: boolean;
             message?: string;
             status?: string;
+            userName?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -1596,6 +1597,9 @@ export namespace auth {
                 }
                 if ("status" in data && data.status != undefined) {
                     this.status = data.status;
+                }
+                if ("userName" in data && data.userName != undefined) {
+                    this.userName = data.userName;
                 }
             }
         }
@@ -1647,6 +1651,12 @@ export namespace auth {
         set status(value: string) {
             pb_1.Message.setField(this, 8, value);
         }
+        get userName() {
+            return pb_1.Message.getFieldWithDefault(this, 9, "") as string;
+        }
+        set userName(value: string) {
+            pb_1.Message.setField(this, 9, value);
+        }
         static fromObject(data: {
             success?: boolean;
             token?: string;
@@ -1656,6 +1666,7 @@ export namespace auth {
             require_password_reset?: boolean;
             message?: string;
             status?: string;
+            userName?: string;
         }): LoginResponse {
             const message = new LoginResponse({});
             if (data.success != null) {
@@ -1682,6 +1693,9 @@ export namespace auth {
             if (data.status != null) {
                 message.status = data.status;
             }
+            if (data.userName != null) {
+                message.userName = data.userName;
+            }
             return message;
         }
         toObject() {
@@ -1694,6 +1708,7 @@ export namespace auth {
                 require_password_reset?: boolean;
                 message?: string;
                 status?: string;
+                userName?: string;
             } = {};
             if (this.success != null) {
                 data.success = this.success;
@@ -1719,6 +1734,9 @@ export namespace auth {
             if (this.status != null) {
                 data.status = this.status;
             }
+            if (this.userName != null) {
+                data.userName = this.userName;
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -1741,6 +1759,8 @@ export namespace auth {
                 writer.writeString(7, this.message);
             if (this.status.length)
                 writer.writeString(8, this.status);
+            if (this.userName.length)
+                writer.writeString(9, this.userName);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1773,6 +1793,9 @@ export namespace auth {
                         break;
                     case 8:
                         message.status = reader.readString();
+                        break;
+                    case 9:
+                        message.userName = reader.readString();
                         break;
                     default: reader.skipField();
                 }

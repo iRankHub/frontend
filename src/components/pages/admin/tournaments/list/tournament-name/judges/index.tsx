@@ -1,19 +1,46 @@
-import { Icons } from "@/components/icons";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+'use client'
 import React from "react";
 import { columns } from "./columns";
-import { judgesTasks } from "@/components/tables/data/tasks";
 import { DataTable } from "@/components/tables/data-table";
 import { DataTableToolbar } from "./data-table-toolbar";
+import { Judge } from "@/lib/grpc/proto/debate_management/debate_pb";
+import { useUserStore } from "@/stores/auth/auth.store";
+import { getTournamentJudges } from "@/core/debates/pairings";
+import { GetTournamentJudgesProps } from "@/types/pairings";
 
-type Props = {};
+type JudgesTableProps = {
+  tournamentId: number;
+  totalRounds: number;
+  is_elimination: boolean;
+};
 
-function Judges({}: Props) {
+function Judges({
+  tournamentId,
+  is_elimination,
+}: JudgesTableProps) {
+  const [judges, setJudges] = React.useState<Judge.AsObject[]>([]);
+  const { user } = useUserStore((state) => state);
+
+  React.useEffect(() => {
+    if (!user) return;
+    const options: GetTournamentJudgesProps = {
+      is_elimination,
+      round_number: 1,
+      token: user.token,
+      tournament_id: tournamentId,
+    };
+    getTournamentJudges(options)
+      .then((res) => {
+        setJudges(res);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, [tournamentId, user, is_elimination]);
   return (
     <div className="w-full rounded-md overflow-hidden">
       <DataTable
-        data={judgesTasks}
+        data={judges}
         columns={columns}
         DataTableToolbar={DataTableToolbar}
       />

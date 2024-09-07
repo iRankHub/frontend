@@ -254,6 +254,49 @@ export class DebateServiceClient {
     this.methodDescriptorGetJudge);
   }
 
+  methodDescriptorUpdateJudge = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/UpdateJudge',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.UpdateJudgeRequest,
+    debate_management_debate_pb.UpdateJudgeResponse,
+    (request: debate_management_debate_pb.UpdateJudgeRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.UpdateJudgeResponse.deserializeBinary
+  );
+
+  updateJudge(
+    request: debate_management_debate_pb.UpdateJudgeRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.UpdateJudgeResponse>;
+
+  updateJudge(
+    request: debate_management_debate_pb.UpdateJudgeRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.UpdateJudgeResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.UpdateJudgeResponse>;
+
+  updateJudge(
+    request: debate_management_debate_pb.UpdateJudgeRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.UpdateJudgeResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/UpdateJudge',
+        request,
+        metadata || {},
+        this.methodDescriptorUpdateJudge,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/UpdateJudge',
+    request,
+    metadata || {},
+    this.methodDescriptorUpdateJudge);
+  }
+
   methodDescriptorGetPairings = new grpcWeb.MethodDescriptor(
     '/debate_management.DebateService/GetPairings',
     grpcWeb.MethodType.UNARY,
@@ -340,47 +383,47 @@ export class DebateServiceClient {
     this.methodDescriptorGetPairing);
   }
 
-  methodDescriptorUpdatePairing = new grpcWeb.MethodDescriptor(
-    '/debate_management.DebateService/UpdatePairing',
+  methodDescriptorUpdatePairings = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/UpdatePairings',
     grpcWeb.MethodType.UNARY,
-    debate_management_debate_pb.UpdatePairingRequest,
-    debate_management_debate_pb.UpdatePairingResponse,
-    (request: debate_management_debate_pb.UpdatePairingRequest) => {
+    debate_management_debate_pb.UpdatePairingsRequest,
+    debate_management_debate_pb.UpdatePairingsResponse,
+    (request: debate_management_debate_pb.UpdatePairingsRequest) => {
       return request.serializeBinary();
     },
-    debate_management_debate_pb.UpdatePairingResponse.deserializeBinary
+    debate_management_debate_pb.UpdatePairingsResponse.deserializeBinary
   );
 
-  updatePairing(
-    request: debate_management_debate_pb.UpdatePairingRequest,
-    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.UpdatePairingResponse>;
+  updatePairings(
+    request: debate_management_debate_pb.UpdatePairingsRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.UpdatePairingsResponse>;
 
-  updatePairing(
-    request: debate_management_debate_pb.UpdatePairingRequest,
+  updatePairings(
+    request: debate_management_debate_pb.UpdatePairingsRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.RpcError,
-               response: debate_management_debate_pb.UpdatePairingResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.UpdatePairingResponse>;
+               response: debate_management_debate_pb.UpdatePairingsResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.UpdatePairingsResponse>;
 
-  updatePairing(
-    request: debate_management_debate_pb.UpdatePairingRequest,
+  updatePairings(
+    request: debate_management_debate_pb.UpdatePairingsRequest,
     metadata?: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.RpcError,
-               response: debate_management_debate_pb.UpdatePairingResponse) => void) {
+               response: debate_management_debate_pb.UpdatePairingsResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/debate_management.DebateService/UpdatePairing',
+          '/debate_management.DebateService/UpdatePairings',
         request,
         metadata || {},
-        this.methodDescriptorUpdatePairing,
+        this.methodDescriptorUpdatePairings,
         callback);
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/debate_management.DebateService/UpdatePairing',
+      '/debate_management.DebateService/UpdatePairings',
     request,
     metadata || {},
-    this.methodDescriptorUpdatePairing);
+    this.methodDescriptorUpdatePairings);
   }
 
   methodDescriptorGetBallots = new grpcWeb.MethodDescriptor(

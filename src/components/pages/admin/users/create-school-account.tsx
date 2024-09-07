@@ -66,22 +66,6 @@ function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
   async function onSubmit(data: Inputs) {
     setIsPending(true);
 
-    // {
-    //   "firstName": "Jane",
-    //   "lastName": "Smith",
-    //   "address": "KK 123 St",
-    //   "email": "jane.smith@example.com",
-    //   "userRole": "school",
-    //   "schoolName": "Springfield High",
-    //   "country": "United States of America",
-    //   "province": "Illinois",
-    //   "district": "Springfield",
-    //   "gender": "female",
-    //   "nationalID":"1232434234",
-    //   "contactEmail": "contact@springfieldhigh.edu",
-    //   "schoolType": "Public"
-    // },
-
     await signUp({
       firstName: "emma",
       lastName: "watson",
@@ -103,7 +87,7 @@ function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
         toast({
           variant: "success",
           title: "Success",
-          description: res.message,
+          description: "School account created successfully",
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close

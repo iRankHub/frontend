@@ -23,7 +23,7 @@ function SystemMonitor() {
           <div className="flex-1 flex items-center justify-between gap-5 px-5">
             <h2 className="text-foreground capitalize">Daily System Check</h2>
             <div className="block">
-              <p className="text-[#23235F]">100% complete</p>
+              <p className="text-[#23235F] dark:text-foreground">100% complete</p>
               <Progress value={100} className="h-1 mt-2" />
             </div>
           </div>
@@ -45,7 +45,7 @@ function SystemMonitor() {
           <div className="flex-1 flex items-center justify-between gap-5 px-5">
             <h2 className="text-foreground capitalize">Daily System Check</h2>
             <div className="block">
-              <p className="text-[#23235F]">24% complete</p>
+              <p className="text-[#23235F] dark:text-foreground">24% complete</p>
               <Progress value={33} className="h-1 mt-2" />
             </div>
           </div>

@@ -39,7 +39,7 @@ import {
 } from "../ui/command";
 import { cn } from "@/lib/utils";
 import { Pairing } from "@/lib/grpc/proto/debate_management/debate_pb";
-import { useTeamSwapStore } from "@/stores/admin/tournaments/pairings/pairings.store";
+import { useTeamSwapStore } from "@/stores/admin/debate/pairings/pairings.store";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -54,7 +54,6 @@ export function DataTable<TData, TValue>({
   data,
   DataTableToolbar,
 }: DataTableProps<TData, TValue>) {
-  const [open, setOpen] = React.useState(false);
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -64,32 +63,44 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const {
-    tableData,
+    originalData,
     swapTeams,
-    changedField,
-    affectedField,
-    setTableData,
-    selectedTeam,
-    setSelectedTeam,
-    resetSwapState,
+    swapsByRound,
+    currentRound,
+    setOriginalData,
+    editingRow,
   } = useTeamSwapStore((state) => ({
-    tableData: state.tableData,
+    originalData: state.originalData,
     swapTeams: state.swapTeams,
-    changedField: state.changedField,
-    affectedField: state.affectedField,
-    setTableData: state.setTableData,
-    selectedTeam: state.selectedTeam,
-    setSelectedTeam: state.setSelectedTeam,
-    resetSwapState: state.resetSwapState,
+    swapsByRound: state.swapsByRound,
+    currentRound: state.currentRound,
+    setOriginalData: state.setOriginalData,
+    editingRow: state.editingRow,
   }));
 
   React.useEffect(() => {
-    setTableData(data as Pairing.AsObject[]);
-    resetSwapState(); // Reset swap state when data changes
-  }, [data, setTableData, resetSwapState]);
+    setOriginalData(data as Pairing.AsObject[]);
+  }, [data, setOriginalData]);
+
+  // Apply swaps for the current round
+  const swappedData = React.useMemo(() => {
+    let newData = JSON.parse(
+      JSON.stringify(originalData)
+    ) as Pairing.AsObject[];
+    const swapsForRound = swapsByRound[currentRound] || [];
+    swapsForRound.forEach(({ from, to }) => {
+      // @ts-ignore
+      const temp = newData[from.rowIndex][from.columnId];
+      // @ts-ignore
+      newData[from.rowIndex][from.columnId] = newData[to.rowIndex][to.columnId];
+      // @ts-ignore
+      newData[to.rowIndex][to.columnId] = temp;
+    });
+    return newData;
+  }, [originalData, swapsByRound, currentRound]);
 
   const table = useReactTable({
-    data: tableData as any,
+    data: swappedData as any,
     columns,
     state: {
       sorting,
@@ -110,19 +121,45 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  // Gather all teams from the entire table
-  const allTeams = React.useMemo(() => {
-    return table.getRowModel().rows.reduce((acc, row) => {
-      const rowData = row.original as Pairing.AsObject;
-      const team1 = rowData.team1 as { name: string };
-      const team2 = rowData.team2 as { name: string };
+  const getBorderColor = (rowIndex: number, columnId: string) => {
+    const swapsForRound = swapsByRound[currentRound] || [];
+    const swap = swapsForRound.find(
+      (s) =>
+        (s.from.rowIndex === rowIndex && s.from.columnId === columnId) ||
+        (s.to.rowIndex === rowIndex && s.to.columnId === columnId)
+    );
+    if (swap) {
+      if (swap.from.rowIndex === rowIndex && swap.from.columnId === columnId) {
+        return "border-green-500";
+      } else {
+        return "border-red-500";
+      }
+    }
+    return "border-transparent";
+  };
 
-      if (team1?.name) acc.push(team1.name);
-      if (team2?.name) acc.push(team2.name);
+  const handleSelectTeam = (
+    selectedTeam: string,
+    currentRowIndex: number,
+    currentColumnId: string
+  ) => {
+    // Find the row and column of the selected team
+    const targetRowIndex = swappedData.findIndex(
+      (rowData) =>
+        rowData.team1?.name === selectedTeam ||
+        rowData.team2?.name === selectedTeam
+    );
+    const targetColumnId =
+      swappedData[targetRowIndex].team1?.name === selectedTeam
+        ? "team1"
+        : "team2";
 
-      return acc;
-    }, [] as string[]);
-  }, [table]);
+    // Perform the swap
+    swapTeams(
+      { rowIndex: currentRowIndex, columnId: currentColumnId },
+      { rowIndex: targetRowIndex, columnId: targetColumnId }
+    );
+  };
 
   return (
     <div>
@@ -159,100 +196,76 @@ export function DataTable<TData, TValue>({
                       const columnId = cell.column.id;
                       const isPropositionOrOpposition =
                         columnId === "team1" || columnId === "team2";
-                      const original = row.original as Pairing.AsObject;
 
-                      const currentTeam =
-                        columnId === "team1"
-                          ? (original.team1 as { name: string }).name
-                          : (original.team2 as { name: string }).name;
+                      const currentTeam = isPropositionOrOpposition
+                        ? (swappedData[rowIndex][columnId] as { name: string })
+                            ?.name || ""
+                        : null;
 
-                      const handleSelectTeam = (selectedTeam: string) => {
-                        // Find the row and column of the selected team
-                        const targetRowIndex = tableData.findIndex(
-                          (rowData) =>
-                            rowData.team1?.name === selectedTeam ||
-                            rowData.team2?.name === selectedTeam
-                        );
-                        const targetColumnId =
-                          tableData[targetRowIndex].team1?.name === selectedTeam
-                            ? "team1"
-                            : "team2";
-
-                        // Perform the swap
-                        swapTeams(
-                          { rowIndex, columnId },
-                          { rowIndex: targetRowIndex, columnId: targetColumnId }
-                        );
-
-                        // Update selected team
-                        setSelectedTeam(selectedTeam);
-                      };
-
-                      const borderColor =
-                        changedField?.rowIndex === rowIndex &&
-                        changedField?.columnId === columnId
-                          ? "border-green-500"
-                          : affectedField?.rowIndex === rowIndex &&
-                            affectedField?.columnId === columnId
-                          ? "border-red-500"
-                          : "border-transparent";
+                      const borderColor = getBorderColor(rowIndex, columnId);
 
                       return (
                         <TableCell key={cell.id} className={``}>
                           {isPropositionOrOpposition ? (
-                            <Popover modal>
-                              <PopoverTrigger asChild>
-                                <Button
-                                  variant="outline"
-                                  role="combobox"
-                                  className={cn(
-                                    "w-full justify-between",
-                                    `border ${borderColor}`
-                                  )}
-                                >
-                                  {currentTeam}
-                                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                </Button>
-                              </PopoverTrigger>
-                              <PopoverContent className="w-full p-0">
-                                <Command>
-                                  <CommandInput placeholder="Search information..." />
-                                  <CommandList>
-                                    <CommandEmpty>
-                                      No information found.
-                                    </CommandEmpty>
-                                    <CommandGroup>
-                                      {tableData
-                                        .flatMap((rowData) => [
-                                          rowData.team1?.name,
-                                          rowData.team2?.name,
-                                        ])
-                                        .filter(Boolean) // Remove null or undefined
-                                        .map((teamName) => (
-                                          <CommandItem
-                                            key={teamName}
-                                            onSelect={() =>
-                                              handleSelectTeam(
-                                                teamName as string
-                                              )
-                                            }
-                                          >
-                                            <Check
-                                              className={cn(
-                                                "mr-2 h-4 w-4",
-                                                currentTeam === teamName
-                                                  ? "opacity-100"
-                                                  : "opacity-0"
-                                              )}
-                                            />
-                                            {teamName}
-                                          </CommandItem>
-                                        ))}
-                                    </CommandGroup>
-                                  </CommandList>
-                                </Command>
-                              </PopoverContent>
-                            </Popover>
+                            editingRow === rowIndex ? (
+                              <Popover modal>
+                                <PopoverTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    className={cn(
+                                      "w-full justify-between",
+                                      `border ${borderColor}`
+                                    )}
+                                  >
+                                    {currentTeam}
+                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-full p-0">
+                                  <Command>
+                                    <CommandInput placeholder="Search information..." />
+                                    <CommandList>
+                                      <CommandEmpty>
+                                        No information found.
+                                      </CommandEmpty>
+                                      <CommandGroup>
+                                        {originalData
+                                          .flatMap((rowData) => [
+                                            rowData.team1?.name,
+                                            rowData.team2?.name,
+                                          ])
+                                          .filter(Boolean) // Remove null or undefined
+                                          .map((teamName) => (
+                                            <CommandItem
+                                              key={teamName}
+                                              onSelect={() =>
+                                                handleSelectTeam(
+                                                  teamName as string,
+                                                  rowIndex,
+                                                  columnId
+                                                )
+                                              }
+                                            >
+                                              <Check
+                                                className={cn(
+                                                  "mr-2 h-4 w-4",
+                                                  currentTeam === teamName
+                                                    ? "opacity-100"
+                                                    : "opacity-0"
+                                                )}
+                                              />
+                                              {teamName}
+                                            </CommandItem>
+                                          ))}
+                                      </CommandGroup>
+                                    </CommandList>
+                                  </Command>
+                                </PopoverContent>
+                              </Popover>
+                            ) : (
+                              <div>{currentTeam}</div>
+                            )
                           ) : (
                             flexRender(
                               cell.column.columnDef.cell,

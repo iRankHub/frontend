@@ -343,6 +343,9 @@ export class LoginResponse extends jspb.Message {
   getStatus(): string;
   setStatus(value: string): LoginResponse;
 
+  getUsername(): string;
+  setUsername(value: string): LoginResponse;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): LoginResponse.AsObject;
   static toObject(includeInstance: boolean, msg: LoginResponse): LoginResponse.AsObject;
@@ -361,6 +364,7 @@ export namespace LoginResponse {
     requirePasswordReset: boolean,
     message: string,
     status: string,
+    username: string,
   }
 }
 

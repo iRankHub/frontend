@@ -17,13 +17,7 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import { Separator } from "@/components/ui/separator";
 import { Icons } from "@/components/icons";
-import {
-  useBulkResendInvites,
-  useBulkUpdateInvite,
-} from "./actions/bulk-invitation-handle";
-import { InvitationStatuses } from "@/types/tournaments/invitations";
 import { cn } from "@/lib/utils";
 
 export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
@@ -237,19 +231,23 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
       //   invitationIds: bulkInvitationIds,
       // });
 
-      let variant;
+      let bgColor, textColor;
       switch (row.getValue("status")) {
         case "accepted":
-          variant = "green-200 text-success";
+          bgColor = "bg-green-200";
+          textColor = "text-success";
           break;
         case "rejected":
-          variant = "red-200 text-destructive";
+          bgColor = "bg-red-200";
+          textColor = "text-destructive";
           break;
         case "pending":
-          variant = "slate-400";
+          bgColor = "bg-slate-400";
+          textColor = "text-background";
           break;
         default:
-          variant = "secondary";
+          bgColor = "bg-secondary";
+          textColor = "text-secondary";
       }
       return (
         <ContextMenu>
@@ -257,7 +255,7 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
             <div className="w-full pr-5 text-center">
               <Badge
                 variant="default"
-                className={`bg-${variant} hover:bg-${variant}`}
+                className={`${bgColor} ${textColor} hover:${bgColor}`}
               >
                 {row.getValue("status")}
               </Badge>

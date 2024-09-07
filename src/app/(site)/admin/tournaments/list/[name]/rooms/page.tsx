@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
 import Rooms from "@/components/pages/admin/tournaments/list/tournament-name/rooms/room";
 import TournamentMenuWrapper from "@/components/pages/admin/tournaments/list/tournament-name/tournament-menu-wrapper";
@@ -46,9 +46,9 @@ function Page({ params }: Iparms) {
       .catch((err) => {
         console.error(err.message);
       });
-
-      
   }, [user, tourn_id]);
+
+  if (!tournament) return <div>loading...</div>;
   return (
     <ContentLayout title="format">
       <div className="w-full flex items-center justify-between gap-5">
@@ -86,7 +86,7 @@ function Page({ params }: Iparms) {
         </Breadcrumb>
       </div>
       <TournamentMenuWrapper>
-        <Rooms />
+        <Rooms tournament_id={tournament.tournamentId} />
       </TournamentMenuWrapper>
     </ContentLayout>
   );

@@ -222,7 +222,7 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
   return (
     <Card key={row.id} className="p-3 hover:shadow-lg">
       <CardTitle className="text-primary font-bold text-lg mb-2 flex items-center justify-between gap-3">
-        {getColumnValue(row, "name")}
+        <span className="truncate">{getColumnValue(row, "name")}</span>
         <Badge variant="outline" className="rounded-md bg-primary text-white">
           {leagueType()}
         </Badge>
@@ -259,8 +259,8 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
           </SheetTrigger>
           <SidePanel>
             <Panelheader>
-              <div className="flex items-center gap-1">
-                <h3 className="text-sm font-bold">
+              <div className="flex items-center gap-1 truncate">
+                <h3 className="text-sm font-bold truncate max-w-48">
                   {getColumnValue(row, "name")}
                 </h3>
                 {!isEdit && (

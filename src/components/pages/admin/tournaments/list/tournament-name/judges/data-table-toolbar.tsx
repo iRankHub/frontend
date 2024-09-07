@@ -27,11 +27,16 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[280px]"
         />
-        {table.getColumn("preliminary") && (
+        {table.getColumn("isHeadJudge") && (
           <DataTableFacetedFilter
-            column={table.getColumn("preliminary")}
-            title="Preliminary"
-            options={teams}
+            column={table.getColumn("isHeadJudge")}
+            title="Head Judge"
+            options={[
+              // @ts-ignore
+              { value: true, label: "Yes" },
+              // @ts-ignore
+              { value: false, label: "No" },
+            ]}
           />
         )}
         {isFiltered && (

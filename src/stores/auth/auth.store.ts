@@ -11,6 +11,7 @@ export enum Roles {
 
 export interface AuthStateUser {
     userId: number;
+    name: string;
     token: string;
     status: 'idle' | 'signOut' | 'signIn';
     requiredPasswordReset: boolean;

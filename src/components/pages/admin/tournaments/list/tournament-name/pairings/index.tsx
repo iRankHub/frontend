@@ -9,7 +9,7 @@ import { Pairing } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { getPairings } from "@/core/debates/pairings";
 import { GetPairingsProps } from "@/types/pairings";
 import { useUserStore } from "@/stores/auth/auth.store";
-import { useTeamSwapStore } from "@/stores/admin/tournaments/pairings/pairings.store";
+import { useTeamSwapStore } from "@/stores/admin/debate/pairings/pairings.store";
 
 type PairingsTableProps = {
   tournamentId: number;
@@ -24,8 +24,27 @@ const PairingsTable: FC<PairingsTableProps> = ({
 }) => {
   const [pairings, setPairings] = React.useState<Pairing.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
-  const { setTableData, resetSwapState } = useTeamSwapStore();
+  const { setOriginalData, setCurrentRound } = useTeamSwapStore();
 
+  const handleTabChange = (value: string) => {
+    if (!user) return;
+    const round = parseInt(value.split(" ")[1]);
+    setCurrentRound(round);
+    const options: GetPairingsProps = {
+      is_elimination,
+      round,
+      token: user.token,
+      tournament_id: tournamentId,
+    };
+    getPairings(options)
+      .then((res) => {
+        setOriginalData(res);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  };
+  
   useEffect(() => {
     if (!user) return;
     const options: GetPairingsProps = {
@@ -42,26 +61,6 @@ const PairingsTable: FC<PairingsTableProps> = ({
         console.error(err.message);
       });
   }, [tournamentId, user, is_elimination]);
-
-  const handleTabChange = (value: string) => {
-    if (!user) return;
-    const round = parseInt(value.split(" ")[1]);
-    const options: GetPairingsProps = {
-      is_elimination,
-      round,
-      token: user.token,
-      tournament_id: tournamentId,
-    };
-    getPairings(options)
-      .then((res) => {
-        setPairings(res);
-        setTableData(res);
-        resetSwapState(); // Reset the swap state when changing tabs
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
-  };
   return (
     <div className="w-full rounded-md overflow-hidden border border-muted">
       <div className="flex items-center justify-between flex-wrap gap-5 p-5 py-4 bg-brown">
