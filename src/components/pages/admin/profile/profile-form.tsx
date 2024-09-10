@@ -48,15 +48,17 @@ import {
   UserProfile,
 } from "@/lib/grpc/proto/user_management/users_pb";
 import { cn } from "@/lib/utils";
-import { schoolProfileSchemaStep1 } from "@/lib/validations/admin/accounts/profile-update.schema";
+import { adminProfile, schoolProfileSchemaStep1 } from "@/lib/validations/admin/accounts/profile-update.schema";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckIcon, ChevronsUpDown } from "lucide-react";
+import { Camera, CheckIcon, ChevronsUpDown } from "lucide-react";
+import Image from "next/image";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import FileUpload from "../users/file-upload";
 
-type Inputs = z.infer<typeof schoolProfileSchemaStep1>;
+type Inputs = z.infer<typeof adminProfile>;
 
 function ProfileForm() {
   const { toast } = useToast();
@@ -72,13 +74,9 @@ function ProfileForm() {
 
   // react-hook-form
   const form = useForm<Inputs>({
-    resolver: zodResolver(schoolProfileSchemaStep1),
+    resolver: zodResolver(adminProfile),
     defaultValues: {
-      name: user?.name || "",
-      country: "Rwanda",
-      province_state: "Kigali",
-      district_region: "Kicukiro",
-      type: "Private",
+      username: user?.name || "",
     },
   });
 
@@ -163,6 +161,19 @@ function ProfileForm() {
       <div className="grid place-content-center mt-auto h-full">loading...</div>
     );
   }
+
+  const handleUserProfile = (): string => {
+    // check if user is not null and if the userProfile is not of type Uint8Array
+    if (user.profilepicture instanceof Uint8Array) {
+      // convert the Uint8Array to a string
+      const blob = new Blob([user.profilepicture]);
+      const url = URL.createObjectURL(blob);
+
+      return url;
+    }
+
+    return user.profilepicture;
+  };
   return (
     <div className="w-full rounded-md overflow-hidden">
       <div className="flex items-center justify-between flex-wrap gap-5 px-20 py-4 bg-brown">
@@ -174,18 +185,56 @@ function ProfileForm() {
             onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
             className="flex flex-col gap-4"
           >
+            <div className="w-full flex items-center gap-10">
+              <div className="w-24 h-24 rounded-full relative cursor-pointer">
+                <Image
+                  src={
+                    handleUserProfile().length > 0
+                      ? handleUserProfile()
+                      : "https://res.cloudinary.com/dmgv5azym/image/upload/v1701979624/jp5kql33vh3he0qsjnd7.jpg"
+                  }
+                  alt={user.name}
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-full"
+                />
+                <div className="absolute bottom-3 right-4">
+                  <Camera className="w-5 h-5 text-background dark:text-foreground" />
+                </div>
+              </div>
+              <div>
+                <h4>Picture</h4>
+                <Dialog>
+                  <DialogTrigger>
+                    <div className="border px-3 py-2 border-border rounded-md my-1 flex items-center gap-3">
+                      <h3 className="text-primary text-sm font-medium">
+                        Choose file
+                      </h3>
+                      <span className="text-muted-foreground text-sm">
+                        No file selected
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground font-medium">
+                      Add a nice photo of yourself for your profile.
+                    </p>
+                  </DialogTrigger>
+                  <FileUpload />
+                </Dialog>
+              </div>
+            </div>
             <FormField
               control={form.control}
-              name="name"
+              name="username"
               render={({ field }) => (
                 <FormItem className="col-span-2">
-                  <FormLabel>School name</FormLabel>
+                  <FormLabel>Username</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="school name"
-                      className=""
+                      placeholder="User name"
                       value={field.value}
                       onChange={field.onChange}
+                      className="disabled:opacity-100"
+                      disabled
                     />
                   </FormControl>
                   <FormDescription className="text-sm text-muted-foreground">
@@ -193,250 +242,6 @@ function ProfileForm() {
                     or a pseudonym. You can only change this once every 30 days.
                   </FormDescription>
                   <FormMessage className="font-bold" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="country"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Choose Country
-                    <b className="text-primary font-light"> *</b>
-                  </FormLabel>
-                  <br />
-                  <FormControl>
-                    <Popover
-                      open={openCountries}
-                      onOpenChange={setOpenCountries}
-                    >
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          className={cn(
-                            "w-full justify-between",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value
-                            ? countries.find(
-                                (country) => country.name === field.value
-                              )?.name
-                            : "Select country..."}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-full p-0">
-                        <Command className="w-full">
-                          <CommandInput placeholder="Search country..." />
-                          <CommandEmpty>Country not Found.</CommandEmpty>
-                          <CommandList>
-                            <CommandGroup>
-                              {countries.map((country, index) => (
-                                <CommandItem
-                                  key={index}
-                                  value={country.name}
-                                  onSelect={() => {
-                                    form.setValue("country", country.name);
-                                    setOpenCountries(false);
-                                  }}
-                                >
-                                  {country.name}
-                                  <CheckIcon
-                                    className={cn(
-                                      "ml-auto h-4 w-4",
-                                      field.value === country.name
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    )}
-                                  />
-                                </CommandItem>
-                              ))}
-                            </CommandGroup>
-                          </CommandList>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                  </FormControl>
-                  <FormDescription className="text-sm text-muted-foreground">
-                    Change the country
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="province_state"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Province/State
-                    <b className="text-primary font-light"> *</b>
-                  </FormLabel>
-                  <br />
-                  <FormControl>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          className={cn(
-                            "w-full justify-between",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value
-                            ? provinces.find(
-                                (province) => province === field.value
-                              )
-                            : "Select province/state..."}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-full p-0">
-                        <Command className="w-full">
-                          <CommandInput placeholder="Search province..." />
-                          <CommandEmpty>Province not Found.</CommandEmpty>
-                          <CommandList>
-                            <CommandGroup>
-                              {provinces.map((province, index) => (
-                                <CommandItem
-                                  key={index}
-                                  value={province}
-                                  onSelect={() => {
-                                    form.setValue("province_state", province);
-                                    setDisctricts(Districts(province));
-                                  }}
-                                >
-                                  {province}
-                                  <CheckIcon
-                                    className={cn(
-                                      "ml-auto h-4 w-4",
-                                      field.value === province
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    )}
-                                  />
-                                </CommandItem>
-                              ))}
-                            </CommandGroup>
-                          </CommandList>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                  </FormControl>
-                  <FormDescription className="text-sm text-muted-foreground">
-                    Change the province
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="district_region"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    District/Region
-                    <b className="text-primary font-light"> *</b>
-                  </FormLabel>
-                  <br />
-                  <FormControl>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          className={cn(
-                            "w-full justify-between",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value
-                            ? districts.find(
-                                (district) => district === field.value
-                              )
-                            : "Select province/state..."}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-full p-0">
-                        <Command className="w-full">
-                          <CommandInput placeholder="Search province..." />
-                          <CommandEmpty>
-                            District/Region not Found.
-                          </CommandEmpty>
-                          <CommandList>
-                            <CommandGroup>
-                              {districts.map((district, index) => (
-                                <CommandItem
-                                  key={index}
-                                  value={district}
-                                  onSelect={() => {
-                                    form.setValue("district_region", district);
-                                  }}
-                                >
-                                  {district}
-                                  <CheckIcon
-                                    className={cn(
-                                      "ml-auto h-4 w-4",
-                                      field.value === district
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    )}
-                                  />
-                                </CommandItem>
-                              ))}
-                            </CommandGroup>
-                          </CommandList>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                  </FormControl>
-                  <FormDescription className="text-sm text-muted-foreground">
-                    Change the district/state of the school
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Change School Type
-                    <b className="text-primary font-light"> *</b>
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a school type..." />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="Public">Public</SelectItem>
-                      <SelectItem value="Private">Private</SelectItem>
-                      <SelectItem value="International">
-                        International
-                      </SelectItem>
-                      <SelectItem value="Government Aided">
-                        Government-aided
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormDescription className="text-sm text-muted-foreground">
-                    Change the type of the school
-                  </FormDescription>
-                  <FormMessage />
                 </FormItem>
               )}
             />

@@ -135,3 +135,9 @@ export const twoFactorEnableSchema = z.object({
         message: "Password must be atleast 8 characters long"
     }),
 });
+
+export const adminProfile = z.object({
+    username: z.string().min(3, {
+        message: "username must be atleast 3 characters long"
+    }),
+});

@@ -20,7 +20,7 @@ import { ToastAction } from "@/components/ui/toast";
 
 const page = withAuth(() => {
   return <Page />;
-}, [Roles.SCHOOL]);
+}, [Roles.ADMIN]);
 
 function Page() {
   const { toast } = useToast();
