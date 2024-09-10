@@ -9,13 +9,14 @@ import { Ballot } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { getBallots } from "@/core/debates/ballots";
 import { GetBallotsProps } from "@/types/pairings/ballots";
+import { Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 
 type Props = {
-  tournamentId: number;
   is_elimination: boolean;
+  tournament: Tournament.AsObject;
 };
 
-function Elimination({ is_elimination, tournamentId }: Props) {
+function Elimination({ is_elimination, tournament }: Props) {
   const [ballots, setBallots] = useState<Ballot.AsObject[] | undefined>(
     undefined
   );
@@ -25,7 +26,7 @@ function Elimination({ is_elimination, tournamentId }: Props) {
     if (!user) return;
     const options: GetBallotsProps = {
       token: user.token,
-      tournament_id: tournamentId,
+      tournament_id: tournament.tournamentId,
       is_elimination,
       round: roundNumber,
     };
@@ -43,7 +44,7 @@ function Elimination({ is_elimination, tournamentId }: Props) {
 
     const options: GetBallotsProps = {
       token: user.token,
-      tournament_id: tournamentId,
+      tournament_id: tournament.tournamentId,
       is_elimination,
       round: 1,
     };
@@ -55,7 +56,7 @@ function Elimination({ is_elimination, tournamentId }: Props) {
       .catch((error) => {
         console.error(error);
       });
-  }, [user, tournamentId, is_elimination]);
+  }, [user, tournament.tournamentId, is_elimination]);
 
   if (!ballots) return <div>loading...</div>;
 

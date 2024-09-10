@@ -30,6 +30,12 @@ const PairingsTable: FC<PairingsTableProps> = ({
   const { setOriginalData, setCurrentRound } = useTeamSwapStore();
   const [isGenerating, setIsGenerating] = React.useState(false);
 
+  const {
+    originalData,
+  } = useTeamSwapStore((state) => ({
+    originalData: state.originalData,
+  }));
+
   const handleTabChange = (value: string) => {
     if (!user) return;
     const round = parseInt(value.split(" ")[1]);
@@ -91,12 +97,19 @@ const PairingsTable: FC<PairingsTableProps> = ({
   if (!pairings) {
     return <div>Loading</div>;
   }
+
+  
+
+  const handleUpdate = () => {
+    console.log(originalData);
+    
+  }
   return (
     <div className="w-full rounded-md overflow-hidden">
       {pairings && pairings.length > 0 ? (
         <>
           <div className="flex items-center justify-between flex-wrap gap-5 p-5 py-4 bg-brown">
-            <form action="#" className="flex items-center gap-3">
+            {/* <form action="#" className="flex items-center gap-3">
               <Input
                 type="search"
                 placeholder="Search school..."
@@ -110,7 +123,9 @@ const PairingsTable: FC<PairingsTableProps> = ({
                 Room
                 <span className="sr-only">Room</span>
               </Button>
-            </form>
+            </form> */}
+            <h3 className="text-xl text-white">Pairings</h3>
+            <Button onClick={handleUpdate}>Update</Button>
           </div>
           <div className="w-full bg-background">
             <Tabs defaultValue="round 1">

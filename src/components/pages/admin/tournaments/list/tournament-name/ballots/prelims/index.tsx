@@ -9,23 +9,23 @@ import { Ballot } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { getBallots } from "@/core/debates/ballots";
 import { GetBallotsProps } from "@/types/pairings/ballots";
+import { Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import { useBallotsStore } from "@/stores/admin/debate/ballots";
 
 type Props = {
-  tournamentId: number;
   is_elimination: boolean;
+  tournament: Tournament.AsObject;
 };
 
-function Preliminaries({ is_elimination, tournamentId }: Props) {
-  const [ballots, setBallots] = useState<Ballot.AsObject[] | undefined>(
-    undefined
-  );
+function Preliminaries({ is_elimination, tournament }: Props) {
   const { user } = useUserStore((state) => state);
+  const { setBallots, ballots } = useBallotsStore((state) => state);
 
   const handleTabChange = (roundNumber: number) => {
     if (!user) return;
     const options: GetBallotsProps = {
       token: user.token,
-      tournament_id: tournamentId,
+      tournament_id: tournament.tournamentId,
       is_elimination,
       round: roundNumber,
     };
@@ -43,7 +43,7 @@ function Preliminaries({ is_elimination, tournamentId }: Props) {
 
     const options: GetBallotsProps = {
       token: user.token,
-      tournament_id: tournamentId,
+      tournament_id: tournament.tournamentId,
       is_elimination,
       round: 1,
     };
@@ -55,7 +55,7 @@ function Preliminaries({ is_elimination, tournamentId }: Props) {
       .catch((error) => {
         console.error(error);
       });
-  }, [user, tournamentId, is_elimination]);
+  }, [user, tournament.tournamentId, is_elimination, setBallots]);
 
   if (!ballots) return <div>loading...</div>;
 
@@ -81,15 +81,18 @@ function Preliminaries({ is_elimination, tournamentId }: Props) {
       <div className="w-full bg-background">
         <Tabs defaultValue="round 1">
           <TabsList className="mx-5 mt-3">
-            <TabsTrigger value="round 1" className="px-5" onClick={() => handleTabChange(1)}>
-              Quater-Finals
-            </TabsTrigger>
-            <TabsTrigger value="round 2" className="px-5" onClick={() => handleTabChange(2)}>
-              Semi-Finals
-            </TabsTrigger>
-            <TabsTrigger value="round 3" className="px-5" onClick={() => handleTabChange(3)}>
-              Finals
-            </TabsTrigger>
+            {Array.from(
+              { length: tournament.numberOfPreliminaryRounds },
+              (_, i) => i + 1
+            ).map((round) => (
+              <TabsTrigger
+                key={round}
+                value={`round ${round}`}
+                onClick={() => handleTabChange(round)}
+              >
+                Round {round}
+              </TabsTrigger>
+            ))}
           </TabsList>
           <TabsContent value="round 1">
             <DataTable data={ballots} columns={columns} />

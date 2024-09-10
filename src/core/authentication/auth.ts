@@ -302,19 +302,19 @@ export const batchCreateUsers = (data: {
             addUserData(userData);
         });
 
-        // data.student.forEach((student) => {
-        //     const userData = new UserData();
-        //     userData.setFirstname(student.firstName);
-        //     userData.setLastname(student.lastName);
-        //     userData.setEmail(student.email);
-        //     userData.setGender(student.gender.toLowerCase());
-        //     userData.setDateofbirth(excelSerialToDate(Number(student.dateOfBirth)));
-        //     userData.setGrade(student.grade);
-        //     userData.setSchoolid(Number(student.schoolID));
-        //     userData.setUserrole("student");
-        //     userData.setSchoolname(student.schoolName);
-        //     addUserData(userData);
-        // });
+        data.student.forEach((student) => {
+            const userData = new UserData();
+            userData.setFirstname(student.firstName);
+            userData.setLastname(student.lastName);
+            userData.setEmail(student.email);
+            userData.setGender(student.gender.toLowerCase());
+            userData.setDateofbirth(excelSerialToDate(Number(student.dateOfBirth)));
+            userData.setGrade(student.grade);
+            userData.setSchoolid(Number(student.schoolID));
+            userData.setUserrole("student");
+            userData.setSchoolname(student.schoolName);
+            addUserData(userData);
+        });
 
         data.school.forEach((school) => {
             const userData = new UserData();

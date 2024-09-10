@@ -50,6 +50,22 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
+      <div className="flex items-center gap-3">
+        <Button
+          variant="secondary"
+          onClick={() => null}
+          className="h-8 px-2 lg:px-3"
+        >
+          Cancel
+        </Button>
+        <Button
+          variant="default"
+          onClick={() => null}
+          className="h-8 px-2 lg:px-3"
+        >
+          Update
+        </Button>
+      </div>
     </div>
   );
 }

@@ -139,7 +139,7 @@ export const columns: ColumnDef<RoomStatus.AsObject>[] = [
             </SheetTrigger>
             <UpdateAndViewRoom
               roomId={Number(row.original.roomId)}
-              isView={true}
+              isEdit={false}
             />
           </Sheet>
           <Sheet>
@@ -154,8 +154,8 @@ export const columns: ColumnDef<RoomStatus.AsObject>[] = [
               </Button>
             </SheetTrigger>
             <UpdateAndViewRoom
-              roomId={Number(row.getValue("roomId"))}
-              isView={false}
+              roomId={Number(row.original.roomId)}
+              isEdit={true}
             />
           </Sheet>
         </div>
@@ -168,17 +168,17 @@ export const columns: ColumnDef<RoomStatus.AsObject>[] = [
 
 const UpdateAndViewRoom = ({
   roomId,
-  isView,
+  isEdit,
 }: {
   roomId: number;
-  isView: boolean;
+  isEdit: boolean;
 }) => {
   const [room, setRoom] = useState<GetRoomResponse.AsObject>();
   const [loading, setLoading] = useState<boolean>(true);
   const { user } = useUserStore((state) => state);
   const [roomName, setRoomName] = useState<string>("");
   const params = useParams<{ name: string }>();
-  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const { toast } = useToast();
   const { updateRoom: updateTournRoom } = useRoomsStore((state) => state);
@@ -262,12 +262,12 @@ const UpdateAndViewRoom = ({
           <Panelheader>
             <div className="flex items-center gap-1">
               <h3 className="text-sm font-bold capitalize">{room.name}</h3>
-              {!isView && (
+              {!isEdit && !isEditing && (
                 <Button
                   type="button"
                   className="rounded-full m-0 p-0 w-6 h-6 hover:bg-primary"
                   size={"icon"}
-                  onClick={() => setIsEdit(!isEdit)}
+                  onClick={() => setIsEditing(true)}
                 >
                   <Icons.pencilLine className="w-4 h-4" />
                 </Button>
@@ -285,7 +285,7 @@ const UpdateAndViewRoom = ({
                   value={roomName}
                   onChange={(e) => setRoomName(e.target.value)}
                   className="text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-100"
-                  disabled={!isEdit || isView === true}
+                  disabled={!isEditing && isEdit === false}
                 />
               </div>
               <h3 className="uppercase text-xs my-5 text-muted-foreground font-semibold">
@@ -333,7 +333,7 @@ const UpdateAndViewRoom = ({
                 ))}
               </div>
             </div>
-            {isEdit && isView === false && (
+            {isEditing && (
               <div className="flex items-center justify-end ga-3">
                 <Button
                   variant={"default"}

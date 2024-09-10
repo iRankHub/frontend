@@ -86,10 +86,7 @@ function Page({ params }: Iparms) {
         </Breadcrumb>
       </div>
       <TournamentMenuWrapper>
-        <Preliminaries
-          is_elimination={false}
-          tournamentId={tournament.tournamentId}
-        />
+        <Preliminaries is_elimination={false} tournament={tournament} />
       </TournamentMenuWrapper>
     </ContentLayout>
   );

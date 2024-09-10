@@ -170,84 +170,95 @@ function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
     }
   };
 
-  const renderSpeakerField = (
+  const RenderSpeakerField = (
     fieldName: "speaker_1" | "speaker_2" | "speaker_3",
     label: string
-  ) => (
-    <FormField
-      control={form.control}
-      name={fieldName}
-      render={({ field }) => (
-        <FormItem className="flex flex-col">
-          <FormLabel className="font-medium text-darkBlue dark:text-foreground">
-            {label}
-          </FormLabel>
-          <Popover modal={true}>
-            <PopoverTrigger asChild>
-              <FormControl>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  className={cn(
-                    "w-full justify-between",
-                    !field.value && "text-muted-foreground"
-                  )}
-                >
-                  {field.value
-                    ? availableStudents.find(
-                        (user) => String(user.studentid) === field.value
-                      )?.firstname +
-                      " " +
+  ) => {
+    return (
+      <FormField
+        control={form.control}
+        name={fieldName}
+        render={({ field }) => (
+          <FormItem className="flex flex-col">
+            <FormLabel className="font-medium text-darkBlue dark:text-foreground">
+              {label}
+            </FormLabel>
+            <Popover modal={true}>
+              <PopoverTrigger asChild>
+                <FormControl>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    className={cn(
+                      "w-full justify-between",
+                      !field.value && "text-muted-foreground"
+                    )}
+                  >
+                    {field.value
+                      ? availableStudents.find(
+                          (user) => String(user.studentid) === field.value
+                        )?.firstname +
+                        " " +
+                        availableStudents.find(
+                          (user) => String(user.studentid) === field.value
+                        )?.lastname
+                      : "Select user"}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </FormControl>
+              </PopoverTrigger>
+              <PopoverContentWithNoPrimitivePortal className="w-full p-0">
+                <Command>
+                  {/* <CommandInput
+                    placeholder="Search user..."
+                    // look for the user in the availableStudents list
+                    value={
                       availableStudents.find(
                         (user) => String(user.studentid) === field.value
-                      )?.lastname
-                    : "Select user"}
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
-              </FormControl>
-            </PopoverTrigger>
-            <PopoverContentWithNoPrimitivePortal className="w-full p-0">
-              <Command>
-                <CommandInput placeholder="Search user..." />
-                <CommandList>
-                  <CommandEmpty>No speaker found.</CommandEmpty>
-                  <CommandGroup>
-                    {availableStudents.map((user) => (
-                      <CommandItem
-                        value={String(user.studentid)}
-                        key={String(user.studentid)}
-                        onSelect={() =>
-                          handleUserSelect(String(user.studentid), fieldName)
-                        }
-                        disabled={
-                          Object.values(selectedUsers).includes(
-                            String(user.studentid)
-                          ) && field.value !== String(user.studentid)
-                        }
-                      >
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
+                      )?.firstname
+                    }
+                  /> */}
+                  <CommandList>
+                    <CommandEmpty>No speaker found.</CommandEmpty>
+                    <CommandGroup>
+                      {availableStudents.map((user) => (
+                        <CommandItem
+                          value={String(user.studentid)}
+                          key={String(user.studentid)}
+                          onSelect={() => {
+                            handleUserSelect(String(user.studentid), fieldName);
+                            form.setValue(fieldName, String(user.studentid));
+                          }}
+                          disabled={
                             Object.values(selectedUsers).includes(
                               String(user.studentid)
-                            )
-                              ? "opacity-100"
-                              : "opacity-0"
-                          )}
-                        />
-                        {user.firstname + " " + user.lastname}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </PopoverContentWithNoPrimitivePortal>
-          </Popover>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
+                            ) && field.value !== String(user.studentid)
+                          }
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              Object.values(selectedUsers).includes(
+                                String(user.studentid)
+                              )
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
+                          />
+                          {user.firstname + " " + user.lastname}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContentWithNoPrimitivePortal>
+            </Popover>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    );
+  };
 
   return (
     <Form {...form}>
@@ -276,9 +287,9 @@ function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
             Team Members
           </h3>
           <div className="grid grid-cols-2 gap-2">
-            {renderSpeakerField("speaker_1", "1st Speaker")}
-            {renderSpeakerField("speaker_2", "2nd Speaker")}
-            {renderSpeakerField("speaker_3", "3rd Speaker")}
+            {RenderSpeakerField("speaker_1", "1st Speaker")}
+            {RenderSpeakerField("speaker_2", "2nd Speaker")}
+            {RenderSpeakerField("speaker_3", "3rd Speaker")}
           </div>
         </div>
         <Button type="submit" size={"sm"} className="w-full hover:bg-primary">

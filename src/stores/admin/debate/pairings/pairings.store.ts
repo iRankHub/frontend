@@ -12,6 +12,7 @@ interface TeamSwapState {
     swapsByRound: Record<number, Swap[]>;
     currentRound: number;
     editingRow: number | null;
+    isSwapMade: boolean;
     setOriginalData: (data: Pairing.AsObject[]) => void;
     setFilteredData: (data: Pairing.AsObject[]) => void; // Add this line
     setCurrentRound: (round: number) => void;
@@ -23,12 +24,13 @@ export const useTeamSwapStore = create<TeamSwapState>((set) => ({
     originalData: [],
     filteredData: [], // Add this line
     swapsByRound: {},
+    isSwapMade: false,
     currentRound: 1,
     editingRow: null,
     setOriginalData: (data) => set({ originalData: data, filteredData: data }), // Update this line
     setFilteredData: (data) => set({ filteredData: data }), // Add this line
     setCurrentRound: (round) => set({ currentRound: round }),
-    swapTeams: (from, to) =>
+    swapTeams: (from, to) => {
         set((state) => {
             const newSwapsByRound = { ...state.swapsByRound };
             if (!newSwapsByRound[state.currentRound]) {
@@ -41,6 +43,10 @@ export const useTeamSwapStore = create<TeamSwapState>((set) => ({
                 // @ts-ignore
                 selectedTeam: state.originalData[to.rowIndex][to.columnId].name,
             };
-        }),
+        });
+
+        // update isSwapMade
+        set({ isSwapMade: true });
+    },
     setEditingRow: (rowIndex) => set({ editingRow: rowIndex }),
 }));
