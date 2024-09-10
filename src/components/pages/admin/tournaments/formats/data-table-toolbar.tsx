@@ -152,7 +152,7 @@ export function DataTableToolbar<TData>({
       .filter((value) => typeof value === "number")
       .sort((a, b) => (a as number) - (b as number))
       .map((value) => ({
-        label: value.toString() + " speakers",
+        label: String(value) + " speakers",
         value: value as number,
       }));
   }, [table]);

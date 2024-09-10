@@ -24,13 +24,7 @@ import SidePanel, {
 } from "@/components/layout/admin-panel/side-panel";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
-import { School } from "@/lib/grpc/proto/user_management/users_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
-import { useToast } from "@/components/ui/use-toast";
-import { deactivateUser } from "@/core/users/users";
-import { DeactivateUser } from "@/types/user_management/users";
-import { ToastAction } from "@/components/ui/toast";
-import { useUsersStore } from "@/stores/admin/users/users.store";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
 import { billingsStatuses } from "@/components/tables/data/data";
 import { Billings } from "@/components/tables/data/schema";

@@ -97,6 +97,7 @@ const TwoFactorStep2 = () => {
 
               const user: AuthStateUser = {
                 userId: res.userid,
+                name: res.username,
                 token: res.token,
                 status: "idle",
                 requiredPasswordReset: res.requirePasswordReset,

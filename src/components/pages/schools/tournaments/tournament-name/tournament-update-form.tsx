@@ -98,7 +98,7 @@ function TournamentUpdateForm({ tournament }: Props) {
     resolver: zodResolver(UpdateTournamentSchema),
     defaultValues: {
       fees_currency: "rwf",
-      fees: String(tournament.tournamentFee),
+      fees: tournament.tournamentFee,
       format: String(tournament.formatId),
       location: tournament.location,
       name: tournament.name,
