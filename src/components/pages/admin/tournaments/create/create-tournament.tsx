@@ -1,3 +1,4 @@
+'use client'
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import React, { useEffect } from "react";
@@ -10,7 +11,6 @@ import { tournamentLeagues } from "@/core/tournament/leagues";
 import { League } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { getVolunteersAndAdmins } from "@/core/users/users";
 import {
-  GetVolunteersAndAdminsResponse,
   UserSummary,
 } from "@/lib/grpc/proto/user_management/users_pb";
 

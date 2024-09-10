@@ -288,15 +288,18 @@ export const batchCreateUsers = (data: {
     return new Promise((resolve, reject) => {
         const request = new BatchImportUsersRequest();
 
+        const addUserData = (userData: UserData) => {
+            request.addUsers(userData);
+        };
+
         data.admin.forEach((admin) => {
             const userData = new UserData();
             userData.setFirstname(admin.firstName);
             userData.setLastname(admin.lastName);
             userData.setEmail(admin.email);
-            userData.setGender(admin.gender)
-            userData.setUserrole("admin")
-
-            request.addUsers(userData);
+            userData.setGender(admin.gender.toLocaleLowerCase());
+            userData.setUserrole("admin");
+            addUserData(userData);
         });
 
         // data.student.forEach((student) => {
@@ -304,14 +307,13 @@ export const batchCreateUsers = (data: {
         //     userData.setFirstname(student.firstName);
         //     userData.setLastname(student.lastName);
         //     userData.setEmail(student.email);
-        //     userData.setGender(student.gender.toLocaleLowerCase())
-        //     userData.setDateofbirth(excelSerialToDate(Number(student.dateOfBirth)))
-        //     userData.setGrade(student.grade)
-        //     userData.setSchoolid(Number(student.schoolID))
-        //     userData.setUserrole("student")
-        //     userData.setSchoolname(student.schoolName)
-
-        //     request.addUsers(userData);
+        //     userData.setGender(student.gender.toLowerCase());
+        //     userData.setDateofbirth(excelSerialToDate(Number(student.dateOfBirth)));
+        //     userData.setGrade(student.grade);
+        //     userData.setSchoolid(Number(student.schoolID));
+        //     userData.setUserrole("student");
+        //     userData.setSchoolname(student.schoolName);
+        //     addUserData(userData);
         // });
 
         data.school.forEach((school) => {
@@ -319,18 +321,17 @@ export const batchCreateUsers = (data: {
             userData.setFirstname(school.firstName);
             userData.setLastname(school.lastName);
             userData.setEmail(school.email);
-            userData.setUserrole("school")
-            userData.setGender("female")
-            userData.setNationalid(school.nationalID)
-            userData.setSchoolname(school.schoolName)
-            userData.setAddress(school.address)
-            userData.setCountry(school.country)
-            userData.setProvince(school.province)
-            userData.setDistrict(school.district)
-            userData.setContactemail(school.contactEmail)
-            userData.setSchooltype(school.schoolType)
-
-            request.addUsers(userData);
+            userData.setUserrole("school");
+            userData.setGender("female");
+            userData.setNationalid(school.nationalID);
+            userData.setSchoolname(school.schoolName);
+            userData.setAddress(school.address);
+            userData.setCountry(school.country);
+            userData.setProvince(school.province);
+            userData.setDistrict(school.district);
+            userData.setContactemail(school.contactEmail);
+            userData.setSchooltype(school.schoolType);
+            addUserData(userData);
         });
 
         data.volunteer.forEach((volunteer) => {
@@ -338,25 +339,25 @@ export const batchCreateUsers = (data: {
             userData.setFirstname(volunteer.firstName);
             userData.setLastname(volunteer.lastName);
             userData.setEmail(volunteer.email);
-            userData.setGender(volunteer.gender.toLocaleLowerCase())
-            userData.setDateofbirth(excelSerialToDate(Number(volunteer.dateOfBirth)))
-            userData.setNationalid(volunteer.nationalID)
-            userData.setRoleinterestedin(volunteer.roleInterestedIn)
-            userData.setGraduationyear(Number(volunteer.graduationYear))
-            userData.setHasinternship(volunteer.hasInternship.toLocaleLowerCase() === "yes")
-            userData.setIsenrolledinuniversity(volunteer.isEnrolledInUniversity.toLocaleLowerCase() === "yes")
-            userData.setUserrole("volunteer")
-            userData.setSafeguardingcertificate("")
-
-            request.addUsers(userData);
+            userData.setGender(volunteer.gender.toLocaleLowerCase());
+            userData.setDateofbirth(excelSerialToDate(Number(volunteer.dateOfBirth)));
+            userData.setNationalid(volunteer.nationalID);
+            userData.setRoleinterestedin(volunteer.roleInterestedIn);
+            userData.setGraduationyear(Number(volunteer.graduationYear));
+            userData.setHasinternship(volunteer.hasInternship.toLowerCase() === "yes");
+            userData.setIsenrolledinuniversity(volunteer.isEnrolledInUniversity.toLowerCase() === "yes");
+            userData.setUserrole("volunteer");
+            userData.setSafeguardingcertificate("");
+            addUserData(userData);
         });
 
         authClient.batchImportUsers(request, {}, (err, response) => {
             if (err) {
+                console.error(err);
                 reject(err);
             } else {
                 resolve(response.toObject());
             }
         });
-    })
-}
+    });
+};

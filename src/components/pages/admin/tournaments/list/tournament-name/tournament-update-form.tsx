@@ -90,15 +90,13 @@ function TournamentUpdateForm({ tournament }: Props) {
       token: user.token,
     };
     getVolunteersAndAdmins({ ...options }).then((res) => {
-      const coordinatorName = tournament.coordinatorName;
-
       const coordinator = res.usersList.find(
-        (user) => user.name === coordinatorName
+        (user) => user.name === tournament.coordinatorName
       );
       setCoordinatorId(String(coordinator?.userid || ""));
       setCoordinators(res.usersList);
     });
-  }, [user]);
+  }, [user, tournament]);
 
   const formatStartDate = (): string => {
     // format return from api: 2023-07-15 09:00
@@ -123,7 +121,7 @@ function TournamentUpdateForm({ tournament }: Props) {
     resolver: zodResolver(UpdateTournamentSchema),
     defaultValues: {
       fees_currency: "rwf",
-      fees: String(tournament.tournamentFee),
+      fees: tournament.tournamentFee,
       format: String(tournament.formatId),
       location: tournament.location,
       name: tournament.name,
@@ -141,6 +139,20 @@ function TournamentUpdateForm({ tournament }: Props) {
 
   async function onSubmit(data: Inputs) {
     if (!user) return;
+
+    if (!isNaN(Number(data.name))) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Tournament name can't only be numbers",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
+      });
+      return;
+    }
 
     const modifiedStartDate = (): string => {
       // expected format: 2023-07-15 09:00
@@ -299,9 +311,9 @@ function TournamentUpdateForm({ tournament }: Props) {
     <div className="p-5">
       <Form {...form}>
         <form onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}>
-          <div className="w-full bg-brown rounded-md h-60 p-5 flex items-end">
-            <div className="flex-1">
-              <div className="flex items-center gap-5">
+          <div className="w-full bg-brown rounded-md h-60 p-5 flex flex-col md:flex-row justify-end md:items-end">
+            <div className="md:flex-1">
+              <div className="flex flex-col items-start md:flex-row md:items-center md:gap-5">
                 <div className="flex items-center gap-1 text-sm text-white font-medium">
                   <Icons.calendar className="w-3.5 h-3.5 text-white" />
                   {form.watch("startDate") && form.watch("endDate") ? (
@@ -337,7 +349,7 @@ function TournamentUpdateForm({ tournament }: Props) {
                 )}
               />
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex mt-2 md:mt-0 items-center gap-3">
               <Dialog>
                 <DialogTrigger>
                   <Button
@@ -385,7 +397,7 @@ function TournamentUpdateForm({ tournament }: Props) {
                       our servers.
                     </DialogDescription>
                   </DialogHeader>
-                  <DialogFooter className="w-full justify-end">
+                  <DialogFooter className="w-full flex-row gap-3 justify-center">
                     <Button
                       type="submit"
                       size={"sm"}
@@ -679,7 +691,7 @@ function TournamentUpdateForm({ tournament }: Props) {
                   <FormLabel className="text-foreground font-medium">
                     Tournament Fees
                   </FormLabel>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-3 gap-2 mt-2">
                     <FormField
                       control={form.control}
                       name="fees_currency"
@@ -721,7 +733,10 @@ function TournamentUpdateForm({ tournament }: Props) {
                               placeholder="50000"
                               value={Number(field.value)}
                               className="disabled:opacity-100"
-                              onChange={field.onChange}
+                              onChange={(e) => {
+                                field.onChange(Number(e.target.value));
+                              }}
+                              type="number"
                               disabled={!isEditing}
                             />
                           </FormControl>

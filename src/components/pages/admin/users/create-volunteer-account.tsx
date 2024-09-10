@@ -36,16 +36,13 @@ import {
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { signUp } from "@/core/authentication/auth";
-import { getSchoolsNoAuth } from "@/core/users/schools";
 import { countries } from "@/lib/data";
-import { School } from "@/lib/grpc/proto/user_management/users_pb";
 import { cn } from "@/lib/utils";
 import { volunteerSchema } from "@/lib/validations/auth.schema";
 import { UserRole } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, CheckIcon, ChevronsUpDown } from "lucide-react";
-import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -82,6 +79,8 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
   });
 
   async function onSubmit(data: Inputs) {
+    z;
+    // .number().gt(0, { message: "Speakers per team must be at least 1" })
     await signUp({
       firstName: data.firstName,
       lastName: data.lastName,
@@ -131,7 +130,7 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
   }
 
   const handleCancel = () => {
-    setSheetOpen(false)
+    setSheetOpen(false);
   };
 
   type FieldName = keyof Inputs;
@@ -275,7 +274,9 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
                       <SelectContent>
                         <SelectItem value="male">Male</SelectItem>
                         <SelectItem value="female">Female</SelectItem>
-                        <SelectItem value="non-binary">Prefer not to say</SelectItem>
+                        <SelectItem value="non-binary">
+                          Prefer not to say
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -398,7 +399,14 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
                       <b className="text-primary font-light"> *</b>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="12000..." {...field} />
+                      <Input
+                        placeholder="12000..."
+                        {...field}
+                        type="number"
+                        onChange={(e) => {
+                          field.onChange(Number(e.target.value));
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -422,11 +430,11 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
               />
               <FormField
                 control={form.control}
-                name="contact_person_email"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="capitalize">
-                      Contact Person Email
+                      Volunteer Email
                       <b className="text-primary font-light"> *</b>
                     </FormLabel>
                     <FormControl>
@@ -457,7 +465,7 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
                       "nationality",
                       "national_id",
                       "current_address",
-                      "contact_person_email",
+                      "email",
                     ]);
                     if (formErrors && activeStep < 4) {
                       setActiveStep(activeStep + 1);

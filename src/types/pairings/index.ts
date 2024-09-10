@@ -20,8 +20,12 @@ export interface UpdatePairingProps {
 export interface GetTournamentJudgesProps {
     token: string;
     tournament_id: number;
-    round_number: number;
-    is_elimination: boolean;
+}
+
+export interface GetTournamentJudgeProps {
+    token: string;
+    judge_id: number;
+    tournament_id: number;
 }
 
 export interface GetTournamentRoomsProps {

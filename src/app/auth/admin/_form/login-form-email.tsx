@@ -63,6 +63,7 @@ const LoginFormEmail = () => {
             const role = Roles.ADMIN;
             const user: AuthStateUser = {
               userId: res.userid,
+              name: res.username,
               token: res.token,
               status: "idle",
               requiredPasswordReset: res.requirePasswordReset,
@@ -150,14 +151,6 @@ const LoginFormEmail = () => {
             </FormItem>
           )}
         />
-        <div className=" mt-2 flex items-center justify-end gap-1">
-          <Link
-            href="/"
-            className="text-base font-light text-blue hover:underline"
-          >
-            Forgot password?
-          </Link>
-        </div>
         <Button disabled={isPending} variant={"default"} size={"lg"}>
           {isPending && (
             <Icons.spinner

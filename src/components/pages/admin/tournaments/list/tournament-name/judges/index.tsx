@@ -5,8 +5,8 @@ import { DataTable } from "@/components/tables/data-table";
 import { DataTableToolbar } from "./data-table-toolbar";
 import { Judge } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
-import { getTournamentJudges } from "@/core/debates/pairings";
 import { GetTournamentJudgesProps } from "@/types/pairings";
+import { getTournamentJudges } from "@/core/debates/judges";
 
 type JudgesTableProps = {
   tournamentId: number;
@@ -24,8 +24,6 @@ function Judges({
   React.useEffect(() => {
     if (!user) return;
     const options: GetTournamentJudgesProps = {
-      is_elimination,
-      round_number: 1,
       token: user.token,
       tournament_id: tournamentId,
     };

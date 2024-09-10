@@ -106,7 +106,8 @@ export function CollapseMenuButton({
             key={index}
             variant={active ? "ghost" : "outline"}
             className={cn(
-              "w-full justify-start h-10 mb-1 text-foreground font-medium bg-transparent hover:bg-input border-none ring-0 hover:text-foreground p-0 pr-2"
+              "w-full justify-start h-10 mb-1 text-foreground font-medium bg-transparent hover:bg-input border-none ring-0 hover:text-foreground p-0 pr-2",
+              !active ? "bg-transparent" : "bg-input"
             )}
             asChild
           >

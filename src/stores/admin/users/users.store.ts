@@ -5,6 +5,7 @@ interface UsersStore {
     users: UserSummary.AsObject[];
     setUsers: (users: UserSummary.AsObject[]) => void;
     createUser: (user: UserSummary.AsObject) => void;
+    addUser: (user: UserSummary.AsObject) => void;
     updateUserStatus: (userId: number, new_status: string) => void;
     deleteUser: (userID: number) => void;
 }
@@ -13,6 +14,11 @@ export const useUsersStore = create<UsersStore>((set) => ({
     users: [],
     setUsers: (users: UserSummary.AsObject[]) => set({ users }),
     createUser: (user: UserSummary.AsObject) => {
+        set((state: UsersStore) => {
+            return { users: [...state.users, user] };
+        });
+    },
+    addUser: (user: UserSummary.AsObject) => {
         set((state: UsersStore) => {
             return { users: [...state.users, user] };
         });

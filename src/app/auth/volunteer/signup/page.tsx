@@ -23,10 +23,10 @@ function Signup() {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-5 p-5 px-10 min-h-screen bg-white">
-      <div className="flex justify-start">
+    <div className="grid lg:grid-cols-2 gap-5 p-5 px-10 min-h-screen bg-white">
+      <div className="hidden lg:flex justify-start">
         <div className="relative w-full h-full rounded-md overflow-hidden">
-          <Image src={volunteerImage()} alt="Login Art" fill className="object-cover" />
+          <Image src={volunteerImage()} alt="Login Art" fill className="object-top object-cover" />
         </div>
       </div>
       <div className="max-w-md mx-auto w-full flex flex-col items-center">

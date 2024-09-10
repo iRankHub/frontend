@@ -5,8 +5,8 @@ import SignupForm from "../_form/signup-form";
 
 function Signup() {
   return (
-    <div className="grid grid-cols-2 gap-5 p-5 px-10 min-h-screen bg-white">
-      <div className="flex justify-start">
+    <div className="grid lg:grid-cols-2 gap-5 p-5 px-10 min-h-screen bg-white">
+      <div className="hidden lg:flex justify-start">
         <div className="relative max-w-3xl w-full h-full rounded-md overflow-hidden">
           <Image
             src="/static/images/schools/school-signup.png"

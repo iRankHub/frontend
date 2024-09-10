@@ -1,52 +1,35 @@
 "use client";
 
-import React from "react";
-import { League } from "./Leagues";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  MultiSelector,
-  MultiSelectorContent,
-  MultiSelectorInput,
-  MultiSelectorItem,
-  MultiSelectorList,
-  MultiSelectorTrigger,
-} from "@/components/ui/multi-select";
+import React, { useState } from "react";
 import SidePanel, {
   Panelheader,
 } from "@/components/layout/admin-panel/side-panel";
 import { Command, CommandInput } from "@/components/ui/command";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
 import { getTournamentMenuList } from "@/lib/utils/tournament-menu-list";
 import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { CollapseMenuButton } from "../../create/collapse-menu-button";
+import { Input } from "@/components/ui/input";
 
-type Props = {};
-
-function LeaguesMobile({}: Props) {
+function LeaguesMobile() {
   const pathname = usePathname();
   const { name: routeName } = useParams<{ name: string }>();
   const menuList = getTournamentMenuList(pathname, routeName);
   const [isOpen] = React.useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Filter menu based on the search term
+  const filteredMenuList = menuList
+    .map((group) => ({
+      ...group,
+      menus: group.menus.filter(({ label }) =>
+        label.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    }))
+    .filter((group) => group.menus.length > 0);
   return (
     <SidePanel>
       <Panelheader>
@@ -57,19 +40,22 @@ function LeaguesMobile({}: Props) {
       <div className="w-full p-3">
         <div className="flex items-center gap-3 mt-2 h-auto">
           <Command className="rounded-md w-full border">
-            <CommandInput
+            <Input
               placeholder="Search leagues..."
               className="ring-0 h-8"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </Command>
         </div>
         <p className="text-muted-foreground text-xs italic font-medium mt-1">
-          20 records found
+          {filteredMenuList.reduce((acc, group) => acc + group.menus.length, 0)}{" "}
+          records found
         </p>
         <ScrollArea className="[&>div>div[style]]:!block">
           <nav className="mt-3 h-full w-full">
             <ul className="flex flex-col min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1">
-              {menuList.map(({ groupLabel, menus }, index) => (
+              {filteredMenuList.map(({ groupLabel, menus }, index) => (
                 <li
                   className={cn("w-full", groupLabel ? "pt-5" : "")}
                   key={index}

@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTableFacetedFilter } from "@/components/tables/data-table-faceted-filter";
-import { ballotStatuses, priorities, statuses } from "@/components/tables/data/data";
+import { ballotStatuses } from "@/components/tables/data/data";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Cross2Icon } from "@radix-ui/react-icons";
@@ -21,15 +21,15 @@ export function DataTableToolbar<TData>({
       <div className="flex flex-1 items-center space-x-3 bg-brown p-5 py-4">
         <Input
           placeholder="Search names..."
-          value={(table.getColumn("names")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("roomName")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("names")?.setFilterValue(event.target.value)
+            table.getColumn("roomName")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[280px]"
         />
-        {table.getColumn("status") && (
+        {table.getColumn("roomName") && (
           <DataTableFacetedFilter
-            column={table.getColumn("status")}
+            column={table.getColumn("roomName")}
             title="Rec. Status"
             options={ballotStatuses}
           />

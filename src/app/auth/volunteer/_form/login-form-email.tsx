@@ -71,6 +71,7 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
               const role = Roles.VOLUNTEER;
               const user: AuthStateUser = {
                 userId: res.userid,
+                name: res.username,
                 token: res.token,
                 status: "idle",
                 requiredPasswordReset: res.requirePasswordReset,
@@ -159,7 +160,11 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
                 Volunteer Email<b className="text-primary font-light"> *</b>
               </FormLabel>
               <FormControl>
-                <Input placeholder="ava.wright@gmail.com" {...field} className="dark:bg-foreground dark:border-gray-300" />
+                <Input
+                  placeholder="ava.wright@gmail.com"
+                  {...field}
+                  className="dark:bg-foreground dark:border-gray-300"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -174,7 +179,11 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
                 Password<b className="text-primary font-light"> *</b>
               </FormLabel>
               <FormControl>
-                <PasswordInput placeholder="**********" {...field} className="dark:bg-foreground dark:border-gray-300" />
+                <PasswordInput
+                  placeholder="**********"
+                  {...field}
+                  className="dark:bg-foreground dark:border-gray-300"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -182,7 +191,7 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
         />
         <div className=" mt-2 flex items-center justify-end gap-1">
           <Link
-            href="/auth/volunteer/forgot-password"
+            href="/auth/forgot-password"
             className="text-base font-light text-blue hover:underline"
           >
             Forgot password?

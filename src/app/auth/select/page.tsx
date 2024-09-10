@@ -23,7 +23,7 @@ const Page = () => {
         <h3 className="text-foreground dark:text-background font-bold text-2xl mb-2">
           Select your role
         </h3>
-        <span className="text-base text-[#7D7878] mb-4">
+        <span className="text-base text-[#7D7878] mb-4 text-center">
           To start using iRankHub, select the user role that you will be using
         </span>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10 mt-10">

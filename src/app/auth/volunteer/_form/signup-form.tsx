@@ -311,7 +311,9 @@ const SignupForm = ({ activeStep, setActiveStep }: SignupFormProps) => {
                       <SelectContent>
                         <SelectItem value="male">Male</SelectItem>
                         <SelectItem value="female">Female</SelectItem>
-                        <SelectItem value="non-binary">Prefer not to say</SelectItem>
+                        <SelectItem value="non-binary">
+                          Prefer not to say
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -445,7 +447,14 @@ const SignupForm = ({ activeStep, setActiveStep }: SignupFormProps) => {
                       <b className="text-primary font-light"> *</b>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="12000..." {...field} />
+                      <Input
+                        placeholder="12000..."
+                        {...field}
+                        type="number"
+                        onChange={(e) => {
+                          field.onChange(Number(e.target.value));
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

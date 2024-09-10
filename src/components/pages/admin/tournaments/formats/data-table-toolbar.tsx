@@ -160,7 +160,7 @@ export function DataTableToolbar<TData>({
     <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown">
       <div className="flex flex-1 items-center space-x-3 p-5 py-4">
         <Input
-          placeholder="Search name..."
+          placeholder="Search format..."
           value={
             (table.getColumn("formatName")?.getFilterValue() as string) ?? ""
           }
@@ -262,10 +262,10 @@ export function DataTableToolbar<TData>({
                           placeholder="3 speakers"
                           {...field}
                           className="w-full"
-                          list="speakers"
-                          min="1"
-                          max="10"
-                          // onChange={(e) => field.onChange(Number(e.target.value))}
+                          onChange={(e) => {
+                            field.onChange(Number(e.target.value));
+                          }}
+                          type="number"
                         />
                       </FormControl>
                       <FormMessage />

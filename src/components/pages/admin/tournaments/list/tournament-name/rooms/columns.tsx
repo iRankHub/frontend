@@ -5,14 +5,12 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import SidePanel, {
   Panelheader,
 } from "@/components/layout/admin-panel/side-panel";
 import { Input } from "@/components/ui/input";
-import { Rooms } from "@/components/tables/data/schema";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
 import {
   GetRoomResponse,
@@ -21,34 +19,20 @@ import {
 } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { useEffect, useState } from "react";
 import { useUserStore } from "@/stores/auth/auth.store";
-import { getRoom, updateTournamentRoom } from "@/core/debates/pairings";
+import { getRoom, updateTournamentRoom } from "@/core/debates/rooms";
 import { GetTournamentRoomProps, UpdateRoomProps } from "@/types/pairings";
 import { useParams } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { useRoomsStore } from "@/stores/admin/debate/rooms.store";
 
 export const columns: ColumnDef<RoomStatus.AsObject>[] = [
-  {
-    accessorKey: "roomId",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Room Id"
-        className="text-center"
-      />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="w-full pr-5 text-center">
-          <span className="max-w-[200px] truncate font-medium">
-            {row.getValue("roomId")}
-          </span>
-        </div>
-      );
-    },
-    enableHiding: false,
-    enableSorting: false,
-  },
+  // {
+  //   accessorKey: "roomId",
+  //   header: () => null,
+  //   cell: () => null,
+  //   enableHiding: false,
+  //   enableSorting: false,
+  // },
   {
     accessorKey: "roomName",
     header: ({ column }) => (
@@ -154,7 +138,7 @@ export const columns: ColumnDef<RoomStatus.AsObject>[] = [
               </Button>
             </SheetTrigger>
             <UpdateAndViewRoom
-              roomId={Number(row.getValue("roomId"))}
+              roomId={Number(row.original.roomId)}
               isView={true}
             />
           </Sheet>

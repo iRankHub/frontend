@@ -47,6 +47,8 @@ function Page({ params }: Iparms) {
         console.error(err.message);
       });
   }, [user, tourn_id]);
+
+  if (!tournament) return <div>loading...</div>;
   return (
     <ContentLayout title="format">
       <div className="w-full flex items-center justify-between gap-5">

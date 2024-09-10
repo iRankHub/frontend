@@ -83,7 +83,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
             //   const role = Roles.STUDENT;
             //   const user: AuthStateUser = {
             //     userId: res.userid,
-            //     token: res.token,
+              // name: res.username,
+              //     token: res.token,
             //     status: "idle",
             //     requiredPasswordReset: res.requirePasswordReset,
             //     requireTwoFactor: res.requireTwoFactor,
@@ -193,7 +194,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
         />
         <div className=" mt-2 flex items-center justify-end gap-1">
           <Link
-            href="/"
+            href="/auth/forgot-password"
             className="text-base font-light text-blue hover:underline"
           >
             Forgot password?

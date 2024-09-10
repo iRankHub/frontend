@@ -62,7 +62,7 @@ export function DataTableToolbar<TData>({
     <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown">
       <div className="flex flex-1 items-center space-x-3 p-5 py-4">
         <Input
-          placeholder="Search name..."
+          placeholder="Search team name..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
@@ -102,7 +102,7 @@ export function DataTableToolbar<TData>({
         </Sheet>
         <Button
           type="button"
-          className="border border-dashed border-white text-background dark:text-foreground gap-2 text-sm font-bold h-8 hover:bg-background dark:hover:bg-foreground hover:text-foreground dark:hover:text-background group"
+          className="border border-dashed border-white text-white dark:text-foreground gap-2 text-sm font-bold h-8 hover:bg-background dark:hover:bg-foreground hover:text-foreground dark:hover:text-background group"
         >
           <Icons.fileUp className="text-white w-3.5 h-3.5 group-hover:text-foreground group-hover:dark:text-background" />
           Export

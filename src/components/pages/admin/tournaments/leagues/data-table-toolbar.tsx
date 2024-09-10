@@ -182,7 +182,7 @@ export function DataTableToolbar<TData>({
     <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown">
       <div className="flex flex-1 items-center space-x-3 p-5 py-4">
         <Input
-          placeholder="Search name..."
+          placeholder="Search leagues..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)

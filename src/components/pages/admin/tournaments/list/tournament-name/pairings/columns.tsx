@@ -5,9 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { PairingsPreliminaries } from "@/components/tables/data/schema";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
-import { roomsPairings } from "@/components/tables/data/data";
 import { Pairing } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { useTeamSwapStore } from "@/stores/admin/debate/pairings/pairings.store";
 
@@ -15,13 +13,16 @@ export const columns: ColumnDef<Pairing.AsObject>[] = [
   {
     accessorKey: "team1",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Affirmative" />
+      <DataTableColumnHeader column={column} title="Affirmative" className="px-4 justify-start" />
     ),
     cell: ({ row }) => {
       const team1 = row.getValue("team1") as { name: string };
-      return <div className="w-full text-center pr-5">{team1.name}</div>;
+      return <div className="w-full text-start pr-5">{team1.name}</div>;
     },
     enableHiding: false,
+    filterFn: (row, id, value) => {
+      return row.getValue<{ name: string }>(id).name.toLowerCase().includes((value as string).toLowerCase())
+    },
   },
   {
     accessorKey: "team2",
@@ -29,7 +30,7 @@ export const columns: ColumnDef<Pairing.AsObject>[] = [
       <DataTableColumnHeader
         column={column}
         title="Negative"
-        className="justify-center"
+         className="px-4 justify-start"
       />
     ),
     cell: ({ row }) => {
@@ -43,6 +44,9 @@ export const columns: ColumnDef<Pairing.AsObject>[] = [
       );
     },
     enableHiding: false,
+    filterFn: (row, id, value) => {
+      return row.getValue<{ name: string }>(id).name.toLowerCase().includes((value as string).toLowerCase())
+    },
   },
   {
     accessorKey: "roomName",

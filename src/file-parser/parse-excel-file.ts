@@ -47,30 +47,37 @@ export interface ParsedDataVolunteer {
 }
 
 export const parseExcelFile = async (file: File) => {
-    const data = await file.arrayBuffer();
-    const workbook = XLSX.read(data, { type: 'array' });
+    try {
+        const data = await file.arrayBuffer();
+        const workbook = XLSX.read(data, { type: 'array' });
 
-    // Parse Admin sheet
-    const adminSheet = XLSX.utils.sheet_to_json<ParsedDataAdmin>(workbook.Sheets['Admin']);
+        const parseSheet = <T>(sheetName: string): T[] => {
+            const sheet = workbook.Sheets[sheetName];
+            if (!sheet) {
+                console.warn(`Sheet "${sheetName}" not found in the Excel file.`);
+                return [];
+            }
+            return XLSX.utils.sheet_to_json<T>(sheet, { defval: '' }); // Use defval to ensure empty cells are ''
+        };
 
-    // Parse Student sheet
-    const studentSheet = XLSX.utils.sheet_to_json<ParsedDataStudent>(workbook.Sheets['Student']);
-
-    // Parse School sheet
-    const schoolSheet = XLSX.utils.sheet_to_json<ParsedDataSchool>(workbook.Sheets['School']);
-
-    // Parse Volunteer sheet
-    const volunteerSheet = XLSX.utils.sheet_to_json<ParsedDataVolunteer>(workbook.Sheets['Volunteer']);
-
-    return {
-        admin: adminSheet,
-        student: studentSheet,
-        school: schoolSheet,
-        volunteer: volunteerSheet,
-    };
+        return {
+            admin: parseSheet<ParsedDataAdmin>('Admin'),
+            student: parseSheet<ParsedDataStudent>('Student'),
+            school: parseSheet<ParsedDataSchool>('School'),
+            volunteer: parseSheet<ParsedDataVolunteer>('Volunteer'),
+        };
+    } catch (error) {
+        console.error('Error parsing Excel file:', error);
+        throw new Error('Failed to parse Excel file. Please check the file format and try again.');
+    }
 };
 
-export function excelSerialToDate(serial: number) {
+export function excelSerialToDate(serial: number): string {
+    if (isNaN(serial)) {
+        console.warn('Invalid date serial number:', serial);
+        return '';
+    }
+
     // Excel wrongly treats 1900 as a leap year, so subtract 1 if the serial number is >= 60
     const offset = serial >= 60 ? -1 : 0;
     const excelEpoch = new Date(Date.UTC(1899, 11, 30)); // December 30, 1899, UTC (Excel's epoch start)

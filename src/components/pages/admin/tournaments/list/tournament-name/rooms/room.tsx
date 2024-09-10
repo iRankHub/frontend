@@ -2,11 +2,10 @@ import React from "react";
 import { columns } from "./columns";
 import { DataTable } from "@/components/tables/data-table";
 import { DataTableToolbar } from "./data-table-toolbar";
-import { Room, RoomStatus } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { GetTournamentRoomsProps } from "@/types/pairings";
-import { getTournamentRooms } from "@/core/debates/pairings";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { useRoomsStore } from "@/stores/admin/debate/rooms.store";
+import { getTournamentRooms } from "@/core/debates/rooms";
 
 type RoomsProps = {
   tournament_id: number;

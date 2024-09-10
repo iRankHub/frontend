@@ -31,7 +31,7 @@ export function UserNav() {
   const [currentUser, setCurrentUser] = useState<
     UserProfile.AsObject | undefined
   >(undefined);
-
+  user
   useEffect(() => {
     if (!user) return;
 
@@ -55,7 +55,7 @@ export function UserNav() {
               <Button variant="ghost" className="relative border-none p-2">
                 <div className="hidden md:flex flex-col items-end mr-2">
                   <h3 className="text-sm text-[#212B36] dark:text-foreground capitalize leading-4">
-                    {currentUser ? currentUser.name : "loading..."}
+                    {user && user.name}
                   </h3>
                   <span className="text-xs text-[#637381]">Admin</span>
                 </div>

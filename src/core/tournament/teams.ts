@@ -103,8 +103,7 @@ export const deleteTournamentTeam = async ({
 }): Promise<DeleteTeamResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new DeleteTeamRequest();
-        const team = new Team();
-        team.setTeamId(team_id);
+        request.setTeamId(team_id);
         request.setToken(token);
 
         debateClient.deleteTeam(request, {}, (err, response) => {

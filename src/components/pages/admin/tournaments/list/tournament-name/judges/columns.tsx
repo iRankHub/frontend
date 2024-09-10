@@ -11,7 +11,7 @@ import SidePanel, {
   Panelheader,
 } from "@/components/layout/admin-panel/side-panel";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -26,12 +26,20 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
-import { rooms } from "@/components/tables/data/data";
-import { Judge } from "@/lib/grpc/proto/debate_management/debate_pb";
+import {
+  GetJudgeResponse,
+  Judge,
+  RoomInfo,
+} from "@/lib/grpc/proto/debate_management/debate_pb";
+import { GetTournamentJudgeProps, GetTournamentRoomsProps } from "@/types/pairings";
+import { useUserStore } from "@/stores/auth/auth.store";
+import { getTournamentJudge } from "@/core/debates/judges";
+import { useParams } from "next/navigation";
+import { getTournamentRooms } from "@/core/debates/rooms";
 
 export const columns: ColumnDef<Judge.AsObject>[] = [
   {
-    accessorKey: "judgeId",
+    accessorKey: "idebateId",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -43,7 +51,7 @@ export const columns: ColumnDef<Judge.AsObject>[] = [
       return (
         <div className="w-full pr-5 text-center">
           <span className="max-w-[200px] truncate font-medium">
-            {row.getValue("judgeId")}
+            {row.getValue("idebateId")}
           </span>
         </div>
       );
@@ -71,18 +79,22 @@ export const columns: ColumnDef<Judge.AsObject>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "email",
+    accessorKey: "preliminaryDebates",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Email"
+        title="Preliminary"
         className="justify-center"
       />
     ),
     cell: ({ row }) => {
       return (
         <div className="w-full pr-10 text-center">
-          <span className="text-sm">{row.getValue("email")}</span>
+          <span className="text-sm">
+            {row.getValue("preliminaryDebates") === 0
+              ? "None"
+              : row.getValue("preliminaryDebates")}
+          </span>
         </div>
       );
     },
@@ -94,11 +106,11 @@ export const columns: ColumnDef<Judge.AsObject>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "isHeadJudge",
+    accessorKey: "eliminationDebates",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Head of judge"
+        title="Elimination"
         className="justify-center"
       />
     ),
@@ -106,7 +118,9 @@ export const columns: ColumnDef<Judge.AsObject>[] = [
       return (
         <div className="w-full pr-5 text-center">
           <span className="text-sm">
-            {row.getValue("isHeadJudge") === true ? "yes" : "no"}
+            {row.getValue("eliminationDebates") === 0
+              ? "None"
+              : row.getValue("eliminationDebates")}
           </span>
         </div>
       );
@@ -125,154 +139,210 @@ export const columns: ColumnDef<Judge.AsObject>[] = [
       />
     ),
     cell: ({ row }) => {
-      return (
-        <div className="w-full text-center">
-          <Sheet>
-            <SheetTrigger>
-              <Button
-                type="button"
-                variant={"secondary"}
-                size={"icon"}
-                className="bg-transparent w-6 h-6 p-1 m-0"
-              >
-                <Icons.pencilLine className="w-4 h-4 text-primary" />
-              </Button>
-            </SheetTrigger>
-            <SidePanel>
-              <Panelheader>
-                <div className="flex items-center gap-1">
-                  <h3 className="text-sm font-bold capitalize">
-                    {row.getValue("names")}
-                  </h3>
-                  <Button
-                    type="button"
-                    className="rounded-full m-0 p-0 w-6 h-6 hover:bg-primary"
-                    size={"icon"}
-                  >
-                    <Icons.pencilLine className="w-4 h-4" />
-                  </Button>
-                </div>
-              </Panelheader>
-              <div className="w-full h-[calc(100%_-_70px)] p-5 flex flex-col">
-                <div className="w-full flex-1">
-                  <div className="w-full mb-3">
-                    <span className="text-sm text-foreground font-medium">
-                      Name
-                    </span>
-                    <Input
-                      placeholder="room name"
-                      value={"Room 1"}
-                      className="text-foreground placeholder:text-muted-foreground"
-                    />
-                  </div>
-                  <h3 className="uppercase text-xs mb-2 text-muted-foreground font-semibold">
-                    preliminary
-                  </h3>
-                  <div className="flex items-center gap-4 flex-wrap">
-                    <div className="flex flex-col gap-3">
-                      <span className="text-sm font-medium text-foreground">
-                        Round 1
-                      </span>
-                      <RoundRooms />
-                    </div>
-                    <div className="flex-1 flex flex-col gap-3">
-                      <span className="text-sm font-medium text-foreground">
-                        Round 2
-                      </span>
-                      <RoundRooms />
-                    </div>
-                    <div className="flex flex-col gap-3">
-                      <span className="text-sm font-medium text-foreground">
-                        Round 3
-                      </span>
-                      <RoundRooms />
-                    </div>
-                  </div>
-                  <h3 className="uppercase text-xs mb-2 text-muted-foreground font-semibold mt-5">
-                    Elimination
-                  </h3>
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex flex-col gap-1">
-                      <span className="text-sm font-medium text-foreground">
-                        Quater Finals
-                      </span>
-                      <RoundRooms />
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <span className="text-sm font-medium text-foreground">
-                        Semi Finals
-                      </span>
-                      <RoundRooms />
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center justify-end ga-3">
-                  <Button
-                    variant={"default"}
-                    size={"sm"}
-                    className="hover:bg-primary"
-                  >
-                    Save Changes
-                    <span className="sr-only">Save Changes</span>
-                  </Button>
-                </div>
-              </div>
-            </SidePanel>
-          </Sheet>
-        </div>
-      );
+      return <RoomAssignmentPanel row={row.original} />;
     },
     enableHiding: false,
     enableSorting: false,
   },
 ];
 
-const RoundRooms = () => {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
+interface RoundRoomsProps {
+  roomInfo: [number, RoomInfo.AsObject];
+}
+
+const RoomAssignmentPanel = ({ row }: { row: Judge.AsObject }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [judge, setJudge] = useState<GetJudgeResponse.AsObject>();
+  const [isGettingJudge, setIsGettingJudge] = useState(false);
+  const [rooms, setRooms] = useState<RoomInfo.AsObject[]>([]);
+  const { user } = useUserStore((state) => state);
+  const param = useParams();
+  const tournament_id = param.name;
+
+  useEffect(() => {
+    if (!user) return;
+    setIsGettingJudge(true);
+    const options: GetTournamentJudgeProps = {
+      token: user.token,
+      judge_id: row.judgeId,
+      tournament_id: Number(tournament_id),
+    };
+    getTournamentJudge(options)
+      .then((res) => {
+        console.log(res)
+        setJudge(res);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      })
+      .finally(() => {
+        setIsGettingJudge(false);
+      });
+      
+      const roomsOptions: GetTournamentRoomsProps = {
+        token: user.token,
+        tournament_id: Number(tournament_id)
+      };
+      getTournamentRooms(roomsOptions)
+        .then((res) => {
+          setRooms(res);
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
+  }, [row.judgeId, user, tournament_id]);
+
+  const RoundRooms: React.FC<RoundRoomsProps> = ({ roomInfo }) => {
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState("");
+
+    return (
+      <Popover open={open} onOpenChange={setOpen} modal>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="w-[150px] justify-between disabled:opacity-100"
+            disabled={!isEditing}
+          >
+            {value ? 
+              rooms.find((room) => room.roomId === Number(value))?.roomName
+            : roomInfo[1]["roomName"] || "Select room..."}
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-full p-0">
+          <Command>
+            {/* <CommandInput placeholder="Search room..." /> */}
+            <CommandList>
+              <CommandEmpty>No room found.</CommandEmpty>
+              <CommandGroup className="w-[150px]">
+                {rooms.map((room) => (
+                  <CommandItem
+                    key={room.roomId}
+                    value={String(room.roomId)}
+                    onSelect={(currentValue) => {
+                      setValue(currentValue === value ? "" : currentValue);
+                      setOpen(false);
+                    }}
+                    className="w-full"
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        value === String(room.roomId) ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    {room.roomName}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    );
+  };
+
+  const renderRounds = (roundType: "preliminaryMap" | "eliminationMap") => {
+    if (!judge) return null;
+    return judge[roundType].map((round, index) => (
+      <div key={index} className="flex flex-col gap-3">
+        <span className="text-sm font-medium text-foreground">
+          {roundType === "preliminaryMap"
+            ? `Round ${index + 1}`
+            : `${getEliminationRoundName(index + 1)}`}
+        </span>
+        <RoundRooms roomInfo={round} />
+      </div>
+    ));
+  };
+
+  const getEliminationRoundName = (index: number): string => {
+    const names = ["Quarter Finals", "Semi Finals", "Finals"];
+    return names[index - 1] || `Round ${index}`;
+  };
+
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-[150px] justify-between"
-        >
-          {value
-            ? rooms.find((framework) => framework.value === value)?.label
-            : "room..."}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-full p-0">
-        <Command>
-          <CommandInput placeholder="Search framework..." />
-          <CommandList>
-            <CommandEmpty>No framework found.</CommandEmpty>
-            <CommandGroup>
-              {rooms.map((room) => (
-                <CommandItem
-                  key={room.value}
-                  value={room.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
-                    setOpen(false);
-                  }}
+    <div className="w-full text-center">
+      <Sheet>
+        <SheetTrigger>
+          <Button
+            type="button"
+            variant="secondary"
+            size="icon"
+            className="bg-transparent w-6 h-6 p-1 m-0"
+          >
+            <Icons.pencilLine className="w-4 h-4 text-primary" />
+          </Button>
+        </SheetTrigger>
+        <SidePanel>
+          <Panelheader>
+            <div className="flex items-center gap-1">
+              <h3 className="text-sm font-bold capitalize">{row.name}</h3>
+              <Button
+                type="button"
+                className="rounded-full m-0 p-0 w-6 h-6 hover:bg-primary"
+                size="icon"
+                onClick={() => setIsEditing(!isEditing)}
+              >
+                <Icons.pencilLine className="w-4 h-4" />
+              </Button>
+            </div>
+          </Panelheader>
+          <div className="w-full h-[calc(100%_-_70px)] p-5 flex flex-col">
+            <div className="w-full flex-1">
+              <div className="w-full mb-3">
+                <span className="text-sm text-foreground font-medium">
+                  Name
+                </span>
+                <Input
+                  placeholder="room name"
+                  value={row.name}
+                  className="text-foreground placeholder:text-muted-foreground disabled:opacity-100"
+                  disabled={true}
+                />
+              </div>
+              {judge?.preliminaryMap &&
+                Object.keys(judge.preliminaryMap).length > 0 && (
+                  <>
+                    <h3 className="uppercase text-xs mb-2 text-muted-foreground font-semibold">
+                      Preliminary
+                    </h3>
+                    <div className="flex items-center gap-4 flex-wrap">
+                      {renderRounds("preliminaryMap")}
+                    </div>
+                  </>
+                )}
+              {judge?.eliminationMap &&
+                Object.keys(judge.eliminationMap).length > 0 && (
+                  <>
+                    <h3 className="uppercase text-xs mb-2 text-muted-foreground font-semibold mt-5">
+                      Elimination
+                    </h3>
+                    <div className="flex items-center justify-between gap-3">
+                      {renderRounds("eliminationMap")}
+                    </div>
+                  </>
+                )}
+            </div>
+            {isEditing && (
+              <div className="flex items-center justify-end ga-3">
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="hover:bg-primary"
+                  onClick={() => setIsEditing(false)}
                 >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === room.value ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  {room.label}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+                  Save Changes
+                  <span className="sr-only">Save Changes</span>
+                </Button>
+              </div>
+            )}
+          </div>
+        </SidePanel>
+      </Sheet>
+    </div>
   );
 };

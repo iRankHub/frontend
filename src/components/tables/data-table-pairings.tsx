@@ -4,6 +4,7 @@ import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
+  FilterFn,
   SortingState,
   Table as TableType,
   VisibilityState,
@@ -49,6 +50,20 @@ interface DataTableProps<TData, TValue> {
   }>;
 }
 
+// Global filter function
+const globalFilterFn: FilterFn<any> = (row, columnId, value, addMeta) => {
+  const searchValue = value.toLowerCase();
+  const team1 = row.getValue("team1") as { name: string } | undefined;
+  const team2 = row.getValue("team2") as { name: string } | undefined;
+  const roomName = row.getValue("roomName") as string | undefined;
+
+  return (
+    (team1?.name.toLowerCase().includes(searchValue) ?? false) ||
+    (team2?.name.toLowerCase().includes(searchValue) ?? false) ||
+    (roomName?.toLowerCase().includes(searchValue) ?? false)
+  );
+};
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -61,7 +76,7 @@ export function DataTable<TData, TValue>({
     []
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
-
+  const [globalFilter, setGlobalFilter] = React.useState(""); // Add this line
   const {
     originalData,
     swapTeams,
@@ -69,6 +84,7 @@ export function DataTable<TData, TValue>({
     currentRound,
     setOriginalData,
     editingRow,
+    setFilteredData,
   } = useTeamSwapStore((state) => ({
     originalData: state.originalData,
     swapTeams: state.swapTeams,
@@ -76,6 +92,7 @@ export function DataTable<TData, TValue>({
     currentRound: state.currentRound,
     setOriginalData: state.setOriginalData,
     editingRow: state.editingRow,
+    setFilteredData: state.setFilteredData, // Add this if it doesn't exist in your store
   }));
 
   React.useEffect(() => {
@@ -107,12 +124,15 @@ export function DataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
+      globalFilter,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -120,6 +140,11 @@ export function DataTable<TData, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
+
+  // React.useEffect(() => {
+  //   const filteredData = table.getFilteredRowModel().rows.map(row => row.original);
+  //   setFilteredData(filteredData as Pairing.AsObject[]);
+  // }, [table.getFilteredRowModel().rows, setFilteredData]);
 
   const getBorderColor = (rowIndex: number, columnId: string) => {
     const swapsForRound = swapsByRound[currentRound] || [];
@@ -264,7 +289,15 @@ export function DataTable<TData, TValue>({
                                 </PopoverContent>
                               </Popover>
                             ) : (
-                              <div>{currentTeam}</div>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "w-full justify-between bg-transparent hover:bg-transparent",
+                                  `border ${borderColor}`
+                                )}
+                              >
+                                {currentTeam}
+                              </Button>
                             )
                           ) : (
                             flexRender(

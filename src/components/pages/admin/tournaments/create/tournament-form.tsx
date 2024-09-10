@@ -246,13 +246,6 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                 </DialogTrigger>
                 <FileUpload />
               </Dialog>
-              {/* <Button
-                className="rounded-full w-8 h-8 bg-primary cursor-pointer"
-                size="icon"
-              >
-                <Trash2 className="w-[1rem] h-[1rem] text-white m-1" />
-                <span className="sr-only">Delete</span>
-              </Button> */}
             </div>
           </div>
           <div className="mt-10 w-full">
@@ -504,7 +497,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                   <FormLabel className="text-foreground font-medium">
                     Tournament Fees
                   </FormLabel>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-3 gap-2 mt-2">
                     <FormField
                       control={form.control}
                       name="fees_currency"
@@ -543,8 +536,11 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                           <FormControl>
                             <Input
                               placeholder="50000"
-                              value={field.value}
-                              onChange={field.onChange}
+                              value={Number(field.value)}
+                              onChange={(e) => {
+                                field.onChange(Number(e.target.value));
+                              }}
+                              type="number"
                             />
                           </FormControl>
                           <FormMessage />

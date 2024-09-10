@@ -154,9 +154,8 @@ export const volunteerSchema = z.object({
     country: z.string().min(2, {
         message: "country name can't be less than 2 characters"
     }),
-    national_id: z.string().min(10, {
-        message: "National Id/passport number can't be less than 10 characters"
-    }),
+    national_id: z
+        .number().gt(0, { message: "National Id/passport number can't be less than 10 characters" }),
     current_address: z.string().min(2, {
         message: "address invalid"
     }),

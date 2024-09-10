@@ -352,9 +352,10 @@ const FormatCard = ({ row, getColumnValue }: FormatCardProps) => {
                         <Input
                           placeholder="3 speakers"
                           {...field}
-                          list="speakers"
-                          min="1"
-                          max="10"
+                          onChange={(e) => {
+                            field.onChange(Number(e.target.value));
+                          }}
+                          type="number"
                           disabled={!isEdit}
                           className="disabled:opacity-100"
                         />

@@ -58,12 +58,12 @@ export const columns: ColumnDef<Team.AsObject>[] = [
       <DataTableColumnHeader
         column={column}
         title="Name"
-        className="justify-center"
+        className="text-center"
       />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2 justify-center">
+        <div className="text-center">
           <span className="max-w-[200px] truncate font-medium">
             {row.getValue("name")}
           </span>
@@ -78,7 +78,7 @@ export const columns: ColumnDef<Team.AsObject>[] = [
       <DataTableColumnHeader
         column={column}
         title="No. of Speakers"
-        className="justify-center"
+        className="text-center"
       />
     ),
     cell: ({ row }) => {
@@ -273,7 +273,7 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
             </PopoverTrigger>
             <PopoverContent className="w-full p-0">
               <Command>
-                <CommandInput placeholder="Search user..." />
+                {/* <CommandInput placeholder="Search user..." /> */}
                 <CommandList>
                   <CommandEmpty>No speaker found.</CommandEmpty>
                   <CommandGroup>

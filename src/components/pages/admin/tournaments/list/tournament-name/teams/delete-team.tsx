@@ -11,11 +11,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { useToast } from "@/components/ui/use-toast";
 import { deleteTournamentTeam } from "@/core/tournament/teams";
 import { Team } from "@/lib/grpc/proto/debate_management/debate_pb";
-import { cn } from "@/lib/utils";
 import { useTeamsStore } from "@/stores/admin/debate/teams.store";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { Inter } from "next/font/google";

@@ -8,24 +8,22 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
+import Autoplay from "embla-carousel-autoplay";
 
 function Login() {
   const [isUsingEmail, setIsUsingEmail] = useState(false);
-
   const handleChange = () => setIsUsingEmail(!isUsingEmail);
   return (
-    <div className="grid grid-cols-2 gap-5 p-5 px-10 min-h-screen bg-white">
-      <div className="max-w-md mx-auto w-full flex flex-col">
-        <div className="relative w-60 h-60">
+    <div className="grid 2xl:grid-cols-2 gap-5 p-5 px-10 min-h-screen bg-white">
+      <div className="max-w-md mx-auto w-full flex flex-col justify-center">
+        <div className="relative w-40 h-40">
           <Image src="/static/images/logo-big.png" alt="IDebate Logo" fill />
         </div>
-        <div className="flex flex-col gap-4 mb-5">
+        <div className="flex flex-col gap-4 mb-3">
           <h3 className="font-bold text-[#0C1421] text-3xl">Welcome Back 👋</h3>
-          <p className="text-xl text-darkBlue leading-8 ">
+          <p className="text-lg text-darkBlue leading-8 ">
             Sign in to track your progress and dominate the competition!
           </p>
         </div>
@@ -35,22 +33,30 @@ function Login() {
         ) : (
           <LoginForm handleChange={handleChange} />
         )}
-        <div className="mt-auto w-full text-center">
+        {/* <div className="mt-auto w-full text-center">
           <span className="text-base text-darkBlue uppercase text-center">
             © 2024 ALL RIGHTS RESERVED
           </span>
-        </div>
+        </div> */}
       </div>
-      <Carousel>
-        <CarouselContent>
-          <CarouselItem className="w-full">
-            <Card className="border-transparent">
+      <Carousel
+        plugins={[
+          Autoplay({
+            delay: 5000,
+          }),
+        ]}
+
+        className="hidden 2xl:grid items-center w-full h-full"
+      >
+        <CarouselContent className="h-full">
+          <CarouselItem className="w-full h-full">
+            <Card className="border-transparent h-full">
               <CardContent className="flex aspect-square items-center justify-center p-6 relative w-full h-full rounded-md overflow-hidden">
                 <Image
                   src="/static/images/volunteers/signup-step-5.jpg"
                   alt="Login Art"
                   fill
-                  className="object-cover"
+                  className="object-top object-cover"
                 />
               </CardContent>
             </Card>
