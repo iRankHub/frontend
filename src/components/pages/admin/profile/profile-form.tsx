@@ -245,40 +245,6 @@ function ProfileForm() {
                 </FormItem>
               )}
             />
-            <Dialog>
-              <DialogTrigger
-                type="button"
-                className="max-w-52 w-full h-10 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90"
-              >
-                Update Profile
-                {isPending && (
-                  <div className="ml-2 w-3.5 h-3.5 rounded-full border-2 border-background border-r-0 animate-spin" />
-                )}
-                <span className="sr-only">Update Profile</span>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader className="font-semibold">
-                  Are you absolutely sure?
-                </DialogHeader>
-                <DialogDescription>
-                  This action cannot be undone. This will permanently update
-                  your profile.
-                </DialogDescription>
-                <DialogFooter>
-                  <Button type="button" variant="outline">
-                    Cancel
-                    <span className="sr-only">Cancel</span>
-                  </Button>
-                  <Button type="submit" variant="default">
-                    Update
-                    {isPending && (
-                      <div className="ml-2 w-3.5 h-3.5 rounded-full border-2 border-background border-r-0 animate-spin" />
-                    )}
-                    <span className="sr-only">Update</span>
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
           </form>
         </Form>
       </div>
