@@ -511,7 +511,7 @@ function TournamentUpdateForm({ tournament }: Props) {
                               selected={field.value}
                               onSelect={field.onChange}
                               initialFocus
-                              fromDate={new Date(form.watch("startDate"))}
+                              fromDate={new Date(form.watch("endDate"))}
                               disabled={!isEditing}
                             />
                           </PopoverContent>

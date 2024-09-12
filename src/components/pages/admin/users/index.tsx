@@ -5,7 +5,7 @@ import { columns } from "./columns";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { GetSchoolsType } from "@/types/user_management/schools";
 import { useUsersStore } from "@/stores/admin/users/users.store";
-import { DataTable } from "@/components/tables/data-table";
+import { DataTable } from "@/components/tables/data-table-users";
 import { getAllUsers } from "@/core/users/users";
 import { DataTableToolbar } from "./data-table-toolbar";
 

@@ -28,6 +28,7 @@ import { useUserStore } from "@/stores/auth/auth.store";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
 import { billingsStatuses } from "@/components/tables/data/data";
 import { Billings } from "@/components/tables/data/schema";
+import { Input } from "@/components/ui/input";
 
 const inter = Inter({
   weight: "700",
@@ -71,30 +72,30 @@ export const columns: ColumnDef<Billings>[] = [
   {
     accessorKey: "names",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Names" />
+      <DataTableColumnHeader
+        column={column}
+        title="Names"
+        className="text-center pr-5"
+      />
     ),
     cell: ({ row }) => {
-      return (
-        <div className="flex space-x-2">
-          <span className="max-w-[200px] truncate font-medium">
-            {row.getValue("names")}
-          </span>
-        </div>
-      );
+      return <div className="text-center pr-5">{row.getValue("names")}</div>;
     },
     enableHiding: false,
   },
   {
     accessorKey: "teams",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Teams" />
+      <DataTableColumnHeader
+        column={column}
+        title="Teams"
+        className="justify-center"
+      />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2">
-          <span className={cn("max-w-[200px] truncate", inter)}>
-            {row.getValue("teams")}
-          </span>
+        <div className="text-center pr-5">
+          <span className={cn("truncate", inter)}>{row.getValue("teams")}</span>
         </div>
       );
     },
@@ -103,7 +104,11 @@ export const columns: ColumnDef<Billings>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader
+        column={column}
+        title="Status"
+        className="text-center"
+      />
     ),
     cell: ({ row }) => {
       const status = billingsStatuses.find(
@@ -128,8 +133,9 @@ export const columns: ColumnDef<Billings>[] = [
         default:
           variant = "secondary";
       }
+
       return (
-        <div className="flex w-[100px] items-center">
+        <div className="text-center pr-5">
           <Badge
             variant="default"
             className={`bg-${variant} hover:bg-${variant}`}
@@ -184,34 +190,58 @@ const Options = ({ billId }: { billId: number }) => {
             <PanelBody className="flex flex-col p-5">
               <div className="flex-1 w-full flex flex-col gap-5">
                 <div>
-                  <h3 className="text-primary text-sm mb-3">Student Profile</h3>
+                  <h3 className="text-primary text-sm mb-3">School Profile</h3>
                   <Card className="w-full px-4 py-5">
                     <p className="text-foreground text-sm mb-2">
-                      Speaker 1: Bideri Alec
+                      School name: Lost Hills
                     </p>
                     <p className="text-foreground text-sm mb-2">
-                      Speaker 2: Iman Koulibally
+                      School email: Iman-Koulibally@gmail.com
                     </p>
                     <p className="text-foreground text-sm mb-2">
-                      Speaker 3: Joselyto
+                      Type of school: private
+                    </p>
+                    <p className="text-foreground text-sm mb-2">
+                      country: Rwanda
+                    </p>
+                    <p className="text-foreground text-sm mb-2">
+                      Province/state: Kigali
+                    </p>
+                    <p className="text-foreground text-sm mb-2">
+                      District: Gasabo
                     </p>
                   </Card>
                 </div>
                 <div>
-                  <h3 className="text-primary text-sm mb-3">Academics</h3>
+                  <h3 className="text-primary text-sm mb-3">Teams</h3>
                   <Card className="w-full px-4 py-5">
                     <p className="text-foreground text-sm mb-2">
-                      Speaker 1: Bideri Alec
+                      Lost Hills team 1
+                    </p>
+                    <p className="text-foreground text-sm mb-2">
+                      Lost Hills team 2
+                    </p>
+                    <p className="text-foreground text-sm mb-2">
+                      Lost Hills team 3
                     </p>
                   </Card>
                 </div>
+                <div className="w-full">
+                  <h3 className="text-sm text-foreground font-semibold">
+                    Discount
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3 mt-2">
+                    <Input placeholder="21.6" />
+                    <Button>Apply</Button>
+                  </div>
+                </div>
                 <div>
-                  <h3 className="text-primary text-sm mb-3">Identification</h3>
-                  <Card className="w-full px-4 py-5">
-                    <p className="text-foreground text-sm mb-2">
-                      Speaker 1: Bideri Alec
-                    </p>
-                  </Card>
+                  <h3 className="font-semibold text-sm text-foreground capitalize">Amount to be paid</h3>
+                  <Input placeholder="900,000 RWF" className="mt-2" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-sm text-foreground capitalize">Amount received</h3>
+                  <Input placeholder="900,000 RWF" className="mt-2" />
                 </div>
               </div>
               <div className="w-full flex flex-row items-center justify-between gap-3">

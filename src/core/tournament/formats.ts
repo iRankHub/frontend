@@ -3,8 +3,10 @@ import {
   CreateTournamentFormatResponse,
   DeleteTournamentFormatRequest,
   DeleteTournamentFormatResponse,
+  GetTournamentFormatRequest,
   ListTournamentFormatsRequest,
   ListTournamentFormatsResponse,
+  TournamentFormat,
   UpdateTournamentFormatRequest,
   UpdateTournamentFormatResponse,
 } from "@/lib/grpc/proto/tournament_management/tournament_pb";
@@ -29,15 +31,33 @@ export const tournamentFormats = async ({
 
     tournamentClient.listTournamentFormats(request, {}, (err, response) => {
       if (err) {
-        console.log(err);
         reject(err);
       } else {
-        console.log(err);
         resolve(response.toObject());
       }
     });
   });
 };
+
+export const getTournamentFormat = async ({
+  format_id,
+  token,
+}: { format_id: number; token: string; }
+): Promise<TournamentFormat.AsObject | undefined> => {
+  return new Promise((resolve, reject) => {
+    const request = new GetTournamentFormatRequest();
+    request.setFormatId(format_id);
+    request.setToken(token);
+
+    tournamentClient.getTournamentFormat(request, {}, (err, response) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(response.toObject().format);
+      }
+    });
+  });
+}
 
 export const createTournamentFormat = async ({
   description,

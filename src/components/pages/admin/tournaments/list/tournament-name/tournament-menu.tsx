@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getTournamentMenuList } from "@/lib/utils/admin/tournament-menu-list";
 import { useState } from "react";
-import { Command, CommandInput } from "@/components/ui/command";
+import { Command } from "@/components/ui/command";
 import { CollapseMenuButton } from "../../create/collapse-menu-button";
 import { Input } from "@/components/ui/input";
 

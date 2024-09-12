@@ -6,9 +6,10 @@ import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { getTournamentMenuList } from "@/lib/utils/tournament-menu-list";
+import { getTournamentMenuList } from "@/lib/utils/students/tournament-menu-list";
 import { useState } from "react";
-import { Command, CommandInput } from "@/components/ui/command";
+import { Command } from "@/components/ui/command";
+import { Input } from "@/components/ui/input";
 import { CollapseMenuButton } from "@/components/layout/students-panel/collapse-menu-button";
 
 export function TournamentMenu() {
@@ -16,23 +17,37 @@ export function TournamentMenu() {
   const { name: routeName } = useParams<{ name: string }>();
   const menuList = getTournamentMenuList(pathname, routeName);
   const [isOpen] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Filter menu based on the search term
+  const filteredMenuList = menuList
+    .map((group) => ({
+      ...group,
+      menus: group.menus.filter(({ label }) =>
+        label.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    }))
+    .filter((group) => group.menus.length > 0);
   return (
     <div className="hidden xl:inline w-full max-w-xs">
       <div className="flex items-center gap-3 mt-2 h-auto">
         <Command className="rounded-md w-full border">
-          <CommandInput
+          <Input
             placeholder="Search leagues..."
             className="ring-0 h-8"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Command>
       </div>
       <p className="text-muted-foreground text-xs italic font-medium mt-1">
-        20 records found
+        {filteredMenuList.reduce((acc, group) => acc + group.menus.length, 0)}{" "}
+        records found
       </p>
       <ScrollArea className="[&>div>div[style]]:!block">
         <nav className="mt-8 h-full w-full">
           <ul className="flex flex-col min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1 px-2">
-            {menuList.map(({ groupLabel, menus }, index) => (
+            {filteredMenuList.map(({ groupLabel, menus }, index) => (
               <li
                 className={cn("w-full", groupLabel ? "pt-5" : "")}
                 key={index}

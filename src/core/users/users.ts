@@ -3,6 +3,7 @@ import { DeactivateUser, GetAllUsers, GetUserDetails, UpdateAdminProfile, Update
 import {
     ApproveUserRequest,
     ApproveUserResponse,
+    ApproveUsersRequest,
     DeactivateAccountRequest,
     DeactivateAccountResponse,
     DeleteUsersRequest,
@@ -169,85 +170,6 @@ export const getUserProfile = async ({
         });
     });
 };
-
-// Helper functions to set the school, student and volunteer details in the request
-// const setSchoolDetails = (request: UpdateUserProfileRequest, schoolDetails: SchoolDetailsType) => {
-//     const schoolDetailsObj = new SchoolDetails();
-//     schoolDetailsObj.setSchoolname(schoolDetails.schoolname);
-//     schoolDetailsObj.setCountry(schoolDetails.country);
-//     schoolDetailsObj.setProvince(schoolDetails.province);
-//     schoolDetailsObj.setDistrict(schoolDetails.district);
-//     schoolDetailsObj.setSchooltype(schoolDetails.schooltype);
-//     request.setSchooldetails(schoolDetailsObj);
-// };
-
-// const setStudentDetails = (request: UpdateUserProfileRequest, studentDetails: StudentDetailsType) => {
-//     const studentDetailsObj = new StudentDetails();
-//     studentDetailsObj.setGrade(studentDetails.grade);
-//     studentDetailsObj.setDateofbirth(studentDetails.dateofbirth);
-//     studentDetailsObj.setSchoolid(studentDetails.schoolid);
-//     request.setStudentdetails(studentDetailsObj);
-// };
-
-// const setVolunteerDetails = (request: UpdateUserProfileRequest, volunteerDetails: VolunteerDetailsType) => {
-//     const volunteerDetailsObj = new VolunteerDetails();
-//     volunteerDetailsObj.setGraduateyear(volunteerDetails.graduateyear);
-//     volunteerDetailsObj.setSafeguardcertificate(volunteerDetails.safeguardcertificate);
-//     volunteerDetailsObj.setHasinternship(volunteerDetails.hasinternship);
-//     volunteerDetailsObj.setIsenrolledinuniversity(volunteerDetails.isenrolledinuniversity);
-//     volunteerDetailsObj.setRole(volunteerDetails.role);
-//     request.setVolunteerdetails(volunteerDetailsObj);
-// };
-
-// export const updateUserProfile = async ({
-//     userID,
-//     token,
-//     name,
-//     email,
-//     address,
-//     phone,
-//     bio,
-//     profilePicture,
-//     gender,
-//     password,
-//     schoolDetails,
-//     studentDetails,
-//     volunteerDetails,
-//     role,
-// }: UpdateUserProfile): Promise<UpdateUserProfileResponse.AsObject> => {
-//     return new Promise((resolve, reject) => {
-//         const request = new UpdateUserProfileRequest();
-//         request.setToken(token);
-//         request.setUserid(userID);
-//         request.setName(name);
-//         request.setEmail(email);
-//         request.setGender(gender || "");
-//         request.setAddress(address || "");
-//         request.setPhone(phone || "");
-//         request.setBio(bio || "");
-//         request.setProfilepicture(profilePicture || "");
-
-//         switch (role) {
-//             case "school":
-//                 if (schoolDetails) setSchoolDetails(request, schoolDetails);
-//                 break;
-//             case "student":
-//                 if (studentDetails) setStudentDetails(request, studentDetails);
-//                 break;
-//             case "volunteer":
-//                 if (volunteerDetails) setVolunteerDetails(request, volunteerDetails);
-//                 break;
-//         }
-
-//         userClient.updateUserProfile(request, {}, (err, response) => {
-//             if (err) {
-//                 reject(err);
-//             } else {
-//                 resolve(response.toObject());
-//             }
-//         });
-//     });
-// }
 
 export const updateAdminProfile = async ({
     userID,
@@ -452,5 +374,40 @@ export const updatePassword = async ({
                 resolve(response.toObject());
             }
         });
+    });
+}
+
+// buld approve or reject users
+export const bulkApproveOrRejectUsers = async ({
+    token,
+    userIDs,
+    action
+}: {
+    token: string;
+    userIDs: number[];
+    action: "approve" | "reject" | "delete";
+}): Promise<ApproveUserResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new ApproveUsersRequest();
+        request.setToken(token);
+        request.setUseridsList(userIDs);
+
+        if (action === "approve") {
+            userClient.approveUsers(request, {}, (err, response) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(response.toObject());
+                }
+            });
+        } else {
+            userClient.rejectUsers(request, {}, (err, response) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(response.toObject());
+                }
+            });
+        }
     });
 }

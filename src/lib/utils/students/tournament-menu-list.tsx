@@ -39,34 +39,28 @@ export function getTournamentMenuList(
         {
           href: `/students/tournaments/${routeName}`,
           label: "Tournament Info",
-          active: pathname.includes(`/students/tournaments/${routeName}`),
+          active: pathname === `/students/tournaments/${routeName}`,
           icon: List,
           submenus: [],
         },
         {
           href: `/students/tournaments/${routeName}/invitations`,
           label: "Invitations",
-          active: pathname.includes(
-            `/students/tournaments/${routeName}/invitations`
-          ),
+          active: pathname === `/students/tournaments/${routeName}/invitations`,
           icon: Mails,
           submenus: [],
         },
         {
           href: `/students/tournaments/${routeName}/teams`,
           label: "Teams",
-          active: pathname.includes(
-            `/students/tournaments/${routeName}/teams`
-          ),
+          active: pathname === `/students/tournaments/${routeName}/teams`,
           icon: Users,
           submenus: [],
         },
         {
           href: `/students/tournaments/${routeName}/pairings`,
           label: "Pairings",
-          active: pathname.includes(
-            `/students/tournaments/${routeName}/pairings`
-          ),
+          active: pathname === `/students/tournaments/${routeName}/pairings`,
           icon: Network,
           submenus: [
             {
@@ -88,28 +82,22 @@ export function getTournamentMenuList(
         {
           href: `/students/tournaments/${routeName}/rooms`,
           label: "Rooms",
-          active: pathname.includes(
-            `/students/tournaments/${routeName}/rooms`
-          ),
+          active: pathname === `/students/tournaments/${routeName}/rooms`,
           icon: DoorOpen,
           submenus: [],
         },
         {
           href: `/students/tournaments/${routeName}/judges`,
           label: "Judges",
-          active: pathname.includes(
-            `/students/tournaments/${routeName}/judges`
-          ),
+          active: pathname === `/students/tournaments/${routeName}/judges`,
           icon: Users,
           submenus: [],
         },
         {
           href: `/students/tournaments/${routeName}/ballots`,
           label: "Ballots",
-          active: pathname.includes(
-            `/students/tournaments/${routeName}/ballots`
-          ),
-          icon: BookText,
+          active: pathname === `/students/tournaments/${routeName}/ballots`,
+          icon: Network,
           submenus: [
             {
               href: `/students/tournaments/${routeName}/ballots/preliminaries`,
@@ -130,9 +118,7 @@ export function getTournamentMenuList(
         {
           href: `/students/tournaments/${routeName}/ranking`,
           label: "Ranking",
-          active: pathname.includes(
-            `/students/tournaments/${routeName}/ranking`
-          ),
+          active: pathname === `/students/tournaments/${routeName}/ranking`,
           icon: BarChart,
           submenus: [
             {
@@ -146,8 +132,7 @@ export function getTournamentMenuList(
               href: `/students/tournaments/${routeName}/ranking/teams`,
               label: "Teams",
               active:
-                pathname ===
-                `/students/tournaments/${routeName}/ranking/teams`,
+                pathname === `/students/tournaments/${routeName}/ranking/teams`,
             },
             {
               href: `/students/tournaments/${routeName}/ranking/schools`,

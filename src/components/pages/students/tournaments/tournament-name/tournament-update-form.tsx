@@ -25,6 +25,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import FileUpload from "./file-upload";
+import { UpdateTournamentSchema } from "@/lib/validations/admin/tournaments/create-tournament.schema";
 import {
   Popover,
   PopoverContent,
@@ -45,8 +46,11 @@ import {
   TournamentFormat,
 } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
-import { tournamentFormats } from "@/core/tournament/formats";
-import { School } from "@/lib/grpc/proto/user_management/users_pb";
+import {
+  getTournamentFormat,
+  tournamentFormats,
+} from "@/core/tournament/formats";
+import { School, UserSummary } from "@/lib/grpc/proto/user_management/users_pb";
 import { getSchools } from "@/core/users/schools";
 import {
   DeleteTournamentType,
@@ -57,7 +61,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { deleteTournament, updateTournament } from "@/core/tournament/list";
 import { useRouter } from "next/navigation";
-import { UpdateTournamentSchema } from "@/lib/validations/admin/tournaments/create-tournament.schema";
+import { getVolunteersAndAdmins } from "@/core/users/users";
 
 type Props = {
   tournament: Tournament.AsObject;
@@ -67,13 +71,19 @@ type Inputs = z.infer<typeof UpdateTournamentSchema>;
 
 function TournamentUpdateForm({ tournament }: Props) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [formatName, setFormatName] = useState<string>("");
   const [formats, setFormats] = useState<TournamentFormat.AsObject[]>([]);
   const [venues, setVenues] = useState<School.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
   const [loading, setLoading] = useState<boolean>(false);
+  const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [coordinators, setCoordinators] = React.useState<
+    UserSummary.AsObject[]
+  >([]);
   const router = useRouter();
   const { toast } = useToast();
+  const [coordinatorId, setCoordinatorId] = useState<string>("");
 
   const formatStartDate = (): string => {
     // format return from api: 2023-07-15 09:00
@@ -110,45 +120,35 @@ function TournamentUpdateForm({ tournament }: Props) {
       startTime: new Date(formatStartDate()),
       endDate: new Date(formatEndDate()),
       endTime: new Date(formatEndDate()),
+      coordinator: tournament.coordinatorName,
     },
   });
 
   useEffect(() => {
     if (!user) return;
     const data = {
-      page_size: 10,
-      page_token: 0,
+      format_id: tournament.formatId,
       token: user.token,
     };
-    tournamentFormats({ ...data })
+    getTournamentFormat(data)
       .then((res) => {
-        setFormats(res.formatsList);
+        if (res) {
+          setFormatName(String(res.formatName));
+          form.setValue("format", String(res.formatName));
+        }
       })
       .catch((err) => {
         console.error(err.message);
       });
-
-    // fetch venues
-    getSchools({
-      token: user.token,
-      pageSize: 100,
-      page: 1,
-    })
-      .then((res) => {
-        setVenues(res.schoolsList);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
-  }, [user]);
+  }, [user, tournament.formatId, form]);
 
   return (
     <div className="p-5">
       <Form {...form}>
         <form>
-          <div className="w-full bg-brown rounded-md h-60 p-5 flex items-end">
-            <div className="flex-1">
-              <div className="flex items-center gap-5">
+          <div className="w-full bg-brown rounded-md h-60 p-5 flex flex-col md:flex-row justify-end md:items-end">
+            <div className="md:flex-1">
+              <div className="flex flex-col items-start md:flex-row md:items-center md:gap-5">
                 <div className="flex items-center gap-1 text-sm text-white font-medium">
                   <Icons.calendar className="w-3.5 h-3.5 text-white" />
                   {form.watch("startDate") && form.watch("endDate") ? (
@@ -226,7 +226,7 @@ function TournamentUpdateForm({ tournament }: Props) {
                               initialFocus
                               fromDate={new Date()}
                               toDate={new Date(form.watch("endDate"))}
-                              disabled={!isEditing}
+                              disabled
                             />
                           </PopoverContent>
                         </Popover>
@@ -252,7 +252,7 @@ function TournamentUpdateForm({ tournament }: Props) {
                                 "w-full justify-start text-left font-normal disabled:opacity-100",
                                 !field.value && "text-muted-foreground"
                               )}
-                              disabled={!isEditing}
+                              disabled
                             >
                               <CalendarIcon className="mr-2 h-4 w-4" />
                               {field.value ? (
@@ -268,8 +268,8 @@ function TournamentUpdateForm({ tournament }: Props) {
                               selected={field.value}
                               onSelect={field.onChange}
                               initialFocus
-                              fromDate={new Date(form.watch("startDate"))}
-                              disabled={!isEditing}
+                              fromDate={new Date(form.watch("endDate"))}
+                              disabled
                             />
                           </PopoverContent>
                         </Popover>
@@ -297,7 +297,7 @@ function TournamentUpdateForm({ tournament }: Props) {
                                   "w-full justify-start text-left font-normal disabled:opacity-100",
                                   !field.value && "text-muted-foreground"
                                 )}
-                                disabled={!isEditing}
+                                disabled
                               >
                                 <Clock className="mr-2 h-4 w-4" />
                                 {field.value ? (
@@ -336,7 +336,7 @@ function TournamentUpdateForm({ tournament }: Props) {
                                   "w-full justify-start text-left font-normal disabled:opacity-100 disabled:cursor-not-allowed",
                                   !field.value && "text-muted-foreground"
                                 )}
-                                disabled={!isEditing}
+                                disabled
                               >
                                 <Clock className="mr-2 h-4 w-4" />
                                 {field.value ? (
@@ -371,31 +371,13 @@ function TournamentUpdateForm({ tournament }: Props) {
                         <b className="text-primary font-light"> *</b>
                       </FormLabel>
                       <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <SelectTrigger
-                            className={cn(
-                              "w-full text-muted-foreground disabled:opacity-100",
-                              field.value && "text-foreground"
-                            )}
-                            iconType={"location"}
-                            disabled={!isEditing}
-                          >
-                            <SelectValue placeholder="Choose a venue" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {venues.map((venue) => (
-                              <SelectItem
-                                key={uuidv4()}
-                                value={String(venue.name)}
-                              >
-                                {venue.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <Input
+                          placeholder="Kigali Convention Center"
+                          className="disabled:opacity-100"
+                          value={field.value}
+                          onChange={field.onChange}
+                          disabled={!isEditing}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -411,26 +393,13 @@ function TournamentUpdateForm({ tournament }: Props) {
                         <b className="text-primary font-light"> *</b>
                       </FormLabel>
                       <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <SelectTrigger
-                            className={cn(
-                              "w-full text-muted-foreground disabled:opacity-100",
-                              field.value && "text-foreground"
-                            )}
-                            iconType={"collapsible"}
-                            disabled={!isEditing}
-                          >
-                            <SelectValue placeholder="Choose a venue" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="light">Hakidu</SelectItem>
-                            <SelectItem value="dark">Guy 2</SelectItem>
-                            <SelectItem value="system">Guy 3</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <Input
+                          placeholder="Kigali Convention Center"
+                          className="disabled:opacity-100"
+                          value={field.value}
+                          onChange={field.onChange}
+                          disabled={!isEditing}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -440,7 +409,7 @@ function TournamentUpdateForm({ tournament }: Props) {
                   <FormLabel className="text-foreground font-medium">
                     Tournament Fees
                   </FormLabel>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-3 gap-2 mt-2">
                     <FormField
                       control={form.control}
                       name="fees_currency"
@@ -482,7 +451,10 @@ function TournamentUpdateForm({ tournament }: Props) {
                               placeholder="50000"
                               value={Number(field.value)}
                               className="disabled:opacity-100"
-                              onChange={field.onChange}
+                              onChange={(e) => {
+                                field.onChange(Number(e.target.value));
+                              }}
+                              type="number"
                               disabled={!isEditing}
                             />
                           </FormControl>
@@ -507,31 +479,13 @@ function TournamentUpdateForm({ tournament }: Props) {
                         <b className="text-primary font-light"> *</b>
                       </FormLabel>
                       <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <SelectTrigger
-                            className={cn(
-                              "w-full text-muted-foreground disabled:opacity-100",
-                              field.value && "text-foreground"
-                            )}
-                            iconType={"collapsible"}
-                            disabled={!isEditing}
-                          >
-                            <SelectValue placeholder="choose..." />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {formats.map((format) => (
-                              <SelectItem
-                                key={uuidv4()}
-                                value={String(format.formatId)}
-                              >
-                                {format.formatName}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <Input
+                          placeholder="Kigali Convention Center"
+                          className="disabled:opacity-100"
+                          value={field.value}
+                          onChange={field.onChange}
+                          disabled={!isEditing}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -565,6 +519,13 @@ function TournamentUpdateForm({ tournament }: Props) {
                             <SelectItem value="1">Round 1</SelectItem>
                             <SelectItem value="2">Round 2</SelectItem>
                             <SelectItem value="3">Round 3</SelectItem>
+                            <SelectItem value="4">Round 4</SelectItem>
+                            <SelectItem value="5">Round 5</SelectItem>
+                            <SelectItem value="6">Round 6</SelectItem>
+                            <SelectItem value="7">Round 7</SelectItem>
+                            <SelectItem value="8">Round 8</SelectItem>
+                            <SelectItem value="9">Round 9</SelectItem>
+                            <SelectItem value="10">Round 10</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -600,6 +561,13 @@ function TournamentUpdateForm({ tournament }: Props) {
                             <SelectItem value="1">Round 1</SelectItem>
                             <SelectItem value="2">Round 2</SelectItem>
                             <SelectItem value="3">Round 3</SelectItem>
+                            <SelectItem value="4">Round 4</SelectItem>
+                            <SelectItem value="5">Round 5</SelectItem>
+                            <SelectItem value="6">Round 6</SelectItem>
+                            <SelectItem value="7">Round 7</SelectItem>
+                            <SelectItem value="8">Round 8</SelectItem>
+                            <SelectItem value="9">Round 9</SelectItem>
+                            <SelectItem value="10">Round 10</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -637,6 +605,8 @@ function TournamentUpdateForm({ tournament }: Props) {
                             <SelectItem value="1">1 Per Debate</SelectItem>
                             <SelectItem value="2">2 Per Debate</SelectItem>
                             <SelectItem value="3">3 Per Debate</SelectItem>
+                            <SelectItem value="4">4 Per Debate</SelectItem>
+                            <SelectItem value="5">5 Per Debate</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -672,6 +642,8 @@ function TournamentUpdateForm({ tournament }: Props) {
                             <SelectItem value="1">1 Per Debate</SelectItem>
                             <SelectItem value="2">2 Per Debate</SelectItem>
                             <SelectItem value="3">3 Per Debate</SelectItem>
+                            <SelectItem value="4">4 Per Debate</SelectItem>
+                            <SelectItem value="5">5 Per Debate</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>

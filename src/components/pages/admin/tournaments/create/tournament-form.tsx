@@ -133,6 +133,13 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
         setLoading(false);
         form.reset();
 
+        form.setValue("name", "");
+        form.setValue("format", "");
+        form.setValue("location", "");
+        form.setValue("coordinator", "");
+        form.setValue("no_of_elimination_judges", "");
+        form.setValue("no_of_judges", "");
+
         toast({
           variant: "success",
           title: "Success",

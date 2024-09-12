@@ -34,28 +34,28 @@ export function getMenuList(pathname: string): Group[] {
         {
           href: `/schools/profile`,
           label: "Profile",
-          active: pathname === `/schools/profile`,
+          active: pathname === `/students/profile`,
           icon: List,
           submenus: [],
         },
-        // {
-        //   href: `/schools/profile/account`,
-        //   label: "Account",
-        //   active: pathname === `/schools/profile/account`,
-        //   icon: Mails,
-        //   submenus: [],
-        // },
+        {
+          href: `/students/profile/account`,
+          label: "Account",
+          active: pathname === `/students/profile/account`,
+          icon: Mails,
+          submenus: [],
+        },
         {
           href: `/schools/profile/passwords`,
           label: "Passwords",
-          active: pathname === `/schools/profile/passwords`,
+          active: pathname === `/students/profile/passwords`,
           icon: Users,
           submenus: [],
         },
         {
           href: `/schools/profile/two-factor`,
           label: "2 Factor Authentication",
-          active: pathname === `/schools/profile/two-factor`,
+          active: pathname === `/students/profile/two-factor`,
           icon: KeyRound,
           submenus: [],
         }

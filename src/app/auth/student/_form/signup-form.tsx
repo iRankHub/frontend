@@ -83,7 +83,7 @@ const SignupForm = () => {
       password: data.password,
       userRole: UserRole.STUDENT,
       dob: format(data.dob, "yyyy-MM-dd"),
-      grade: "Grade-4",
+      grade: data.grade,
       schoolId: Number(data.school),
     })
       .then((res) => {
@@ -91,7 +91,7 @@ const SignupForm = () => {
           toast({
             variant: "success",
             title: "Success",
-            description: res.message,
+            description: "Signup successful. Please wait for approval",
             action: (
               <ToastAction altText="Close" className="bg-primary text-white">
                 Close
@@ -354,10 +354,50 @@ const SignupForm = () => {
                       </FormControl>
                       <SelectContent>
                         {schools.map((school) => (
-                          <SelectItem value={String(school.schoolid)} key={school.schoolid}>
+                          <SelectItem
+                            value={String(school.schoolid)}
+                            key={school.schoolid}
+                          >
                             {school.name}
                           </SelectItem>
                         ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="grade"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Grade
+                      <b className="text-primary font-light"> *</b>
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select grade..." />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Grade 1">Grade 1</SelectItem>
+                        <SelectItem value="Grade 2">Grade 2</SelectItem>
+                        <SelectItem value="Grade 3">Grade 3</SelectItem>
+                        <SelectItem value="Grade 4">Grade 4</SelectItem>
+                        <SelectItem value="Grade 5">Grade 5</SelectItem>
+                        <SelectItem value="Grade 6">Grade 6</SelectItem>
+                        <SelectItem value="Grade 7">Grade 7</SelectItem>
+                        <SelectItem value="Grade 8">Grade 8</SelectItem>
+                        <SelectItem value="Grade 9">Grade 9</SelectItem>
+                        <SelectItem value="Grade 10">Grade 10</SelectItem>
+                        <SelectItem value="Grade 11">Grade 11</SelectItem>
+                        <SelectItem value="Grade 12">Grade 12</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -383,6 +423,7 @@ const SignupForm = () => {
                     const formErrors = await validateFormData([
                       "dob",
                       "school",
+                      "grade",
                     ]);
                     if (formErrors && activeStep < 3) {
                       setActiveStep(activeStep + 1);

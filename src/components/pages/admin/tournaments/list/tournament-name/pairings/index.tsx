@@ -87,9 +87,11 @@ const PairingsTable: FC<PairingsTableProps> = ({
     };
     generatePairings(options)
       .then((res) => {
+        console.log(res)
         setPairings(res);
       })
       .catch((err) => {
+        console.log(err)
         console.error(err.message);
       });
   };
@@ -101,8 +103,6 @@ const PairingsTable: FC<PairingsTableProps> = ({
   
 
   const handleUpdate = () => {
-    console.log(originalData);
-    
   }
   return (
     <div className="w-full rounded-md overflow-hidden">

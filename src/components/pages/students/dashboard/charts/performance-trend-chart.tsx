@@ -85,7 +85,7 @@ export function PerformanceTrendChart() {
         </Select>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="w-full max-h-96 mt-5">
+        <ChartContainer config={chartConfig} className="w-full max-h-52 mt-5">
           <AreaChart
             accessibilityLayer
             data={chartData}

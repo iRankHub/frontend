@@ -26,6 +26,7 @@ import TournamentCard from "./tournament-card";
 import FormatCard from "./formats-card";
 import { cn } from "@/lib/utils";
 import LeagueCard from "./leagues-card";
+import FeedbackCard from "./feedback-card";
 
 interface DataCardViewProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -36,7 +37,7 @@ interface DataCardViewProps<TData, TValue> {
   setTournaments?: React.Dispatch<React.SetStateAction<Tournament.AsObject[]>>;
   setFormats?: (formats: TournamentFormat.AsObject[]) => void;
   setLeagues?: (leagues: League.AsObject[]) => void;
-  cardType: "tournament" | "format" | "league";
+  cardType: "tournament" | "format" | "league" | "feedback";
 }
 
 export function DataCardView<TData, TValue>({
@@ -105,6 +106,19 @@ export function DataCardView<TData, TValue>({
         return (
           <LeagueCard key={row.id} row={row} getColumnValue={getColumnValue} />
         );
+      case "feedback":
+        return (
+          <FeedbackCard
+            key={row.id}
+            row={row}
+            getColumnValue={getColumnValue}
+            setTournaments={
+              setTournaments as React.Dispatch<
+                React.SetStateAction<Tournament.AsObject[]>
+              >
+            }
+          />
+        );
     }
   };
   return (
@@ -120,7 +134,9 @@ export function DataCardView<TData, TValue>({
               cardType === "format" &&
                 "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5",
               cardType === "league" &&
-                "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5"
+                "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5",
+              cardType === "feedback" &&
+                "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 xl:gap-16"
             )}
           >
             {table.getRowModel().rows.map((row) => handleCardDisplay(row))}

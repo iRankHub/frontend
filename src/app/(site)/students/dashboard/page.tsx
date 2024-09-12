@@ -64,7 +64,7 @@ function Dashboard() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbPage>Volunteer</BreadcrumbPage>
+                <BreadcrumbPage>Student</BreadcrumbPage>
               </BreadcrumbItem>
               <BreadcrumbSeparator>
                 <Slash className="-rotate-12" />

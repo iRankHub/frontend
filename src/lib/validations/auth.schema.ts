@@ -48,6 +48,9 @@ export const StudentSchema = z.object({
     school: z.string().min(1, {
         message: "School is required!"
     }),
+    grade: z.string().min(1, {
+        message: "Grade is required!"
+    }),
     email: z.string().email(),
     password: z.
         string()

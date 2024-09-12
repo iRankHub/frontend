@@ -120,7 +120,7 @@ const TournamentCard = ({
     return `${month}/${day}`;
   };
 
-  return (
+  return userRole === "admin" ? (
     <Card key={row.id} className="p-3">
       <div className="flex items-center justify-between gap-5">
         <div className="flex items-center gap-3">
@@ -219,6 +219,112 @@ const TournamentCard = ({
             </DialogFooter>
           </DialogContent>
         </Dialog>
+      </div>
+      <div className="w-full my-3">
+        <div className="flex items-center gap-4 justify-between mb-3">
+          <div className="flex flex-col">
+            <span className="text-xs font-medium text-muted-text">Venue</span>
+            <small className="text-secondary-foreground text-xs font-medium">
+              {getColumnValue(row, "location")}
+            </small>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xs font-medium text-muted-text">Date</span>
+            <small className="text-secondary-foreground text-xs font-medium">
+              {formatDate(getColumnValue(row, "startDate"))} -{" "}
+              {formatDate(getColumnValue(row, "endDate"))}
+            </small>
+          </div>
+        </div>
+        <Separator />
+        <div className="flex items-center gap-4 justify-between mt-3">
+          <div className="flex gap-10 items-center">
+            <div className="flex flex-col">
+              <span className="text-xs font-medium text-primary">
+                {getColumnValue(row, "numberOfSchools")}
+              </span>
+              <small className="text-secondary-foreground text-xs font-medium">
+                Schools
+              </small>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs font-medium text-primary">
+                {getColumnValue(row, "numberOfTeams")}
+              </span>
+              <small className="text-secondary-foreground text-xs font-medium">
+                Teams
+              </small>
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xs font-medium text-primary">
+              {getColumnValue(row, "coordinatorName")}
+            </span>
+            <small className="text-secondary-foreground text-xs font-medium">
+              coordinator
+            </small>
+          </div>
+        </div>
+      </div>
+    </Card>
+  ) : (
+    <Card key={row.id} className="p-3">
+      <div className="flex items-center justify-between gap-5">
+        <div className="flex items-center gap-3">
+          <Button
+            size={"sm"}
+            className="bg-[#FFD19A] w-8 h-8 text-sm cursor-default hover:bg-[#FFD19A]"
+          >
+            <div className="bg-primary rounded p-0.5 m-0 leading-3 text-white text-xs">
+              IC
+            </div>
+          </Button>
+          <h3 className="text-sm font-medium">{getColumnValue(row, "name")}</h3>
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button
+              type="button"
+              size={"sm"}
+              className="gap-2 text-sm font-semibold p-0 w-6 h-6 bg-transparent hover:bg-transparent hover:text-foreground group"
+            >
+              <Icons.ellipsisVertical className="text-muted-foreground w-34 h-4 group-hover:text-foreground" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem className="p-0">
+              <Button
+                type="button"
+                size={"sm"}
+                variant={"link"}
+                className="w-full justify-start text-foreground hover:no-underline"
+              >
+                <Link
+                  className="no-underline"
+                  href={`${linkRole()}/${getColumnValue(row, "tournamentId")}`}
+                >
+                  Go To Tournament
+                </Link>
+              </Button>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="p-0">
+              <Button
+                type="button"
+                size={"sm"}
+                variant={"link"}
+                className="w-full justify-start text-foreground hover:no-underline"
+              >
+                <Link
+                  className="no-underline"
+                  href={`${linkRole()}/${getColumnValue(row, "tournamentId")}/feedback`}
+                >
+                  Feedback
+                </Link>
+              </Button>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <div className="w-full my-3">
         <div className="flex items-center gap-4 justify-between mb-3">

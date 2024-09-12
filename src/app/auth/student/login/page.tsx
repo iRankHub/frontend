@@ -12,12 +12,12 @@ function Login() {
   return (
     <div className="grid lg:grid-cols-2 gap-5 p-5 px-10 min-h-screen bg-white">
       <div className="max-w-md mx-auto w-full flex flex-col">
-        <div className="relative w-60 h-60">
+        <div className="relative w-40 h-40">
           <Image src="/static/images/logo-big.png" alt="IDebate Logo" fill />
         </div>
         <div className="flex flex-col gap-4 mb-5">
-          <h3 className="font-bold text-[#0C1421] text-3xl">Welcome Back 👋</h3>
-          <p className="text-xl text-darkBlue leading-8 ">
+          <h3 className="font-bold text-[#0C1421] text-xl">Welcome Back 👋</h3>
+          <p className="text-lg text-darkBlue">
             Sign in to track your progress and dominate the competition!
           </p>
         </div>
