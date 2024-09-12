@@ -2813,7 +2813,9 @@ proto.tournament_management.GetTournamentStatsResponse.prototype.toObject = func
 proto.tournament_management.GetTournamentStatsResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     totalTournaments: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    upcomingTournaments: jspb.Message.getFieldWithDefault(msg, 2, 0)
+    upcomingTournaments: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    totalPercentageChange: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    upcomingPercentageChange: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -2858,6 +2860,14 @@ proto.tournament_management.GetTournamentStatsResponse.deserializeBinaryFromRead
       var value = /** @type {number} */ (reader.readInt32());
       msg.setUpcomingTournaments(value);
       break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTotalPercentageChange(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUpcomingPercentageChange(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -2901,6 +2911,20 @@ proto.tournament_management.GetTournamentStatsResponse.serializeBinaryToWriter =
       f
     );
   }
+  f = message.getTotalPercentageChange();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getUpcomingPercentageChange();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
 };
 
 
@@ -2937,6 +2961,42 @@ proto.tournament_management.GetTournamentStatsResponse.prototype.getUpcomingTour
  */
 proto.tournament_management.GetTournamentStatsResponse.prototype.setUpcomingTournaments = function(value) {
   return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional string total_percentage_change = 3;
+ * @return {string}
+ */
+proto.tournament_management.GetTournamentStatsResponse.prototype.getTotalPercentageChange = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.GetTournamentStatsResponse} returns this
+ */
+proto.tournament_management.GetTournamentStatsResponse.prototype.setTotalPercentageChange = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string upcoming_percentage_change = 4;
+ * @return {string}
+ */
+proto.tournament_management.GetTournamentStatsResponse.prototype.getUpcomingPercentageChange = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.GetTournamentStatsResponse} returns this
+ */
+proto.tournament_management.GetTournamentStatsResponse.prototype.setUpcomingPercentageChange = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
 };
 
 

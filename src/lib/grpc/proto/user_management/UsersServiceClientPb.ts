@@ -899,6 +899,49 @@ export class UserManagementServiceClient {
     this.methodDescriptorGetAllUsers);
   }
 
+  methodDescriptorGetUserStatistics = new grpcWeb.MethodDescriptor(
+    '/user_management.UserManagementService/GetUserStatistics',
+    grpcWeb.MethodType.UNARY,
+    user_management_users_pb.GetUserStatisticsRequest,
+    user_management_users_pb.GetUserStatisticsResponse,
+    (request: user_management_users_pb.GetUserStatisticsRequest) => {
+      return request.serializeBinary();
+    },
+    user_management_users_pb.GetUserStatisticsResponse.deserializeBinary
+  );
+
+  getUserStatistics(
+    request: user_management_users_pb.GetUserStatisticsRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<user_management_users_pb.GetUserStatisticsResponse>;
+
+  getUserStatistics(
+    request: user_management_users_pb.GetUserStatisticsRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.GetUserStatisticsResponse) => void): grpcWeb.ClientReadableStream<user_management_users_pb.GetUserStatisticsResponse>;
+
+  getUserStatistics(
+    request: user_management_users_pb.GetUserStatisticsRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.GetUserStatisticsResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/user_management.UserManagementService/GetUserStatistics',
+        request,
+        metadata || {},
+        this.methodDescriptorGetUserStatistics,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/user_management.UserManagementService/GetUserStatistics',
+    request,
+    metadata || {},
+    this.methodDescriptorGetUserStatistics);
+  }
+
   methodDescriptorGetVolunteersAndAdmins = new grpcWeb.MethodDescriptor(
     '/user_management.UserManagementService/GetVolunteersAndAdmins',
     grpcWeb.MethodType.UNARY,

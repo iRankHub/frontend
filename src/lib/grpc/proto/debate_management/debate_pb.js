@@ -4094,8 +4094,9 @@ proto.debate_management.UpdateJudgeRequest.toObject = function(includeInstance, 
   var f, obj = {
     judgeId: jspb.Message.getFieldWithDefault(msg, 1, 0),
     tournamentId: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    roomAssignmentsMap: (f = msg.getRoomAssignmentsMap()) ? f.toObject(includeInstance, undefined) : [],
-    token: jspb.Message.getFieldWithDefault(msg, 4, "")
+    preliminaryMap: (f = msg.getPreliminaryMap()) ? f.toObject(includeInstance, proto.debate_management.RoomInfo.toObject) : [],
+    eliminationMap: (f = msg.getEliminationMap()) ? f.toObject(includeInstance, proto.debate_management.RoomInfo.toObject) : [],
+    token: jspb.Message.getFieldWithDefault(msg, 5, "")
   };
 
   if (includeInstance) {
@@ -4141,12 +4142,18 @@ proto.debate_management.UpdateJudgeRequest.deserializeBinaryFromReader = functio
       msg.setTournamentId(value);
       break;
     case 3:
-      var value = msg.getRoomAssignmentsMap();
+      var value = msg.getPreliminaryMap();
       reader.readMessage(value, function(message, reader) {
-        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readInt32, jspb.BinaryReader.prototype.readInt32, null, 0, 0);
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readInt32, jspb.BinaryReader.prototype.readMessage, proto.debate_management.RoomInfo.deserializeBinaryFromReader, 0, new proto.debate_management.RoomInfo());
          });
       break;
     case 4:
+      var value = msg.getEliminationMap();
+      reader.readMessage(value, function(message, reader) {
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readInt32, jspb.BinaryReader.prototype.readMessage, proto.debate_management.RoomInfo.deserializeBinaryFromReader, 0, new proto.debate_management.RoomInfo());
+         });
+      break;
+    case 5:
       var value = /** @type {string} */ (reader.readString());
       msg.setToken(value);
       break;
@@ -4193,14 +4200,18 @@ proto.debate_management.UpdateJudgeRequest.serializeBinaryToWriter = function(me
       f
     );
   }
-  f = message.getRoomAssignmentsMap(true);
+  f = message.getPreliminaryMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(3, writer, jspb.BinaryWriter.prototype.writeInt32, jspb.BinaryWriter.prototype.writeInt32);
+    f.serializeBinary(3, writer, jspb.BinaryWriter.prototype.writeInt32, jspb.BinaryWriter.prototype.writeMessage, proto.debate_management.RoomInfo.serializeBinaryToWriter);
+  }
+  f = message.getEliminationMap(true);
+  if (f && f.getLength() > 0) {
+    f.serializeBinary(4, writer, jspb.BinaryWriter.prototype.writeInt32, jspb.BinaryWriter.prototype.writeMessage, proto.debate_management.RoomInfo.serializeBinaryToWriter);
   }
   f = message.getToken();
   if (f.length > 0) {
     writer.writeString(
-      4,
+      5,
       f
     );
   }
@@ -4244,15 +4255,15 @@ proto.debate_management.UpdateJudgeRequest.prototype.setTournamentId = function(
 
 
 /**
- * map<int32, int32> room_assignments = 3;
+ * map<int32, RoomInfo> preliminary = 3;
  * @param {boolean=} opt_noLazyCreate Do not create the map if
  * empty, instead returning `undefined`
- * @return {!jspb.Map<number,number>}
+ * @return {!jspb.Map<number,!proto.debate_management.RoomInfo>}
  */
-proto.debate_management.UpdateJudgeRequest.prototype.getRoomAssignmentsMap = function(opt_noLazyCreate) {
-  return /** @type {!jspb.Map<number,number>} */ (
+proto.debate_management.UpdateJudgeRequest.prototype.getPreliminaryMap = function(opt_noLazyCreate) {
+  return /** @type {!jspb.Map<number,!proto.debate_management.RoomInfo>} */ (
       jspb.Message.getMapField(this, 3, opt_noLazyCreate,
-      null));
+      proto.debate_management.RoomInfo));
 };
 
 
@@ -4260,18 +4271,41 @@ proto.debate_management.UpdateJudgeRequest.prototype.getRoomAssignmentsMap = fun
  * Clears values from the map. The map will be non-null.
  * @return {!proto.debate_management.UpdateJudgeRequest} returns this
  */
-proto.debate_management.UpdateJudgeRequest.prototype.clearRoomAssignmentsMap = function() {
-  this.getRoomAssignmentsMap().clear();
+proto.debate_management.UpdateJudgeRequest.prototype.clearPreliminaryMap = function() {
+  this.getPreliminaryMap().clear();
   return this;
 };
 
 
 /**
- * optional string token = 4;
+ * map<int32, RoomInfo> elimination = 4;
+ * @param {boolean=} opt_noLazyCreate Do not create the map if
+ * empty, instead returning `undefined`
+ * @return {!jspb.Map<number,!proto.debate_management.RoomInfo>}
+ */
+proto.debate_management.UpdateJudgeRequest.prototype.getEliminationMap = function(opt_noLazyCreate) {
+  return /** @type {!jspb.Map<number,!proto.debate_management.RoomInfo>} */ (
+      jspb.Message.getMapField(this, 4, opt_noLazyCreate,
+      proto.debate_management.RoomInfo));
+};
+
+
+/**
+ * Clears values from the map. The map will be non-null.
+ * @return {!proto.debate_management.UpdateJudgeRequest} returns this
+ */
+proto.debate_management.UpdateJudgeRequest.prototype.clearEliminationMap = function() {
+  this.getEliminationMap().clear();
+  return this;
+};
+
+
+/**
+ * optional string token = 5;
  * @return {string}
  */
 proto.debate_management.UpdateJudgeRequest.prototype.getToken = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
@@ -4280,7 +4314,7 @@ proto.debate_management.UpdateJudgeRequest.prototype.getToken = function() {
  * @return {!proto.debate_management.UpdateJudgeRequest} returns this
  */
 proto.debate_management.UpdateJudgeRequest.prototype.setToken = function(value) {
-  return jspb.Message.setProto3StringField(this, 4, value);
+  return jspb.Message.setProto3StringField(this, 5, value);
 };
 
 

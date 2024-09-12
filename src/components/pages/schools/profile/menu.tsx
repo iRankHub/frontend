@@ -16,17 +16,6 @@ export function Menu() {
   const [isOpen] = useState(true);
   return (
     <div className="hidden xl:inline w-full max-w-xs">
-      {/* <div className="flex items-center gap-3 mt-2 h-auto">
-        <Command className="rounded-md w-full border">
-          <CommandInput
-            placeholder="Search leagues..."
-            className="ring-0 h-8"
-          />
-        </Command>
-      </div>
-      <p className="text-muted-foreground text-xs italic font-medium mt-1">
-        20 records found
-      </p> */}
       <ScrollArea className="[&>div>div[style]]:!block">
         <nav className="mt-8 h-full w-full">
           <ul className="flex flex-col min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1 px-2">
@@ -40,7 +29,7 @@ export function Menu() {
                 </p>
                 {menus.map(
                   ({ href, label, icon: Icon, active, submenus }, index) =>
-                    submenus.length === 0 ? (
+                    submenus.length === 0 && (
                       <div className="w-full mb-2.5" key={index}>
                         <Button
                           variant={active ? "ghost" : "outline"}
@@ -66,16 +55,6 @@ export function Menu() {
                             </p>
                           </Link>
                         </Button>
-                      </div>
-                    ) : (
-                      <div className="w-full mb-2.5" key={index}>
-                        <CollapseMenuButton
-                          icon={Icon}
-                          label={label}
-                          active={active}
-                          submenus={submenus}
-                          isOpen={isOpen}
-                        />
                       </div>
                     )
                 )}

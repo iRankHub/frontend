@@ -59,7 +59,7 @@ function Page() {
   return (
     <ContentLayout title="format">
       <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-5">
-        <h3 className="text-lg text-primary font-bold">Settings</h3>
+        <h3 className="text-lg text-primary font-bold">Settingsss</h3>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>

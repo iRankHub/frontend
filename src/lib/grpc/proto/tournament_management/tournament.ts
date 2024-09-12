@@ -969,6 +969,8 @@ export namespace tournament_management {
         constructor(data?: any[] | {
             total_tournaments?: number;
             upcoming_tournaments?: number;
+            total_percentage_change?: string;
+            upcoming_percentage_change?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -978,6 +980,12 @@ export namespace tournament_management {
                 }
                 if ("upcoming_tournaments" in data && data.upcoming_tournaments != undefined) {
                     this.upcoming_tournaments = data.upcoming_tournaments;
+                }
+                if ("total_percentage_change" in data && data.total_percentage_change != undefined) {
+                    this.total_percentage_change = data.total_percentage_change;
+                }
+                if ("upcoming_percentage_change" in data && data.upcoming_percentage_change != undefined) {
+                    this.upcoming_percentage_change = data.upcoming_percentage_change;
                 }
             }
         }
@@ -993,9 +1001,23 @@ export namespace tournament_management {
         set upcoming_tournaments(value: number) {
             pb_1.Message.setField(this, 2, value);
         }
+        get total_percentage_change() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set total_percentage_change(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get upcoming_percentage_change() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set upcoming_percentage_change(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
         static fromObject(data: {
             total_tournaments?: number;
             upcoming_tournaments?: number;
+            total_percentage_change?: string;
+            upcoming_percentage_change?: string;
         }): GetTournamentStatsResponse {
             const message = new GetTournamentStatsResponse({});
             if (data.total_tournaments != null) {
@@ -1004,18 +1026,32 @@ export namespace tournament_management {
             if (data.upcoming_tournaments != null) {
                 message.upcoming_tournaments = data.upcoming_tournaments;
             }
+            if (data.total_percentage_change != null) {
+                message.total_percentage_change = data.total_percentage_change;
+            }
+            if (data.upcoming_percentage_change != null) {
+                message.upcoming_percentage_change = data.upcoming_percentage_change;
+            }
             return message;
         }
         toObject() {
             const data: {
                 total_tournaments?: number;
                 upcoming_tournaments?: number;
+                total_percentage_change?: string;
+                upcoming_percentage_change?: string;
             } = {};
             if (this.total_tournaments != null) {
                 data.total_tournaments = this.total_tournaments;
             }
             if (this.upcoming_tournaments != null) {
                 data.upcoming_tournaments = this.upcoming_tournaments;
+            }
+            if (this.total_percentage_change != null) {
+                data.total_percentage_change = this.total_percentage_change;
+            }
+            if (this.upcoming_percentage_change != null) {
+                data.upcoming_percentage_change = this.upcoming_percentage_change;
             }
             return data;
         }
@@ -1027,6 +1063,10 @@ export namespace tournament_management {
                 writer.writeInt32(1, this.total_tournaments);
             if (this.upcoming_tournaments != 0)
                 writer.writeInt32(2, this.upcoming_tournaments);
+            if (this.total_percentage_change.length)
+                writer.writeString(3, this.total_percentage_change);
+            if (this.upcoming_percentage_change.length)
+                writer.writeString(4, this.upcoming_percentage_change);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1041,6 +1081,12 @@ export namespace tournament_management {
                         break;
                     case 2:
                         message.upcoming_tournaments = reader.readInt32();
+                        break;
+                    case 3:
+                        message.total_percentage_change = reader.readString();
+                        break;
+                    case 4:
+                        message.upcoming_percentage_change = reader.readString();
                         break;
                     default: reader.skipField();
                 }

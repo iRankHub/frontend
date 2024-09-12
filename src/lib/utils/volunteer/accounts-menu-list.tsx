@@ -35,23 +35,30 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: "",
       menus: [
         {
-          href: `/admin/profile`,
+          href: `/volunteers/profile`,
           label: "Profile",
-          active: pathname === `/admin/profile`,
+          active: pathname === `/volunteers/profile`,
           icon: List,
           submenus: [],
         },
         {
-          href: `/admin/profile/passwords`,
+          href: `/volunteers/profile/account`,
+          label: "Account",
+          active: pathname === `/volunteers/profile/account`,
+          icon: List,
+          submenus: [],
+        },
+        {
+          href: `/volunteers/profile/passwords`,
           label: "Passwords",
-          active: pathname === `/admin/profile/passwords`,
+          active: pathname === `/volunteers/profile/passwords`,
           icon: Users,
           submenus: [],
         },
         {
-          href: `/admin/profile/two-factor`,
+          href: `/volunteers/profile/two-factor`,
           label: "2 Factor Authentication",
-          active: pathname === `/admin/profile/two-factor`,
+          active: pathname === `/volunteers/profile/two-factor`,
           icon: KeyRound,
           submenus: [],
         }

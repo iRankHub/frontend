@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { ChevronDown, Dot, LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -39,6 +38,8 @@ interface CollapseMenuButtonProps {
   active: boolean;
   submenus: Submenu[];
   isOpen: boolean | undefined;
+  isExpanded: boolean;
+  onToggle: () => void;
 }
 
 export function CollapseMenuButton({
@@ -47,13 +48,15 @@ export function CollapseMenuButton({
   active,
   submenus,
   isOpen,
+  isExpanded,
+  onToggle,
 }: CollapseMenuButtonProps) {
   const isSubmenuActive = submenus.some((submenu) => submenu.active);
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(isSubmenuActive);
+
   return isOpen ? (
     <Collapsible
-      open={isCollapsed}
-      onOpenChange={setIsCollapsed}
+      open={isExpanded}
+      onOpenChange={onToggle}
       className="w-full"
     >
       <CollapsibleTrigger
@@ -63,14 +66,17 @@ export function CollapseMenuButton({
         <Button
           variant={active ? "secondary" : "ghost"}
           className={cn(
-            "w-full justify-start h-10 mb-1 text-foreground font-medium hover:bg-input border-none ring-0 hover:text-foreground p-0",
-            !active ? "bg-transparent" : "bg-input"
+            "w-full justify-start h-10 mb-1 text-background dark:text-foreground font-bold group",
+            active && "bg-[#F5AE73] hover:bg-[#F5AE73]"
           )}
         >
           <div className="w-full items-center flex justify-between">
             <div className="flex items-center">
-              <span className="mr-2 bg-input p-2 rounded-lg text-primary">
-                <Icon size={18} />
+              <span className="mr-4">
+                <Icon
+                  size={18}
+                  className={cn(!active && "group-hover:text-primary")}
+                />
               </span>
               <p
                 className={cn(
@@ -86,7 +92,7 @@ export function CollapseMenuButton({
             </div>
             <div
               className={cn(
-                "whitespace-nowrap mr-2",
+                "whitespace-nowrap",
                 isOpen
                   ? "translate-x-0 opacity-100"
                   : "-translate-x-96 opacity-0"
@@ -109,8 +115,8 @@ export function CollapseMenuButton({
             key={index}
             variant={active ? "secondary" : "ghost"}
             className={cn(
-              "w-full justify-start h-10 mb-1 text-foreground group hover:bg-input",
-              active && "bg-input hover:bg-input"
+              "w-full justify-start h-10 mb-1 text-background dark:text-foreground font-bold group",
+              active && "bg-[#F5AE73] hover:bg-[#F5AE73]"
             )}
             asChild
           >
@@ -118,6 +124,7 @@ export function CollapseMenuButton({
               <span className="mr-4 ml-2">
                 <Dot
                   size={18}
+                  className={cn(!active && "group-hover:text-primary")}
                 />
               </span>
               <p
@@ -125,7 +132,8 @@ export function CollapseMenuButton({
                   "max-w-[170px] truncate",
                   isOpen
                     ? "translate-x-0 opacity-100"
-                    : "-translate-x-96 opacity-0"
+                    : "-translate-x-96 opacity-0",
+                  !active && "group-hover:text-primary"
                 )}
               >
                 {label}
@@ -144,8 +152,8 @@ export function CollapseMenuButton({
               <Button
                 variant={active ? "secondary" : "ghost"}
                 className={cn(
-                  "w-full justify-start h-10 mb-1 text-background font-bold group",
-                  active && "bg-input"
+                  "w-full justify-start h-10 mb-1 text-background dark:text-foreground font-bold group",
+                  active && "bg-[#F5AE73] hover:bg-[#F5AE73]"
                 )}
               >
                 <div className="w-full items-center flex justify-between">
@@ -172,7 +180,7 @@ export function CollapseMenuButton({
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <DropdownMenuContent side="right" sideOffset={25} align="start">
+      <DropdownMenuContent side="right" sideOffset={25} align="start" onCloseAutoFocus={onToggle}>
         <DropdownMenuLabel className="max-w-[190px] truncate">
           {label}
         </DropdownMenuLabel>

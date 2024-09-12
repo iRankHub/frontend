@@ -9,7 +9,6 @@ import Image from "next/image";
 
 export function Sidebar() {
   const sidebar = useStore(useSidebarToggle, (state) => state);
-
   if (!sidebar) return null;
 
   return (
@@ -28,7 +27,7 @@ export function Sidebar() {
           variant="link"
           asChild
         >
-          <Link href="/schools/dashboard" className="flex items-center gap-4">
+          <Link href="/admin/dashboard" className="flex items-center gap-4">
             <Image
               src="/static/images/logo-big.png"
               alt="logo"

@@ -31,9 +31,12 @@ import {
   Judge,
   RoomInfo,
 } from "@/lib/grpc/proto/debate_management/debate_pb";
-import { GetTournamentJudgeProps, GetTournamentRoomsProps } from "@/types/pairings";
+import {
+  GetTournamentJudgeProps,
+  GetTournamentRoomsProps,
+} from "@/types/pairings";
 import { useUserStore } from "@/stores/auth/auth.store";
-import { getTournamentJudge } from "@/core/debates/judges";
+import { getTournamentJudge, updateTournamentJudge } from "@/core/debates/judges";
 import { useParams } from "next/navigation";
 import { getTournamentRooms } from "@/core/debates/rooms";
 
@@ -169,7 +172,6 @@ const RoomAssignmentPanel = ({ row }: { row: Judge.AsObject }) => {
     };
     getTournamentJudge(options)
       .then((res) => {
-        console.log(res)
         setJudge(res);
       })
       .catch((err) => {
@@ -178,23 +180,41 @@ const RoomAssignmentPanel = ({ row }: { row: Judge.AsObject }) => {
       .finally(() => {
         setIsGettingJudge(false);
       });
-      
-      const roomsOptions: GetTournamentRoomsProps = {
-        token: user.token,
-        tournament_id: Number(tournament_id)
-      };
-      getTournamentRooms(roomsOptions)
-        .then((res) => {
-          setRooms(res);
-        })
-        .catch((err) => {
-          console.error(err.message);
-        });
+
+    const roomsOptions: GetTournamentRoomsProps = {
+      token: user.token,
+      tournament_id: Number(tournament_id),
+    };
+    getTournamentRooms(roomsOptions)
+      .then((res) => {
+        setRooms(res);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
   }, [row.judgeId, user, tournament_id]);
 
   const RoundRooms: React.FC<RoundRoomsProps> = ({ roomInfo }) => {
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState("");
+    const [selectedRoom, setSelectedRoom] = useState<string>(roomInfo[1].roomName || "");
+
+    const handleRoomSelect = (roomId: string) => {
+      setSelectedRoom(roomId);
+      setOpen(false);
+      // Update the judge state with the new room selection
+      setJudge(prevJudge => {
+        if (!prevJudge) return prevJudge;
+        const updatedJudge = { ...prevJudge };
+        const roundType = roomInfo[0] <= prevJudge.preliminaryMap.length ? 'preliminaryMap' : 'eliminationMap';
+        const roundIndex = roomInfo[0] - (roundType === 'eliminationMap' ? prevJudge.preliminaryMap.length : 0) - 1;
+        
+        updatedJudge[roundType] = updatedJudge[roundType].map((round, index) => 
+          index === roundIndex ? [round[0], { ...round[1], roomName: rooms.find(r => r.roomId === Number(roomId))?.roomName || "" }] : round
+        );
+        
+        return updatedJudge;
+      });
+    };
 
     return (
       <Popover open={open} onOpenChange={setOpen} modal>
@@ -206,15 +226,12 @@ const RoomAssignmentPanel = ({ row }: { row: Judge.AsObject }) => {
             className="w-[150px] justify-between disabled:opacity-100"
             disabled={!isEditing}
           >
-            {value ? 
-              rooms.find((room) => room.roomId === Number(value))?.roomName
-            : roomInfo[1]["roomName"] || "Select room..."}
+            {selectedRoom || "Select room..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-full p-0">
           <Command>
-            {/* <CommandInput placeholder="Search room..." /> */}
             <CommandList>
               <CommandEmpty>No room found.</CommandEmpty>
               <CommandGroup className="w-[150px]">
@@ -223,15 +240,14 @@ const RoomAssignmentPanel = ({ row }: { row: Judge.AsObject }) => {
                     key={room.roomId}
                     value={String(room.roomId)}
                     onSelect={(currentValue) => {
-                      setValue(currentValue === value ? "" : currentValue);
-                      setOpen(false);
+                      handleRoomSelect(currentValue === selectedRoom ? "" : currentValue);
                     }}
                     className="w-full"
                   >
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value === String(room.roomId) ? "opacity-100" : "opacity-0"
+                        selectedRoom === String(room.roomId) ? "opacity-100" : "opacity-0"
                       )}
                     />
                     {room.roomName}
@@ -254,7 +270,7 @@ const RoomAssignmentPanel = ({ row }: { row: Judge.AsObject }) => {
             ? `Round ${index + 1}`
             : `${getEliminationRoundName(index + 1)}`}
         </span>
-        <RoundRooms roomInfo={round} />
+        <RoundRooms roomInfo={[index + 1, round[1]]} />
       </div>
     ));
   };
@@ -262,6 +278,75 @@ const RoomAssignmentPanel = ({ row }: { row: Judge.AsObject }) => {
   const getEliminationRoundName = (index: number): string => {
     const names = ["Quarter Finals", "Semi Finals", "Finals"];
     return names[index - 1] || `Round ${index}`;
+  };
+
+  const updateJudge = async () => {
+    if (!user || !judge) return;
+
+    const preliminary: Record<string, { room_id: number }> = {};
+    const elimination: Record<string, { room_id: number }> = {};
+
+    // Populate preliminary rounds
+    judge.preliminaryMap.forEach((round, index) => {
+      const roomId = rooms.find(
+        (room) => room.roomName === round[1].roomName
+      )?.roomId;
+      if (roomId) {
+        preliminary[String(index + 1)] = { room_id: roomId };
+      }
+    });
+
+    // Populate elimination rounds
+    judge.eliminationMap.forEach((round, index) => {
+      const roomId = rooms.find(
+        (room) => room.roomName === round[1].roomName
+      )?.roomId;
+      if (roomId) {
+        elimination[String(index + 1)] = { room_id: roomId };
+      }
+    });
+
+    const updateData = {
+      judge_id: row.judgeId,
+      tournament_id: Number(tournament_id),
+      preliminary,
+      elimination,
+      token: user.token,
+    };
+
+    try {
+      console.log("updateData", updateData);
+
+      await updateTournamentJudge(updateData as any)
+        .then((res) => {
+          console.log("res", res);
+          refreshJudgeData();
+          setIsEditing(false);
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
+      
+    } catch (error) {
+      console.error("Error updating judge:", error);
+    }
+  };
+
+  // Add this function to refresh judge data after update
+  const refreshJudgeData = () => {
+    if (!user) return;
+    const options: GetTournamentJudgeProps = {
+      token: user.token,
+      judge_id: row.judgeId,
+      tournament_id: Number(tournament_id),
+    };
+    getTournamentJudge(options)
+      .then((res) => {
+        setJudge(res);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
   };
 
   return (
@@ -333,7 +418,7 @@ const RoomAssignmentPanel = ({ row }: { row: Judge.AsObject }) => {
                   variant="default"
                   size="sm"
                   className="hover:bg-primary"
-                  onClick={() => setIsEditing(false)}
+                  onClick={updateJudge}
                 >
                   Save Changes
                   <span className="sr-only">Save Changes</span>

@@ -258,8 +258,6 @@ export namespace user_management {
         constructor(data?: any[] | {
             users?: UserSummary[];
             totalCount?: number;
-            approvedUsersCount?: number;
-            recentSignupsCount?: number;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
@@ -269,12 +267,6 @@ export namespace user_management {
                 }
                 if ("totalCount" in data && data.totalCount != undefined) {
                     this.totalCount = data.totalCount;
-                }
-                if ("approvedUsersCount" in data && data.approvedUsersCount != undefined) {
-                    this.approvedUsersCount = data.approvedUsersCount;
-                }
-                if ("recentSignupsCount" in data && data.recentSignupsCount != undefined) {
-                    this.recentSignupsCount = data.recentSignupsCount;
                 }
             }
         }
@@ -290,23 +282,9 @@ export namespace user_management {
         set totalCount(value: number) {
             pb_1.Message.setField(this, 2, value);
         }
-        get approvedUsersCount() {
-            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
-        }
-        set approvedUsersCount(value: number) {
-            pb_1.Message.setField(this, 3, value);
-        }
-        get recentSignupsCount() {
-            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
-        }
-        set recentSignupsCount(value: number) {
-            pb_1.Message.setField(this, 4, value);
-        }
         static fromObject(data: {
             users?: ReturnType<typeof UserSummary.prototype.toObject>[];
             totalCount?: number;
-            approvedUsersCount?: number;
-            recentSignupsCount?: number;
         }): GetAllUsersResponse {
             const message = new GetAllUsersResponse({});
             if (data.users != null) {
@@ -315,32 +293,18 @@ export namespace user_management {
             if (data.totalCount != null) {
                 message.totalCount = data.totalCount;
             }
-            if (data.approvedUsersCount != null) {
-                message.approvedUsersCount = data.approvedUsersCount;
-            }
-            if (data.recentSignupsCount != null) {
-                message.recentSignupsCount = data.recentSignupsCount;
-            }
             return message;
         }
         toObject() {
             const data: {
                 users?: ReturnType<typeof UserSummary.prototype.toObject>[];
                 totalCount?: number;
-                approvedUsersCount?: number;
-                recentSignupsCount?: number;
             } = {};
             if (this.users != null) {
                 data.users = this.users.map((item: UserSummary) => item.toObject());
             }
             if (this.totalCount != null) {
                 data.totalCount = this.totalCount;
-            }
-            if (this.approvedUsersCount != null) {
-                data.approvedUsersCount = this.approvedUsersCount;
-            }
-            if (this.recentSignupsCount != null) {
-                data.recentSignupsCount = this.recentSignupsCount;
             }
             return data;
         }
@@ -352,10 +316,6 @@ export namespace user_management {
                 writer.writeRepeatedMessage(1, this.users, (item: UserSummary) => item.serialize(writer));
             if (this.totalCount != 0)
                 writer.writeInt32(2, this.totalCount);
-            if (this.approvedUsersCount != 0)
-                writer.writeInt32(3, this.approvedUsersCount);
-            if (this.recentSignupsCount != 0)
-                writer.writeInt32(4, this.recentSignupsCount);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -371,12 +331,6 @@ export namespace user_management {
                     case 2:
                         message.totalCount = reader.readInt32();
                         break;
-                    case 3:
-                        message.approvedUsersCount = reader.readInt32();
-                        break;
-                    case 4:
-                        message.recentSignupsCount = reader.readInt32();
-                        break;
                     default: reader.skipField();
                 }
             }
@@ -387,6 +341,301 @@ export namespace user_management {
         }
         static deserializeBinary(bytes: Uint8Array): GetAllUsersResponse {
             return GetAllUsersResponse.deserialize(bytes);
+        }
+    }
+    export class GetUserStatisticsRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            token?: string;
+        }): GetUserStatisticsRequest {
+            const message = new GetUserStatisticsRequest({});
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                token?: string;
+            } = {};
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.token.length)
+                writer.writeString(1, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetUserStatisticsRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetUserStatisticsRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetUserStatisticsRequest {
+            return GetUserStatisticsRequest.deserialize(bytes);
+        }
+    }
+    export class GetUserStatisticsResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            admin_count?: number;
+            school_count?: number;
+            student_count?: number;
+            volunteer_count?: number;
+            approved_count?: number;
+            new_registrations_count?: number;
+            new_registrations_percentage_change?: string;
+            approved_users_percentage_change?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("admin_count" in data && data.admin_count != undefined) {
+                    this.admin_count = data.admin_count;
+                }
+                if ("school_count" in data && data.school_count != undefined) {
+                    this.school_count = data.school_count;
+                }
+                if ("student_count" in data && data.student_count != undefined) {
+                    this.student_count = data.student_count;
+                }
+                if ("volunteer_count" in data && data.volunteer_count != undefined) {
+                    this.volunteer_count = data.volunteer_count;
+                }
+                if ("approved_count" in data && data.approved_count != undefined) {
+                    this.approved_count = data.approved_count;
+                }
+                if ("new_registrations_count" in data && data.new_registrations_count != undefined) {
+                    this.new_registrations_count = data.new_registrations_count;
+                }
+                if ("new_registrations_percentage_change" in data && data.new_registrations_percentage_change != undefined) {
+                    this.new_registrations_percentage_change = data.new_registrations_percentage_change;
+                }
+                if ("approved_users_percentage_change" in data && data.approved_users_percentage_change != undefined) {
+                    this.approved_users_percentage_change = data.approved_users_percentage_change;
+                }
+            }
+        }
+        get admin_count() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set admin_count(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get school_count() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set school_count(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get student_count() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set student_count(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get volunteer_count() {
+            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+        }
+        set volunteer_count(value: number) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get approved_count() {
+            return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
+        }
+        set approved_count(value: number) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        get new_registrations_count() {
+            return pb_1.Message.getFieldWithDefault(this, 6, 0) as number;
+        }
+        set new_registrations_count(value: number) {
+            pb_1.Message.setField(this, 6, value);
+        }
+        get new_registrations_percentage_change() {
+            return pb_1.Message.getFieldWithDefault(this, 7, "") as string;
+        }
+        set new_registrations_percentage_change(value: string) {
+            pb_1.Message.setField(this, 7, value);
+        }
+        get approved_users_percentage_change() {
+            return pb_1.Message.getFieldWithDefault(this, 8, "") as string;
+        }
+        set approved_users_percentage_change(value: string) {
+            pb_1.Message.setField(this, 8, value);
+        }
+        static fromObject(data: {
+            admin_count?: number;
+            school_count?: number;
+            student_count?: number;
+            volunteer_count?: number;
+            approved_count?: number;
+            new_registrations_count?: number;
+            new_registrations_percentage_change?: string;
+            approved_users_percentage_change?: string;
+        }): GetUserStatisticsResponse {
+            const message = new GetUserStatisticsResponse({});
+            if (data.admin_count != null) {
+                message.admin_count = data.admin_count;
+            }
+            if (data.school_count != null) {
+                message.school_count = data.school_count;
+            }
+            if (data.student_count != null) {
+                message.student_count = data.student_count;
+            }
+            if (data.volunteer_count != null) {
+                message.volunteer_count = data.volunteer_count;
+            }
+            if (data.approved_count != null) {
+                message.approved_count = data.approved_count;
+            }
+            if (data.new_registrations_count != null) {
+                message.new_registrations_count = data.new_registrations_count;
+            }
+            if (data.new_registrations_percentage_change != null) {
+                message.new_registrations_percentage_change = data.new_registrations_percentage_change;
+            }
+            if (data.approved_users_percentage_change != null) {
+                message.approved_users_percentage_change = data.approved_users_percentage_change;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                admin_count?: number;
+                school_count?: number;
+                student_count?: number;
+                volunteer_count?: number;
+                approved_count?: number;
+                new_registrations_count?: number;
+                new_registrations_percentage_change?: string;
+                approved_users_percentage_change?: string;
+            } = {};
+            if (this.admin_count != null) {
+                data.admin_count = this.admin_count;
+            }
+            if (this.school_count != null) {
+                data.school_count = this.school_count;
+            }
+            if (this.student_count != null) {
+                data.student_count = this.student_count;
+            }
+            if (this.volunteer_count != null) {
+                data.volunteer_count = this.volunteer_count;
+            }
+            if (this.approved_count != null) {
+                data.approved_count = this.approved_count;
+            }
+            if (this.new_registrations_count != null) {
+                data.new_registrations_count = this.new_registrations_count;
+            }
+            if (this.new_registrations_percentage_change != null) {
+                data.new_registrations_percentage_change = this.new_registrations_percentage_change;
+            }
+            if (this.approved_users_percentage_change != null) {
+                data.approved_users_percentage_change = this.approved_users_percentage_change;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.admin_count != 0)
+                writer.writeInt64(1, this.admin_count);
+            if (this.school_count != 0)
+                writer.writeInt64(2, this.school_count);
+            if (this.student_count != 0)
+                writer.writeInt64(3, this.student_count);
+            if (this.volunteer_count != 0)
+                writer.writeInt64(4, this.volunteer_count);
+            if (this.approved_count != 0)
+                writer.writeInt64(5, this.approved_count);
+            if (this.new_registrations_count != 0)
+                writer.writeInt64(6, this.new_registrations_count);
+            if (this.new_registrations_percentage_change.length)
+                writer.writeString(7, this.new_registrations_percentage_change);
+            if (this.approved_users_percentage_change.length)
+                writer.writeString(8, this.approved_users_percentage_change);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetUserStatisticsResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetUserStatisticsResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.admin_count = reader.readInt64();
+                        break;
+                    case 2:
+                        message.school_count = reader.readInt64();
+                        break;
+                    case 3:
+                        message.student_count = reader.readInt64();
+                        break;
+                    case 4:
+                        message.volunteer_count = reader.readInt64();
+                        break;
+                    case 5:
+                        message.approved_count = reader.readInt64();
+                        break;
+                    case 6:
+                        message.new_registrations_count = reader.readInt64();
+                        break;
+                    case 7:
+                        message.new_registrations_percentage_change = reader.readString();
+                        break;
+                    case 8:
+                        message.approved_users_percentage_change = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetUserStatisticsResponse {
+            return GetUserStatisticsResponse.deserialize(bytes);
         }
     }
     export class UserSummary extends pb_1.Message {
@@ -7726,6 +7975,15 @@ export namespace user_management {
                 responseSerialize: (message: GetAllUsersResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => GetAllUsersResponse.deserialize(new Uint8Array(bytes))
             },
+            GetUserStatistics: {
+                path: "/user_management.UserManagementService/GetUserStatistics",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GetUserStatisticsRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetUserStatisticsRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: GetUserStatisticsResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => GetUserStatisticsResponse.deserialize(new Uint8Array(bytes))
+            },
             GetVolunteersAndAdmins: {
                 path: "/user_management.UserManagementService/GetVolunteersAndAdmins",
                 requestStream: false,
@@ -7793,6 +8051,7 @@ export namespace user_management {
         abstract GetStudents(call: grpc_1.ServerUnaryCall<GetStudentsRequest, GetStudentsResponse>, callback: grpc_1.sendUnaryData<GetStudentsResponse>): void;
         abstract GetVolunteers(call: grpc_1.ServerUnaryCall<GetVolunteersRequest, GetVolunteersResponse>, callback: grpc_1.sendUnaryData<GetVolunteersResponse>): void;
         abstract GetAllUsers(call: grpc_1.ServerUnaryCall<GetAllUsersRequest, GetAllUsersResponse>, callback: grpc_1.sendUnaryData<GetAllUsersResponse>): void;
+        abstract GetUserStatistics(call: grpc_1.ServerUnaryCall<GetUserStatisticsRequest, GetUserStatisticsResponse>, callback: grpc_1.sendUnaryData<GetUserStatisticsResponse>): void;
         abstract GetVolunteersAndAdmins(call: grpc_1.ServerUnaryCall<GetVolunteersAndAdminsRequest, GetVolunteersAndAdminsResponse>, callback: grpc_1.sendUnaryData<GetVolunteersAndAdminsResponse>): void;
         abstract GetSchoolsNoAuth(call: grpc_1.ServerUnaryCall<GetSchoolsNoAuthRequest, GetSchoolsNoAuthResponse>, callback: grpc_1.sendUnaryData<GetSchoolsNoAuthResponse>): void;
         abstract InitiatePasswordUpdate(call: grpc_1.ServerUnaryCall<InitiatePasswordUpdateRequest, InitiatePasswordUpdateResponse>, callback: grpc_1.sendUnaryData<InitiatePasswordUpdateResponse>): void;
@@ -7862,6 +8121,9 @@ export namespace user_management {
         };
         GetAllUsers: GrpcUnaryServiceInterface<GetAllUsersRequest, GetAllUsersResponse> = (message: GetAllUsersRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetAllUsersResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetAllUsersResponse>, callback?: grpc_1.requestCallback<GetAllUsersResponse>): grpc_1.ClientUnaryCall => {
             return super.GetAllUsers(message, metadata, options, callback);
+        };
+        GetUserStatistics: GrpcUnaryServiceInterface<GetUserStatisticsRequest, GetUserStatisticsResponse> = (message: GetUserStatisticsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetUserStatisticsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetUserStatisticsResponse>, callback?: grpc_1.requestCallback<GetUserStatisticsResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetUserStatistics(message, metadata, options, callback);
         };
         GetVolunteersAndAdmins: GrpcUnaryServiceInterface<GetVolunteersAndAdminsRequest, GetVolunteersAndAdminsResponse> = (message: GetVolunteersAndAdminsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetVolunteersAndAdminsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetVolunteersAndAdminsResponse>, callback?: grpc_1.requestCallback<GetVolunteersAndAdminsResponse>): grpc_1.ClientUnaryCall => {
             return super.GetVolunteersAndAdmins(message, metadata, options, callback);

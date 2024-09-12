@@ -5,6 +5,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
+import { cn } from "@/lib/utils";
+import { Inter } from "next/font/google";
+import { Textarea } from "@/components/ui/textarea";
 import SidePanel, {
   Panelheader,
 } from "@/components/layout/admin-panel/side-panel";
@@ -15,35 +18,24 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Inter } from "next/font/google";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useState } from "react";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
-import { BallotElimination } from "@/components/tables/data/schema";
+import { Ballot } from "@/lib/grpc/proto/debate_management/debate_pb";
 
 const inter = Inter({
   weight: "600",
   subsets: ["latin"],
 });
 
-export const columns: ColumnDef<BallotElimination>[] = [
+export const columns: ColumnDef<Ballot.AsObject>[] = [
   {
-    accessorKey: "room",
+    accessorKey: "roomName",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Room" />
     ),
     cell: ({ row }) => (
       <div className="flex space-x-2">
         <span className="max-w-[200px] truncate font-medium">
-          {row.getValue("room")}
+          {row.getValue("roomName")}
         </span>
       </div>
     ),
@@ -71,20 +63,20 @@ export const columns: ColumnDef<BallotElimination>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "status",
+    accessorKey: "recordingStatus",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Rec. Status" />
+      <DataTableColumnHeader column={column} title="Rec. Status" className="justify-center" />
     ),
     cell: ({ row }) => {
-      const status = row.getValue("status");
+      const status = row.getValue("recordingStatus");
       const variant =
-        status === "Recorded"
+        status === "recorded"
           ? "bg-green-200 text-success hover:bg-green-200"
           : "bg-secondary text-foreground hover:bg-secondary";
       return (
-        <div className="flex w-[100px] items-center justify-center">
+        <div className="w-full pr-5 text-center">
           <Badge variant="default" className={cn("rounded-md", variant)}>
-            {row.getValue("status")}
+            {row.getValue("recordingStatus")}
           </Badge>
         </div>
       );
@@ -97,76 +89,20 @@ export const columns: ColumnDef<BallotElimination>[] = [
       <DataTableColumnHeader
         column={column}
         title="Actions"
-        className="justify-center"
+        className="text-center"
         buttonClassName="ml-0"
       />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex items-center space-x-1 justify-center">
+        <div className="flex w-full h-6 items-center justify-center">
           <Sheet>
             <SheetTrigger>
               <Button
                 type="button"
                 variant={"secondary"}
                 size={"icon"}
-                className="bg-transparent w-6 h-6 m-0"
-              >
-                <Icons.view className="w-5 h-5 text-info" />
-              </Button>
-            </SheetTrigger>
-            <SidePanel>
-              <Panelheader>
-                <div className="flex items-center gap-1">
-                  <h3 className="text-sm font-bold capitalize">
-                    {row.getValue("room")}
-                  </h3>
-                  <Button
-                    type="button"
-                    className="rounded-full m-0 p-0 w-6 h-6 hover:bg-primary"
-                    size={"icon"}
-                  >
-                    <Icons.pencilLine className="w-4 h-4" />
-                  </Button>
-                </div>
-              </Panelheader>
-              <div className="w-full h-[calc(100%_-_70px)] p-5 flex flex-col">
-                <div className="w-full flex-1">
-                  <div className="w-full leading-6 mb-3">
-                    <h3 className="text-xl font-extrabold text-foreground">
-                      Verdict
-                    </h3>
-                    <p
-                      className={cn(
-                        "text-sm text-muted-foreground font-medium",
-                        inter
-                      )}
-                    >
-                      Winner
-                    </p>
-                  </div>
-                  <JudgeVerdict />
-                </div>
-                <div className="flex items-center justify-between ga-3">
-                  <Button variant={"outline"} className="px-5">
-                    Go Back
-                    <span className="sr-only">Go Back</span>
-                  </Button>
-                  <Button variant={"default"} className="hover:bg-primary">
-                    Continue
-                    <span className="sr-only">Continue</span>
-                  </Button>
-                </div>
-              </div>
-            </SidePanel>
-          </Sheet>
-          <Sheet>
-            <SheetTrigger>
-              <Button
-                type="button"
-                variant={"secondary"}
-                size={"icon"}
-                className="bg-transparent w-6 h-6 m-0"
+                className="w-full bg-transparent hover:bg-transparent m-0"
               >
                 <Icons.pencilLine className="w-5 h-5 text-primary" />
               </Button>
@@ -175,7 +111,7 @@ export const columns: ColumnDef<BallotElimination>[] = [
               <Panelheader>
                 <div className="flex items-center gap-1">
                   <h3 className="text-sm font-bold capitalize">
-                    {row.getValue("room")}
+                    {row.getValue("roomName")}
                   </h3>
                   <Button
                     type="button"
@@ -221,50 +157,10 @@ export const columns: ColumnDef<BallotElimination>[] = [
       );
     },
     enableHiding: false,
+    enableSorting: false,
     maxSize: 20,
   },
 ];
-
-const JudgeVerdict = () => {
-  const [selected, setSelected] = useState<string>();
-  return (
-    <div className="w-full">
-      <Select onValueChange={setSelected} defaultValue={selected}>
-        <SelectTrigger
-          className={cn(
-            "w-full text-muted-foreground border-t-0 border-r-0 border-l-0 rounded-none border-b ring-offset-0 outline-none ring-0 focus:ring-transparent",
-            selected && "text-foreground font-semibold"
-          )}
-          iconType={"collapsible"}
-        >
-          <SelectValue placeholder="Choose winner..." />
-        </SelectTrigger>
-        <SelectContent defaultValue="Affirmative (Green Hills Team 1)">
-          <SelectItem
-            value="Affirmative (Green Hills Team 1)"
-            className="cursor-pointer hover:bg-accent"
-          >
-            Affirmative (Green Hills Team 1)
-          </SelectItem>
-          <SelectItem
-            value="Negative (Green Hills Team 2)"
-            className="cursor-pointer hover:bg-accent"
-          >
-            Negative (Green Hills Team 2)
-          </SelectItem>
-        </SelectContent>
-      </Select>
-      <div className="flex flex-col gap-3 mt-3">
-        <span
-          className={cn("text-sm text-muted-foreground font-medium", inter)}
-        >
-          Why are they the winners?
-        </span>
-        <Textarea placeholder="Add comment" className="resize-none" />
-      </div>
-    </div>
-  );
-};
 
 const Speaker = () => {
   return (

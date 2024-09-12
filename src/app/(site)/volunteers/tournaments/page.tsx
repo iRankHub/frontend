@@ -27,10 +27,10 @@ function Page() {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink
-                href="/admin/dashboard"
+                href="/volunteers/dashboard"
                 className="text-muted-foreground"
               >
-                Admin
+                Volunteer
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator>
@@ -40,15 +40,7 @@ function Page() {
               <BreadcrumbPage
                 className="text-muted-foreground"
               >
-                Tournament
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator>
-              <Slash className="-rotate-12" />
-            </BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbPage className="text-primary">
-                List
+                Tournaments
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>

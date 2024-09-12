@@ -5,7 +5,7 @@ import { useStore } from "@/hooks/use-store";
 import { Sidebar } from "./sidebar";
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
 
-export default function StudentsPanelLayout({
+export default function PanelLayout({
   children,
 }: {
   children: React.ReactNode;

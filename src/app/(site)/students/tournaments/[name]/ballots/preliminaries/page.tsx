@@ -68,7 +68,7 @@ function Page({ params }: Iparms) {
             </BreadcrumbSeparator>
             <BreadcrumbItem>
               <BreadcrumbLink
-                href="/students/tournaments/list"
+                href="/students/tournaments"
                 className="text-muted-foreground text-base"
               >
                 Tournament

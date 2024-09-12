@@ -63,7 +63,7 @@ function Page({ params }: Iparms) {
                     href="/schools/dashboard"
                     className="text-muted-foreground text-base"
                   >
-                    Dashboard
+                    School
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator>
@@ -75,17 +75,6 @@ function Page({ params }: Iparms) {
                     className="text-muted-foreground text-base"
                   >
                     Tournament
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator>
-                  <Slash className="-rotate-12" />
-                </BreadcrumbSeparator>
-                <BreadcrumbItem>
-                  <BreadcrumbLink
-                    href="/schools/tournaments/list"
-                    className="text-muted-foreground text-base"
-                  >
-                    List
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator>

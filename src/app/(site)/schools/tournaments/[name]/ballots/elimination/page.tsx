@@ -54,17 +54,6 @@ function Page({ params }: Iparms) {
               <Slash className="-rotate-12" />
             </BreadcrumbSeparator>
             <BreadcrumbItem>
-              <BreadcrumbLink
-                href="/schools/tournaments/list"
-                className="text-muted-foreground text-base"
-              >
-                List
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator>
-              <Slash className="-rotate-12" />
-            </BreadcrumbSeparator>
-            <BreadcrumbItem>
               <BreadcrumbPage className="text-primary text-base">
                 {routeName}
               </BreadcrumbPage>

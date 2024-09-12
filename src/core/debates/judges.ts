@@ -1,5 +1,5 @@
-import { GetJudgeRequest, GetJudgeResponse, GetJudgesRequest, Judge } from "@/lib/grpc/proto/debate_management/debate_pb";
-import { GetTournamentJudgeProps, GetTournamentJudgesProps } from "@/types/pairings";
+import { GetJudgeRequest, GetJudgeResponse, GetJudgesRequest, Judge, RoomInfo, UpdateJudgeRequest, UpdateJudgeResponse } from "@/lib/grpc/proto/debate_management/debate_pb";
+import { GetTournamentJudgeProps, GetTournamentJudgesProps, UpdateJudgeData } from "@/types/pairings";
 import { debateClient } from "../grpc-clients";
 
 export const getTournamentJudges = async ({
@@ -33,6 +33,47 @@ export const getTournamentJudge = async ({
         request.setTournamentId(tournament_id);
 
         debateClient.getJudge(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const updateTournamentJudge = async ({
+    token,
+    judge_id,
+    tournament_id,
+    elimination,
+    preliminary
+}: UpdateJudgeData): Promise<UpdateJudgeResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new UpdateJudgeRequest();
+        request.setToken(token);
+        request.setJudgeId(judge_id);
+        request.setTournamentId(tournament_id);
+
+        const eliminationMap = request.getEliminationMap();
+        Object.entries(elimination).forEach(([round, assignment]) => {
+            const room = new RoomInfo();
+            room.setRoomId(assignment.roomId);
+            room.setRoomName(assignment.roomName);
+            eliminationMap.set(Number(round), room);
+        });
+
+        // Set preliminary rounds
+        const preliminaryMap = request.getPreliminaryMap();
+        Object.entries(preliminary).forEach(([round, assignment]) => {
+            const room = new RoomInfo();
+            room.setRoomId(assignment.roomId);
+            room.setRoomName(assignment.roomName);
+            preliminaryMap.set(Number(round), room);
+        });
+
+
+        debateClient.updateJudge(request, {}, (err, response) => {
             if (err) {
                 reject(err);
             } else {

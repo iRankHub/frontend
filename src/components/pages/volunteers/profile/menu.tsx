@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
-import { CollapseMenuButton } from "@/components/layout/volunteer-panel/collapse-menu-button";
+import { CollapseMenuButton } from "@/components/layout/admin-panel/collapse-menu-button";
 import { getMenuList } from "@/lib/utils/volunteer/accounts-menu-list";
 
 export function Menu() {
@@ -40,7 +40,7 @@ export function Menu() {
                 </p>
                 {menus.map(
                   ({ href, label, icon: Icon, active, submenus }, index) =>
-                    submenus.length === 0 ? (
+                    submenus.length === 0 && (
                       <div className="w-full mb-2.5" key={index}>
                         <Button
                           variant={active ? "ghost" : "outline"}
@@ -66,16 +66,6 @@ export function Menu() {
                             </p>
                           </Link>
                         </Button>
-                      </div>
-                    ) : (
-                      <div className="w-full mb-2.5" key={index}>
-                        <CollapseMenuButton
-                          icon={Icon}
-                          label={label}
-                          active={active}
-                          submenus={submenus}
-                          isOpen={isOpen}
-                        />
                       </div>
                     )
                 )}

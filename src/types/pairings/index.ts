@@ -1,4 +1,4 @@
-import { Pairing } from "@/lib/grpc/proto/debate_management/debate_pb";
+import { Pairing, RoomInfo } from "@/lib/grpc/proto/debate_management/debate_pb";
 
 export interface GetPairingsProps {
     token: string;
@@ -26,6 +26,22 @@ export interface GetTournamentJudgeProps {
     token: string;
     judge_id: number;
     tournament_id: number;
+}
+
+interface RoomAssignment {
+    room_id: number;
+}
+
+interface RoundAssignments {
+    [round: string]: RoomInfo.AsObject;
+}
+
+export interface UpdateJudgeData {
+    judge_id: number;
+    tournament_id: number;
+    preliminary: RoundAssignments;
+    elimination: RoundAssignments;
+    token: string;
 }
 
 export interface GetTournamentRoomsProps {

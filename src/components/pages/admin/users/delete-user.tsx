@@ -104,6 +104,7 @@ export const DeleteUser = ({ userid }: DeleteUserProps) => {
             size={"sm"}
             variant={"outline"}
             className="max-w-32"
+            onClick={() => setOpen(false)}
           >
             Cancel
             <span className="sr-only">Cancel</span>

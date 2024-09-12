@@ -10,19 +10,29 @@ import React from "react";
 
 type Props = {
   usersList: UserSummary.AsObject[];
+  admin_count: number;
+  student_count: number;
+  school_count: number;
+  volunteer_count: number;
 };
 
-function UserCategoryOverview({ usersList }: Props) {
-  const adminUsersCount = usersList.filter((user) => user.userrole === "admin");
-  const volunteerUsersCount = usersList.filter(
-    (user) => user.userrole === "volunteer"
-  );
-  const studentUsersCount = usersList.filter(
-    (user) => user.userrole === "student"
-  );
-  const schoolUsersCount = usersList.filter(
-    (user) => user.userrole === "school"
-  );
+function UserCategoryOverview({
+  usersList,
+  admin_count,
+  school_count,
+  student_count,
+  volunteer_count,
+}: Props) {
+  // const adminUsersCount = usersList.filter((user) => user.userrole === "admin");
+  // const volunteerUsersCount = usersList.filter(
+  //   (user) => user.userrole === "volunteer"
+  // );
+  // const studentUsersCount = usersList.filter(
+  //   (user) => user.userrole === "student"
+  // );
+  // const schoolUsersCount = usersList.filter(
+  //   (user) => user.userrole === "school"
+  // );
 
   return (
     <div className="p-7 bg-background rounded-lg border-2 border-muted mb-3 md:mb-0">
@@ -37,10 +47,12 @@ function UserCategoryOverview({ usersList }: Props) {
                 className="m-1 text-primary"
               />
             </div>
-            <span className="text-sm text-[#3A3541] dark:text-foreground">Admins</span>
+            <span className="text-sm text-[#3A3541] dark:text-foreground">
+              Admins
+            </span>
           </div>
           <span className="text-sm text-[#3A3541] dark:text-foreground">
-            {adminUsersCount.length}
+            {admin_count}
           </span>
         </div>
         <div className="flex items-center justify-between gap-3">
@@ -52,10 +64,12 @@ function UserCategoryOverview({ usersList }: Props) {
                 className="m-1 text-primary"
               />
             </div>
-            <span className="text-sm text-[#3A3541] dark:text-foreground">Students</span>
+            <span className="text-sm text-[#3A3541] dark:text-foreground">
+              Students
+            </span>
           </div>
           <span className="text-sm text-[#3A3541] dark:text-foreground">
-            {studentUsersCount.length}
+            {student_count}
           </span>
         </div>
         <div className="flex items-center justify-between gap-3">
@@ -63,10 +77,12 @@ function UserCategoryOverview({ usersList }: Props) {
             <div className="bg-muted rounded">
               <School width={20} height={20} className="m-1 text-primary" />
             </div>
-            <span className="text-sm text-[#3A3541] dark:text-foreground">Schools</span>
+            <span className="text-sm text-[#3A3541] dark:text-foreground">
+              Schools
+            </span>
           </div>
           <span className="text-sm text-[#3A3541] dark:text-foreground">
-            {schoolUsersCount.length}
+            {school_count}
           </span>
         </div>
         <div className="flex items-center justify-between gap-3">
@@ -78,10 +94,12 @@ function UserCategoryOverview({ usersList }: Props) {
                 className="m-1 text-primary"
               />
             </div>
-            <span className="text-sm text-[#3A3541] dark:text-foreground">Volunteers</span>
+            <span className="text-sm text-[#3A3541] dark:text-foreground">
+              Volunteers
+            </span>
           </div>
           <span className="text-sm text-[#3A3541] dark:text-foreground">
-            {volunteerUsersCount.length}
+            {volunteer_count}
           </span>
         </div>
       </div>

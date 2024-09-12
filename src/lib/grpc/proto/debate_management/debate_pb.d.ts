@@ -413,8 +413,11 @@ export class UpdateJudgeRequest extends jspb.Message {
   getTournamentId(): number;
   setTournamentId(value: number): UpdateJudgeRequest;
 
-  getRoomAssignmentsMap(): jspb.Map<number, number>;
-  clearRoomAssignmentsMap(): UpdateJudgeRequest;
+  getPreliminaryMap(): jspb.Map<number, RoomInfo>;
+  clearPreliminaryMap(): UpdateJudgeRequest;
+
+  getEliminationMap(): jspb.Map<number, RoomInfo>;
+  clearEliminationMap(): UpdateJudgeRequest;
 
   getToken(): string;
   setToken(value: string): UpdateJudgeRequest;
@@ -431,7 +434,8 @@ export namespace UpdateJudgeRequest {
   export type AsObject = {
     judgeId: number,
     tournamentId: number,
-    roomAssignmentsMap: Array<[number, number]>,
+    preliminaryMap: Array<[number, RoomInfo.AsObject]>,
+    eliminationMap: Array<[number, RoomInfo.AsObject]>,
     token: string,
   }
 }

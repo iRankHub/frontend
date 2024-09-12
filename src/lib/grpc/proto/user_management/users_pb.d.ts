@@ -75,12 +75,6 @@ export class GetAllUsersResponse extends jspb.Message {
   getTotalcount(): number;
   setTotalcount(value: number): GetAllUsersResponse;
 
-  getApproveduserscount(): number;
-  setApproveduserscount(value: number): GetAllUsersResponse;
-
-  getRecentsignupscount(): number;
-  setRecentsignupscount(value: number): GetAllUsersResponse;
-
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetAllUsersResponse.AsObject;
   static toObject(includeInstance: boolean, msg: GetAllUsersResponse): GetAllUsersResponse.AsObject;
@@ -93,8 +87,70 @@ export namespace GetAllUsersResponse {
   export type AsObject = {
     usersList: Array<UserSummary.AsObject>,
     totalcount: number,
-    approveduserscount: number,
-    recentsignupscount: number,
+  }
+}
+
+export class GetUserStatisticsRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): GetUserStatisticsRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetUserStatisticsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetUserStatisticsRequest): GetUserStatisticsRequest.AsObject;
+  static serializeBinaryToWriter(message: GetUserStatisticsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetUserStatisticsRequest;
+  static deserializeBinaryFromReader(message: GetUserStatisticsRequest, reader: jspb.BinaryReader): GetUserStatisticsRequest;
+}
+
+export namespace GetUserStatisticsRequest {
+  export type AsObject = {
+    token: string,
+  }
+}
+
+export class GetUserStatisticsResponse extends jspb.Message {
+  getAdminCount(): number;
+  setAdminCount(value: number): GetUserStatisticsResponse;
+
+  getSchoolCount(): number;
+  setSchoolCount(value: number): GetUserStatisticsResponse;
+
+  getStudentCount(): number;
+  setStudentCount(value: number): GetUserStatisticsResponse;
+
+  getVolunteerCount(): number;
+  setVolunteerCount(value: number): GetUserStatisticsResponse;
+
+  getApprovedCount(): number;
+  setApprovedCount(value: number): GetUserStatisticsResponse;
+
+  getNewRegistrationsCount(): number;
+  setNewRegistrationsCount(value: number): GetUserStatisticsResponse;
+
+  getNewRegistrationsPercentageChange(): string;
+  setNewRegistrationsPercentageChange(value: string): GetUserStatisticsResponse;
+
+  getApprovedUsersPercentageChange(): string;
+  setApprovedUsersPercentageChange(value: string): GetUserStatisticsResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetUserStatisticsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetUserStatisticsResponse): GetUserStatisticsResponse.AsObject;
+  static serializeBinaryToWriter(message: GetUserStatisticsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetUserStatisticsResponse;
+  static deserializeBinaryFromReader(message: GetUserStatisticsResponse, reader: jspb.BinaryReader): GetUserStatisticsResponse;
+}
+
+export namespace GetUserStatisticsResponse {
+  export type AsObject = {
+    adminCount: number,
+    schoolCount: number,
+    studentCount: number,
+    volunteerCount: number,
+    approvedCount: number,
+    newRegistrationsCount: number,
+    newRegistrationsPercentageChange: string,
+    approvedUsersPercentageChange: string,
   }
 }
 

@@ -14,6 +14,8 @@ import {
     GetStudentsResponse,
     GetUserProfileRequest,
     GetUserProfileResponse,
+    GetUserStatisticsRequest,
+    GetUserStatisticsResponse,
     GetVolunteersAndAdminsRequest,
     GetVolunteersAndAdminsResponse,
     InitiatePasswordUpdateRequest,
@@ -109,6 +111,25 @@ export const getAllUsers = async ({
         });
     });
 };
+
+export const getUserStatistics = async ({
+    token,
+}: {
+    token: string;
+}): Promise<GetUserStatisticsResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new GetUserStatisticsRequest();
+        request.setToken(token);
+
+        userClient.getUserStatistics(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
 
 export const getStudents = async ({
     token,

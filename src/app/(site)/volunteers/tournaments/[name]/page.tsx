@@ -60,10 +60,10 @@ function Page({ params }: Iparms) {
               <BreadcrumbList>
                 <BreadcrumbItem>
                   <BreadcrumbLink
-                    href="/admin/dashboard"
+                    href="/volunteers/dashboard"
                     className="text-muted-foreground text-base"
                   >
-                    Admin
+                    Volunteer
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator>
@@ -71,21 +71,10 @@ function Page({ params }: Iparms) {
                 </BreadcrumbSeparator>
                 <BreadcrumbItem>
                   <BreadcrumbLink
-                    href="/admin/tournaments"
+                    href="/volunteers/tournaments"
                     className="text-muted-foreground text-base"
                   >
                     Tournament
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator>
-                  <Slash className="-rotate-12" />
-                </BreadcrumbSeparator>
-                <BreadcrumbItem>
-                  <BreadcrumbLink
-                    href="/admin/tournaments/list"
-                    className="text-muted-foreground text-base"
-                  >
-                    List
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator>

@@ -52,59 +52,48 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
     await schoolLogin({ emailOrId: data.id, password: data.password })
       .then((res) => {
         if (res.success) {
-          toast({
-            variant: "success",
-            title: "Success",
-            description:
-              "The schools Dashboard is currently going throught maintenance. Please check back later.",
-            action: (
-              <ToastAction altText="Close" className="bg-primary text-white">
-                Close
-              </ToastAction>
-            ),
-          });
-          // form.reset();
-          // if (res.status !== "pending") {
-          //   toast({
-          //     variant: "success",
-          //     title: "Success",
-          //     description: res.message,
-          //     action: (
-          //       <ToastAction altText="Close" className="bg-primary text-white">
-          //         Close
-          //       </ToastAction>
-          //     ),
-          //   });
+          form.reset();
+          if (res.status !== "pending") {
+            toast({
+              variant: "success",
+              title: "Success",
+              description: res.message,
+              action: (
+                <ToastAction altText="Close" className="bg-primary text-white">
+                  Close
+                </ToastAction>
+              ),
+            });
 
-            // const role = Roles.SCHOOL;
-            // const user: AuthStateUser = {
-            //   userId: res.userid,
-              // name: res.username,
-            //   token: res.token,
-            //   status: "idle",
-            //   requiredPasswordReset: res.requirePasswordReset,
-            //   requireTwoFactor: res.requireTwoFactor,
-            // };
+            const role = Roles.SCHOOL;
+            const user: AuthStateUser = {
+              userId: res.userid,
+              name: res.username,
+              token: res.token,
+              status: "idle",
+              requiredPasswordReset: res.requirePasswordReset,
+              requireTwoFactor: res.requireTwoFactor,
+            };
 
-          //   if (res.requireTwoFactor) {
-          //     router.push("/auth/2fa");
-          //   } else {
-          //     authLogin(user, role);
-          //     router.push("/schools/dashboard");
-          //   }
-          // } else {
-          //   toast({
-          //     variant: "success",
-          //     title: "Success",
-          //     description:
-          //       "Your account is pending approval. You will be notified once your account is approved.",
-          //     action: (
-          //       <ToastAction altText="Close" className="bg-primary text-white">
-          //         Close
-          //       </ToastAction>
-          //     ),
-          //   });
-          // }
+            if (res.requireTwoFactor) {
+              router.push("/auth/2fa");
+            } else {
+              authLogin(user, role);
+              router.push("/schools/dashboard");
+            }
+          } else {
+            toast({
+              variant: "success",
+              title: "Success",
+              description:
+                "Your account is pending approval. You will be notified once your account is approved.",
+              action: (
+                <ToastAction altText="Close" className="bg-primary text-white">
+                  Close
+                </ToastAction>
+              ),
+            });
+          }
         } else {
           toast({
             variant: "destructive",

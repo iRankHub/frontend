@@ -68,20 +68,6 @@ const SignupForm = ({ activeStep, setActiveStep }: SignupFormProps) => {
   const [isPending, setIsPending] = React.useState(false);
   const [openCountries, setOpenCountries] = React.useState(false);
   const { toast } = useToast();
-  // const [school, setSchool] = React.useState<School.AsObject[]>([]);
-
-  // React.useEffect(() => {
-  //   getSchoolsNoAuth({
-  //     pageSize: 100,
-  //     page: 1,
-  //   })
-  //     .then((res) => {
-  //       setSchool(res.schoolsList);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err.message);
-  //     });
-  // }, []);
 
   const steps = [1, 2, 3, 4];
 

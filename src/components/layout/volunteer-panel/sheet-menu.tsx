@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MenuIcon, PanelsTopLeft } from "lucide-react";
+import { MenuIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,7 +26,7 @@ export function SheetMenu() {
             variant="link"
             asChild
           >
-            <Link href="/volunteer/dashboard" className="flex items-center gap-2">
+            <Link href="/admin/dashboard" className="flex items-center gap-2">
               <Image
                 src="/static/images/logo-big.png"
                 alt="logo"
@@ -34,7 +34,7 @@ export function SheetMenu() {
                 height={50}
                 className="rounded-md mr-1"
               />
-              <h1 className="font-bold text-lg text-background">iRankHub</h1>
+              <h1 className="font-bold text-lg text-background dark:text-foreground">iRankHub</h1>
             </Link>
           </Button>
         </SheetHeader>

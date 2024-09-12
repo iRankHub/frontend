@@ -221,6 +221,12 @@ export class GetTournamentStatsResponse extends jspb.Message {
   getUpcomingTournaments(): number;
   setUpcomingTournaments(value: number): GetTournamentStatsResponse;
 
+  getTotalPercentageChange(): string;
+  setTotalPercentageChange(value: string): GetTournamentStatsResponse;
+
+  getUpcomingPercentageChange(): string;
+  setUpcomingPercentageChange(value: string): GetTournamentStatsResponse;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetTournamentStatsResponse.AsObject;
   static toObject(includeInstance: boolean, msg: GetTournamentStatsResponse): GetTournamentStatsResponse.AsObject;
@@ -233,6 +239,8 @@ export namespace GetTournamentStatsResponse {
   export type AsObject = {
     totalTournaments: number,
     upcomingTournaments: number,
+    totalPercentageChange: string,
+    upcomingPercentageChange: string,
   }
 }
 

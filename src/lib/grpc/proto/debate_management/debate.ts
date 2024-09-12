@@ -1729,7 +1729,8 @@ export namespace debate_management {
         constructor(data?: any[] | {
             judge_id?: number;
             tournament_id?: number;
-            room_assignments?: Map<number, number>;
+            preliminary?: Map<number, RoomInfo>;
+            elimination?: Map<number, RoomInfo>;
             token?: string;
         }) {
             super();
@@ -1741,15 +1742,20 @@ export namespace debate_management {
                 if ("tournament_id" in data && data.tournament_id != undefined) {
                     this.tournament_id = data.tournament_id;
                 }
-                if ("room_assignments" in data && data.room_assignments != undefined) {
-                    this.room_assignments = data.room_assignments;
+                if ("preliminary" in data && data.preliminary != undefined) {
+                    this.preliminary = data.preliminary;
+                }
+                if ("elimination" in data && data.elimination != undefined) {
+                    this.elimination = data.elimination;
                 }
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
                 }
             }
-            if (!this.room_assignments)
-                this.room_assignments = new Map();
+            if (!this.preliminary)
+                this.preliminary = new Map();
+            if (!this.elimination)
+                this.elimination = new Map();
         }
         get judge_id() {
             return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
@@ -1763,23 +1769,32 @@ export namespace debate_management {
         set tournament_id(value: number) {
             pb_1.Message.setField(this, 2, value);
         }
-        get room_assignments() {
-            return pb_1.Message.getField(this, 3) as any as Map<number, number>;
+        get preliminary() {
+            return pb_1.Message.getField(this, 3) as any as Map<number, RoomInfo>;
         }
-        set room_assignments(value: Map<number, number>) {
+        set preliminary(value: Map<number, RoomInfo>) {
             pb_1.Message.setField(this, 3, value as any);
         }
+        get elimination() {
+            return pb_1.Message.getField(this, 4) as any as Map<number, RoomInfo>;
+        }
+        set elimination(value: Map<number, RoomInfo>) {
+            pb_1.Message.setField(this, 4, value as any);
+        }
         get token() {
-            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+            return pb_1.Message.getFieldWithDefault(this, 5, "") as string;
         }
         set token(value: string) {
-            pb_1.Message.setField(this, 4, value);
+            pb_1.Message.setField(this, 5, value);
         }
         static fromObject(data: {
             judge_id?: number;
             tournament_id?: number;
-            room_assignments?: {
-                [key: number]: number;
+            preliminary?: {
+                [key: number]: ReturnType<typeof RoomInfo.prototype.toObject>;
+            };
+            elimination?: {
+                [key: number]: ReturnType<typeof RoomInfo.prototype.toObject>;
             };
             token?: string;
         }): UpdateJudgeRequest {
@@ -1790,8 +1805,11 @@ export namespace debate_management {
             if (data.tournament_id != null) {
                 message.tournament_id = data.tournament_id;
             }
-            if (typeof data.room_assignments == "object") {
-                message.room_assignments = new Map(Object.entries(data.room_assignments).map(([key, value]) => [Number(key), value]));
+            if (typeof data.preliminary == "object") {
+                message.preliminary = new Map(Object.entries(data.preliminary).map(([key, value]) => [Number(key), RoomInfo.fromObject(value)]));
+            }
+            if (typeof data.elimination == "object") {
+                message.elimination = new Map(Object.entries(data.elimination).map(([key, value]) => [Number(key), RoomInfo.fromObject(value)]));
             }
             if (data.token != null) {
                 message.token = data.token;
@@ -1802,8 +1820,11 @@ export namespace debate_management {
             const data: {
                 judge_id?: number;
                 tournament_id?: number;
-                room_assignments?: {
-                    [key: number]: number;
+                preliminary?: {
+                    [key: number]: ReturnType<typeof RoomInfo.prototype.toObject>;
+                };
+                elimination?: {
+                    [key: number]: ReturnType<typeof RoomInfo.prototype.toObject>;
                 };
                 token?: string;
             } = {};
@@ -1813,8 +1834,11 @@ export namespace debate_management {
             if (this.tournament_id != null) {
                 data.tournament_id = this.tournament_id;
             }
-            if (this.room_assignments != null) {
-                data.room_assignments = (Object.fromEntries)(this.room_assignments);
+            if (this.preliminary != null) {
+                data.preliminary = (Object.fromEntries)((Array.from)(this.preliminary).map(([key, value]) => [key, value.toObject()]));
+            }
+            if (this.elimination != null) {
+                data.elimination = (Object.fromEntries)((Array.from)(this.elimination).map(([key, value]) => [key, value.toObject()]));
             }
             if (this.token != null) {
                 data.token = this.token;
@@ -1829,14 +1853,20 @@ export namespace debate_management {
                 writer.writeInt32(1, this.judge_id);
             if (this.tournament_id != 0)
                 writer.writeInt32(2, this.tournament_id);
-            for (const [key, value] of this.room_assignments) {
-                writer.writeMessage(3, this.room_assignments, () => {
+            for (const [key, value] of this.preliminary) {
+                writer.writeMessage(3, this.preliminary, () => {
                     writer.writeInt32(1, key);
-                    writer.writeInt32(2, value);
+                    writer.writeMessage(2, value, () => value.serialize(writer));
+                });
+            }
+            for (const [key, value] of this.elimination) {
+                writer.writeMessage(4, this.elimination, () => {
+                    writer.writeInt32(1, key);
+                    writer.writeMessage(2, value, () => value.serialize(writer));
                 });
             }
             if (this.token.length)
-                writer.writeString(4, this.token);
+                writer.writeString(5, this.token);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1853,9 +1883,20 @@ export namespace debate_management {
                         message.tournament_id = reader.readInt32();
                         break;
                     case 3:
-                        reader.readMessage(message, () => pb_1.Map.deserializeBinary(message.room_assignments as any, reader, reader.readInt32, reader.readInt32));
+                        reader.readMessage(message, () => pb_1.Map.deserializeBinary(message.preliminary as any, reader, reader.readInt32, () => {
+                            let value;
+                            reader.readMessage(message, () => value = RoomInfo.deserialize(reader));
+                            return value;
+                        }));
                         break;
                     case 4:
+                        reader.readMessage(message, () => pb_1.Map.deserializeBinary(message.elimination as any, reader, reader.readInt32, () => {
+                            let value;
+                            reader.readMessage(message, () => value = RoomInfo.deserialize(reader));
+                            return value;
+                        }));
+                        break;
+                    case 5:
                         message.token = reader.readString();
                         break;
                     default: reader.skipField();

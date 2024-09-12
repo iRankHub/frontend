@@ -29,7 +29,7 @@ export function Menu() {
                 </p>
                 {menus.map(
                   ({ href, label, icon: Icon, active, submenus }, index) =>
-                    submenus.length === 0 ? (
+                    submenus.length === 0 && (
                       <div className="w-full mb-2.5" key={index}>
                         <Button
                           variant={active ? "ghost" : "outline"}
@@ -55,16 +55,6 @@ export function Menu() {
                             </p>
                           </Link>
                         </Button>
-                      </div>
-                    ) : (
-                      <div className="w-full mb-2.5" key={index}>
-                        <CollapseMenuButton
-                          icon={Icon}
-                          label={label}
-                          active={active}
-                          submenus={submenus}
-                          isOpen={isOpen}
-                        />
                       </div>
                     )
                 )}

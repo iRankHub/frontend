@@ -1,6 +1,6 @@
-'use client'
+"use client";
 import { ContentLayout } from "@/components/layout/volunteer-panel/content-layout";
-import Preliminaries from "@/components/pages/volunteers/tournaments/tournament-name/pairings/prelims";
+import PairingsTable from "@/components/pages/volunteers/tournaments/tournament-name/pairings";
 import TournamentMenuWrapper from "@/components/pages/volunteers/tournaments/tournament-name/tournament-menu-wrapper";
 import {
   Breadcrumb,
@@ -10,11 +10,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Roles } from "@/stores/auth/auth.store";
+import { getTournament } from "@/core/tournament/list";
+import { Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import { Roles, useUserStore } from "@/stores/auth/auth.store";
 import { withAuth } from "@/stores/auth/middleware.store";
 import { Iparms } from "@/types";
+import { GetTournamentType } from "@/types/tournaments/tournament";
 import { Slash } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 
 const page = withAuth(
   ({ params }: Iparms) => {
@@ -24,19 +27,46 @@ const page = withAuth(
 );
 
 function Page({ params }: Iparms) {
-  const { name: routeName } = params;
+  const { name: tourn_id } = params;
+  const { user } = useUserStore((state) => state);
+  const [pageLoading, setPageLoading] = React.useState(true);
+  const [tournament, setTournament] = React.useState<
+    Tournament.AsObject | undefined
+  >(undefined);
+
+  useEffect(() => {
+    if (!user) return;
+    const data: GetTournamentType = {
+      tournament_id: Number(tourn_id) || 0,
+      token: user.token,
+    };
+    getTournament({ ...data })
+      .then((res) => {
+        setTournament(res.tournament);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      })
+      .finally(() => {
+        setPageLoading(false);
+      });
+  }, [user, tourn_id]);
+
+  if (pageLoading) {
+    return <ContentLayout title="format">Loading...</ContentLayout>;
+  }
   return (
     <ContentLayout title="format">
       <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-5">
-        <h3 className="text-lg text-primary font-bold">Tournament Name</h3>
+        <h3 className="text-lg text-primary font-bold">{tournament?.name}</h3>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink
-                href="/admin/dashboard"
+                href="/volunteers/dashboard"
                 className="text-muted-foreground text-base"
               >
-                Admin
+                Volunteer
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator>
@@ -44,7 +74,7 @@ function Page({ params }: Iparms) {
             </BreadcrumbSeparator>
             <BreadcrumbItem>
               <BreadcrumbLink
-                href="/admin/tournaments"
+                href="/volunteers/tournaments"
                 className="text-muted-foreground text-base"
               >
                 Tournament
@@ -54,26 +84,19 @@ function Page({ params }: Iparms) {
               <Slash className="-rotate-12" />
             </BreadcrumbSeparator>
             <BreadcrumbItem>
-              <BreadcrumbLink
-                href="/admin/tournaments/list"
-                className="text-muted-foreground text-base"
-              >
-                List
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator>
-              <Slash className="-rotate-12" />
-            </BreadcrumbSeparator>
-            <BreadcrumbItem>
               <BreadcrumbPage className="text-primary text-base">
-                {routeName}
+                {tournament?.name}
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
       <TournamentMenuWrapper>
-        <Preliminaries />
+        <PairingsTable
+          tournamentId={Number(tournament?.tournamentId)}
+          totalRounds={tournament?.numberOfPreliminaryRounds || 0}
+          is_elimination={false}
+        />
       </TournamentMenuWrapper>
     </ContentLayout>
   );

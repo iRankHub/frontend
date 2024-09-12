@@ -307,21 +307,26 @@ const TournamentCard = ({
                 </Link>
               </Button>
             </DropdownMenuItem>
-            <DropdownMenuItem className="p-0">
-              <Button
-                type="button"
-                size={"sm"}
-                variant={"link"}
-                className="w-full justify-start text-foreground hover:no-underline"
-              >
-                <Link
-                  className="no-underline"
-                  href={`${linkRole()}/${getColumnValue(row, "tournamentId")}/feedback`}
+            {userRole === "student" && (
+              <DropdownMenuItem className="p-0">
+                <Button
+                  type="button"
+                  size={"sm"}
+                  variant={"link"}
+                  className="w-full justify-start text-foreground hover:no-underline"
                 >
-                  Feedback
-                </Link>
-              </Button>
-            </DropdownMenuItem>
+                  <Link
+                    className="no-underline"
+                    href={`${linkRole()}/${getColumnValue(
+                      row,
+                      "tournamentId"
+                    )}/feedback`}
+                  >
+                    Feedback
+                  </Link>
+                </Button>
+              </DropdownMenuItem>
+            )}
             <DropdownMenuSeparator />
           </DropdownMenuContent>
         </DropdownMenu>

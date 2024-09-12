@@ -79,8 +79,6 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
   });
 
   async function onSubmit(data: Inputs) {
-    z;
-    // .number().gt(0, { message: "Speakers per team must be at least 1" })
     await signUp({
       firstName: data.firstName,
       lastName: data.lastName,
