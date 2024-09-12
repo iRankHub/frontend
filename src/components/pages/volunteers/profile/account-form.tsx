@@ -21,9 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
-import {
-  volunteerProfileSchemaStep2,
-} from "@/lib/validations/admin/accounts/profile-update.schema";
+import { volunteerProfileSchemaStep2 } from "@/lib/validations/admin/accounts/profile-update.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -59,7 +57,7 @@ function AccountForm({ user }: AccountFormProps) {
     defaultValues: {
       email: user?.email,
       name: user?.name,
-      national_id: "",
+      national_id: 1000003020,
       hasInternship: user.volunteerdetails?.hasinternship ? "yes" : "no",
       dob: new Date(),
       gender: user.gender,
@@ -79,9 +77,11 @@ function AccountForm({ user }: AccountFormProps) {
       bio: user.bio,
       gender: data.gender,
       profilePicture: user.profilepicture,
-      hasInternship: data.hasInternship === "yes" || user.volunteerdetails?.hasinternship,
-      isEnrolledInUniversity: user.volunteerdetails?.isenrolledinuniversity || false,
-      nationalID: "",
+      hasInternship:
+        data.hasInternship === "yes" ? true : false,
+      isEnrolledInUniversity:
+        user.volunteerdetails?.isenrolledinuniversity || false,
+      nationalID: data.national_id,
     };
 
     await updateVolunteerProfile(NewProfile)
@@ -182,7 +182,14 @@ function AccountForm({ user }: AccountFormProps) {
                     <b className="text-primary font-light"> *</b>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="12000..." {...field} />
+                    <Input
+                      placeholder="12000..."
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(Number(e.target.value));
+                      }}
+                      type="number"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

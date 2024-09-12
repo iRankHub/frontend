@@ -293,10 +293,10 @@ export const updateVolunteerProfile = async ({
         request.setEmail(email);
         firstName && request.setFirstname(firstName);
         graduateYear && request.setGraduateyear(graduateYear);
-        hasInternship && request.setHasinternship(hasInternship);
+        hasInternship !== undefined && request.setHasinternship(hasInternship);
         isEnrolledInUniversity && request.setIsenrolledinuniversity(isEnrolledInUniversity);
         lastName && request.setLastname(lastName);
-        nationalID && request.setNationalid(nationalID);
+        nationalID && request.setNationalid(String(nationalID));
         role && request.setRole(role);
 
         userClient.updateVolunteerProfile(request, {}, (err, response) => {

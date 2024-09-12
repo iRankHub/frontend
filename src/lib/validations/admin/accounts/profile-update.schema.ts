@@ -116,7 +116,8 @@ export const volunteerProfileSchemaStep2 = z.object({
         message: "name too long"
     }),
     email: z.string().email(),
-    national_id: z.string().min(6, {
+    national_id:  z
+    .number().min(6, {
         message: "National ID too short"
     }),
     hasInternship: z.enum(["yes", "no"], {

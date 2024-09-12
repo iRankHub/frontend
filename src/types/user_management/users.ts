@@ -84,7 +84,7 @@ export interface UpdateVolunteerProfile {
     lastName?: string;
     gender?: string;
     email: string;
-    nationalID?: string;
+    nationalID?: number;
     graduateYear?: number;
     isEnrolledInUniversity?: boolean;
     hasInternship?: boolean;
