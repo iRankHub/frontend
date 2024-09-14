@@ -45,7 +45,10 @@ import { GetSchoolsType } from "@/types/user_management/schools";
 import { getAllUsers, getStudents } from "@/core/users/users";
 import { Student } from "@/lib/grpc/proto/user_management/users_pb";
 import { CreateTeamType, UpdateTeamType } from "@/types/tournaments/teams";
-import { createTournamentTeam, updateTournamentTeam } from "@/core/tournament/teams";
+import {
+  createTournamentTeam,
+  updateTournamentTeam,
+} from "@/core/tournament/teams";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useState } from "react";
 import { useTeamsStore } from "@/stores/admin/debate/teams.store";
@@ -109,7 +112,9 @@ export const columns: ColumnDef<Team.AsObject>[] = [
     cell: ({ row }) => {
       return (
         <div className="w-full text-center gap-3">
-          <UpdateTeamForm team={row.original} />
+          {row.original.name !== "Public Speaking" && (
+            <UpdateTeamForm team={row.original} />
+          )}
           <DeleteTeam team={row.original} />
         </div>
       );
@@ -133,13 +138,13 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
   const { toast } = useToast();
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
-  const {updateTeam: updateTeamStore} = useTeamsStore((state) => state);
+  const { updateTeam: updateTeamStore } = useTeamsStore((state) => state);
 
   const form = useForm<TeamInput>({
     resolver: zodResolver(createTeamSchema),
     defaultValues: {
       name: team.name,
-      speaker_1: String(team.speakersList[0].speakerId),
+      speaker_1: String(team.speakersList[0].speakerId || 0),
       speaker_2: String(team.speakersList[1].speakerId || ""),
       speaker_3: String(team.speakersList[2].speakerId || ""),
     },
@@ -171,27 +176,27 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
 
     setLoading(true);
     await updateTournamentTeam(options)
-        .then((res) => {
-            form.reset();
-            setSelectedUsers({
-                speaker_1: null,
-                speaker_2: null,
-                speaker_3: null,
-            });
-            updateTeamStore(team.teamId, res);
-            toast({
-                title: "Team updated successfully",
-                description: "Team has been updated successfully.",
-                variant: "success",
-            });
-            setOpen(false);
-        })
-        .catch((err) => {
-            console.error(err.message);
-        })
-        .finally(() => {
-            setLoading(false);
+      .then((res) => {
+        form.reset();
+        setSelectedUsers({
+          speaker_1: null,
+          speaker_2: null,
+          speaker_3: null,
         });
+        updateTeamStore(team.teamId, res);
+        toast({
+          title: "Team updated successfully",
+          description: "Team has been updated successfully.",
+          variant: "success",
+        });
+        setOpen(false);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -354,7 +359,11 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
                     <b className="text-primary font-light"> *</b>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="Dreamers teams" {...field} disabled={!isUpdating} />
+                    <Input
+                      placeholder="Dreamers teams"
+                      {...field}
+                      disabled={!isUpdating}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

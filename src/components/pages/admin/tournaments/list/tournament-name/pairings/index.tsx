@@ -11,6 +11,8 @@ import { GetPairingsProps } from "@/types/pairings";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { useTeamSwapStore } from "@/stores/admin/debate/pairings/pairings.store";
 import { DataTableToolbar } from "./data-table-toolbar";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
 
 type PairingsTableProps = {
   tournamentId: number;
@@ -27,17 +29,34 @@ const PairingsTable: FC<PairingsTableProps> = ({
     Pairing.AsObject[] | undefined
   >(undefined);
   const { user } = useUserStore((state) => state);
-  const { setOriginalData, setCurrentRound } = useTeamSwapStore();
   const [isGenerating, setIsGenerating] = React.useState(false);
+  const { toast } = useToast();
+  const [activeTab, setActiveTab] = React.useState<string>("round 1");
 
-  const {
-    originalData,
-  } = useTeamSwapStore((state) => ({
-    originalData: state.originalData,
-  }));
+  const { originalData, setCurrentRound, setOriginalData, isSwapMade } =
+    useTeamSwapStore((state) => ({
+      originalData: state.originalData,
+      setCurrentRound: state.setCurrentRound,
+      setOriginalData: state.setOriginalData,
+      isSwapMade: state.isSwapMade,
+    }));
 
   const handleTabChange = (value: string) => {
     if (!user) return;
+    if (isSwapMade) {
+      toast({
+        variant: "destructive",
+        title: "Swaps made",
+        description: "Swaps have been made. Please save the changes.",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
+      });
+      return;
+    }
+
     const round = parseInt(value.split(" ")[1]);
     setCurrentRound(round);
     const options: GetPairingsProps = {
@@ -49,6 +68,7 @@ const PairingsTable: FC<PairingsTableProps> = ({
     getPairings(options)
       .then((res) => {
         setOriginalData(res);
+        setActiveTab(value);
       })
       .catch((err) => {
         console.error(err.message);
@@ -87,11 +107,10 @@ const PairingsTable: FC<PairingsTableProps> = ({
     };
     generatePairings(options)
       .then((res) => {
-        console.log(res)
         setPairings(res);
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         console.error(err.message);
       });
   };
@@ -100,57 +119,40 @@ const PairingsTable: FC<PairingsTableProps> = ({
     return <div>Loading</div>;
   }
 
-  
-
-  const handleUpdate = () => {
-  }
   return (
     <div className="w-full rounded-md overflow-hidden">
       {pairings && pairings.length > 0 ? (
         <>
-          <div className="flex items-center justify-between flex-wrap gap-5 p-5 py-4 bg-brown">
-            {/* <form action="#" className="flex items-center gap-3">
-              <Input
-                type="search"
-                placeholder="Search school..."
-                className="w-72 h-8"
-              />
-              <Button
-                type="button"
-                className="border border-dashed border-white text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground group"
-              >
-                <Icons.addCircle className="text-white w-3.5 h-3.5 group-hover:text-foreground" />
-                Room
-                <span className="sr-only">Room</span>
-              </Button>
-            </form> */}
-            <h3 className="text-xl text-white">Pairings</h3>
-            <Button onClick={handleUpdate}>Update</Button>
-          </div>
           <div className="w-full bg-background">
-            <Tabs defaultValue="round 1">
-              <TabsList className="mx-5 mt-3">
+            <Tabs
+              value={activeTab}
+              onValueChange={handleTabChange}
+              className="relative"
+            >
+              <TabsList className="mx-5 mt-3 absolute top-16">
                 {Array.from({ length: totalRounds }, (_, i) => i + 1).map(
                   (round) => (
-                    <TabsTrigger
-                      key={round}
-                      value={`round ${round}`}
-                      onClick={() => handleTabChange(`round ${round}`)}
-                    >
+                    <TabsTrigger key={round} value={`round ${round}`}>
                       Round {round}
                     </TabsTrigger>
                   )
                 )}
               </TabsList>
-              <TabsContent value="round 1">
-                <DataTable data={pairings} columns={columns} />
-              </TabsContent>
-              <TabsContent value="round 2">
-                <DataTable data={pairings} columns={columns} />
-              </TabsContent>
-              <TabsContent value="round 3">
-                <DataTable data={pairings} columns={columns} />
-              </TabsContent>
+              {Array.from({ length: totalRounds }, (_, i) => i + 1).map(
+                (round) => (
+                  <TabsContent
+                    key={round}
+                    value={`round ${round}`}
+                    className="m-0"
+                  >
+                    <DataTable
+                      data={pairings}
+                      columns={columns}
+                      DataTableToolbar={DataTableToolbar}
+                    />
+                  </TabsContent>
+                )
+              )}
             </Tabs>
           </div>
         </>

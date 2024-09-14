@@ -14,7 +14,7 @@ export interface RegeneratePairingsProps {
 
 export interface UpdatePairingProps {
     token: string;
-    pairing: Pairing.AsObject;
+    pairings: Pairing.AsObject[];
 }
 
 export interface GetTournamentJudgesProps {

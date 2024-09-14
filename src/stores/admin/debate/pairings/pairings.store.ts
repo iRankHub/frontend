@@ -18,6 +18,7 @@ interface TeamSwapState {
     setCurrentRound: (round: number) => void;
     swapTeams: (from: Swap['from'], to: Swap['to']) => void;
     setEditingRow: (rowIndex: number | null) => void;
+    resetSwaps: () => void;
 }
 
 export const useTeamSwapStore = create<TeamSwapState>((set) => ({
@@ -49,4 +50,5 @@ export const useTeamSwapStore = create<TeamSwapState>((set) => ({
         set({ isSwapMade: true });
     },
     setEditingRow: (rowIndex) => set({ editingRow: rowIndex }),
+    resetSwaps: () => set({ swapsByRound: {}, isSwapMade: false }),
 }));

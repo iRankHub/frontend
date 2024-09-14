@@ -17,14 +17,14 @@ type Props = {
 };
 
 export const Panelheader = ({ children, className }: Props) => (
-  <SheetHeader
+  <SheetTitle
     className={cn(
       "w-full h-14 border-b border-muted shadow grid items-center px-4",
       className
     )}
   >
     {children}
-  </SheetHeader>
+  </SheetTitle>
 );
 
 export const PanelBody = ({ children, className }: Props) => (

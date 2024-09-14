@@ -113,8 +113,10 @@ export function DataTable<TData, TValue>({
       // @ts-ignore
       newData[to.rowIndex][to.columnId] = temp;
     });
+
+    setFilteredData(newData);
     return newData;
-  }, [originalData, swapsByRound, currentRound]);
+  }, [originalData, swapsByRound, currentRound, setFilteredData]);
 
   const table = useReactTable({
     data: swappedData as any,
@@ -140,11 +142,6 @@ export function DataTable<TData, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
-
-  // React.useEffect(() => {
-  //   const filteredData = table.getFilteredRowModel().rows.map(row => row.original);
-  //   setFilteredData(filteredData as Pairing.AsObject[]);
-  // }, [table.getFilteredRowModel().rows, setFilteredData]);
 
   const getBorderColor = (rowIndex: number, columnId: string) => {
     const swapsForRound = swapsByRound[currentRound] || [];

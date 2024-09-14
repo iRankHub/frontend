@@ -10,6 +10,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 import { getTournament } from "@/core/tournament/list";
 import { Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { Roles, useUserStore } from "@/stores/auth/auth.store";
@@ -29,6 +31,7 @@ const page = withAuth(
 function Page({ params }: Iparms) {
   const { name: tourn_id } = params;
   const { user } = useUserStore((state) => state);
+  const {toast} = useToast();
   const [pageLoading, setPageLoading] = React.useState(true);
   const [tournament, setTournament] = React.useState<
     Tournament.AsObject | undefined

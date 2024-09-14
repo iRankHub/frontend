@@ -11,6 +11,7 @@ import { getBallots } from "@/core/debates/ballots";
 import { GetBallotsProps } from "@/types/pairings/ballots";
 import { Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { useBallotsStore } from "@/stores/admin/debate/ballots";
+import { DataTableToolbar } from "./data-table-toolbar";
 
 type Props = {
   is_elimination: boolean;
@@ -61,26 +62,9 @@ function Preliminaries({ is_elimination, tournament }: Props) {
 
   return (
     <div className="w-full rounded-md overflow-hidden">
-      <div className="flex items-center justify-between flex-wrap gap-5 p-5 py-4 bg-brown">
-        <form action="#" className="flex items-center gap-3">
-          <Input
-            type="search"
-            placeholder="Search school..."
-            className="w-72 h-8"
-          />
-          <Button
-            type="button"
-            className="border border-dashed border-white text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground group"
-          >
-            <Icons.addCircle className="text-white w-3.5 h-3.5 group-hover:text-foreground" />
-            Room
-            <span className="sr-only">Room</span>
-          </Button>
-        </form>
-      </div>
       <div className="w-full bg-background">
-        <Tabs defaultValue="round 1">
-          <TabsList className="mx-5 mt-3">
+        <Tabs defaultValue="round 1" className="relative">
+          <TabsList className="mx-5 mt-3 absolute top-16">
             {Array.from(
               { length: tournament.numberOfPreliminaryRounds },
               (_, i) => i + 1
@@ -94,15 +78,18 @@ function Preliminaries({ is_elimination, tournament }: Props) {
               </TabsTrigger>
             ))}
           </TabsList>
-          <TabsContent value="round 1">
-            <DataTable data={ballots} columns={columns} />
-          </TabsContent>
-          <TabsContent value="round 2">
-            <DataTable data={ballots} columns={columns} />
-          </TabsContent>
-          <TabsContent value="round 3">
-            <DataTable data={ballots} columns={columns} />
-          </TabsContent>
+          {Array.from(
+            { length: tournament.numberOfPreliminaryRounds },
+            (_, i) => i + 1
+          ).map((round) => (
+            <TabsContent key={round} value={`round ${round}`} className="m-0">
+              <DataTable
+                data={ballots}
+                columns={columns}
+                DataTableToolbar={DataTableToolbar}
+              />
+            </TabsContent>
+          ))}
         </Tabs>
       </div>
     </div>

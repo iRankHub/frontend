@@ -7,6 +7,7 @@ interface BallotsStore {
     updateBallot: (ballotId: number, newBallot: Ballot.AsObject) => void;
     addBallot: (Ballot: Ballot.AsObject) => void;
     deleteBallot: (ballotId: number) => void;
+    markBallotAsRecorded: (ballotId: number) => void;
 }
 
 export const useBallotsStore = create<BallotsStore>((set) => ({
@@ -38,4 +39,19 @@ export const useBallotsStore = create<BallotsStore>((set) => ({
             return { ballots: newBallots };
         });
     },
+    markBallotAsRecorded: (ballotId: number) => {
+        console.log("Marking ballot as recorded", ballotId);
+        set((state: BallotsStore) => {
+            const newBallots = state.ballots.map((ballot) => {
+                if (ballot.ballotId === ballotId) {
+                    return {
+                        ...ballot,
+                        recordingStatus: "Recorded",
+                    }
+                }
+                return ballot;
+            });
+            return { ballots: newBallots };
+        });
+    }
 }));

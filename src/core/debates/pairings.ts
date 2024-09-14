@@ -77,34 +77,39 @@ export const getPairings = async ({
     });
 }
 
-export const updatePairing = async ({
-    pairing,
+export const updatePairings = async ({
+    pairings,
     token
 }: UpdatePairingProps): Promise<UpdatePairingsResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new UpdatePairingsRequest();
         request.setToken(token);
 
-        const updatedPairing = new Pairing();
-        updatedPairing.setPairingId(pairing.pairingId);
-        updatedPairing.setRoomId(pairing.roomId);
+        const pairingsList = new Array<Pairing>();
+        pairings.forEach((pairing) => {
+            const updatedPairing = new Pairing();
+            updatedPairing.setPairingId(pairing.pairingId);
+            updatedPairing.setRoomId(pairing.roomId);
 
-        if (pairing.team1) {
-            const team_1 = new Team();
-            team_1.setTeamId(pairing.team1.teamId);
-            updatedPairing.setTeam1(team_1);
-        }
+            if (pairing.team1) {
+                const team_1 = new Team();
+                team_1.setTeamId(pairing.team1.teamId);
+                updatedPairing.setTeam1(team_1);
+            }
 
-        if (pairing.team2) {
-            const team_2 = new Team();
-            team_2.setTeamId(pairing.team2.teamId);
-            updatedPairing.setTeam2(team_2);
-        }
+            if (pairing.team2) {
+                const team_2 = new Team();
+                team_2.setTeamId(pairing.team2.teamId);
+                updatedPairing.setTeam2(team_2);
+            }
 
-        // request.setPairingsList(updatedPairing);
+            pairingsList.push(updatedPairing);
+        });
+        request.setPairingsList(pairingsList);
 
         debateClient.updatePairings(request, {}, (err, response) => {
             if (err) {
+                console.error(err);
                 reject(err);
             } else {
                 resolve(response.toObject());
