@@ -1,5 +1,5 @@
 import { userClient } from "../grpc-clients";
-import { DeactivateUser, GetAllUsers, GetUserDetails, UpdateAdminProfile, UpdateSchoolProfile, UpdateStudentProfile, UpdateVolunteerProfile } from "@/types/user_management/users";
+import { BuldDeleteUsers, DeactivateUser, GetAllUsers, GetUserDetails, UpdateAdminProfile, UpdateSchoolProfile, UpdateStudentProfile, UpdateVolunteerProfile } from "@/types/user_management/users";
 import {
     ApproveUserRequest,
     ApproveUserResponse,
@@ -90,6 +90,25 @@ export const deleteUser = async ({
         });
     });
 };
+
+export const bulkDeleteUsers = async ({
+    userIDs,
+    token,
+}: BuldDeleteUsers): Promise<DeleteUsersResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new DeleteUsersRequest();
+        request.setUseridsList(userIDs);
+        request.setToken(token);
+
+        userClient.deleteUsers(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
 
 export const getAllUsers = async ({
     token,

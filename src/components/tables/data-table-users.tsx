@@ -35,7 +35,7 @@ import {
 import { useUsersStore } from "@/stores/admin/users/users.store";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { UserSummary } from "@/lib/grpc/proto/user_management/users_pb";
-import { bulkApproveOrRejectUsers } from "@/core/users/users";
+import { bulkApproveOrRejectUsers, bulkDeleteUsers } from "@/core/users/users";
 import { Icons } from "../icons";
 import { useToast } from "../ui/use-toast";
 import { ToastAction } from "../ui/toast";
@@ -102,11 +102,42 @@ export function DataTable<TData, TValue>({
       action,
     };
 
-    bulkApproveOrRejectUsers(options)
-      .then((res) => {
-        if (action === "delete") {
-          setUsers(users.filter((user) => !userIds.includes(user.userid)));
-        } else {
+    if (action === "delete") {
+      // setUsers(users.filter((user) => !userIds.includes(user.userid)));
+      bulkDeleteUsers(options)
+        .then((res) => {
+          if (res.success) {
+            setUsers(users.filter((user) => !userIds.includes(user.userid)));
+            table.resetRowSelection();
+            toast({
+              variant: "success",
+              title: "Success",
+              description: `Users ${action} successfully`,
+              action: (
+                <ToastAction altText="Close" className="bg-primary text-white">
+                  Close
+                </ToastAction>
+              ),
+            });
+          } else {
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: res.message,
+              action: (
+                <ToastAction altText="Close" className="bg-primary text-white">
+                  Close
+                </ToastAction>
+              ),
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
+    } else {
+      bulkApproveOrRejectUsers(options)
+        .then((res) => {
           if (res.success) {
             selectedRows.forEach((row) => {
               updateUserStatus(row.userid, action);
@@ -134,11 +165,11 @@ export function DataTable<TData, TValue>({
               ),
             });
           }
-        }
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
+    }
   };
 
   // const hasPendingSelectedRows = React.useMemo(() => {
@@ -154,9 +185,11 @@ export function DataTable<TData, TValue>({
       .rows.map((row) => row.original) as UserSummary.AsObject[];
     return (
       selectedRows.length > 0 &&
-      selectedRows.every((row) => row.status === "pending")
+      selectedRows.every(
+        (row) => row.status === "pending" || row.status === "approved"
+      )
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [table, rowSelection]);
 
   return (

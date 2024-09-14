@@ -17,7 +17,7 @@ export function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
-    <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between">
+    <div className="w-full rounded-t-md overflow-hidden bg-brown pr-5 flex items-center justify-between mb-14">
       <div className="flex flex-1 items-center space-x-3 bg-brown p-5 py-4">
         <Input
           placeholder="Search names..."
@@ -27,9 +27,9 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[280px]"
         />
-        {table.getColumn("roomName") && (
+        {table.getColumn("recordingStatus") && (
           <DataTableFacetedFilter
-            column={table.getColumn("roomName")}
+            column={table.getColumn("recordingStatus")}
             title="Rec. Status"
             options={ballotStatuses}
           />

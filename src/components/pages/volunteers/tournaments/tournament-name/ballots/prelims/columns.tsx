@@ -1,6 +1,6 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
 import { Ballot, Judge } from "@/lib/grpc/proto/debate_management/debate_pb";
 import BallotUpdateForm from "./ballot-update-form";
+import { useState } from "react";
 
 export const columns: ColumnDef<Ballot.AsObject>[] = [
   {
@@ -54,12 +55,16 @@ export const columns: ColumnDef<Ballot.AsObject>[] = [
   {
     accessorKey: "recordingStatus",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Rec. Status" className="justify-center" />
+      <DataTableColumnHeader
+        column={column}
+        title="Rec. Status"
+        className="justify-center"
+      />
     ),
     cell: ({ row }) => {
       const status = row.getValue("recordingStatus");
       const variant =
-        status === "recorded"
+        status === "Recorded"
           ? "bg-green-200 text-success hover:bg-green-200"
           : "bg-secondary text-foreground hover:bg-secondary";
       return (
@@ -82,45 +87,65 @@ export const columns: ColumnDef<Ballot.AsObject>[] = [
         buttonClassName="ml-0"
       />
     ),
-    cell: ({ row }) => {
-      return (
-        <div className="flex w-full h-6 items-center justify-center">
-          <Sheet>
-            <SheetTrigger>
-              <Button
-                type="button"
-                variant={"secondary"}
-                size={"icon"}
-                className="w-full bg-transparent hover:bg-transparent m-0"
-              >
-                <Icons.pencilLine className="w-5 h-5 text-primary" />
-              </Button>
-            </SheetTrigger>
-            <SidePanel>
-              <Panelheader>
-                <div className="flex items-center gap-1">
-                  <h3 className="text-sm font-bold capitalize">
-                    {row.getValue("roomName")} ballot
-                  </h3>
-                  <Button
-                    type="button"
-                    className="rounded-full m-0 p-0 w-6 h-6 hover:bg-primary"
-                    size={"icon"}
-                  >
-                    <Icons.pencilLine className="w-4 h-4" />
-                  </Button>
-                </div>
-              </Panelheader>
-              <div className="w-full h-[calc(100%_-_70px)] p-5 flex flex-col">
-                <BallotUpdateForm ballotId={row.original.ballotId} />
-              </div>
-            </SidePanel>
-          </Sheet>
-        </div>
-      );
-    },
+    cell: ({ row }) => <HandleBallotActions row={row} />,
     enableHiding: false,
     enableSorting: false,
     maxSize: 20,
   },
 ];
+
+const HandleBallotActions = ({ row }: { row: Row<Ballot.AsObject> }) => {
+  const recordedStatus = row.getValue("recordingStatus");
+  const isBallotRecord = recordedStatus === "Recorded";
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  return (
+    <div className="flex w-full h-6 items-center justify-center">
+      <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+        {isBallotRecord ? (
+          <Button
+            type="button"
+            variant={"secondary"}
+            size={"icon"}
+            className="w-full bg-transparent hover:bg-transparent m-0"
+          >
+            <Icons.circleCheck className="w-5 h-5 text-green-500" />
+          </Button>
+        ) : (
+          <SheetTrigger>
+            <Button
+              type="button"
+              variant={"secondary"}
+              size={"icon"}
+              className="w-full bg-transparent hover:bg-transparent m-0"
+            >
+              <Icons.pencilLine className="w-5 h-5 text-primary" />
+            </Button>
+          </SheetTrigger>
+        )}
+        <SidePanel>
+          <Panelheader>
+            <div className="flex items-center gap-1">
+              <h3 className="text-sm font-bold capitalize">
+                {row.getValue("roomName")} ballot
+              </h3>
+              <Button
+                type="button"
+                className="rounded-full m-0 p-0 w-6 h-6 hover:bg-primary"
+                size={"icon"}
+              >
+                <Icons.pencilLine className="w-4 h-4" />
+              </Button>
+            </div>
+          </Panelheader>
+          <div className="w-full h-[calc(100%_-_70px)] p-5 flex flex-col">
+            <BallotUpdateForm
+              ballotId={row.original.ballotId}
+              setSheetOpen={setIsSheetOpen}
+            />
+          </div>
+        </SidePanel>
+      </Sheet>
+    </div>
+  );
+};

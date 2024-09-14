@@ -6,6 +6,7 @@ interface InvitationsStore {
     setInvitations: (invitations: InvitationInfo.AsObject[]) => void;
     updateInvitationStatus: (invitationID: number, newStatus: string) => void;
     bulkUpdateInvitationStatus: (invitationIDs: number[], newStatus: string) => void;
+    bulkDeleteInvitations: (invitationIDs: number[]) => void;
     deleteInvitation: (invitationID: number) => void;
 }
 
@@ -31,6 +32,12 @@ export const useInvitationsStore = create<InvitationsStore>((set) => ({
                 }
                 return invitation;
             });
+            return { invitations: newInvitations };
+        });
+    },
+    bulkDeleteInvitations: (invitationIDs: number[]) => {
+        set((state: InvitationsStore) => {
+            const newInvitations = state.invitations.filter((invitation) => !invitationIDs.includes(invitation.invitationId));
             return { invitations: newInvitations };
         });
     },

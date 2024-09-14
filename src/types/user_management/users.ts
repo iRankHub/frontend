@@ -6,6 +6,11 @@ export interface DeactivateUser {
     token: string;
 }
 
+export interface BuldDeleteUsers {
+    userIDs: number[];
+    token: string;
+}
+
 export interface GetUserDetails {
     userID: number;
     token: string;

@@ -1,8 +1,8 @@
 import React from "react";
 import { columns } from "./columns";
-import { DataTable } from "@/components/tables/data-table";
 import { DataTableToolbar } from "./data-table-toolbar";
 import { useInvitationsStore } from "@/stores/admin/tournaments/invitations.store";
+import { DataTable } from "@/components/tables/data-table-invitations";
 
 function Invitations() {
   const { invitations } = useInvitationsStore((state) => state);

@@ -108,7 +108,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
         }
       })
       .catch((err) => {
-        console.error(err.message);
         toast({
           variant: "destructive",
           title: "Error",

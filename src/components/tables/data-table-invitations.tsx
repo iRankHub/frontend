@@ -26,6 +26,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "../ui/context-menu";
+import { useUsersStore } from "@/stores/admin/users/users.store";
+import { useUserStore } from "@/stores/auth/auth.store";
+import { UserSummary } from "@/lib/grpc/proto/user_management/users_pb";
+import { bulkApproveOrRejectUsers } from "@/core/users/users";
+import { Icons } from "../icons";
+import { useToast } from "../ui/use-toast";
+import { ToastAction } from "../ui/toast";
+import {
+  bulkResendInvitations,
+  bulkUpdateInvitation,
+} from "@/core/tournament/list";
+import { useInvitationsStore } from "@/stores/admin/tournaments/invitations.store";
+import { InvitationInfo } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -70,59 +89,196 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  const { bulkUpdateInvitationStatus } = useInvitationsStore((state) => state);
+  const { user } = useUserStore((state) => state);
+  const { toast } = useToast();
+
+  const handleContextMenuAction = async (
+    action: "accepted" | "rejected" | "resend"
+  ) => {
+    if (!user) return;
+    const selectedRows = table
+      .getFilteredSelectedRowModel()
+      .rows.map((row) => row.original) as InvitationInfo.AsObject[];
+
+    const invitationIds = selectedRows.map((row) => row.invitationId);
+    const options = {
+      token: user.token,
+      invitation_ids: invitationIds,
+      new_status: action,
+    };
+
+    if (action === "resend") {
+      bulkResendInvitations(options)
+        .then((res) => {
+          table.resetRowSelection();
+          toast({
+            variant: "success",
+            title: "Success",
+            description: res.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+          toast({
+            variant: "destructive",
+            title: "Failed",
+            description: err.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        });
+    } else {
+      bulkUpdateInvitation(options)
+        .then((res) => {
+          if (res.success) {
+            selectedRows.forEach((row) => {
+              bulkUpdateInvitationStatus(invitationIds, action);
+            });
+            table.resetRowSelection();
+            toast({
+              variant: "success",
+              title: "Success",
+              description: `Invitations ${action} successfully`,
+              action: (
+                <ToastAction altText="Close" className="bg-primary text-white">
+                  Close
+                </ToastAction>
+              ),
+            });
+          } else {
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: res.message,
+              action: (
+                <ToastAction altText="Close" className="bg-primary text-white">
+                  Close
+                </ToastAction>
+              ),
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
+    }
+  };
+
+  // const hasPendingSelectedRows = React.useMemo(() => {
+  //   const selectedRows = table.getFilteredSelectedRowModel().rows.map(
+  //     (row) => row.original
+  //   ) as UserSummary.AsObject[];
+  //   return selectedRows.some(row => row.status === 'pending');
+  // }, [table, rowSelection]);
+
+  const allSelectedRowsArePending = React.useMemo(() => {
+    const selectedRows = table
+      .getFilteredSelectedRowModel()
+      .rows.map((row) => row.original) as UserSummary.AsObject[];
+    return (
+      selectedRows.length > 0 &&
+      selectedRows.every((row) => row.status === "pending")
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [table, rowSelection]);
+
   return (
     <div>
       {DataTableToolbar && <DataTableToolbar table={table} />}
       <div className="w-full bg-background p-5">
         <div className="rounded-md border mb-10">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id} colSpan={header.colSpan}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
+          <ContextMenu>
+            <ContextMenuTrigger className="w-full">
+              <Table>
+                <TableHeader>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => {
+                        return (
+                          <TableHead key={header.id} colSpan={header.colSpan}>
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
+                          </TableHead>
+                        );
+                      })}
+                    </TableRow>
+                  ))}
+                </TableHeader>
+                <TableBody>
+                  {table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow
+                        key={row.id}
+                        data-state={row.getIsSelected() && "selected"}
+                      >
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id}>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
                             )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={columns.length}
+                        className="h-24 text-center"
+                      >
+                        No results.
                       </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </ContextMenuTrigger>
+            {allSelectedRowsArePending && (
+              <ContextMenuContent>
+                <ContextMenuItem
+                  disabled
+                  className="font-semibold text-foreground disabled:opacity-100"
+                >
+                  Actions (selected)
+                </ContextMenuItem>
+                <ContextMenuItem
+                  onClick={() => handleContextMenuAction("accepted")}
+                  className="flex items-center gap-2"
+                >
+                  <Icons.addCircle className="w-4 h-4" />
+                  Accept
+                </ContextMenuItem>
+                <ContextMenuItem
+                  onClick={() => handleContextMenuAction("rejected")}
+                  className="flex items-center gap-2"
+                >
+                  <Icons.circleX className="w-4 h-4" />
+                  Reject
+                </ContextMenuItem>
+                <ContextMenuItem
+                  onClick={() => handleContextMenuAction("resend")}
+                  className="flex items-center gap-2"
+                >
+                  <Icons.trash2 className="w-4 h-4" />
+                  Resend
+                </ContextMenuItem>
+              </ContextMenuContent>
+            )}
+          </ContextMenu>
         </div>
         <DataTablePagination table={table} />
       </div>

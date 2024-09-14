@@ -38,6 +38,7 @@ import { getSchoolsNoAuth } from "@/core/users/schools";
 import { School } from "@/lib/grpc/proto/user_management/users_pb";
 import { cn } from "@/lib/utils";
 import { StudentSchema } from "@/lib/validations/admin/accounts";
+import { useUsersStore } from "@/stores/admin/users/users.store";
 import { UserRole } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
@@ -56,8 +57,6 @@ type Inputs = z.infer<typeof StudentSchema>;
 
 function CreateStudentAccount({ type, setSheetOpen }: CreateUserProps) {
   const [isPending, setIsPending] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState<Number>(0);
   const { toast } = useToast();
   const [schools, setSchools] = React.useState<School.AsObject[]>([]);
 

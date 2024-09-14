@@ -57,7 +57,7 @@ export function UserNav() {
                   <h3 className="text-sm text-[#212B36] dark:text-foreground capitalize leading-4">
                     {user && user.name}
                   </h3>
-                  <span className="text-xs text-[#637381]">Admin</span>
+                  <span className="text-xs text-[#637381]">Student</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Avatar className="w-8 h-8">
