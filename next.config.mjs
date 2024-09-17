@@ -17,7 +17,8 @@ const nextConfig = {
           hostname: "https://docs.google.com/"
         }
       ],
-    },
+  },
+  output: 'export',
 };
 
 export default withPWA({

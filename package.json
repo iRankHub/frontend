@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint",
     "generate-proto": "protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --proto_path=../backend/internal/grpc/proto --ts_out=./src/lib/grpc/proto --js_out=import_style=commonjs,binary:./src/lib/grpc/proto --grpc-web_out=import_style=typescript,mode=grpcwebtext:./src/lib/grpc/proto ../backend/internal/grpc/proto/auth.proto"
