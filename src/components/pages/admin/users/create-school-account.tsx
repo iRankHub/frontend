@@ -21,6 +21,7 @@ import { PasswordInput } from "@/components/ui/password-Input";
 import {
   Popover,
   PopoverContent,
+  PopoverContentWithNoPrimitivePortal,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -34,14 +35,16 @@ import {
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { signUp } from "@/core/authentication/auth";
-import { countries } from "@/lib/data";
+import { getCountries } from "@/core/users/users";
+import { Country } from "@/lib/grpc/proto/user_management/users_pb";
 import { cn } from "@/lib/utils";
 import { schoolSchema } from "@/lib/validations/admin/accounts";
+import { useUserStore } from "@/stores/auth/auth.store";
 import { UserRole } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckIcon, ChevronsUpDown } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -57,11 +60,26 @@ function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
   const [openCountries, setOpenCountries] = React.useState(false);
   const { toast } = useToast();
   const [activeStep, setActiveStep] = React.useState(1);
-
+  const [countries, setCountries] = React.useState<Country.AsObject[]>([]);
+  const { user } = useUserStore((state) => state);
   // react-hook-form
   const form = useForm<Inputs>({
     resolver: zodResolver(schoolSchema),
   });
+
+  useEffect(() => {
+    if (!user) return;
+    const options = {
+      token: user.token,
+    };
+    getCountries(options)
+      .then((res) => {
+        setCountries(res);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, [user]);
 
   async function onSubmit(data: Inputs) {
     setIsPending(true);
@@ -223,7 +241,7 @@ function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-full p-0">
+                        <PopoverContentWithNoPrimitivePortal className="w-full p-0">
                           <Command className="w-full">
                             <CommandInput placeholder="Search country..." />
                             <CommandEmpty>School not Found.</CommandEmpty>
@@ -252,7 +270,7 @@ function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
                               </CommandGroup>
                             </CommandList>
                           </Command>
-                        </PopoverContent>
+                        </PopoverContentWithNoPrimitivePortal>
                       </Popover>
                     </FormControl>
                     <FormMessage />

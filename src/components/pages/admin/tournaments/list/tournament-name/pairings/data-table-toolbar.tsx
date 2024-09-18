@@ -52,6 +52,10 @@ export function DataTableToolbar<TData>({
       });
   };
 
+  const handleCancelSwap = () => {
+    resetSwaps();
+  }
+
   return (
     <div className="w-full rounded-t-md overflow-hidden bg-brown pr-5 flex items-center justify-between mb-14">
       <div className="flex flex-1 items-center space-x-3 bg-brown p-5 py-4">
@@ -61,20 +65,6 @@ export function DataTableToolbar<TData>({
           onChange={(event) => table.setGlobalFilter(event.target.value)}
           className="h-8 w-[150px] lg:w-[280px]"
         />
-        {/* {table.getColumn("category") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("category")}
-            title="Category"
-            options={priorities}
-          />
-        )}
-        {table.getColumn("status") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
-            options={statuses}
-          />
-        )} */}
         {isFiltered && (
           <Button
             variant="ghost"
@@ -90,7 +80,7 @@ export function DataTableToolbar<TData>({
         <div className="flex items-center gap-3">
           <Button
             variant="secondary"
-            onClick={() => null}
+            onClick={handleCancelSwap}
             className="h-8 px-2 lg:px-3"
           >
             Cancel

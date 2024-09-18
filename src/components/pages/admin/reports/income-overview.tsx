@@ -1,6 +1,7 @@
 import React from "react";
 import { Archivo } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { OverviewChart } from "./charts/overview-chart";
 
 type Props = {};
 
@@ -31,10 +32,8 @@ export default function IncomeOverview({}: Props) {
         >
           RWF 9,542,000.00
         </h3>
-
-        <div>
-            
-        </div>
+        <small className="text-sm text-muted-foreground">From 2022</small>
+        <OverviewChart />
       </div>
     </div>
   );

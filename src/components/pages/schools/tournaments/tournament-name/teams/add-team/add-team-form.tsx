@@ -219,7 +219,7 @@ function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
                     }
                   /> */}
                   <CommandList>
-                    <CommandEmpty>No speaker found.</CommandEmpty>
+                    <CommandEmpty className="w-full p-5">No speaker found.</CommandEmpty>
                     <CommandGroup>
                       {availableStudents.map((user) => (
                         <CommandItem

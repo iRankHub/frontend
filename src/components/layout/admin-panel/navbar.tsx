@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import SidePanel, { Panelheader } from "./side-panel";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
+import Notifications from "./notifications";
 
 interface NavbarProps {
   title: string;
@@ -84,7 +85,9 @@ export function Navbar({ title }: NavbarProps) {
                             </Button>
                           </div>
                         </Panelheader>
-                        <div className="w-full h-[calc(100%_-_70px)] p-5 flex flex-col"></div>
+                        <div className="w-full h-[calc(100%_-_70px)] flex flex-col">
+                          <Notifications />
+                        </div>
                       </SidePanel>
                     </Sheet>
                   </DropdownMenuTrigger>

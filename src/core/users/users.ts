@@ -4,12 +4,15 @@ import {
     ApproveUserRequest,
     ApproveUserResponse,
     ApproveUsersRequest,
+    Country,
     DeactivateAccountRequest,
     DeactivateAccountResponse,
     DeleteUsersRequest,
     DeleteUsersResponse,
     GetAllUsersRequest,
     GetAllUsersResponse,
+    GetCountriesRequest,
+    GetCountriesResponse,
     GetStudentsRequest,
     GetStudentsResponse,
     GetUserProfileRequest,
@@ -449,5 +452,24 @@ export const bulkApproveOrRejectUsers = async ({
                 }
             });
         }
+    });
+}
+
+export const getCountries = async ({
+    token,
+}: {
+    token: string;
+}): Promise<Country.AsObject[]> => {
+    return new Promise((resolve, reject) => {
+        const request = new GetCountriesRequest();
+        request.setToken(token);
+
+        userClient.getCountries(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject().countriesList);
+            }
+        });
     });
 }

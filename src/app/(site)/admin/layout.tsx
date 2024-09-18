@@ -1,4 +1,5 @@
 import AdminPanelLayout from "@/components/layout/admin-panel/admin-panel-layout";
+import { NotificationProvider } from "@/context/notification-context";
 import React from "react";
 
 function page({
@@ -7,9 +8,11 @@ function page({
   children: React.ReactNode;
 }>) {
   return (
-    <AdminPanelLayout>
-      <div className="min-h-screen">{children}</div>
-    </AdminPanelLayout>
+    <NotificationProvider>
+      <AdminPanelLayout>
+        <div className="min-h-screen">{children}</div>
+      </AdminPanelLayout>
+    </NotificationProvider>
   );
 }
 

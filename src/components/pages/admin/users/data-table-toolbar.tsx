@@ -79,7 +79,7 @@ export function DataTableToolbar<TData>({
         )}
       </div>
       <div className="flex items-center gap-1 mr-5">
-        <Sheet onOpenChange={setSheetOpen} open={sheetOpen}>
+        <Sheet onOpenChange={setSheetOpen} open={sheetOpen} modal>
           <Dialog onOpenChange={setDialogOpen} open={dialogOpen}>
             <DialogTrigger>
               <Button

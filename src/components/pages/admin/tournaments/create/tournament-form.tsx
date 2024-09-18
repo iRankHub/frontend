@@ -293,6 +293,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                               selected={field.value}
                               onSelect={field.onChange}
                               initialFocus
+                              toDate={form.watch("endDate")}
                             />
                           </PopoverContent>
                         </Popover>
@@ -332,6 +333,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                               mode="single"
                               selected={field.value}
                               onSelect={field.onChange}
+                              fromDate={form.watch("startDate")}
                               initialFocus
                             />
                           </PopoverContent>
@@ -482,7 +484,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                             )}
                             iconType={"collapsible"}
                           >
-                            <SelectValue placeholder="Choose a venue" />
+                            <SelectValue placeholder="Choose a coordinator" />
                           </SelectTrigger>
                           <SelectContent>
                             {coordinators.map((coordinator) => (

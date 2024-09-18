@@ -50,5 +50,5 @@ export const useTeamSwapStore = create<TeamSwapState>((set) => ({
         set({ isSwapMade: true });
     },
     setEditingRow: (rowIndex) => set({ editingRow: rowIndex }),
-    resetSwaps: () => set({ swapsByRound: {}, isSwapMade: false }),
+    resetSwaps: () => set({ swapsByRound: {}, isSwapMade: false, editingRow: null }),
 }));

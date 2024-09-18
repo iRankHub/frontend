@@ -93,10 +93,15 @@ function TournamentUpdateForm({ tournament }: Props) {
       const coordinator = res.usersList.find(
         (user) => user.name === tournament.coordinatorName
       );
-      setCoordinatorId(String(coordinator?.userid || ""));
+      console.log(coordinator);
+      setCoordinatorId(String(coordinator?.userid));
       setCoordinators(res.usersList);
     });
   }, [user, tournament]);
+
+  // useEffect to force re-render when coordinatorId changes
+  useEffect(() => {
+  }, [coordinatorId, user]);
 
   const formatStartDate = (): string => {
     // format return from api: 2023-07-15 09:00
@@ -306,7 +311,7 @@ function TournamentUpdateForm({ tournament }: Props) {
         console.error(err.message);
       });
   }, [user]);
-
+  
   return (
     <div className="p-5">
       <Form {...form}>
@@ -666,7 +671,7 @@ function TournamentUpdateForm({ tournament }: Props) {
                             iconType={"collapsible"}
                             disabled={!isEditing}
                           >
-                            <SelectValue placeholder="Choose a venue" />
+                            <SelectValue placeholder="Choose a coordinator" />
                           </SelectTrigger>
                           <SelectContent>
                             {coordinators.map((coordinator) => (
@@ -677,9 +682,6 @@ function TournamentUpdateForm({ tournament }: Props) {
                                 {coordinator.name}
                               </SelectItem>
                             ))}
-                            {/* <SelectItem value="light">Hakidu</SelectItem>
-                            <SelectItem value="dark">Guy 2</SelectItem>
-                            <SelectItem value="system">Guy 3</SelectItem> */}
                           </SelectContent>
                         </Select>
                       </FormControl>

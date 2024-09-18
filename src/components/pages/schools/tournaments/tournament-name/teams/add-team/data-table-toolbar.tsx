@@ -37,7 +37,10 @@ export function DataTableToolbar<TData>({
     };
     getStudents({ ...options })
       .then((res) => {
-        setAllStudents(res.studentsList);
+        const schoolStudents = res.studentsList.filter(
+          (student) => student.schoolid === user.userId
+        );
+        setAllStudents(schoolStudents);
       })
       .catch((err) => {
         console.error(err.message);

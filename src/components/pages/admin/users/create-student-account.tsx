@@ -21,6 +21,7 @@ import { PasswordInput } from "@/components/ui/password-Input";
 import {
   Popover,
   PopoverContent,
+  PopoverContentWithNoPrimitivePortal,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -59,6 +60,12 @@ function CreateStudentAccount({ type, setSheetOpen }: CreateUserProps) {
   const [isPending, setIsPending] = React.useState(false);
   const { toast } = useToast();
   const [schools, setSchools] = React.useState<School.AsObject[]>([]);
+  const [open, setOpen] = React.useState(false);
+  const [searchQuery, setSearchQuery] = React.useState("");
+
+  const filteredSchools = schools.filter((school) =>
+    school.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   React.useEffect(() => {
     getSchoolsNoAuth({
@@ -189,7 +196,7 @@ function CreateStudentAccount({ type, setSheetOpen }: CreateUserProps) {
                   Select School<b className="text-primary font-light"> *</b>
                 </FormLabel>
                 <br />
-                <Select
+                {/* <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
@@ -205,55 +212,45 @@ function CreateStudentAccount({ type, setSheetOpen }: CreateUserProps) {
                       </SelectItem>
                     ))}
                   </SelectContent>
-                </Select>
-                {/* <FormControl>
+                </Select> */}
+                <FormControl>
                   <Popover open={open} onOpenChange={setOpen} modal>
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
                         role="combobox"
-                        aria-expanded={open}
                         className="w-full justify-between"
                       >
-                        {value
-                          ? schools.find((school) => school.schoolid === value)
-                              ?.name
+                        {field.value
+                          ? schools.find(
+                              (school) =>
+                                String(school.schoolid) === field.value
+                            )?.name
                           : "Select school..."}
                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="p-0 ">
+                    <PopoverContentWithNoPrimitivePortal className="p-0 ">
                       <Command className="">
                         <CommandInput
                           placeholder="Search schools..."
+                          onValueChange={(value) => setSearchQuery(value)}
                         />
                         <CommandList>
                           <CommandEmpty>No schools found.</CommandEmpty>
                           <CommandGroup className="cursor-pointer">
-                            {schools.map((school) => (
+                            {filteredSchools.map((school) => (
                               <CommandItem
                                 key={school.schoolid}
-                                value={String(school.schoolid) as string}
-                                onSelect={(currentValue) => {
-                                  setValue(
-                                    Number(currentValue) === value
-                                      ? 0
-                                      : Number(currentValue)
-                                  );
-
-                                  field.onChange({
-                                    target: {
-                                      value: currentValue,
-                                    },
-                                  });
+                                onSelect={() => {
+                                  form.setValue("school", String(school.schoolid));
                                   setOpen(false);
                                 }}
-                                className="cursor-pointer"
                               >
                                 <Check
                                   className={cn(
                                     "mr-2 h-4 w-4",
-                                    value === school.schoolid
+                                    field.value === String(school.schoolid)
                                       ? "opacity-100"
                                       : "opacity-0"
                                   )}
@@ -264,9 +261,9 @@ function CreateStudentAccount({ type, setSheetOpen }: CreateUserProps) {
                           </CommandGroup>
                         </CommandList>
                       </Command>
-                    </PopoverContent>
+                    </PopoverContentWithNoPrimitivePortal>
                   </Popover>
-                </FormControl> */}
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
