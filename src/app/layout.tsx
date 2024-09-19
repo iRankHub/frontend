@@ -3,6 +3,7 @@ import { Lato } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/providers/theme-provider";
+import ElectronInitializer from "./electron";
 
 const rubik = Lato({
   weight: "400",
@@ -78,6 +79,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={rubik.className}>
+        <ElectronInitializer />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <main className="min-h-screen h-full">{children}</main>
           <Toaster />
