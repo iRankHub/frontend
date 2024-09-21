@@ -16,7 +16,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
 import { getBallot, updateBallot } from "@/core/debates/ballots";
 import {
   Ballot,
@@ -32,7 +31,7 @@ import { BallotUpdateFormProps } from "@/types/pairings/ballots";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Inter } from "next/font/google";
 import { useParams } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 type Props = {
@@ -47,7 +46,6 @@ const inter = Inter({
 
 function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
   const { name: tournament_id } = useParams();
-  const toast = useToast();
   const { user } = useUserStore((state) => state);
   const { markBallotAsRecorded } = useBallotsStore((state) => state);
   const [activeStep, setActiveStep] = React.useState(1);
@@ -76,7 +74,6 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     useState(false);
   const [team1PointsChanged, setTeam1PointsChanged] = useState(false);
   const [team2PointsChanged, setTeam2PointsChanged] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   const calculateRankings = (teamIndex: number) => {
     const speakers = teamIndex === 1 ? team1Speakers : team2Speakers;
@@ -155,59 +152,23 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     }
   };
 
-  const fetchBallot = useCallback(async () => {
+  useEffect(() => {
     if (!user) return;
-    
-    setIsLoading(true);
-    try {
-      const options = {
-        token: user.token,
-        ballot_id: ballotId,
-        tournamentId: Number(tournament_id),
-      };
-      
-      const res = await getBallot(options);
-      console.log("Fetched ballot:", res);
-      
-      if (res.ballot) {
+    const options = {
+      token: user.token,
+      ballot_id: ballotId,
+      tournamentId: Number(tournament_id),
+    };
+    getBallot(options)
+      .then((res) => {
+        setTeam1Speakers(res.ballot?.team1?.speakersList as Speaker.AsObject[]);
+        setTeam2Speakers(res.ballot?.team2?.speakersList as Speaker.AsObject[]);
         setBallot(res.ballot);
-        
-        // Process team 1 speakers
-        const team1 = res.ballot.team1?.speakersList || [];
-        setTeam1Speakers(team1.map(speaker => ({
-          ...speaker,
-          points: speaker.points || 0,
-          feedback: speaker.feedback || "",
-        })));
-        setTeam1Rankings(team1.map(speaker => speaker.rank || 0));
-        
-        // Process team 2 speakers
-        const team2 = res.ballot.team2?.speakersList || [];
-        setTeam2Speakers(team2.map(speaker => ({
-          ...speaker,
-          points: speaker.points || 0,
-          feedback: speaker.feedback || "",
-        })));
-        setTeam2Rankings(team2.map(speaker => speaker.rank || 0));
-        
-        // Set winner
-        setWinner(res.ballot.verdict || "");
-      }
-    } catch (err) {
-      console.error("Error fetching ballot:", err);
-      // Handle error (e.g., show error message to user)
-    } finally {
-      setIsLoading(false);
-    }
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
   }, [ballotId, tournament_id, user]);
-
-  useEffect(() => {
-    fetchBallot();
-  }, [fetchBallot]);
-
-  useEffect(() => {
-    console.log("State updated:", { team1Speakers, team2Speakers, team1Rankings, team2Rankings, winner });
-  }, [team1Speakers, team2Speakers, team1Rankings, team2Rankings, winner]);
 
   const sortSpeakersByPoints = (speakers: Speaker.AsObject[]) => {
     return speakers
@@ -285,19 +246,10 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     } catch (err) {
       console.error(err);
       // Handle error (e.g., show error message to user)
-      toast.toast({
-        title: "Error",
-        description: "An error occurred while updating the ballot.",
-        variant: "destructive",
-      });
     } finally {
       setIsUpdatingBallot(false);
     }
   };
-
-  if (isLoading) {
-    return <div>Loading ballot data...</div>;
-  }
 
   const Step = ({
     number,
@@ -352,7 +304,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     rankings: number[]
   ) => (
     <>
-      {!isLoading && speakers.map((speaker, index) => (
+      {speakers.map((speaker, index) => (
         <Collapsible key={index} className="w-full">
           <CollapsibleTrigger className="w-full bg-transparent border-b flex items-center justify-between px-3 py-2">
             <span className="bg-transparent outline-none text-foreground font-semibold text-start">
@@ -372,11 +324,11 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
                   type="number"
                   min="10"
                   max="100"
-                  value={speaker.points}
+                  value={speaker.points || ""}
                   onChange={(e) => {
                     if (
                       Number(e.target.value) < 0 ||
-                      Number(e.target.value) > 30
+                      Number(e.target.value) > 100
                     ) {
                       return;
                     }
@@ -484,11 +436,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       {activeStep === 2 && (
         <>
           <div className="w-full flex-1">
-            {team2Speakers.length > 0 ? (
-              renderSpeakerInputs(2, team2Speakers, team2Rankings)
-            ) : (
-              <h3>This team is public speaking</h3>
-            )}
+            {renderSpeakerInputs(2, team2Speakers, team2Rankings)}
           </div>
           <div className="flex items-center gap-5">
             <Button
@@ -502,8 +450,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               Back
               <span className="sr-only">Back</span>
             </Button>
-            {team2Speakers.length > 0 &&
-            (!isTeam2RankingCalculated || team2PointsChanged) ? (
+            {!isTeam2RankingCalculated || team2PointsChanged ? (
               <Button
                 type="button"
                 className="mt-5"
@@ -534,11 +481,11 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
                 <SelectValue placeholder="choose team" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={ballot?.team1?.name || "team1"}>
-                  Affirmative ({ballot?.team1?.name})
+                <SelectItem value="team1">
+                  Affirmative {ballot?.team1?.name}
                 </SelectItem>
-                <SelectItem value={ballot?.team2?.name || "team2"}>
-                  Negative ({ballot?.team2?.name})
+                <SelectItem value="team2">
+                  Negative {ballot?.team2?.name}
                 </SelectItem>
               </SelectContent>
             </Select>
@@ -577,8 +524,8 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               type="button"
               onClick={handleSubmitBallot}
               disabled={
-                (!isTeam1RankingCalculated && team1Speakers.length > 0) ||
-                (!isTeam2RankingCalculated && team2Speakers.length > 0) ||
+                !isTeam1RankingCalculated ||
+                !isTeam2RankingCalculated ||
                 !winner ||
                 isUpdatingBallot
               }

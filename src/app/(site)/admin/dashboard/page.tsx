@@ -38,6 +38,8 @@ function Dashboard() {
   const [newSignups, setNewSignups] = React.useState(0);
   const [totalTournaments, setTotalTournaments] = React.useState(0);
   const [upcomingTournaments, setUpcomingTournaments] = React.useState(0);
+  const [total_tournamamentsPercentageChange, setTotalTournamentsPercentageChange] = React.useState("+∞%");
+  const [upcoming_tournamentsPercentageChange, setUpcomingTournamentsPercentageChange] = React.useState("+∞%");
   const [usersList, setUsersList] = React.useState<UserSummary.AsObject[]>([]);
 
   const [admin_count, setAdminCount] = React.useState(0);
@@ -131,6 +133,8 @@ function Dashboard() {
       .then((res) => {
         setTotalTournaments(res.totalTournaments);
         setUpcomingTournaments(res.upcomingTournaments);
+        setTotalTournamentsPercentageChange(res.totalPercentageChange);
+        setUpcomingTournamentsPercentageChange(res.upcomingPercentageChange);
       })
       .catch((err) => {
         console.error(err.message);
@@ -176,6 +180,8 @@ function Dashboard() {
         totalTournaments={totalTournaments}
         totalUsers={totalUsers}
         upcomingTournaments={upcomingTournaments}
+        totalTournamentsPercentageChange={total_tournamamentsPercentageChange}
+        upcomingTournamentsPercentageChange={upcoming_tournamentsPercentageChange}
       />
       <div className="grid grid-cols-1 md:grid-cols-3 mt-5 md:gap-3">
         <UserCategoryOverview

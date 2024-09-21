@@ -30,7 +30,7 @@ const ThemeToggler = React.forwardRef<
       checked={resolvedTheme === "dark"}
       onCheckedChange={toggleTheme}
       className={cn(
-        "peer inline-flex h-7 w-14 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-muted-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted",
+        "peer inline-flex h-7 w-14 shrink-0 cursor-pointer items-center rounded-full border-1 border-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-muted-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted",
         className
       )}
       {...props}
@@ -38,11 +38,11 @@ const ThemeToggler = React.forwardRef<
     >
       <SwitchPrimitives.Thumb
         className={cn(
-          "pointer-events-none flex items-center justify-center h-6 w-6 rounded-full bg-background shadow-lg ring-0 transition-transform duration-200 ease-in-out data-[state=checked]:translate-x-7 data-[state=unchecked]:translate-x-0"
+          "pointer-events-none flex items-center justify-center border border-muted h-6 w-6 rounded-full bg-background shadow ring-0 transition-transform duration-200 ease-in-out data-[state=checked]:translate-x-7 data-[state=unchecked]:translate-x-0"
         )}
       >
         {resolvedTheme === "dark" ? (
-          <Moon className="h-4 w-4 text-muted-foreground" />
+          <Moon className="h-4 w-4 text-muted-foreground scale-x-[-1] -rotate-12" />
         ) : (
           <Sun className="h-4 w-4 text-muted-foreground" />
         )}

@@ -985,5 +985,177 @@ export class DebateServiceClient {
     this.methodDescriptorGetStudentOverallPerformance);
   }
 
+  methodDescriptorGetTournamentTeamsRanking = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetTournamentTeamsRanking',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.TournamentTeamsRankingRequest,
+    debate_management_debate_pb.TournamentTeamsRankingResponse,
+    (request: debate_management_debate_pb.TournamentTeamsRankingRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.TournamentTeamsRankingResponse.deserializeBinary
+  );
+
+  getTournamentTeamsRanking(
+    request: debate_management_debate_pb.TournamentTeamsRankingRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.TournamentTeamsRankingResponse>;
+
+  getTournamentTeamsRanking(
+    request: debate_management_debate_pb.TournamentTeamsRankingRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.TournamentTeamsRankingResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.TournamentTeamsRankingResponse>;
+
+  getTournamentTeamsRanking(
+    request: debate_management_debate_pb.TournamentTeamsRankingRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.TournamentTeamsRankingResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetTournamentTeamsRanking',
+        request,
+        metadata || {},
+        this.methodDescriptorGetTournamentTeamsRanking,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetTournamentTeamsRanking',
+    request,
+    metadata || {},
+    this.methodDescriptorGetTournamentTeamsRanking);
+  }
+
+  methodDescriptorGetTournamentSchoolRanking = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetTournamentSchoolRanking',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.TournamentSchoolRankingRequest,
+    debate_management_debate_pb.TournamentSchoolRankingResponse,
+    (request: debate_management_debate_pb.TournamentSchoolRankingRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.TournamentSchoolRankingResponse.deserializeBinary
+  );
+
+  getTournamentSchoolRanking(
+    request: debate_management_debate_pb.TournamentSchoolRankingRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.TournamentSchoolRankingResponse>;
+
+  getTournamentSchoolRanking(
+    request: debate_management_debate_pb.TournamentSchoolRankingRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.TournamentSchoolRankingResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.TournamentSchoolRankingResponse>;
+
+  getTournamentSchoolRanking(
+    request: debate_management_debate_pb.TournamentSchoolRankingRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.TournamentSchoolRankingResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetTournamentSchoolRanking',
+        request,
+        metadata || {},
+        this.methodDescriptorGetTournamentSchoolRanking,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetTournamentSchoolRanking',
+    request,
+    metadata || {},
+    this.methodDescriptorGetTournamentSchoolRanking);
+  }
+
+  methodDescriptorGetOverallSchoolRanking = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetOverallSchoolRanking',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.OverallSchoolRankingRequest,
+    debate_management_debate_pb.OverallSchoolRankingResponse,
+    (request: debate_management_debate_pb.OverallSchoolRankingRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.OverallSchoolRankingResponse.deserializeBinary
+  );
+
+  getOverallSchoolRanking(
+    request: debate_management_debate_pb.OverallSchoolRankingRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.OverallSchoolRankingResponse>;
+
+  getOverallSchoolRanking(
+    request: debate_management_debate_pb.OverallSchoolRankingRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.OverallSchoolRankingResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.OverallSchoolRankingResponse>;
+
+  getOverallSchoolRanking(
+    request: debate_management_debate_pb.OverallSchoolRankingRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.OverallSchoolRankingResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetOverallSchoolRanking',
+        request,
+        metadata || {},
+        this.methodDescriptorGetOverallSchoolRanking,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetOverallSchoolRanking',
+    request,
+    metadata || {},
+    this.methodDescriptorGetOverallSchoolRanking);
+  }
+
+  methodDescriptorGetSchoolOverallPerformance = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetSchoolOverallPerformance',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.SchoolPerformanceRequest,
+    debate_management_debate_pb.SchoolPerformanceResponse,
+    (request: debate_management_debate_pb.SchoolPerformanceRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.SchoolPerformanceResponse.deserializeBinary
+  );
+
+  getSchoolOverallPerformance(
+    request: debate_management_debate_pb.SchoolPerformanceRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.SchoolPerformanceResponse>;
+
+  getSchoolOverallPerformance(
+    request: debate_management_debate_pb.SchoolPerformanceRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.SchoolPerformanceResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.SchoolPerformanceResponse>;
+
+  getSchoolOverallPerformance(
+    request: debate_management_debate_pb.SchoolPerformanceRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.SchoolPerformanceResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetSchoolOverallPerformance',
+        request,
+        metadata || {},
+        this.methodDescriptorGetSchoolOverallPerformance,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetSchoolOverallPerformance',
+    request,
+    metadata || {},
+    this.methodDescriptorGetSchoolOverallPerformance);
+  }
+
 }
 

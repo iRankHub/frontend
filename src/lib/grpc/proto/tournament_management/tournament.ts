@@ -472,6 +472,7 @@ export namespace tournament_management {
             location?: string;
             format_id?: number;
             league_id?: number;
+            coordinator_id?: number;
             coordinator_name?: string;
             number_of_preliminary_rounds?: number;
             number_of_elimination_rounds?: number;
@@ -506,6 +507,9 @@ export namespace tournament_management {
                 }
                 if ("league_id" in data && data.league_id != undefined) {
                     this.league_id = data.league_id;
+                }
+                if ("coordinator_id" in data && data.coordinator_id != undefined) {
+                    this.coordinator_id = data.coordinator_id;
                 }
                 if ("coordinator_name" in data && data.coordinator_name != undefined) {
                     this.coordinator_name = data.coordinator_name;
@@ -581,65 +585,71 @@ export namespace tournament_management {
         set league_id(value: number) {
             pb_1.Message.setField(this, 7, value);
         }
-        get coordinator_name() {
-            return pb_1.Message.getFieldWithDefault(this, 8, "") as string;
+        get coordinator_id() {
+            return pb_1.Message.getFieldWithDefault(this, 8, 0) as number;
         }
-        set coordinator_name(value: string) {
+        set coordinator_id(value: number) {
             pb_1.Message.setField(this, 8, value);
         }
-        get number_of_preliminary_rounds() {
-            return pb_1.Message.getFieldWithDefault(this, 9, 0) as number;
+        get coordinator_name() {
+            return pb_1.Message.getFieldWithDefault(this, 9, "") as string;
         }
-        set number_of_preliminary_rounds(value: number) {
+        set coordinator_name(value: string) {
             pb_1.Message.setField(this, 9, value);
         }
-        get number_of_elimination_rounds() {
+        get number_of_preliminary_rounds() {
             return pb_1.Message.getFieldWithDefault(this, 10, 0) as number;
         }
-        set number_of_elimination_rounds(value: number) {
+        set number_of_preliminary_rounds(value: number) {
             pb_1.Message.setField(this, 10, value);
         }
-        get judges_per_debate_preliminary() {
+        get number_of_elimination_rounds() {
             return pb_1.Message.getFieldWithDefault(this, 11, 0) as number;
         }
-        set judges_per_debate_preliminary(value: number) {
+        set number_of_elimination_rounds(value: number) {
             pb_1.Message.setField(this, 11, value);
         }
-        get judges_per_debate_elimination() {
+        get judges_per_debate_preliminary() {
             return pb_1.Message.getFieldWithDefault(this, 12, 0) as number;
         }
-        set judges_per_debate_elimination(value: number) {
+        set judges_per_debate_preliminary(value: number) {
             pb_1.Message.setField(this, 12, value);
         }
-        get tournament_fee() {
+        get judges_per_debate_elimination() {
             return pb_1.Message.getFieldWithDefault(this, 13, 0) as number;
         }
-        set tournament_fee(value: number) {
+        set judges_per_debate_elimination(value: number) {
             pb_1.Message.setField(this, 13, value);
         }
-        get image_url() {
-            return pb_1.Message.getFieldWithDefault(this, 14, "") as string;
+        get tournament_fee() {
+            return pb_1.Message.getFieldWithDefault(this, 14, 0) as number;
         }
-        set image_url(value: string) {
+        set tournament_fee(value: number) {
             pb_1.Message.setField(this, 14, value);
         }
-        get number_of_schools() {
-            return pb_1.Message.getFieldWithDefault(this, 15, 0) as number;
+        get image_url() {
+            return pb_1.Message.getFieldWithDefault(this, 15, "") as string;
         }
-        set number_of_schools(value: number) {
+        set image_url(value: string) {
             pb_1.Message.setField(this, 15, value);
         }
-        get number_of_teams() {
+        get number_of_schools() {
             return pb_1.Message.getFieldWithDefault(this, 16, 0) as number;
         }
-        set number_of_teams(value: number) {
+        set number_of_schools(value: number) {
             pb_1.Message.setField(this, 16, value);
         }
+        get number_of_teams() {
+            return pb_1.Message.getFieldWithDefault(this, 17, 0) as number;
+        }
+        set number_of_teams(value: number) {
+            pb_1.Message.setField(this, 17, value);
+        }
         get league_name() {
-            return pb_1.Message.getFieldWithDefault(this, 17, "") as string;
+            return pb_1.Message.getFieldWithDefault(this, 18, "") as string;
         }
         set league_name(value: string) {
-            pb_1.Message.setField(this, 17, value);
+            pb_1.Message.setField(this, 18, value);
         }
         static fromObject(data: {
             tournament_id?: number;
@@ -649,6 +659,7 @@ export namespace tournament_management {
             location?: string;
             format_id?: number;
             league_id?: number;
+            coordinator_id?: number;
             coordinator_name?: string;
             number_of_preliminary_rounds?: number;
             number_of_elimination_rounds?: number;
@@ -681,6 +692,9 @@ export namespace tournament_management {
             }
             if (data.league_id != null) {
                 message.league_id = data.league_id;
+            }
+            if (data.coordinator_id != null) {
+                message.coordinator_id = data.coordinator_id;
             }
             if (data.coordinator_name != null) {
                 message.coordinator_name = data.coordinator_name;
@@ -723,6 +737,7 @@ export namespace tournament_management {
                 location?: string;
                 format_id?: number;
                 league_id?: number;
+                coordinator_id?: number;
                 coordinator_name?: string;
                 number_of_preliminary_rounds?: number;
                 number_of_elimination_rounds?: number;
@@ -754,6 +769,9 @@ export namespace tournament_management {
             }
             if (this.league_id != null) {
                 data.league_id = this.league_id;
+            }
+            if (this.coordinator_id != null) {
+                data.coordinator_id = this.coordinator_id;
             }
             if (this.coordinator_name != null) {
                 data.coordinator_name = this.coordinator_name;
@@ -805,26 +823,28 @@ export namespace tournament_management {
                 writer.writeInt32(6, this.format_id);
             if (this.league_id != 0)
                 writer.writeInt32(7, this.league_id);
+            if (this.coordinator_id != 0)
+                writer.writeInt32(8, this.coordinator_id);
             if (this.coordinator_name.length)
-                writer.writeString(8, this.coordinator_name);
+                writer.writeString(9, this.coordinator_name);
             if (this.number_of_preliminary_rounds != 0)
-                writer.writeInt32(9, this.number_of_preliminary_rounds);
+                writer.writeInt32(10, this.number_of_preliminary_rounds);
             if (this.number_of_elimination_rounds != 0)
-                writer.writeInt32(10, this.number_of_elimination_rounds);
+                writer.writeInt32(11, this.number_of_elimination_rounds);
             if (this.judges_per_debate_preliminary != 0)
-                writer.writeInt32(11, this.judges_per_debate_preliminary);
+                writer.writeInt32(12, this.judges_per_debate_preliminary);
             if (this.judges_per_debate_elimination != 0)
-                writer.writeInt32(12, this.judges_per_debate_elimination);
+                writer.writeInt32(13, this.judges_per_debate_elimination);
             if (this.tournament_fee != 0)
-                writer.writeDouble(13, this.tournament_fee);
+                writer.writeDouble(14, this.tournament_fee);
             if (this.image_url.length)
-                writer.writeString(14, this.image_url);
+                writer.writeString(15, this.image_url);
             if (this.number_of_schools != 0)
-                writer.writeInt32(15, this.number_of_schools);
+                writer.writeInt32(16, this.number_of_schools);
             if (this.number_of_teams != 0)
-                writer.writeInt32(16, this.number_of_teams);
+                writer.writeInt32(17, this.number_of_teams);
             if (this.league_name.length)
-                writer.writeString(17, this.league_name);
+                writer.writeString(18, this.league_name);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -856,33 +876,36 @@ export namespace tournament_management {
                         message.league_id = reader.readInt32();
                         break;
                     case 8:
-                        message.coordinator_name = reader.readString();
+                        message.coordinator_id = reader.readInt32();
                         break;
                     case 9:
-                        message.number_of_preliminary_rounds = reader.readInt32();
+                        message.coordinator_name = reader.readString();
                         break;
                     case 10:
-                        message.number_of_elimination_rounds = reader.readInt32();
+                        message.number_of_preliminary_rounds = reader.readInt32();
                         break;
                     case 11:
-                        message.judges_per_debate_preliminary = reader.readInt32();
+                        message.number_of_elimination_rounds = reader.readInt32();
                         break;
                     case 12:
-                        message.judges_per_debate_elimination = reader.readInt32();
+                        message.judges_per_debate_preliminary = reader.readInt32();
                         break;
                     case 13:
-                        message.tournament_fee = reader.readDouble();
+                        message.judges_per_debate_elimination = reader.readInt32();
                         break;
                     case 14:
-                        message.image_url = reader.readString();
+                        message.tournament_fee = reader.readDouble();
                         break;
                     case 15:
-                        message.number_of_schools = reader.readInt32();
+                        message.image_url = reader.readString();
                         break;
                     case 16:
-                        message.number_of_teams = reader.readInt32();
+                        message.number_of_schools = reader.readInt32();
                         break;
                     case 17:
+                        message.number_of_teams = reader.readInt32();
+                        break;
+                    case 18:
                         message.league_name = reader.readString();
                         break;
                     default: reader.skipField();

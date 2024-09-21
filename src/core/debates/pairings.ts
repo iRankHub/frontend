@@ -17,12 +17,13 @@ import {
 export const generatePairingsElimination = async ({
     token,
     tournament_id,
+    round
 }: GetPairingsProps): Promise<Pairing.AsObject[]> => {
     return new Promise((resolve, reject) => {
         const request = new GenerateEliminationPairingsRequest();
         request.setToken(token);
         request.setTournamentId(tournament_id);
-        request.setRoundNumber(1);
+        request.setRoundNumber(round);
 
         debateClient.generateEliminationPairings(request, {}, (err, response) => {
             if (err) {
@@ -52,25 +53,6 @@ export const generatePairingsPreliminaries = async ({
         });
     });
 }
-
-// export const regeneratePairings = async ({
-//     token,
-//     tournament_id,
-// }: RegeneratePairingsProps): Promise<Pairing.AsObject[]> => {
-//     return new Promise((resolve, reject) => {
-//         const request = new RegeneratePairingsRequest();
-//         request.setToken(token);
-//         request.setTournamentId(tournament_id);
-
-//         debateClient.re(request, {}, (err, response) => {
-//             if (err) {
-//                 reject(err);
-//             } else {
-//                 resolve(response.toObject().pairingsList);
-//             }
-//         });
-//     });
-// }
 
 export const getPairings = async ({
     is_elimination,

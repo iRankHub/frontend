@@ -101,7 +101,7 @@ export const updateBallot = async ({
 
         request.setBallot(updatedBallot);
 
-        // console.log(request.toObject());
+        console.log(request.toObject());
 
         debateClient.updateBallot(request, {}, (err, response) => {
             if (err) {
