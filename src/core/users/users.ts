@@ -1,18 +1,25 @@
 import { userClient } from "../grpc-clients";
-import { BuldDeleteUsers, DeactivateUser, GetAllUsers, GetUserDetails, UpdateAdminProfile, UpdateSchoolProfile, UpdateStudentProfile, UpdateVolunteerProfile } from "@/types/user_management/users";
+import {
+    BuldDeleteUsers,
+    DeactivateUser,
+    GetAllUsers,
+    GetUserDetails,
+    UpdateAdminProfile,
+    UpdateSchoolProfile,
+    UpdateStudentProfile,
+    UpdateVolunteerProfile
+} from "@/types/user_management/users";
 import {
     ApproveUserRequest,
     ApproveUserResponse,
     ApproveUsersRequest,
+    ApproveUsersResponse,
     Country,
-    DeactivateAccountRequest,
-    DeactivateAccountResponse,
     DeleteUsersRequest,
     DeleteUsersResponse,
     GetAllUsersRequest,
     GetAllUsersResponse,
     GetCountriesRequest,
-    GetCountriesResponse,
     GetStudentsRequest,
     GetStudentsResponse,
     GetUserProfileRequest,
@@ -25,6 +32,7 @@ import {
     InitiatePasswordUpdateResponse,
     RejectUserRequest,
     RejectUserResponse,
+    RejectUsersRequest,
     UpdateAdminProfileRequest,
     UpdateAdminProfileResponse,
     UpdateSchoolProfileRequest,
@@ -429,13 +437,13 @@ export const bulkApproveOrRejectUsers = async ({
     token: string;
     userIDs: number[];
     action: "approve" | "reject" | "delete";
-}): Promise<ApproveUserResponse.AsObject> => {
+}): Promise<ApproveUsersResponse.AsObject> => {
     return new Promise((resolve, reject) => {
-        const request = new ApproveUsersRequest();
-        request.setToken(token);
-        request.setUseridsList(userIDs);
 
         if (action === "approve") {
+            const request = new ApproveUsersRequest();
+            request.setToken(token);
+            request.setUseridsList(userIDs);
             userClient.approveUsers(request, {}, (err, response) => {
                 if (err) {
                     reject(err);
@@ -443,8 +451,13 @@ export const bulkApproveOrRejectUsers = async ({
                     resolve(response.toObject());
                 }
             });
-        } else {
-            userClient.rejectUsers(request, {}, (err, response) => {
+        } else if (action === "reject") {
+            const rejectRequest = new RejectUsersRequest();
+            rejectRequest.setToken(token);
+            rejectRequest.setUseridsList(userIDs);
+
+            console.log(rejectRequest.toObject());
+            userClient.rejectUsers(rejectRequest, {}, (err, response) => {
                 if (err) {
                     reject(err);
                 } else {

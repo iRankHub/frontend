@@ -94,6 +94,10 @@ function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
     await createTournamentTeam(options)
       .then((res) => {
         form.reset();
+
+        // clear the name field
+        form.setValue("name", "");
+
         setSelectedUsers({
           speaker_1: null,
           speaker_2: null,

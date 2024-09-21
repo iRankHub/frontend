@@ -258,6 +258,8 @@ export namespace user_management {
         constructor(data?: any[] | {
             users?: UserSummary[];
             totalCount?: number;
+            approvedUsersCount?: number;
+            recentSignupsCount?: number;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
@@ -267,6 +269,12 @@ export namespace user_management {
                 }
                 if ("totalCount" in data && data.totalCount != undefined) {
                     this.totalCount = data.totalCount;
+                }
+                if ("approvedUsersCount" in data && data.approvedUsersCount != undefined) {
+                    this.approvedUsersCount = data.approvedUsersCount;
+                }
+                if ("recentSignupsCount" in data && data.recentSignupsCount != undefined) {
+                    this.recentSignupsCount = data.recentSignupsCount;
                 }
             }
         }
@@ -282,9 +290,23 @@ export namespace user_management {
         set totalCount(value: number) {
             pb_1.Message.setField(this, 2, value);
         }
+        get approvedUsersCount() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set approvedUsersCount(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get recentSignupsCount() {
+            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+        }
+        set recentSignupsCount(value: number) {
+            pb_1.Message.setField(this, 4, value);
+        }
         static fromObject(data: {
             users?: ReturnType<typeof UserSummary.prototype.toObject>[];
             totalCount?: number;
+            approvedUsersCount?: number;
+            recentSignupsCount?: number;
         }): GetAllUsersResponse {
             const message = new GetAllUsersResponse({});
             if (data.users != null) {
@@ -293,18 +315,32 @@ export namespace user_management {
             if (data.totalCount != null) {
                 message.totalCount = data.totalCount;
             }
+            if (data.approvedUsersCount != null) {
+                message.approvedUsersCount = data.approvedUsersCount;
+            }
+            if (data.recentSignupsCount != null) {
+                message.recentSignupsCount = data.recentSignupsCount;
+            }
             return message;
         }
         toObject() {
             const data: {
                 users?: ReturnType<typeof UserSummary.prototype.toObject>[];
                 totalCount?: number;
+                approvedUsersCount?: number;
+                recentSignupsCount?: number;
             } = {};
             if (this.users != null) {
                 data.users = this.users.map((item: UserSummary) => item.toObject());
             }
             if (this.totalCount != null) {
                 data.totalCount = this.totalCount;
+            }
+            if (this.approvedUsersCount != null) {
+                data.approvedUsersCount = this.approvedUsersCount;
+            }
+            if (this.recentSignupsCount != null) {
+                data.recentSignupsCount = this.recentSignupsCount;
             }
             return data;
         }
@@ -316,6 +352,10 @@ export namespace user_management {
                 writer.writeRepeatedMessage(1, this.users, (item: UserSummary) => item.serialize(writer));
             if (this.totalCount != 0)
                 writer.writeInt32(2, this.totalCount);
+            if (this.approvedUsersCount != 0)
+                writer.writeInt32(3, this.approvedUsersCount);
+            if (this.recentSignupsCount != 0)
+                writer.writeInt32(4, this.recentSignupsCount);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -330,6 +370,12 @@ export namespace user_management {
                         break;
                     case 2:
                         message.totalCount = reader.readInt32();
+                        break;
+                    case 3:
+                        message.approvedUsersCount = reader.readInt32();
+                        break;
+                    case 4:
+                        message.recentSignupsCount = reader.readInt32();
                         break;
                     default: reader.skipField();
                 }
@@ -5384,6 +5430,113 @@ export namespace user_management {
             return GetCountriesResponse.deserialize(bytes);
         }
     }
+    export class GetCountriesNoAuthRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {}) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") { }
+        }
+        static fromObject(data: {}): GetCountriesNoAuthRequest {
+            const message = new GetCountriesNoAuthRequest({});
+            return message;
+        }
+        toObject() {
+            const data: {} = {};
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetCountriesNoAuthRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetCountriesNoAuthRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetCountriesNoAuthRequest {
+            return GetCountriesNoAuthRequest.deserialize(bytes);
+        }
+    }
+    export class GetCountriesNoAuthResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            countries?: Country[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("countries" in data && data.countries != undefined) {
+                    this.countries = data.countries;
+                }
+            }
+        }
+        get countries() {
+            return pb_1.Message.getRepeatedWrapperField(this, Country, 1) as Country[];
+        }
+        set countries(value: Country[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        static fromObject(data: {
+            countries?: ReturnType<typeof Country.prototype.toObject>[];
+        }): GetCountriesNoAuthResponse {
+            const message = new GetCountriesNoAuthResponse({});
+            if (data.countries != null) {
+                message.countries = data.countries.map(item => Country.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                countries?: ReturnType<typeof Country.prototype.toObject>[];
+            } = {};
+            if (this.countries != null) {
+                data.countries = this.countries.map((item: Country) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.countries.length)
+                writer.writeRepeatedMessage(1, this.countries, (item: Country) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetCountriesNoAuthResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetCountriesNoAuthResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.countries, () => pb_1.Message.addToRepeatedWrapperField(message, 1, Country.deserialize(reader), Country));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetCountriesNoAuthResponse {
+            return GetCountriesNoAuthResponse.deserialize(bytes);
+        }
+    }
     export class Country extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -7939,6 +8092,15 @@ export namespace user_management {
                 responseSerialize: (message: GetCountriesResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => GetCountriesResponse.deserialize(new Uint8Array(bytes))
             },
+            GetCountriesNoAuth: {
+                path: "/user_management.UserManagementService/GetCountriesNoAuth",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GetCountriesNoAuthRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetCountriesNoAuthRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: GetCountriesNoAuthResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => GetCountriesNoAuthResponse.deserialize(new Uint8Array(bytes))
+            },
             GetSchools: {
                 path: "/user_management.UserManagementService/GetSchools",
                 requestStream: false,
@@ -8047,6 +8209,7 @@ export namespace user_management {
         abstract ReactivateAccount(call: grpc_1.ServerUnaryCall<ReactivateAccountRequest, ReactivateAccountResponse>, callback: grpc_1.sendUnaryData<ReactivateAccountResponse>): void;
         abstract GetAccountStatus(call: grpc_1.ServerUnaryCall<GetAccountStatusRequest, GetAccountStatusResponse>, callback: grpc_1.sendUnaryData<GetAccountStatusResponse>): void;
         abstract GetCountries(call: grpc_1.ServerUnaryCall<GetCountriesRequest, GetCountriesResponse>, callback: grpc_1.sendUnaryData<GetCountriesResponse>): void;
+        abstract GetCountriesNoAuth(call: grpc_1.ServerUnaryCall<GetCountriesNoAuthRequest, GetCountriesNoAuthResponse>, callback: grpc_1.sendUnaryData<GetCountriesNoAuthResponse>): void;
         abstract GetSchools(call: grpc_1.ServerUnaryCall<GetSchoolsRequest, GetSchoolsResponse>, callback: grpc_1.sendUnaryData<GetSchoolsResponse>): void;
         abstract GetStudents(call: grpc_1.ServerUnaryCall<GetStudentsRequest, GetStudentsResponse>, callback: grpc_1.sendUnaryData<GetStudentsResponse>): void;
         abstract GetVolunteers(call: grpc_1.ServerUnaryCall<GetVolunteersRequest, GetVolunteersResponse>, callback: grpc_1.sendUnaryData<GetVolunteersResponse>): void;
@@ -8109,6 +8272,9 @@ export namespace user_management {
         };
         GetCountries: GrpcUnaryServiceInterface<GetCountriesRequest, GetCountriesResponse> = (message: GetCountriesRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetCountriesResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetCountriesResponse>, callback?: grpc_1.requestCallback<GetCountriesResponse>): grpc_1.ClientUnaryCall => {
             return super.GetCountries(message, metadata, options, callback);
+        };
+        GetCountriesNoAuth: GrpcUnaryServiceInterface<GetCountriesNoAuthRequest, GetCountriesNoAuthResponse> = (message: GetCountriesNoAuthRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetCountriesNoAuthResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetCountriesNoAuthResponse>, callback?: grpc_1.requestCallback<GetCountriesNoAuthResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetCountriesNoAuth(message, metadata, options, callback);
         };
         GetSchools: GrpcUnaryServiceInterface<GetSchoolsRequest, GetSchoolsResponse> = (message: GetSchoolsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetSchoolsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetSchoolsResponse>, callback?: grpc_1.requestCallback<GetSchoolsResponse>): grpc_1.ClientUnaryCall => {
             return super.GetSchools(message, metadata, options, callback);

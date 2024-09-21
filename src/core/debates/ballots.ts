@@ -1,6 +1,6 @@
 import { BallotUpdateFormProps, GetBallotProps, GetBallotsProps } from "@/types/pairings/ballots";
 import { debateClient } from "../grpc-clients";
-import { Ballot, GetBallotRequest, GetBallotResponse, GetBallotsRequest, Speaker, Team, UpdateBallotRequest } from "@/lib/grpc/proto/debate_management/debate_pb";
+import { Ballot, GetBallotRequest, GetBallotResponse, GetBallotsRequest, Judge, Speaker, Team, UpdateBallotRequest } from "@/lib/grpc/proto/debate_management/debate_pb";
 
 export const getBallots = async ({
     token,
@@ -51,14 +51,27 @@ export const updateBallot = async ({
     return new Promise((resolve, reject) => {
         const request = new UpdateBallotRequest();
         request.setToken(token);
+
         const updatedBallot = new Ballot();
         updatedBallot.setBallotId(ballot.ballotId);
         updatedBallot.setVerdict(ballot.verdict);
+
+        const judges = ballot.judges.map(judge => {
+            const newJudge = new Judge();
+            newJudge.setJudgeId(judge.judgeId);
+            newJudge.setName(judge.name);
+            newJudge.setIdebateId(judge.idebateId);
+            newJudge.setEliminationDebates(judge.eliminationDebates);
+            newJudge.setPreliminaryDebates(judge.preliminaryDebates);
+            return newJudge;
+        });
+        updatedBallot.setJudgesList(judges);
 
         const team1 = new Team();
         team1.setTeamId(ballot.team1.teamId);
         team1.setTotalPoints(ballot.team1.totalPoints);
         team1.setFeedback(ballot.team1.feedback);
+        team1.setSpeakerNamesList(ballot.team1.speakers_names);
         ballot.team1.speakersList.forEach(speaker => {
             const speaker1 = new Speaker();
             speaker1.setScoreId(speaker.scoreId);
@@ -74,6 +87,7 @@ export const updateBallot = async ({
         team2.setTeamId(ballot.team2.teamId);
         team2.setTotalPoints(ballot.team2.totalPoints);
         team2.setFeedback(ballot.team2.feedback);
+        team2.setSpeakerNamesList(ballot.team2.speakers_names);
         ballot.team2.speakersList.forEach(speaker => {
             const speaker2 = new Speaker();
             speaker2.setScoreId(speaker.scoreId);
@@ -86,6 +100,8 @@ export const updateBallot = async ({
         updatedBallot.setTeam2(team2);
 
         request.setBallot(updatedBallot);
+
+        // console.log(request.toObject());
 
         debateClient.updateBallot(request, {}, (err, response) => {
             if (err) {

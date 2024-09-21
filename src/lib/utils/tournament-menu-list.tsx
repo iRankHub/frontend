@@ -37,131 +37,118 @@ export function getTournamentMenuList(
       groupLabel: "",
       menus: [
         {
-          href: `/students/tournaments/${routeName}`,
+          href: `/admin/tournaments/list/${routeName}`,
           label: "Tournament Info",
-          active: pathname.includes(`/students/tournaments/${routeName}`),
+          active: pathname === `/admin/tournaments/list/${routeName}`,
           icon: List,
           submenus: [],
         },
         {
-          href: `/students/tournaments/${routeName}/invitations`,
+          href: `/admin/tournaments/list/${routeName}/invitations`,
           label: "Invitations",
-          active: pathname.includes(
-            `/students/tournaments/${routeName}/invitations`
-          ),
+          active:
+            pathname === `/admin/tournaments/list/${routeName}/invitations`,
           icon: Mails,
           submenus: [],
         },
         {
-          href: `/students/tournaments/${routeName}/teams`,
+          href: `/admin/tournaments/list/${routeName}/teams`,
           label: "Teams",
-          active: pathname.includes(
-            `/students/tournaments/${routeName}/teams`
-          ),
+          active: pathname === `/admin/tournaments/list/${routeName}/teams`,
           icon: Users,
           submenus: [],
         },
         {
-          href: `/students/tournaments/${routeName}/pairings`,
+          href: `/admin/tournaments/list/${routeName}/pairings`,
           label: "Pairings",
-          active: pathname.includes(
-            `/students/tournaments/${routeName}/pairings`
-          ),
+          active: pathname === `/admin/tournaments/list/${routeName}/pairings`,
           icon: Network,
           submenus: [
             {
-              href: `/students/tournaments/${routeName}/pairings/preliminaries`,
+              href: `/admin/tournaments/list/${routeName}/pairings/preliminaries`,
               label: "Preliminaries",
               active:
                 pathname ===
-                `/students/tournaments/${routeName}/pairings/preliminaries`,
+                `/admin/tournaments/list/${routeName}/pairings/preliminaries`,
             },
             {
-              href: `/students/tournaments/${routeName}/pairings/elimination`,
+              href: `/admin/tournaments/list/${routeName}/pairings/elimination`,
               label: "Elimination",
               active:
                 pathname ===
-                `/students/tournaments/${routeName}/pairings/elimination`,
+                `/admin/tournaments/list/${routeName}/pairings/elimination`,
             },
           ],
         },
         {
-          href: `/students/tournaments/${routeName}/rooms`,
+          href: `/admin/tournaments/list/${routeName}/rooms`,
           label: "Rooms",
-          active: pathname.includes(
-            `/students/tournaments/${routeName}/rooms`
-          ),
+          active: pathname === `/admin/tournaments/list/${routeName}/rooms`,
           icon: DoorOpen,
           submenus: [],
         },
         {
-          href: `/students/tournaments/${routeName}/judges`,
+          href: `/admin/tournaments/list/${routeName}/judges`,
           label: "Judges",
-          active: pathname.includes(
-            `/students/tournaments/${routeName}/judges`
-          ),
+          active: pathname === `/admin/tournaments/list/${routeName}/judges`,
           icon: Users,
           submenus: [],
         },
         {
-          href: `/students/tournaments/${routeName}/ballots`,
+          href: `/admin/tournaments/list/${routeName}/ballots`,
           label: "Ballots",
-          active: pathname.includes(
-            `/students/tournaments/${routeName}/ballots`
-          ),
+          active: pathname === `/admin/tournaments/list/${routeName}/ballots`,
           icon: BookText,
           submenus: [
             {
-              href: `/students/tournaments/${routeName}/ballots/preliminaries`,
+              href: `/admin/tournaments/list/${routeName}/ballots/preliminaries`,
               label: "Preliminaries",
               active:
                 pathname ===
-                `/students/tournaments/${routeName}/ballots/preliminaries`,
+                `/admin/tournaments/list/${routeName}/ballots/preliminaries`,
             },
             {
-              href: `/students/tournaments/${routeName}/ballots/elimination`,
+              href: `/admin/tournaments/list/${routeName}/ballots/elimination`,
               label: "Elimination",
               active:
                 pathname ===
-                `/students/tournaments/${routeName}/ballots/elimination`,
+                `/admin/tournaments/list/${routeName}/ballots/elimination`,
             },
           ],
         },
         {
-          href: `/students/tournaments/${routeName}/ranking`,
+          href: `/admin/tournaments/list/${routeName}/ranking`,
           label: "Ranking",
-          active: pathname.includes(
-            `/students/tournaments/${routeName}/ranking`
-          ),
+          active: pathname === `/admin/tournaments/list/${routeName}/ranking`,
           icon: BarChart,
           submenus: [
             {
-              href: `/students/tournaments/${routeName}/ranking/speakers`,
+              href: `/admin/tournaments/list/${routeName}/ranking/speakers`,
               label: "Speakers",
               active:
                 pathname ===
-                `/students/tournaments/${routeName}/ranking/speakers`,
+                `/admin/tournaments/list/${routeName}/ranking/speakers`,
             },
             {
-              href: `/students/tournaments/${routeName}/ranking/teams`,
+              href: `/admin/tournaments/list/${routeName}/ranking/teams`,
               label: "Teams",
               active:
                 pathname ===
-                `/students/tournaments/${routeName}/ranking/teams`,
+                `/admin/tournaments/list/${routeName}/ranking/teams`,
             },
             {
-              href: `/students/tournaments/${routeName}/ranking/schools`,
+              href: `/admin/tournaments/list/${routeName}/ranking/schools`,
               label: "Schools",
               active:
                 pathname ===
-                `/students/tournaments/${routeName}/ranking/schools`,
+                `/admin/tournaments/list/${routeName}/ranking/schools`,
             },
             {
-              href: `/students/tournaments/${routeName}/ranking/volunteers`,
+              href: `/admin/tournaments/list/${routeName}/ranking/volunteers`,
               label: "Volunteers",
               active:
                 pathname ===
-                `/students/tournaments/${routeName}/ranking/volunteers`,
+                `/admin/tournaments/list/${routeName}/ranking/volunteers`,
             },
           ],
         },

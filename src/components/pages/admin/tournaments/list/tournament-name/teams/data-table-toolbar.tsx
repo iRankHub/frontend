@@ -16,6 +16,7 @@ import { getStudents } from "@/core/users/users";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { GetSchoolsType } from "@/types/user_management/schools";
 import { Team } from "@/lib/grpc/proto/debate_management/debate_pb";
+import * as XLSX from "xlsx";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -100,15 +101,57 @@ export function DataTableToolbar<TData>({
             />
           </SidePanel>
         </Sheet>
-        <Button
-          type="button"
-          className="border border-dashed border-white text-white dark:text-foreground gap-2 text-sm font-bold h-8 hover:bg-background dark:hover:bg-foreground hover:text-foreground dark:hover:text-background group"
-        >
-          <Icons.fileUp className="text-white w-3.5 h-3.5 group-hover:text-foreground group-hover:dark:text-background" />
-          Export
-          <span className="sr-only">Export</span>
-        </Button>
+        {exportToExcel({ table })}
       </div>
     </div>
   );
 }
+
+const exportToExcel = ({
+  table,
+  filename = "table-data.xlsx",
+}: {
+  table: Table<any>;
+  filename?: string;
+}) => {
+  const handleExport = () => {
+    // Get the rows from the table
+    const rows = table.getRowModel().rows;
+
+    // Convert the rows to a format suitable for XLSX
+    const data = rows.map(row => {
+      return {
+        "Team Name": row.getValue("name"),
+        "No. of Speakers": (row.getValue("speakersList") as any[]).length
+      };
+    });
+
+    // Create a new workbook and add the data
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(data);
+
+    // Adjust column widths
+    const colWidths = [
+      { wch: 30 }, // Team Name
+      { wch: 15 }  // No. of Speakers
+    ];
+    ws['!cols'] = colWidths;
+
+    XLSX.utils.book_append_sheet(wb, ws, "Teams");
+
+    // Save the file
+    XLSX.writeFile(wb, filename);
+  };
+
+  return (
+    <Button
+      onClick={handleExport}
+      type="button"
+      className="border border-dashed border-white text-white dark:text-foreground gap-2 text-sm font-bold h-8 hover:bg-background dark:hover:bg-foreground hover:text-foreground dark:hover:text-background group"
+    >
+      <Icons.fileUp className="text-white w-3.5 h-3.5 group-hover:text-foreground group-hover:dark:text-background" />
+      Export
+      <span className="sr-only">Export</span>
+    </Button>
+  );
+};

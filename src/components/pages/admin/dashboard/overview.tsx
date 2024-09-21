@@ -8,9 +8,10 @@ interface OverviewProps {
   totalUsers: number;
   newSignups: number;
   totalTournaments: number;
+  upcomingTournaments: number;
 }
 
-function Overview({ newSignups, totalTournaments, totalUsers }: OverviewProps) {
+function Overview({ newSignups, totalTournaments, totalUsers, upcomingTournaments }: OverviewProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-x gap-4 px-4 py-6 bg-background rounded-lg border-2 border-muted mt-5">
       <Link href={"/admin/users"}>
@@ -84,7 +85,7 @@ function Overview({ newSignups, totalTournaments, totalUsers }: OverviewProps) {
               <small className="text-xs text-success-foreground">8.3%</small>
             </div>
           </div>
-          <p className="text-xl font-bold text-primary tracking-widest">15</p>
+          <p className="text-xl font-bold text-primary tracking-widest">{upcomingTournaments}</p>
           <p className="capitalize text-sm text-muted-text">Next 30 days</p>
         </div>
       </Link>

@@ -75,6 +75,12 @@ export class GetAllUsersResponse extends jspb.Message {
   getTotalcount(): number;
   setTotalcount(value: number): GetAllUsersResponse;
 
+  getApproveduserscount(): number;
+  setApproveduserscount(value: number): GetAllUsersResponse;
+
+  getRecentsignupscount(): number;
+  setRecentsignupscount(value: number): GetAllUsersResponse;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetAllUsersResponse.AsObject;
   static toObject(includeInstance: boolean, msg: GetAllUsersResponse): GetAllUsersResponse.AsObject;
@@ -87,6 +93,8 @@ export namespace GetAllUsersResponse {
   export type AsObject = {
     usersList: Array<UserSummary.AsObject>,
     totalcount: number,
+    approveduserscount: number,
+    recentsignupscount: number,
   }
 }
 
@@ -1234,6 +1242,40 @@ export class GetCountriesResponse extends jspb.Message {
 }
 
 export namespace GetCountriesResponse {
+  export type AsObject = {
+    countriesList: Array<Country.AsObject>,
+  }
+}
+
+export class GetCountriesNoAuthRequest extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetCountriesNoAuthRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetCountriesNoAuthRequest): GetCountriesNoAuthRequest.AsObject;
+  static serializeBinaryToWriter(message: GetCountriesNoAuthRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetCountriesNoAuthRequest;
+  static deserializeBinaryFromReader(message: GetCountriesNoAuthRequest, reader: jspb.BinaryReader): GetCountriesNoAuthRequest;
+}
+
+export namespace GetCountriesNoAuthRequest {
+  export type AsObject = {
+  }
+}
+
+export class GetCountriesNoAuthResponse extends jspb.Message {
+  getCountriesList(): Array<Country>;
+  setCountriesList(value: Array<Country>): GetCountriesNoAuthResponse;
+  clearCountriesList(): GetCountriesNoAuthResponse;
+  addCountries(value?: Country, index?: number): Country;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetCountriesNoAuthResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetCountriesNoAuthResponse): GetCountriesNoAuthResponse.AsObject;
+  static serializeBinaryToWriter(message: GetCountriesNoAuthResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetCountriesNoAuthResponse;
+  static deserializeBinaryFromReader(message: GetCountriesNoAuthResponse, reader: jspb.BinaryReader): GetCountriesNoAuthResponse;
+}
+
+export namespace GetCountriesNoAuthResponse {
   export type AsObject = {
     countriesList: Array<Country.AsObject>,
   }

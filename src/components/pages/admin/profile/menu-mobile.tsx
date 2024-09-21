@@ -6,11 +6,10 @@ import SidePanel, {
 } from "@/components/layout/admin-panel/side-panel";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { getTournamentMenuList } from "@/lib/utils/volunteer/tournament-menu-list";
 import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { getMenuList } from "@/lib/utils/volunteer/accounts-menu-list";
+import { getMenuList } from "@/lib/utils/admin/accounts-menu-list";
 import { CollapseMenuButton } from "@/components/layout/volunteer-panel/collapse-menu-button";
 
 type Props = {};
@@ -27,17 +26,6 @@ function MenuMobile({}: Props) {
         </div>
       </Panelheader>
       <div className="w-full p-3">
-        {/* <div className="flex items-center gap-3 mt-2 h-auto">
-          <Command className="rounded-md w-full border">
-            <CommandInput
-              placeholder="Search leagues..."
-              className="ring-0 h-8"
-            />
-          </Command>
-        </div>
-        <p className="text-muted-foreground text-xs italic font-medium mt-1">
-          20 records found
-        </p> */}
         <ScrollArea className="[&>div>div[style]]:!block">
           <nav className="mt-3 h-full w-full">
             <ul className="flex flex-col min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1">

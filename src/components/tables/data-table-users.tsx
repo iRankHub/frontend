@@ -139,8 +139,9 @@ export function DataTable<TData, TValue>({
       bulkApproveOrRejectUsers(options)
         .then((res) => {
           if (res.success) {
+            const formattedStatus = action === "approve" ? "approved" : "rejected";
             selectedRows.forEach((row) => {
-              updateUserStatus(row.userid, action);
+              updateUserStatus(row.userid, formattedStatus);
             });
             table.resetRowSelection();
             toast({

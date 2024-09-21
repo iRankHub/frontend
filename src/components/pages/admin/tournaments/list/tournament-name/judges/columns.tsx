@@ -366,14 +366,14 @@ const RoomAssignmentPanel = ({ row }: { row: Judge.AsObject }) => {
           <Panelheader>
             <div className="flex items-center gap-1">
               <h3 className="text-sm font-bold capitalize">{row.name}</h3>
-              <Button
+              {/* <Button
                 type="button"
                 className="rounded-full m-0 p-0 w-6 h-6 hover:bg-primary"
                 size="icon"
                 onClick={() => setIsEditing(!isEditing)}
               >
                 <Icons.pencilLine className="w-4 h-4" />
-              </Button>
+              </Button> */}
             </div>
           </Panelheader>
           <div className="w-full h-[calc(100%_-_70px)] p-5 flex flex-col">
@@ -385,7 +385,7 @@ const RoomAssignmentPanel = ({ row }: { row: Judge.AsObject }) => {
                 <Input
                   placeholder="room name"
                   value={row.name}
-                  className="text-foreground placeholder:text-muted-foreground disabled:opacity-100"
+                  className="text-foreground placeholder:text-muted-foreground disabled:opacity-100 disabled:cursor-default"
                   disabled={true}
                 />
               </div>

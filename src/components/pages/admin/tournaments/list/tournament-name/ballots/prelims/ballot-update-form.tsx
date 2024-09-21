@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { getBallot, updateBallot } from "@/core/debates/ballots";
 import {
   Ballot,
+  Judge,
   Speaker,
   Team,
 } from "@/lib/grpc/proto/debate_management/debate_pb";
@@ -200,8 +201,10 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       token: user.token,
       ballot: {
         ballotId: ballotId,
+        judges: ballot?.judgesList as Judge.AsObject[],
         team1: {
           teamId: ballot?.team1?.teamId as number,
+          speakers_names: ballot?.team1?.speakerNamesList as string[],
           totalPoints: sortedTeam1Speakers.reduce(
             (acc, speaker) => acc + (speaker.points || 0),
             0
@@ -217,6 +220,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
         },
         team2: {
           teamId: ballot?.team2?.teamId as number,
+          speakers_names: ballot?.team2?.speakerNamesList as string[],
           totalPoints: sortedTeam2Speakers.reduce(
             (acc, speaker) => acc + (speaker.points || 0),
             0
@@ -523,6 +527,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
                 !isTeam1RankingCalculated ||
                 !isTeam2RankingCalculated ||
                 !winner
+                // || isUpdatingBallot
               }
             >
               Submit

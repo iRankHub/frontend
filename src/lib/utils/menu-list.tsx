@@ -78,24 +78,24 @@ import {
             icon: Users,
             submenus: []
           },
-          {
-            href: "/admin/logistics",
-            label: "Logistics",
-            active: pathname.includes("/admin/logistics"),
-            icon: Sheet,
-            submenus: [
-              {
-                href: "/admin/logistics/billings",
-                label: "Billings",
-                active: pathname === "/billings"
-              },
-              {
-                href: "/admin/logistics/mission",
-                label: "Mission Orders",
-                active: pathname === "/mission"
-              },
-            ]
-          },
+          // {
+          //   href: "/admin/logistics",
+          //   label: "Logistics",
+          //   active: pathname.includes("/admin/logistics"),
+          //   icon: Sheet,
+          //   submenus: [
+          //     {
+          //       href: "/admin/logistics/billings",
+          //       label: "Billings",
+          //       active: pathname === "/billings"
+          //     },
+          //     {
+          //       href: "/admin/logistics/mission",
+          //       label: "Mission Orders",
+          //       active: pathname === "/mission"
+          //     },
+          //   ]
+          // },
           {
             href: "/admin/reports",
             label: "Reporting & Analytics",

@@ -6,7 +6,11 @@ import React, { FC, useEffect } from "react";
 import { columns } from "./columns";
 import { DataTable } from "@/components/tables/data-table-pairings";
 import { Pairing } from "@/lib/grpc/proto/debate_management/debate_pb";
-import { generatePairings, getPairings } from "@/core/debates/pairings";
+import {
+  generatePairingsElimination,
+  generatePairingsPreliminaries,
+  getPairings,
+} from "@/core/debates/pairings";
 import { GetPairingsProps } from "@/types/pairings";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { useTeamSwapStore } from "@/stores/admin/debate/pairings/pairings.store";
@@ -105,14 +109,40 @@ const PairingsTable: FC<PairingsTableProps> = ({
       token: user.token,
       tournament_id: tournamentId,
     };
-    generatePairings(options)
-      .then((res) => {
-        setPairings(res);
-      })
-      .catch((err) => {
-        console.log(err);
-        console.error(err.message);
-      });
+
+    if (is_elimination) {
+      generatePairingsElimination(options)
+        .then((res) => {
+          const round1_pairings = res.filter(
+            (pairing) => pairing.roundNumber === 1
+          );
+          setPairings(round1_pairings);
+        })
+        .catch((err) => {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: err.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        });
+    } else {
+      generatePairingsPreliminaries(options)
+        .then((res) => {
+          const round1_pairings = res.filter(
+            (pairing) => pairing.roundNumber === 1
+          );
+          setPairings(round1_pairings);
+        })
+        .catch((err) => {
+          console.log(err);
+          console.error(err.message);
+        });
+    }
   };
 
   if (!pairings) {

@@ -30,8 +30,8 @@ export function SheetMenu() {
               <Image
                 src="/static/images/logo-big.png"
                 alt="logo"
-                width={50}
-                height={50}
+                width={40}
+                height={40}
                 className="rounded-md mr-1"
               />
               <h1 className="font-bold text-lg text-background dark:text-foreground">iRankHub</h1>

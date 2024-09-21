@@ -3,6 +3,7 @@
  * compiler version: 5.27.2
  * source: debate_management/debate.proto
  * git: https://github.com/thesayyn/protoc-gen-ts */
+import * as dependency_1 from "./..\\google\\protobuf\\timestamp";
 import * as pb_1 from "google-protobuf";
 import * as grpc_1 from "@grpc/grpc-js";
 export namespace debate_management {
@@ -2894,166 +2895,6 @@ export namespace debate_management {
             return GetPairingsResponse.deserialize(bytes);
         }
     }
-    export class GetPairingRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            pairing_id?: number;
-            token?: string;
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("pairing_id" in data && data.pairing_id != undefined) {
-                    this.pairing_id = data.pairing_id;
-                }
-                if ("token" in data && data.token != undefined) {
-                    this.token = data.token;
-                }
-            }
-        }
-        get pairing_id() {
-            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
-        }
-        set pairing_id(value: number) {
-            pb_1.Message.setField(this, 1, value);
-        }
-        get token() {
-            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
-        }
-        set token(value: string) {
-            pb_1.Message.setField(this, 2, value);
-        }
-        static fromObject(data: {
-            pairing_id?: number;
-            token?: string;
-        }): GetPairingRequest {
-            const message = new GetPairingRequest({});
-            if (data.pairing_id != null) {
-                message.pairing_id = data.pairing_id;
-            }
-            if (data.token != null) {
-                message.token = data.token;
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                pairing_id?: number;
-                token?: string;
-            } = {};
-            if (this.pairing_id != null) {
-                data.pairing_id = this.pairing_id;
-            }
-            if (this.token != null) {
-                data.token = this.token;
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.pairing_id != 0)
-                writer.writeInt32(1, this.pairing_id);
-            if (this.token.length)
-                writer.writeString(2, this.token);
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetPairingRequest {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetPairingRequest();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        message.pairing_id = reader.readInt32();
-                        break;
-                    case 2:
-                        message.token = reader.readString();
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): GetPairingRequest {
-            return GetPairingRequest.deserialize(bytes);
-        }
-    }
-    export class GetPairingResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            pairing?: Pairing;
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("pairing" in data && data.pairing != undefined) {
-                    this.pairing = data.pairing;
-                }
-            }
-        }
-        get pairing() {
-            return pb_1.Message.getWrapperField(this, Pairing, 1) as Pairing;
-        }
-        set pairing(value: Pairing) {
-            pb_1.Message.setWrapperField(this, 1, value);
-        }
-        get has_pairing() {
-            return pb_1.Message.getField(this, 1) != null;
-        }
-        static fromObject(data: {
-            pairing?: ReturnType<typeof Pairing.prototype.toObject>;
-        }): GetPairingResponse {
-            const message = new GetPairingResponse({});
-            if (data.pairing != null) {
-                message.pairing = Pairing.fromObject(data.pairing);
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                pairing?: ReturnType<typeof Pairing.prototype.toObject>;
-            } = {};
-            if (this.pairing != null) {
-                data.pairing = this.pairing.toObject();
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.has_pairing)
-                writer.writeMessage(1, this.pairing, () => this.pairing.serialize(writer));
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetPairingResponse {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetPairingResponse();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        reader.readMessage(message.pairing, () => message.pairing = Pairing.deserialize(reader));
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): GetPairingResponse {
-            return GetPairingResponse.deserialize(bytes);
-        }
-    }
     export class UpdatePairingsRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -3923,6 +3764,189 @@ export namespace debate_management {
             return GetBallotResponse.deserialize(bytes);
         }
     }
+    export class GetBallotByJudgeIDRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            judge_id?: number;
+            tournament_id?: number;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("judge_id" in data && data.judge_id != undefined) {
+                    this.judge_id = data.judge_id;
+                }
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
+                }
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get judge_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set judge_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get tournament_id() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set tournament_id(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        static fromObject(data: {
+            judge_id?: number;
+            tournament_id?: number;
+            token?: string;
+        }): GetBallotByJudgeIDRequest {
+            const message = new GetBallotByJudgeIDRequest({});
+            if (data.judge_id != null) {
+                message.judge_id = data.judge_id;
+            }
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
+            }
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                judge_id?: number;
+                tournament_id?: number;
+                token?: string;
+            } = {};
+            if (this.judge_id != null) {
+                data.judge_id = this.judge_id;
+            }
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
+            }
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.judge_id != 0)
+                writer.writeInt32(1, this.judge_id);
+            if (this.tournament_id != 0)
+                writer.writeInt32(2, this.tournament_id);
+            if (this.token.length)
+                writer.writeString(3, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetBallotByJudgeIDRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetBallotByJudgeIDRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.judge_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.tournament_id = reader.readInt32();
+                        break;
+                    case 3:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetBallotByJudgeIDRequest {
+            return GetBallotByJudgeIDRequest.deserialize(bytes);
+        }
+    }
+    export class GetBallotByJudgeIDResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            ballot?: Ballot;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("ballot" in data && data.ballot != undefined) {
+                    this.ballot = data.ballot;
+                }
+            }
+        }
+        get ballot() {
+            return pb_1.Message.getWrapperField(this, Ballot, 1) as Ballot;
+        }
+        set ballot(value: Ballot) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_ballot() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        static fromObject(data: {
+            ballot?: ReturnType<typeof Ballot.prototype.toObject>;
+        }): GetBallotByJudgeIDResponse {
+            const message = new GetBallotByJudgeIDResponse({});
+            if (data.ballot != null) {
+                message.ballot = Ballot.fromObject(data.ballot);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                ballot?: ReturnType<typeof Ballot.prototype.toObject>;
+            } = {};
+            if (this.ballot != null) {
+                data.ballot = this.ballot.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_ballot)
+                writer.writeMessage(1, this.ballot, () => this.ballot.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetBallotByJudgeIDResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetBallotByJudgeIDResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.ballot, () => message.ballot = Ballot.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetBallotByJudgeIDResponse {
+            return GetBallotByJudgeIDResponse.deserialize(bytes);
+        }
+    }
     export class UpdateBallotRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -4086,11 +4110,10 @@ export namespace debate_management {
             return UpdateBallotResponse.deserialize(bytes);
         }
     }
-    export class GeneratePairingsRequest extends pb_1.Message {
+    export class GeneratePreliminaryPairingsRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             tournament_id?: number;
-            is_elimination_round?: boolean;
             token?: string;
         }) {
             super();
@@ -4098,9 +4121,6 @@ export namespace debate_management {
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("tournament_id" in data && data.tournament_id != undefined) {
                     this.tournament_id = data.tournament_id;
-                }
-                if ("is_elimination_round" in data && data.is_elimination_round != undefined) {
-                    this.is_elimination_round = data.is_elimination_round;
                 }
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -4113,29 +4133,19 @@ export namespace debate_management {
         set tournament_id(value: number) {
             pb_1.Message.setField(this, 1, value);
         }
-        get is_elimination_round() {
-            return pb_1.Message.getFieldWithDefault(this, 3, false) as boolean;
-        }
-        set is_elimination_round(value: boolean) {
-            pb_1.Message.setField(this, 3, value);
-        }
         get token() {
-            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
         }
         set token(value: string) {
-            pb_1.Message.setField(this, 4, value);
+            pb_1.Message.setField(this, 2, value);
         }
         static fromObject(data: {
             tournament_id?: number;
-            is_elimination_round?: boolean;
             token?: string;
-        }): GeneratePairingsRequest {
-            const message = new GeneratePairingsRequest({});
+        }): GeneratePreliminaryPairingsRequest {
+            const message = new GeneratePreliminaryPairingsRequest({});
             if (data.tournament_id != null) {
                 message.tournament_id = data.tournament_id;
-            }
-            if (data.is_elimination_round != null) {
-                message.is_elimination_round = data.is_elimination_round;
             }
             if (data.token != null) {
                 message.token = data.token;
@@ -4145,14 +4155,10 @@ export namespace debate_management {
         toObject() {
             const data: {
                 tournament_id?: number;
-                is_elimination_round?: boolean;
                 token?: string;
             } = {};
             if (this.tournament_id != null) {
                 data.tournament_id = this.tournament_id;
-            }
-            if (this.is_elimination_round != null) {
-                data.is_elimination_round = this.is_elimination_round;
             }
             if (this.token != null) {
                 data.token = this.token;
@@ -4165,15 +4171,13 @@ export namespace debate_management {
             const writer = w || new pb_1.BinaryWriter();
             if (this.tournament_id != 0)
                 writer.writeInt32(1, this.tournament_id);
-            if (this.is_elimination_round != false)
-                writer.writeBool(3, this.is_elimination_round);
             if (this.token.length)
-                writer.writeString(4, this.token);
+                writer.writeString(2, this.token);
             if (!w)
                 return writer.getResultBuffer();
         }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GeneratePairingsRequest {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GeneratePairingsRequest();
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GeneratePreliminaryPairingsRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GeneratePreliminaryPairingsRequest();
             while (reader.nextField()) {
                 if (reader.isEndGroup())
                     break;
@@ -4181,10 +4185,7 @@ export namespace debate_management {
                     case 1:
                         message.tournament_id = reader.readInt32();
                         break;
-                    case 3:
-                        message.is_elimination_round = reader.readBool();
-                        break;
-                    case 4:
+                    case 2:
                         message.token = reader.readString();
                         break;
                     default: reader.skipField();
@@ -4195,8 +4196,121 @@ export namespace debate_management {
         serializeBinary(): Uint8Array {
             return this.serialize();
         }
-        static deserializeBinary(bytes: Uint8Array): GeneratePairingsRequest {
-            return GeneratePairingsRequest.deserialize(bytes);
+        static deserializeBinary(bytes: Uint8Array): GeneratePreliminaryPairingsRequest {
+            return GeneratePreliminaryPairingsRequest.deserialize(bytes);
+        }
+    }
+    export class GenerateEliminationPairingsRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tournament_id?: number;
+            round_number?: number;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
+                }
+                if ("round_number" in data && data.round_number != undefined) {
+                    this.round_number = data.round_number;
+                }
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get tournament_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set tournament_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get round_number() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set round_number(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        static fromObject(data: {
+            tournament_id?: number;
+            round_number?: number;
+            token?: string;
+        }): GenerateEliminationPairingsRequest {
+            const message = new GenerateEliminationPairingsRequest({});
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
+            }
+            if (data.round_number != null) {
+                message.round_number = data.round_number;
+            }
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tournament_id?: number;
+                round_number?: number;
+                token?: string;
+            } = {};
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
+            }
+            if (this.round_number != null) {
+                data.round_number = this.round_number;
+            }
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.tournament_id != 0)
+                writer.writeInt32(1, this.tournament_id);
+            if (this.round_number != 0)
+                writer.writeInt32(2, this.round_number);
+            if (this.token.length)
+                writer.writeString(3, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GenerateEliminationPairingsRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GenerateEliminationPairingsRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.tournament_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.round_number = reader.readInt32();
+                        break;
+                    case 3:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GenerateEliminationPairingsRequest {
+            return GenerateEliminationPairingsRequest.deserialize(bytes);
         }
     }
     export class GeneratePairingsResponse extends pb_1.Message {
@@ -4264,209 +4378,6 @@ export namespace debate_management {
         }
         static deserializeBinary(bytes: Uint8Array): GeneratePairingsResponse {
             return GeneratePairingsResponse.deserialize(bytes);
-        }
-    }
-    export class AssignJudgesRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            tournament_id?: number;
-            round_number?: number;
-            is_elimination?: boolean;
-            token?: string;
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("tournament_id" in data && data.tournament_id != undefined) {
-                    this.tournament_id = data.tournament_id;
-                }
-                if ("round_number" in data && data.round_number != undefined) {
-                    this.round_number = data.round_number;
-                }
-                if ("is_elimination" in data && data.is_elimination != undefined) {
-                    this.is_elimination = data.is_elimination;
-                }
-                if ("token" in data && data.token != undefined) {
-                    this.token = data.token;
-                }
-            }
-        }
-        get tournament_id() {
-            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
-        }
-        set tournament_id(value: number) {
-            pb_1.Message.setField(this, 1, value);
-        }
-        get round_number() {
-            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
-        }
-        set round_number(value: number) {
-            pb_1.Message.setField(this, 2, value);
-        }
-        get is_elimination() {
-            return pb_1.Message.getFieldWithDefault(this, 3, false) as boolean;
-        }
-        set is_elimination(value: boolean) {
-            pb_1.Message.setField(this, 3, value);
-        }
-        get token() {
-            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
-        }
-        set token(value: string) {
-            pb_1.Message.setField(this, 4, value);
-        }
-        static fromObject(data: {
-            tournament_id?: number;
-            round_number?: number;
-            is_elimination?: boolean;
-            token?: string;
-        }): AssignJudgesRequest {
-            const message = new AssignJudgesRequest({});
-            if (data.tournament_id != null) {
-                message.tournament_id = data.tournament_id;
-            }
-            if (data.round_number != null) {
-                message.round_number = data.round_number;
-            }
-            if (data.is_elimination != null) {
-                message.is_elimination = data.is_elimination;
-            }
-            if (data.token != null) {
-                message.token = data.token;
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                tournament_id?: number;
-                round_number?: number;
-                is_elimination?: boolean;
-                token?: string;
-            } = {};
-            if (this.tournament_id != null) {
-                data.tournament_id = this.tournament_id;
-            }
-            if (this.round_number != null) {
-                data.round_number = this.round_number;
-            }
-            if (this.is_elimination != null) {
-                data.is_elimination = this.is_elimination;
-            }
-            if (this.token != null) {
-                data.token = this.token;
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.tournament_id != 0)
-                writer.writeInt32(1, this.tournament_id);
-            if (this.round_number != 0)
-                writer.writeInt32(2, this.round_number);
-            if (this.is_elimination != false)
-                writer.writeBool(3, this.is_elimination);
-            if (this.token.length)
-                writer.writeString(4, this.token);
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): AssignJudgesRequest {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new AssignJudgesRequest();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        message.tournament_id = reader.readInt32();
-                        break;
-                    case 2:
-                        message.round_number = reader.readInt32();
-                        break;
-                    case 3:
-                        message.is_elimination = reader.readBool();
-                        break;
-                    case 4:
-                        message.token = reader.readString();
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): AssignJudgesRequest {
-            return AssignJudgesRequest.deserialize(bytes);
-        }
-    }
-    export class AssignJudgesResponse extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            pairings?: Pairing[];
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("pairings" in data && data.pairings != undefined) {
-                    this.pairings = data.pairings;
-                }
-            }
-        }
-        get pairings() {
-            return pb_1.Message.getRepeatedWrapperField(this, Pairing, 1) as Pairing[];
-        }
-        set pairings(value: Pairing[]) {
-            pb_1.Message.setRepeatedWrapperField(this, 1, value);
-        }
-        static fromObject(data: {
-            pairings?: ReturnType<typeof Pairing.prototype.toObject>[];
-        }): AssignJudgesResponse {
-            const message = new AssignJudgesResponse({});
-            if (data.pairings != null) {
-                message.pairings = data.pairings.map(item => Pairing.fromObject(item));
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                pairings?: ReturnType<typeof Pairing.prototype.toObject>[];
-            } = {};
-            if (this.pairings != null) {
-                data.pairings = this.pairings.map((item: Pairing) => item.toObject());
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.pairings.length)
-                writer.writeRepeatedMessage(1, this.pairings, (item: Pairing) => item.serialize(writer));
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): AssignJudgesResponse {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new AssignJudgesResponse();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        reader.readMessage(message.pairings, () => pb_1.Message.addToRepeatedWrapperField(message, 1, Pairing.deserialize(reader), Pairing));
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): AssignJudgesResponse {
-            return AssignJudgesResponse.deserialize(bytes);
         }
     }
     export class CreateTeamRequest extends pb_1.Message {
@@ -5125,11 +5036,813 @@ export namespace debate_management {
             return GetTeamsByTournamentResponse.deserialize(bytes);
         }
     }
-    export class RegeneratePairingsRequest extends pb_1.Message {
+    export class OverallRankingRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            user_id?: number;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("user_id" in data && data.user_id != undefined) {
+                    this.user_id = data.user_id;
+                }
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get user_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set user_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            user_id?: number;
+            token?: string;
+        }): OverallRankingRequest {
+            const message = new OverallRankingRequest({});
+            if (data.user_id != null) {
+                message.user_id = data.user_id;
+            }
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                user_id?: number;
+                token?: string;
+            } = {};
+            if (this.user_id != null) {
+                data.user_id = this.user_id;
+            }
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.user_id != 0)
+                writer.writeInt32(1, this.user_id);
+            if (this.token.length)
+                writer.writeString(2, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): OverallRankingRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new OverallRankingRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.user_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): OverallRankingRequest {
+            return OverallRankingRequest.deserialize(bytes);
+        }
+    }
+    export class OverallRankingResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            student_rank?: number;
+            total_students?: number;
+            rank_change?: number;
+            top_students?: TopStudent[];
+            student_info?: StudentInfo;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [4], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("student_rank" in data && data.student_rank != undefined) {
+                    this.student_rank = data.student_rank;
+                }
+                if ("total_students" in data && data.total_students != undefined) {
+                    this.total_students = data.total_students;
+                }
+                if ("rank_change" in data && data.rank_change != undefined) {
+                    this.rank_change = data.rank_change;
+                }
+                if ("top_students" in data && data.top_students != undefined) {
+                    this.top_students = data.top_students;
+                }
+                if ("student_info" in data && data.student_info != undefined) {
+                    this.student_info = data.student_info;
+                }
+            }
+        }
+        get student_rank() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set student_rank(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get total_students() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set total_students(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get rank_change() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set rank_change(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get top_students() {
+            return pb_1.Message.getRepeatedWrapperField(this, TopStudent, 4) as TopStudent[];
+        }
+        set top_students(value: TopStudent[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 4, value);
+        }
+        get student_info() {
+            return pb_1.Message.getWrapperField(this, StudentInfo, 5) as StudentInfo;
+        }
+        set student_info(value: StudentInfo) {
+            pb_1.Message.setWrapperField(this, 5, value);
+        }
+        get has_student_info() {
+            return pb_1.Message.getField(this, 5) != null;
+        }
+        static fromObject(data: {
+            student_rank?: number;
+            total_students?: number;
+            rank_change?: number;
+            top_students?: ReturnType<typeof TopStudent.prototype.toObject>[];
+            student_info?: ReturnType<typeof StudentInfo.prototype.toObject>;
+        }): OverallRankingResponse {
+            const message = new OverallRankingResponse({});
+            if (data.student_rank != null) {
+                message.student_rank = data.student_rank;
+            }
+            if (data.total_students != null) {
+                message.total_students = data.total_students;
+            }
+            if (data.rank_change != null) {
+                message.rank_change = data.rank_change;
+            }
+            if (data.top_students != null) {
+                message.top_students = data.top_students.map(item => TopStudent.fromObject(item));
+            }
+            if (data.student_info != null) {
+                message.student_info = StudentInfo.fromObject(data.student_info);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                student_rank?: number;
+                total_students?: number;
+                rank_change?: number;
+                top_students?: ReturnType<typeof TopStudent.prototype.toObject>[];
+                student_info?: ReturnType<typeof StudentInfo.prototype.toObject>;
+            } = {};
+            if (this.student_rank != null) {
+                data.student_rank = this.student_rank;
+            }
+            if (this.total_students != null) {
+                data.total_students = this.total_students;
+            }
+            if (this.rank_change != null) {
+                data.rank_change = this.rank_change;
+            }
+            if (this.top_students != null) {
+                data.top_students = this.top_students.map((item: TopStudent) => item.toObject());
+            }
+            if (this.student_info != null) {
+                data.student_info = this.student_info.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.student_rank != 0)
+                writer.writeInt32(1, this.student_rank);
+            if (this.total_students != 0)
+                writer.writeInt32(2, this.total_students);
+            if (this.rank_change != 0)
+                writer.writeInt32(3, this.rank_change);
+            if (this.top_students.length)
+                writer.writeRepeatedMessage(4, this.top_students, (item: TopStudent) => item.serialize(writer));
+            if (this.has_student_info)
+                writer.writeMessage(5, this.student_info, () => this.student_info.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): OverallRankingResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new OverallRankingResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.student_rank = reader.readInt32();
+                        break;
+                    case 2:
+                        message.total_students = reader.readInt32();
+                        break;
+                    case 3:
+                        message.rank_change = reader.readInt32();
+                        break;
+                    case 4:
+                        reader.readMessage(message.top_students, () => pb_1.Message.addToRepeatedWrapperField(message, 4, TopStudent.deserialize(reader), TopStudent));
+                        break;
+                    case 5:
+                        reader.readMessage(message.student_info, () => message.student_info = StudentInfo.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): OverallRankingResponse {
+            return OverallRankingResponse.deserialize(bytes);
+        }
+    }
+    export class TopStudent extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            rank?: number;
+            name?: string;
+            total_points?: number;
+            rank_change?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("rank" in data && data.rank != undefined) {
+                    this.rank = data.rank;
+                }
+                if ("name" in data && data.name != undefined) {
+                    this.name = data.name;
+                }
+                if ("total_points" in data && data.total_points != undefined) {
+                    this.total_points = data.total_points;
+                }
+                if ("rank_change" in data && data.rank_change != undefined) {
+                    this.rank_change = data.rank_change;
+                }
+            }
+        }
+        get rank() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set rank(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get name() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set name(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get total_points() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set total_points(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get rank_change() {
+            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+        }
+        set rank_change(value: number) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        static fromObject(data: {
+            rank?: number;
+            name?: string;
+            total_points?: number;
+            rank_change?: number;
+        }): TopStudent {
+            const message = new TopStudent({});
+            if (data.rank != null) {
+                message.rank = data.rank;
+            }
+            if (data.name != null) {
+                message.name = data.name;
+            }
+            if (data.total_points != null) {
+                message.total_points = data.total_points;
+            }
+            if (data.rank_change != null) {
+                message.rank_change = data.rank_change;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                rank?: number;
+                name?: string;
+                total_points?: number;
+                rank_change?: number;
+            } = {};
+            if (this.rank != null) {
+                data.rank = this.rank;
+            }
+            if (this.name != null) {
+                data.name = this.name;
+            }
+            if (this.total_points != null) {
+                data.total_points = this.total_points;
+            }
+            if (this.rank_change != null) {
+                data.rank_change = this.rank_change;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.rank != 0)
+                writer.writeInt32(1, this.rank);
+            if (this.name.length)
+                writer.writeString(2, this.name);
+            if (this.total_points != 0)
+                writer.writeDouble(3, this.total_points);
+            if (this.rank_change != 0)
+                writer.writeInt32(4, this.rank_change);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): TopStudent {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new TopStudent();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.rank = reader.readInt32();
+                        break;
+                    case 2:
+                        message.name = reader.readString();
+                        break;
+                    case 3:
+                        message.total_points = reader.readDouble();
+                        break;
+                    case 4:
+                        message.rank_change = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): TopStudent {
+            return TopStudent.deserialize(bytes);
+        }
+    }
+    export class StudentInfo extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            name?: string;
+            total_points?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("name" in data && data.name != undefined) {
+                    this.name = data.name;
+                }
+                if ("total_points" in data && data.total_points != undefined) {
+                    this.total_points = data.total_points;
+                }
+            }
+        }
+        get name() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set name(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get total_points() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set total_points(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            name?: string;
+            total_points?: number;
+        }): StudentInfo {
+            const message = new StudentInfo({});
+            if (data.name != null) {
+                message.name = data.name;
+            }
+            if (data.total_points != null) {
+                message.total_points = data.total_points;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                name?: string;
+                total_points?: number;
+            } = {};
+            if (this.name != null) {
+                data.name = this.name;
+            }
+            if (this.total_points != null) {
+                data.total_points = this.total_points;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.name.length)
+                writer.writeString(1, this.name);
+            if (this.total_points != 0)
+                writer.writeDouble(2, this.total_points);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): StudentInfo {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new StudentInfo();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.name = reader.readString();
+                        break;
+                    case 2:
+                        message.total_points = reader.readDouble();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): StudentInfo {
+            return StudentInfo.deserialize(bytes);
+        }
+    }
+    export class PerformanceRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            user_id?: number;
+            start_date?: dependency_1.google.protobuf.Timestamp;
+            end_date?: dependency_1.google.protobuf.Timestamp;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("user_id" in data && data.user_id != undefined) {
+                    this.user_id = data.user_id;
+                }
+                if ("start_date" in data && data.start_date != undefined) {
+                    this.start_date = data.start_date;
+                }
+                if ("end_date" in data && data.end_date != undefined) {
+                    this.end_date = data.end_date;
+                }
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get user_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set user_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get start_date() {
+            return pb_1.Message.getWrapperField(this, dependency_1.google.protobuf.Timestamp, 2) as dependency_1.google.protobuf.Timestamp;
+        }
+        set start_date(value: dependency_1.google.protobuf.Timestamp) {
+            pb_1.Message.setWrapperField(this, 2, value);
+        }
+        get has_start_date() {
+            return pb_1.Message.getField(this, 2) != null;
+        }
+        get end_date() {
+            return pb_1.Message.getWrapperField(this, dependency_1.google.protobuf.Timestamp, 3) as dependency_1.google.protobuf.Timestamp;
+        }
+        set end_date(value: dependency_1.google.protobuf.Timestamp) {
+            pb_1.Message.setWrapperField(this, 3, value);
+        }
+        get has_end_date() {
+            return pb_1.Message.getField(this, 3) != null;
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        static fromObject(data: {
+            user_id?: number;
+            start_date?: ReturnType<typeof dependency_1.google.protobuf.Timestamp.prototype.toObject>;
+            end_date?: ReturnType<typeof dependency_1.google.protobuf.Timestamp.prototype.toObject>;
+            token?: string;
+        }): PerformanceRequest {
+            const message = new PerformanceRequest({});
+            if (data.user_id != null) {
+                message.user_id = data.user_id;
+            }
+            if (data.start_date != null) {
+                message.start_date = dependency_1.google.protobuf.Timestamp.fromObject(data.start_date);
+            }
+            if (data.end_date != null) {
+                message.end_date = dependency_1.google.protobuf.Timestamp.fromObject(data.end_date);
+            }
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                user_id?: number;
+                start_date?: ReturnType<typeof dependency_1.google.protobuf.Timestamp.prototype.toObject>;
+                end_date?: ReturnType<typeof dependency_1.google.protobuf.Timestamp.prototype.toObject>;
+                token?: string;
+            } = {};
+            if (this.user_id != null) {
+                data.user_id = this.user_id;
+            }
+            if (this.start_date != null) {
+                data.start_date = this.start_date.toObject();
+            }
+            if (this.end_date != null) {
+                data.end_date = this.end_date.toObject();
+            }
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.user_id != 0)
+                writer.writeInt32(1, this.user_id);
+            if (this.has_start_date)
+                writer.writeMessage(2, this.start_date, () => this.start_date.serialize(writer));
+            if (this.has_end_date)
+                writer.writeMessage(3, this.end_date, () => this.end_date.serialize(writer));
+            if (this.token.length)
+                writer.writeString(4, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): PerformanceRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new PerformanceRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.user_id = reader.readInt32();
+                        break;
+                    case 2:
+                        reader.readMessage(message.start_date, () => message.start_date = dependency_1.google.protobuf.Timestamp.deserialize(reader));
+                        break;
+                    case 3:
+                        reader.readMessage(message.end_date, () => message.end_date = dependency_1.google.protobuf.Timestamp.deserialize(reader));
+                        break;
+                    case 4:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): PerformanceRequest {
+            return PerformanceRequest.deserialize(bytes);
+        }
+    }
+    export class PerformanceResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            performance_data?: PerformanceData[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("performance_data" in data && data.performance_data != undefined) {
+                    this.performance_data = data.performance_data;
+                }
+            }
+        }
+        get performance_data() {
+            return pb_1.Message.getRepeatedWrapperField(this, PerformanceData, 1) as PerformanceData[];
+        }
+        set performance_data(value: PerformanceData[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        static fromObject(data: {
+            performance_data?: ReturnType<typeof PerformanceData.prototype.toObject>[];
+        }): PerformanceResponse {
+            const message = new PerformanceResponse({});
+            if (data.performance_data != null) {
+                message.performance_data = data.performance_data.map(item => PerformanceData.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                performance_data?: ReturnType<typeof PerformanceData.prototype.toObject>[];
+            } = {};
+            if (this.performance_data != null) {
+                data.performance_data = this.performance_data.map((item: PerformanceData) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.performance_data.length)
+                writer.writeRepeatedMessage(1, this.performance_data, (item: PerformanceData) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): PerformanceResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new PerformanceResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.performance_data, () => pb_1.Message.addToRepeatedWrapperField(message, 1, PerformanceData.deserialize(reader), PerformanceData));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): PerformanceResponse {
+            return PerformanceResponse.deserialize(bytes);
+        }
+    }
+    export class PerformanceData extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tournament_date?: dependency_1.google.protobuf.Timestamp;
+            student_rank?: number;
+            average_rank?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tournament_date" in data && data.tournament_date != undefined) {
+                    this.tournament_date = data.tournament_date;
+                }
+                if ("student_rank" in data && data.student_rank != undefined) {
+                    this.student_rank = data.student_rank;
+                }
+                if ("average_rank" in data && data.average_rank != undefined) {
+                    this.average_rank = data.average_rank;
+                }
+            }
+        }
+        get tournament_date() {
+            return pb_1.Message.getWrapperField(this, dependency_1.google.protobuf.Timestamp, 1) as dependency_1.google.protobuf.Timestamp;
+        }
+        set tournament_date(value: dependency_1.google.protobuf.Timestamp) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_tournament_date() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get student_rank() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set student_rank(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get average_rank() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set average_rank(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        static fromObject(data: {
+            tournament_date?: ReturnType<typeof dependency_1.google.protobuf.Timestamp.prototype.toObject>;
+            student_rank?: number;
+            average_rank?: number;
+        }): PerformanceData {
+            const message = new PerformanceData({});
+            if (data.tournament_date != null) {
+                message.tournament_date = dependency_1.google.protobuf.Timestamp.fromObject(data.tournament_date);
+            }
+            if (data.student_rank != null) {
+                message.student_rank = data.student_rank;
+            }
+            if (data.average_rank != null) {
+                message.average_rank = data.average_rank;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tournament_date?: ReturnType<typeof dependency_1.google.protobuf.Timestamp.prototype.toObject>;
+                student_rank?: number;
+                average_rank?: number;
+            } = {};
+            if (this.tournament_date != null) {
+                data.tournament_date = this.tournament_date.toObject();
+            }
+            if (this.student_rank != null) {
+                data.student_rank = this.student_rank;
+            }
+            if (this.average_rank != null) {
+                data.average_rank = this.average_rank;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_tournament_date)
+                writer.writeMessage(1, this.tournament_date, () => this.tournament_date.serialize(writer));
+            if (this.student_rank != 0)
+                writer.writeDouble(2, this.student_rank);
+            if (this.average_rank != 0)
+                writer.writeDouble(3, this.average_rank);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): PerformanceData {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new PerformanceData();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.tournament_date, () => message.tournament_date = dependency_1.google.protobuf.Timestamp.deserialize(reader));
+                        break;
+                    case 2:
+                        message.student_rank = reader.readDouble();
+                        break;
+                    case 3:
+                        message.average_rank = reader.readDouble();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): PerformanceData {
+            return PerformanceData.deserialize(bytes);
+        }
+    }
+    export class TournamentRankingRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             tournament_id?: number;
-            is_elimination_round?: boolean;
             token?: string;
         }) {
             super();
@@ -5137,9 +5850,6 @@ export namespace debate_management {
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("tournament_id" in data && data.tournament_id != undefined) {
                     this.tournament_id = data.tournament_id;
-                }
-                if ("is_elimination_round" in data && data.is_elimination_round != undefined) {
-                    this.is_elimination_round = data.is_elimination_round;
                 }
                 if ("token" in data && data.token != undefined) {
                     this.token = data.token;
@@ -5152,29 +5862,19 @@ export namespace debate_management {
         set tournament_id(value: number) {
             pb_1.Message.setField(this, 1, value);
         }
-        get is_elimination_round() {
-            return pb_1.Message.getFieldWithDefault(this, 2, false) as boolean;
-        }
-        set is_elimination_round(value: boolean) {
-            pb_1.Message.setField(this, 2, value);
-        }
         get token() {
-            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
         }
         set token(value: string) {
-            pb_1.Message.setField(this, 3, value);
+            pb_1.Message.setField(this, 2, value);
         }
         static fromObject(data: {
             tournament_id?: number;
-            is_elimination_round?: boolean;
             token?: string;
-        }): RegeneratePairingsRequest {
-            const message = new RegeneratePairingsRequest({});
+        }): TournamentRankingRequest {
+            const message = new TournamentRankingRequest({});
             if (data.tournament_id != null) {
                 message.tournament_id = data.tournament_id;
-            }
-            if (data.is_elimination_round != null) {
-                message.is_elimination_round = data.is_elimination_round;
             }
             if (data.token != null) {
                 message.token = data.token;
@@ -5184,14 +5884,10 @@ export namespace debate_management {
         toObject() {
             const data: {
                 tournament_id?: number;
-                is_elimination_round?: boolean;
                 token?: string;
             } = {};
             if (this.tournament_id != null) {
                 data.tournament_id = this.tournament_id;
-            }
-            if (this.is_elimination_round != null) {
-                data.is_elimination_round = this.is_elimination_round;
             }
             if (this.token != null) {
                 data.token = this.token;
@@ -5204,15 +5900,13 @@ export namespace debate_management {
             const writer = w || new pb_1.BinaryWriter();
             if (this.tournament_id != 0)
                 writer.writeInt32(1, this.tournament_id);
-            if (this.is_elimination_round != false)
-                writer.writeBool(2, this.is_elimination_round);
             if (this.token.length)
-                writer.writeString(3, this.token);
+                writer.writeString(2, this.token);
             if (!w)
                 return writer.getResultBuffer();
         }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): RegeneratePairingsRequest {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new RegeneratePairingsRequest();
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): TournamentRankingRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new TournamentRankingRequest();
             while (reader.nextField()) {
                 if (reader.isEndGroup())
                     break;
@@ -5221,9 +5915,6 @@ export namespace debate_management {
                         message.tournament_id = reader.readInt32();
                         break;
                     case 2:
-                        message.is_elimination_round = reader.readBool();
-                        break;
-                    case 3:
                         message.token = reader.readString();
                         break;
                     default: reader.skipField();
@@ -5234,8 +5925,257 @@ export namespace debate_management {
         serializeBinary(): Uint8Array {
             return this.serialize();
         }
-        static deserializeBinary(bytes: Uint8Array): RegeneratePairingsRequest {
-            return RegeneratePairingsRequest.deserialize(bytes);
+        static deserializeBinary(bytes: Uint8Array): TournamentRankingRequest {
+            return TournamentRankingRequest.deserialize(bytes);
+        }
+    }
+    export class TournamentRankingResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            rankings?: StudentRanking[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("rankings" in data && data.rankings != undefined) {
+                    this.rankings = data.rankings;
+                }
+            }
+        }
+        get rankings() {
+            return pb_1.Message.getRepeatedWrapperField(this, StudentRanking, 1) as StudentRanking[];
+        }
+        set rankings(value: StudentRanking[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        static fromObject(data: {
+            rankings?: ReturnType<typeof StudentRanking.prototype.toObject>[];
+        }): TournamentRankingResponse {
+            const message = new TournamentRankingResponse({});
+            if (data.rankings != null) {
+                message.rankings = data.rankings.map(item => StudentRanking.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                rankings?: ReturnType<typeof StudentRanking.prototype.toObject>[];
+            } = {};
+            if (this.rankings != null) {
+                data.rankings = this.rankings.map((item: StudentRanking) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.rankings.length)
+                writer.writeRepeatedMessage(1, this.rankings, (item: StudentRanking) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): TournamentRankingResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new TournamentRankingResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.rankings, () => pb_1.Message.addToRepeatedWrapperField(message, 1, StudentRanking.deserialize(reader), StudentRanking));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): TournamentRankingResponse {
+            return TournamentRankingResponse.deserialize(bytes);
+        }
+    }
+    export class StudentRanking extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            student_id?: number;
+            student_name?: string;
+            school_name?: string;
+            total_wins?: number;
+            total_points?: number;
+            average_rank?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("student_id" in data && data.student_id != undefined) {
+                    this.student_id = data.student_id;
+                }
+                if ("student_name" in data && data.student_name != undefined) {
+                    this.student_name = data.student_name;
+                }
+                if ("school_name" in data && data.school_name != undefined) {
+                    this.school_name = data.school_name;
+                }
+                if ("total_wins" in data && data.total_wins != undefined) {
+                    this.total_wins = data.total_wins;
+                }
+                if ("total_points" in data && data.total_points != undefined) {
+                    this.total_points = data.total_points;
+                }
+                if ("average_rank" in data && data.average_rank != undefined) {
+                    this.average_rank = data.average_rank;
+                }
+            }
+        }
+        get student_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set student_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get student_name() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set student_name(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get school_name() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set school_name(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get total_wins() {
+            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+        }
+        set total_wins(value: number) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get total_points() {
+            return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
+        }
+        set total_points(value: number) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        get average_rank() {
+            return pb_1.Message.getFieldWithDefault(this, 6, 0) as number;
+        }
+        set average_rank(value: number) {
+            pb_1.Message.setField(this, 6, value);
+        }
+        static fromObject(data: {
+            student_id?: number;
+            student_name?: string;
+            school_name?: string;
+            total_wins?: number;
+            total_points?: number;
+            average_rank?: number;
+        }): StudentRanking {
+            const message = new StudentRanking({});
+            if (data.student_id != null) {
+                message.student_id = data.student_id;
+            }
+            if (data.student_name != null) {
+                message.student_name = data.student_name;
+            }
+            if (data.school_name != null) {
+                message.school_name = data.school_name;
+            }
+            if (data.total_wins != null) {
+                message.total_wins = data.total_wins;
+            }
+            if (data.total_points != null) {
+                message.total_points = data.total_points;
+            }
+            if (data.average_rank != null) {
+                message.average_rank = data.average_rank;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                student_id?: number;
+                student_name?: string;
+                school_name?: string;
+                total_wins?: number;
+                total_points?: number;
+                average_rank?: number;
+            } = {};
+            if (this.student_id != null) {
+                data.student_id = this.student_id;
+            }
+            if (this.student_name != null) {
+                data.student_name = this.student_name;
+            }
+            if (this.school_name != null) {
+                data.school_name = this.school_name;
+            }
+            if (this.total_wins != null) {
+                data.total_wins = this.total_wins;
+            }
+            if (this.total_points != null) {
+                data.total_points = this.total_points;
+            }
+            if (this.average_rank != null) {
+                data.average_rank = this.average_rank;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.student_id != 0)
+                writer.writeInt32(1, this.student_id);
+            if (this.student_name.length)
+                writer.writeString(2, this.student_name);
+            if (this.school_name.length)
+                writer.writeString(3, this.school_name);
+            if (this.total_wins != 0)
+                writer.writeInt32(4, this.total_wins);
+            if (this.total_points != 0)
+                writer.writeDouble(5, this.total_points);
+            if (this.average_rank != 0)
+                writer.writeDouble(6, this.average_rank);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): StudentRanking {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new StudentRanking();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.student_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.student_name = reader.readString();
+                        break;
+                    case 3:
+                        message.school_name = reader.readString();
+                        break;
+                    case 4:
+                        message.total_wins = reader.readInt32();
+                        break;
+                    case 5:
+                        message.total_points = reader.readDouble();
+                        break;
+                    case 6:
+                        message.average_rank = reader.readDouble();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): StudentRanking {
+            return StudentRanking.deserialize(bytes);
         }
     }
     interface GrpcUnaryServiceInterface<P, R> {
@@ -5327,15 +6267,6 @@ export namespace debate_management {
                 responseSerialize: (message: GetPairingsResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => GetPairingsResponse.deserialize(new Uint8Array(bytes))
             },
-            GetPairing: {
-                path: "/debate_management.DebateService/GetPairing",
-                requestStream: false,
-                responseStream: false,
-                requestSerialize: (message: GetPairingRequest) => Buffer.from(message.serialize()),
-                requestDeserialize: (bytes: Buffer) => GetPairingRequest.deserialize(new Uint8Array(bytes)),
-                responseSerialize: (message: GetPairingResponse) => Buffer.from(message.serialize()),
-                responseDeserialize: (bytes: Buffer) => GetPairingResponse.deserialize(new Uint8Array(bytes))
-            },
             UpdatePairings: {
                 path: "/debate_management.DebateService/UpdatePairings",
                 requestStream: false,
@@ -5372,23 +6303,32 @@ export namespace debate_management {
                 responseSerialize: (message: UpdateBallotResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => UpdateBallotResponse.deserialize(new Uint8Array(bytes))
             },
-            GeneratePairings: {
-                path: "/debate_management.DebateService/GeneratePairings",
+            GetBallotByJudgeID: {
+                path: "/debate_management.DebateService/GetBallotByJudgeID",
                 requestStream: false,
                 responseStream: false,
-                requestSerialize: (message: GeneratePairingsRequest) => Buffer.from(message.serialize()),
-                requestDeserialize: (bytes: Buffer) => GeneratePairingsRequest.deserialize(new Uint8Array(bytes)),
+                requestSerialize: (message: GetBallotByJudgeIDRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetBallotByJudgeIDRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: GetBallotByJudgeIDResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => GetBallotByJudgeIDResponse.deserialize(new Uint8Array(bytes))
+            },
+            GeneratePreliminaryPairings: {
+                path: "/debate_management.DebateService/GeneratePreliminaryPairings",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GeneratePreliminaryPairingsRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GeneratePreliminaryPairingsRequest.deserialize(new Uint8Array(bytes)),
                 responseSerialize: (message: GeneratePairingsResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => GeneratePairingsResponse.deserialize(new Uint8Array(bytes))
             },
-            AssignJudges: {
-                path: "/debate_management.DebateService/AssignJudges",
+            GenerateEliminationPairings: {
+                path: "/debate_management.DebateService/GenerateEliminationPairings",
                 requestStream: false,
                 responseStream: false,
-                requestSerialize: (message: AssignJudgesRequest) => Buffer.from(message.serialize()),
-                requestDeserialize: (bytes: Buffer) => AssignJudgesRequest.deserialize(new Uint8Array(bytes)),
-                responseSerialize: (message: AssignJudgesResponse) => Buffer.from(message.serialize()),
-                responseDeserialize: (bytes: Buffer) => AssignJudgesResponse.deserialize(new Uint8Array(bytes))
+                requestSerialize: (message: GenerateEliminationPairingsRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GenerateEliminationPairingsRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: GeneratePairingsResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => GeneratePairingsResponse.deserialize(new Uint8Array(bytes))
             },
             CreateTeam: {
                 path: "/debate_management.DebateService/CreateTeam",
@@ -5435,14 +6375,32 @@ export namespace debate_management {
                 responseSerialize: (message: DeleteTeamResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => DeleteTeamResponse.deserialize(new Uint8Array(bytes))
             },
-            RegeneratePairings: {
-                path: "/debate_management.DebateService/RegeneratePairings",
+            GetTournamentStudentRanking: {
+                path: "/debate_management.DebateService/GetTournamentStudentRanking",
                 requestStream: false,
                 responseStream: false,
-                requestSerialize: (message: RegeneratePairingsRequest) => Buffer.from(message.serialize()),
-                requestDeserialize: (bytes: Buffer) => RegeneratePairingsRequest.deserialize(new Uint8Array(bytes)),
-                responseSerialize: (message: GeneratePairingsResponse) => Buffer.from(message.serialize()),
-                responseDeserialize: (bytes: Buffer) => GeneratePairingsResponse.deserialize(new Uint8Array(bytes))
+                requestSerialize: (message: TournamentRankingRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => TournamentRankingRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: TournamentRankingResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => TournamentRankingResponse.deserialize(new Uint8Array(bytes))
+            },
+            GetOverallStudentRanking: {
+                path: "/debate_management.DebateService/GetOverallStudentRanking",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: OverallRankingRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => OverallRankingRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: OverallRankingResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => OverallRankingResponse.deserialize(new Uint8Array(bytes))
+            },
+            GetStudentOverallPerformance: {
+                path: "/debate_management.DebateService/GetStudentOverallPerformance",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: PerformanceRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => PerformanceRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: PerformanceResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => PerformanceResponse.deserialize(new Uint8Array(bytes))
             }
         };
         [method: string]: grpc_1.UntypedHandleCall;
@@ -5453,19 +6411,21 @@ export namespace debate_management {
         abstract GetJudge(call: grpc_1.ServerUnaryCall<GetJudgeRequest, GetJudgeResponse>, callback: grpc_1.sendUnaryData<GetJudgeResponse>): void;
         abstract UpdateJudge(call: grpc_1.ServerUnaryCall<UpdateJudgeRequest, UpdateJudgeResponse>, callback: grpc_1.sendUnaryData<UpdateJudgeResponse>): void;
         abstract GetPairings(call: grpc_1.ServerUnaryCall<GetPairingsRequest, GetPairingsResponse>, callback: grpc_1.sendUnaryData<GetPairingsResponse>): void;
-        abstract GetPairing(call: grpc_1.ServerUnaryCall<GetPairingRequest, GetPairingResponse>, callback: grpc_1.sendUnaryData<GetPairingResponse>): void;
         abstract UpdatePairings(call: grpc_1.ServerUnaryCall<UpdatePairingsRequest, UpdatePairingsResponse>, callback: grpc_1.sendUnaryData<UpdatePairingsResponse>): void;
         abstract GetBallots(call: grpc_1.ServerUnaryCall<GetBallotsRequest, GetBallotsResponse>, callback: grpc_1.sendUnaryData<GetBallotsResponse>): void;
         abstract GetBallot(call: grpc_1.ServerUnaryCall<GetBallotRequest, GetBallotResponse>, callback: grpc_1.sendUnaryData<GetBallotResponse>): void;
         abstract UpdateBallot(call: grpc_1.ServerUnaryCall<UpdateBallotRequest, UpdateBallotResponse>, callback: grpc_1.sendUnaryData<UpdateBallotResponse>): void;
-        abstract GeneratePairings(call: grpc_1.ServerUnaryCall<GeneratePairingsRequest, GeneratePairingsResponse>, callback: grpc_1.sendUnaryData<GeneratePairingsResponse>): void;
-        abstract AssignJudges(call: grpc_1.ServerUnaryCall<AssignJudgesRequest, AssignJudgesResponse>, callback: grpc_1.sendUnaryData<AssignJudgesResponse>): void;
+        abstract GetBallotByJudgeID(call: grpc_1.ServerUnaryCall<GetBallotByJudgeIDRequest, GetBallotByJudgeIDResponse>, callback: grpc_1.sendUnaryData<GetBallotByJudgeIDResponse>): void;
+        abstract GeneratePreliminaryPairings(call: grpc_1.ServerUnaryCall<GeneratePreliminaryPairingsRequest, GeneratePairingsResponse>, callback: grpc_1.sendUnaryData<GeneratePairingsResponse>): void;
+        abstract GenerateEliminationPairings(call: grpc_1.ServerUnaryCall<GenerateEliminationPairingsRequest, GeneratePairingsResponse>, callback: grpc_1.sendUnaryData<GeneratePairingsResponse>): void;
         abstract CreateTeam(call: grpc_1.ServerUnaryCall<CreateTeamRequest, Team>, callback: grpc_1.sendUnaryData<Team>): void;
         abstract GetTeam(call: grpc_1.ServerUnaryCall<GetTeamRequest, Team>, callback: grpc_1.sendUnaryData<Team>): void;
         abstract UpdateTeam(call: grpc_1.ServerUnaryCall<UpdateTeamRequest, Team>, callback: grpc_1.sendUnaryData<Team>): void;
         abstract GetTeamsByTournament(call: grpc_1.ServerUnaryCall<GetTeamsByTournamentRequest, GetTeamsByTournamentResponse>, callback: grpc_1.sendUnaryData<GetTeamsByTournamentResponse>): void;
         abstract DeleteTeam(call: grpc_1.ServerUnaryCall<DeleteTeamRequest, DeleteTeamResponse>, callback: grpc_1.sendUnaryData<DeleteTeamResponse>): void;
-        abstract RegeneratePairings(call: grpc_1.ServerUnaryCall<RegeneratePairingsRequest, GeneratePairingsResponse>, callback: grpc_1.sendUnaryData<GeneratePairingsResponse>): void;
+        abstract GetTournamentStudentRanking(call: grpc_1.ServerUnaryCall<TournamentRankingRequest, TournamentRankingResponse>, callback: grpc_1.sendUnaryData<TournamentRankingResponse>): void;
+        abstract GetOverallStudentRanking(call: grpc_1.ServerUnaryCall<OverallRankingRequest, OverallRankingResponse>, callback: grpc_1.sendUnaryData<OverallRankingResponse>): void;
+        abstract GetStudentOverallPerformance(call: grpc_1.ServerUnaryCall<PerformanceRequest, PerformanceResponse>, callback: grpc_1.sendUnaryData<PerformanceResponse>): void;
     }
     export class DebateServiceClient extends grpc_1.makeGenericClientConstructor(UnimplementedDebateServiceService.definition, "DebateService", {}) {
         constructor(address: string, credentials: grpc_1.ChannelCredentials, options?: Partial<grpc_1.ChannelOptions>) {
@@ -5492,9 +6452,6 @@ export namespace debate_management {
         GetPairings: GrpcUnaryServiceInterface<GetPairingsRequest, GetPairingsResponse> = (message: GetPairingsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetPairingsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetPairingsResponse>, callback?: grpc_1.requestCallback<GetPairingsResponse>): grpc_1.ClientUnaryCall => {
             return super.GetPairings(message, metadata, options, callback);
         };
-        GetPairing: GrpcUnaryServiceInterface<GetPairingRequest, GetPairingResponse> = (message: GetPairingRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetPairingResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetPairingResponse>, callback?: grpc_1.requestCallback<GetPairingResponse>): grpc_1.ClientUnaryCall => {
-            return super.GetPairing(message, metadata, options, callback);
-        };
         UpdatePairings: GrpcUnaryServiceInterface<UpdatePairingsRequest, UpdatePairingsResponse> = (message: UpdatePairingsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<UpdatePairingsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<UpdatePairingsResponse>, callback?: grpc_1.requestCallback<UpdatePairingsResponse>): grpc_1.ClientUnaryCall => {
             return super.UpdatePairings(message, metadata, options, callback);
         };
@@ -5507,11 +6464,14 @@ export namespace debate_management {
         UpdateBallot: GrpcUnaryServiceInterface<UpdateBallotRequest, UpdateBallotResponse> = (message: UpdateBallotRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<UpdateBallotResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<UpdateBallotResponse>, callback?: grpc_1.requestCallback<UpdateBallotResponse>): grpc_1.ClientUnaryCall => {
             return super.UpdateBallot(message, metadata, options, callback);
         };
-        GeneratePairings: GrpcUnaryServiceInterface<GeneratePairingsRequest, GeneratePairingsResponse> = (message: GeneratePairingsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GeneratePairingsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GeneratePairingsResponse>, callback?: grpc_1.requestCallback<GeneratePairingsResponse>): grpc_1.ClientUnaryCall => {
-            return super.GeneratePairings(message, metadata, options, callback);
+        GetBallotByJudgeID: GrpcUnaryServiceInterface<GetBallotByJudgeIDRequest, GetBallotByJudgeIDResponse> = (message: GetBallotByJudgeIDRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetBallotByJudgeIDResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetBallotByJudgeIDResponse>, callback?: grpc_1.requestCallback<GetBallotByJudgeIDResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetBallotByJudgeID(message, metadata, options, callback);
         };
-        AssignJudges: GrpcUnaryServiceInterface<AssignJudgesRequest, AssignJudgesResponse> = (message: AssignJudgesRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<AssignJudgesResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<AssignJudgesResponse>, callback?: grpc_1.requestCallback<AssignJudgesResponse>): grpc_1.ClientUnaryCall => {
-            return super.AssignJudges(message, metadata, options, callback);
+        GeneratePreliminaryPairings: GrpcUnaryServiceInterface<GeneratePreliminaryPairingsRequest, GeneratePairingsResponse> = (message: GeneratePreliminaryPairingsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GeneratePairingsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GeneratePairingsResponse>, callback?: grpc_1.requestCallback<GeneratePairingsResponse>): grpc_1.ClientUnaryCall => {
+            return super.GeneratePreliminaryPairings(message, metadata, options, callback);
+        };
+        GenerateEliminationPairings: GrpcUnaryServiceInterface<GenerateEliminationPairingsRequest, GeneratePairingsResponse> = (message: GenerateEliminationPairingsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GeneratePairingsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GeneratePairingsResponse>, callback?: grpc_1.requestCallback<GeneratePairingsResponse>): grpc_1.ClientUnaryCall => {
+            return super.GenerateEliminationPairings(message, metadata, options, callback);
         };
         CreateTeam: GrpcUnaryServiceInterface<CreateTeamRequest, Team> = (message: CreateTeamRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<Team>, options?: grpc_1.CallOptions | grpc_1.requestCallback<Team>, callback?: grpc_1.requestCallback<Team>): grpc_1.ClientUnaryCall => {
             return super.CreateTeam(message, metadata, options, callback);
@@ -5528,8 +6488,14 @@ export namespace debate_management {
         DeleteTeam: GrpcUnaryServiceInterface<DeleteTeamRequest, DeleteTeamResponse> = (message: DeleteTeamRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<DeleteTeamResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<DeleteTeamResponse>, callback?: grpc_1.requestCallback<DeleteTeamResponse>): grpc_1.ClientUnaryCall => {
             return super.DeleteTeam(message, metadata, options, callback);
         };
-        RegeneratePairings: GrpcUnaryServiceInterface<RegeneratePairingsRequest, GeneratePairingsResponse> = (message: RegeneratePairingsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GeneratePairingsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GeneratePairingsResponse>, callback?: grpc_1.requestCallback<GeneratePairingsResponse>): grpc_1.ClientUnaryCall => {
-            return super.RegeneratePairings(message, metadata, options, callback);
+        GetTournamentStudentRanking: GrpcUnaryServiceInterface<TournamentRankingRequest, TournamentRankingResponse> = (message: TournamentRankingRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<TournamentRankingResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<TournamentRankingResponse>, callback?: grpc_1.requestCallback<TournamentRankingResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetTournamentStudentRanking(message, metadata, options, callback);
+        };
+        GetOverallStudentRanking: GrpcUnaryServiceInterface<OverallRankingRequest, OverallRankingResponse> = (message: OverallRankingRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<OverallRankingResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<OverallRankingResponse>, callback?: grpc_1.requestCallback<OverallRankingResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetOverallStudentRanking(message, metadata, options, callback);
+        };
+        GetStudentOverallPerformance: GrpcUnaryServiceInterface<PerformanceRequest, PerformanceResponse> = (message: PerformanceRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<PerformanceResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<PerformanceResponse>, callback?: grpc_1.requestCallback<PerformanceResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetStudentOverallPerformance(message, metadata, options, callback);
         };
     }
 }

@@ -1,4 +1,4 @@
-import { Speaker } from "@/lib/grpc/proto/debate_management/debate_pb";
+import { Judge, Speaker } from "@/lib/grpc/proto/debate_management/debate_pb";
 
 export interface GetBallotsProps {
     token: string;
@@ -16,16 +16,19 @@ export interface BallotUpdateFormProps {
     token: string;
     ballot: {
       ballotId: number;
+      judges: Judge.AsObject[];
       team1: {
         teamId: number;
         totalPoints: number;
         feedback: string;
+        speakers_names: string[];
         speakersList: Speaker.AsObject[];
       };
       team2: {
         teamId: number;
         totalPoints: number;
         feedback: string;
+        speakers_names: string[];
         speakersList: Speaker.AsObject[];
       };
       verdict: string;

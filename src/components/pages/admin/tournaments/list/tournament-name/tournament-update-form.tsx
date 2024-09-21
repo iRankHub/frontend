@@ -79,7 +79,7 @@ function TournamentUpdateForm({ tournament }: Props) {
   >([]);
   const router = useRouter();
   const { toast } = useToast();
-  const [coordinatorId, setCoordinatorId] = useState<string>("");
+  const [coordinatorId, setCoordinatorId] = useState<string>("274");
 
   useEffect(() => {
     if (!user) return;
@@ -93,7 +93,6 @@ function TournamentUpdateForm({ tournament }: Props) {
       const coordinator = res.usersList.find(
         (user) => user.name === tournament.coordinatorName
       );
-      console.log(coordinator);
       setCoordinatorId(String(coordinator?.userid));
       setCoordinators(res.usersList);
     });

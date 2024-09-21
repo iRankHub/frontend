@@ -1,6 +1,5 @@
 "use client";
 
-import { ModeToggle } from "@/components/mode-toggle";
 import { SheetMenu } from "./sheet-menu";
 import { UserNav } from "./user-nav";
 import { useStore } from "zustand";
@@ -22,6 +21,7 @@ import {
 import SidePanel, { Panelheader } from "./side-panel";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import Notifications from "./notifications";
+import { ThemeToggler } from "@/components/ui/switch-sun";
 
 interface NavbarProps {
   title: string;
@@ -46,8 +46,8 @@ export function Navbar({ title }: NavbarProps) {
           </Command>
         </div>
         <div className="flex flex-1 items-center space-x-3 justify-end">
-          {/* <SwitchSun className="bg-muted" /> */}
-          <ModeToggle />
+          <ThemeToggler className="bg-muted dark:bg-foreground" />
+          {/* <ModeToggle /> */}
           <DropdownMenu>
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>

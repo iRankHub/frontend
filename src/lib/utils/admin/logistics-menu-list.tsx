@@ -39,16 +39,16 @@ import {
         groupLabel: "",
         menus: [
           {
-            href: `/admin/logistics/billings`,
+            href: `/admin/tournaments/list/${routeName}/logistics/billings`,
             label: "Billings",
-            active: pathname === `/admin/logistics/billings`,
+            active: pathname === `/admin/tournaments/list/${routeName}/logistics/billings`,
             icon: HandCoins,
             submenus: [],
           },
           {
-            href: `/admin/logistics/billings/expenses`,
+            href: `/admin/tournaments/list/${routeName}/logistics/billings/expenses`,
             label: "Expenses",
-            active: pathname === `/admin/logistics/billings/expenses`,
+            active: pathname === `/admin/tournaments/list/${routeName}/logistics/billings/expenses`,
             icon: Grid2X2,
             submenus: [],
           },

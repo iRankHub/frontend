@@ -1,8 +1,8 @@
 import {
-    GeneratePairingsRequest,
+    GenerateEliminationPairingsRequest,
+    GeneratePreliminaryPairingsRequest,
     GetPairingsRequest,
     Pairing,
-    RegeneratePairingsRequest,
     Team,
     UpdatePairingsRequest,
     UpdatePairingsResponse,
@@ -14,18 +14,17 @@ import {
     UpdatePairingProps,
 } from "@/types/pairings";
 
-export const generatePairings = async ({
+export const generatePairingsElimination = async ({
     token,
     tournament_id,
-    is_elimination
 }: GetPairingsProps): Promise<Pairing.AsObject[]> => {
     return new Promise((resolve, reject) => {
-        const request = new GeneratePairingsRequest();
+        const request = new GenerateEliminationPairingsRequest();
         request.setToken(token);
         request.setTournamentId(tournament_id);
-        request.setIsEliminationRound(is_elimination);
+        request.setRoundNumber(1);
 
-        debateClient.generatePairings(request, {}, (err, response) => {
+        debateClient.generateEliminationPairings(request, {}, (err, response) => {
             if (err) {
                 reject(err);
             } else {
@@ -35,16 +34,16 @@ export const generatePairings = async ({
     });
 }
 
-export const regeneratePairings = async ({
+export const generatePairingsPreliminaries = async ({
     token,
     tournament_id,
-}: RegeneratePairingsProps): Promise<Pairing.AsObject[]> => {
+}: GetPairingsProps): Promise<Pairing.AsObject[]> => {
     return new Promise((resolve, reject) => {
-        const request = new RegeneratePairingsRequest();
+        const request = new GeneratePreliminaryPairingsRequest();
         request.setToken(token);
         request.setTournamentId(tournament_id);
 
-        debateClient.regeneratePairings(request, {}, (err, response) => {
+        debateClient.generatePreliminaryPairings(request, {}, (err, response) => {
             if (err) {
                 reject(err);
             } else {
@@ -53,6 +52,25 @@ export const regeneratePairings = async ({
         });
     });
 }
+
+// export const regeneratePairings = async ({
+//     token,
+//     tournament_id,
+// }: RegeneratePairingsProps): Promise<Pairing.AsObject[]> => {
+//     return new Promise((resolve, reject) => {
+//         const request = new RegeneratePairingsRequest();
+//         request.setToken(token);
+//         request.setTournamentId(tournament_id);
+
+//         debateClient.re(request, {}, (err, response) => {
+//             if (err) {
+//                 reject(err);
+//             } else {
+//                 resolve(response.toObject().pairingsList);
+//             }
+//         });
+//     });
+// }
 
 export const getPairings = async ({
     is_elimination,
