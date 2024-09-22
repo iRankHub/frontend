@@ -52,25 +52,26 @@ export const createTournamentLeague = async ({
         request.setLeagueType(league_type);
         request.setToken(token);
 
-        const localDetails = new LocalDetails();
-        local_details.districtsList.forEach((district) => {
-            localDetails.addDistricts(district);
-        });
-        local_details.provincesList.forEach((province) => {
-            localDetails.addProvinces(province);
-        });
-        request.setLocalDetails(localDetails);
+        if (league_type === 0) {
+            const localDetails = new LocalDetails();
+            local_details.districtsList.forEach((district) => {
+                localDetails.addDistricts(district);
+            });
+            local_details.provincesList.forEach((province) => {
+                localDetails.addProvinces(province);
+            });
+            request.setLocalDetails(localDetails);
+        } else {
+            const internationalDetails = new InternationalDetails();
+            international_details.continentsList.forEach((continent) => {
+                internationalDetails.addContinents(continent);
+            });
 
-        const internationalDetails = new InternationalDetails();
-        international_details.continentsList.forEach((continent) => {
-            internationalDetails.addContinents(continent);
-        });
-
-        international_details.countriesList.forEach((country) => {
-            internationalDetails.addCountries(country);
-        });
-        request.setInternationalDetails(internationalDetails);
-
+            international_details.countriesList.forEach((country) => {
+                internationalDetails.addCountries(country);
+            });
+            request.setInternationalDetails(internationalDetails);
+        }
 
         tournamentClient.createLeague(request, {}, (err, response) => {
             if (err) {
@@ -108,7 +109,7 @@ export const updateTournamentLeague = async ({
             request.setLocalDetails(localDetails);
         } else {
             const internationalDetails = new InternationalDetails();
-                international_details.continentsList.forEach((continent) => {
+            international_details.continentsList.forEach((continent) => {
                 internationalDetails.addContinents(continent);
             });
 
