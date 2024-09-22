@@ -319,7 +319,11 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     return (
       <div className="flex flex-col items-center gap-1">
         <span className="text-xs capitalize">
-          {number !== 3 ? <>Team {number.toString()}</> : <>Feedback</>}
+          {number !== 3 ? (
+            <>{number === 1 ? ballot?.team1?.name : ballot?.team2?.name}</>
+          ) : (
+            <>Feedback</>
+          )}
         </span>
         <div className="flex items-center justify-center w-6 h-6 rounded-full border border-gray-300 text-xs">
           {isActive || number < activeStep ? (

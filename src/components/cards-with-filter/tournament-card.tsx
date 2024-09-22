@@ -279,7 +279,7 @@ const TournamentCard = ({
               {getColumnValue(row, "coordinatorName")}
             </span>
             <small className="text-secondary-foreground text-xs font-medium">
-              coordinator
+              Coordinator
             </small>
           </div>
         </div>
