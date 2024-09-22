@@ -4,6 +4,7 @@ import {
     CreateLeagueResponse,
     DeleteLeagueRequest,
     DeleteLeagueResponse,
+    InternationalDetails,
     ListLeaguesRequest,
     ListLeaguesResponse,
     LocalDetails,
@@ -42,6 +43,7 @@ export const createTournamentLeague = async ({
     league_type,
     name,
     local_details,
+    international_details,
     token,
 }: CreateTournamentLeague): Promise<CreateLeagueResponse.AsObject> => {
     return new Promise((resolve, reject) => {
@@ -50,14 +52,26 @@ export const createTournamentLeague = async ({
         request.setLeagueType(league_type);
         request.setToken(token);
 
-        const localDetails = new LocalDetails();
-        local_details.districtsList.forEach((district) => {
-            localDetails.addDistricts(district);
-        });
-        local_details.provincesList.forEach((province) => {
-            localDetails.addProvinces(province);
-        });
-        request.setLocalDetails(localDetails);
+        if (league_type === 0) {
+            const localDetails = new LocalDetails();
+            local_details.districtsList.forEach((district) => {
+                localDetails.addDistricts(district);
+            });
+            local_details.provincesList.forEach((province) => {
+                localDetails.addProvinces(province);
+            });
+            request.setLocalDetails(localDetails);
+        } else {
+            const internationalDetails = new InternationalDetails();
+            international_details.continentsList.forEach((continent) => {
+                internationalDetails.addContinents(continent);
+            });
+
+            international_details.countriesList.forEach((country) => {
+                internationalDetails.addCountries(country);
+            });
+            request.setInternationalDetails(internationalDetails);
+        }
 
         tournamentClient.createLeague(request, {}, (err, response) => {
             if (err) {
@@ -73,6 +87,7 @@ export const updateTournamentLeague = async ({
     league_id,
     league_type,
     local_details,
+    international_details,
     name,
     token,
 }: UpdateTournamentLeague): Promise<UpdateLeagueResponse.AsObject> => {
@@ -83,14 +98,28 @@ export const updateTournamentLeague = async ({
         request.setLeagueType(league_type);
         request.setToken(token);
 
-        const localDetails = new LocalDetails();
-        local_details.districtsList.forEach((district) => {
-            localDetails.addDistricts(district);
-        });
-        local_details.provincesList.forEach((province) => {
-            localDetails.addProvinces(province);
-        });
-        request.setLocalDetails(localDetails);
+        if (league_type === 0) {
+            const localDetails = new LocalDetails();
+            local_details.districtsList.forEach((district) => {
+                localDetails.addDistricts(district);
+            });
+            local_details.provincesList.forEach((province) => {
+                localDetails.addProvinces(province);
+            });
+            request.setLocalDetails(localDetails);
+        } else {
+            const internationalDetails = new InternationalDetails();
+            international_details.continentsList.forEach((continent) => {
+                internationalDetails.addContinents(continent);
+            });
+
+            international_details.countriesList.forEach((country) => {
+                internationalDetails.addCountries(country);
+            });
+            request.setInternationalDetails(internationalDetails);
+        }
+
+        console.log(request.toObject());
 
         tournamentClient.updateLeague(request, {}, (err, response) => {
             if (err) {

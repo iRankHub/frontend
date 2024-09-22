@@ -79,7 +79,7 @@ function FileUpload({}: Props) {
             variant: "destructive",
             title: "Error",
             description:
-              "Something went wrong while importing users. Please try again",
+              "Something went wrong while importing users. This could be due to invalid data or duplicate entries",
             action: (
               <ToastAction altText="Close" className="bg-primary text-white">
                 Close
@@ -89,6 +89,24 @@ function FileUpload({}: Props) {
         }
       } catch (error) {
         console.error("Error creating users", error);
+
+        // check if its a parsing error or a file not an excel file
+        if (error instanceof Error) {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: error.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+          setError(error.message);
+        } else {
+          setError("Invalid file format");
+        }
+
         setCardVariant("failed");
       } finally {
         setIsLoading(false);

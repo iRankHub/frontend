@@ -1,4 +1,4 @@
-import { LeagueType, LocalDetails } from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import { InternationalDetails, LeagueType, LocalDetails } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 
 export interface ListTournamentLeagues {
     page_size: number;
@@ -10,6 +10,7 @@ export interface CreateTournamentLeague {
     name: string;
     league_type: LeagueType;
     local_details: LocalDetails.AsObject;
+    international_details: InternationalDetails.AsObject;
     token: string;
 }
 
@@ -17,10 +18,8 @@ export interface UpdateTournamentLeague {
     league_id: number;
     name: string;
     league_type: LeagueType;
-    local_details: {
-        districtsList: string[];
-        provincesList: string[];
-    };
+    local_details: LocalDetails.AsObject;
+    international_details: InternationalDetails.AsObject;
     token: string;
 }
 

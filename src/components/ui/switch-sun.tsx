@@ -2,44 +2,55 @@
 
 import * as React from "react";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
-
 import { cn } from "@/lib/utils";
-import { Icons } from "../icons";
-import Image from "next/image";
+import { useTheme } from "next-themes";
+import { Sun, Moon } from "lucide-react";
 
-const Switch = React.forwardRef<
+const ThemeToggler = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>
->(({ className, ...props }, ref) => (
-  <SwitchPrimitives.Root
-    className={cn(
-      "peer inline-flex h-8 w-14 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-muted-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted",
-      className
-    )}
-    {...props}
-    ref={ref}
-  >
-    <div
-      className={cn(
-        "relative pointer-events-none block h-6 w-6 rounded-full bg-background shadow-lg ring-0 transition-transform translate-x-0",
-        props.checked && "translate-x-7"
-      )}
-    >
-      <Image
-        src={"/static/images/sun.png"}
-        alt="sun-icon"
-        fill
-        className="p-1"
-      />
-    </div>
-    {/* <SwitchPrimitives.Thumb
-      className={cn(
-        "pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"
-      )}
-    /> */}
-  </SwitchPrimitives.Root>
-));
-Switch.displayName = SwitchPrimitives.Root.displayName;
+>(({ className, ...props }, ref) => {
+  const { setTheme, theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
 
-const SwitchSun = Switch;
-export { SwitchSun };
+  // This effect runs on the client side only
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const toggleTheme = () => {
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  };
+
+  // Prevent hydration mismatch
+  if (!mounted) return null;
+
+  return (
+    <SwitchPrimitives.Root
+      checked={resolvedTheme === "dark"}
+      onCheckedChange={toggleTheme}
+      className={cn(
+        "peer inline-flex h-7 w-14 shrink-0 cursor-pointer items-center rounded-full border-1 border-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-muted-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted",
+        className
+      )}
+      {...props}
+      ref={ref}
+    >
+      <SwitchPrimitives.Thumb
+        className={cn(
+          "pointer-events-none flex items-center justify-center border border-muted h-6 w-6 rounded-full bg-background shadow ring-0 transition-transform duration-200 ease-in-out data-[state=checked]:translate-x-7 data-[state=unchecked]:translate-x-0"
+        )}
+      >
+        {resolvedTheme === "dark" ? (
+          <Moon className="h-4 w-4 text-muted-foreground scale-x-[-1] -rotate-12" />
+        ) : (
+          <Sun className="h-4 w-4 text-muted-foreground" />
+        )}
+      </SwitchPrimitives.Thumb>
+    </SwitchPrimitives.Root>
+  );
+});
+
+ThemeToggler.displayName = "ThemeToggler";
+
+export { ThemeToggler };

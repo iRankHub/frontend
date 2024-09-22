@@ -11,7 +11,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import {
-  getInvitationsByTournament,
   getInvitationsByUser,
   getTournament,
 } from "@/core/tournament/list";
@@ -55,7 +54,7 @@ function Page({ params }: Iparms) {
         console.error(err.message);
       });
 
-      getInvitationsByUser(user.token)
+    getInvitationsByUser(user.token)
       .then((res) => {
         setInvitations(res.invitationsList);
       })
@@ -66,15 +65,15 @@ function Page({ params }: Iparms) {
   return (
     <ContentLayout title="format">
       <div className="w-full flex items-center justify-between gap-5">
-        <h3 className="text-2xl text-primary font-bold">{tournament?.name}</h3>
+        <h3 className="text-lg text-primary font-bold">{tournament?.name}</h3>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink
-                href="/students/dashboard"
+                href="/admin/dashboard"
                 className="text-muted-foreground text-base"
               >
-                Student
+                Admin
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator>
@@ -82,7 +81,7 @@ function Page({ params }: Iparms) {
             </BreadcrumbSeparator>
             <BreadcrumbItem>
               <BreadcrumbLink
-                href="/students/tournaments"
+                href="/admin/tournaments/list"
                 className="text-muted-foreground text-base"
               >
                 Tournament

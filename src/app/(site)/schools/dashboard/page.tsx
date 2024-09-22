@@ -18,6 +18,9 @@ import Leaderboard from "@/components/pages/schools/dashboard/leaderboard";
 import { PerformanceTrendChart } from "@/components/pages/schools/dashboard/charts/performance-trend-chart";
 import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 import { getUserProfile } from "@/core/users/users";
+import { getOverallSchoolRanking } from "@/core/debates/rankings";
+import { OverallSchoolRankingResponse } from "@/lib/grpc/proto/debate_management/debate_pb";
+import { getTournamentStats } from "@/core/tournament/list";
 
 const page = withAuth(() => {
   return <Dashboard />;
@@ -28,6 +31,18 @@ function Dashboard() {
   const [currentUser, setCurrentUser] = useState<
     UserProfile.AsObject | undefined
   >(undefined);
+  const [overallSchoolRanking, setOverallSchoolRanking] =
+    React.useState<OverallSchoolRankingResponse.AsObject>();
+  const [totalTournaments, setTotalTournaments] = React.useState(0);
+  const [upcomingTournaments, setUpcomingTournaments] = React.useState(0);
+  const [
+    total_tournamamentsPercentageChange,
+    setTotalTournamentsPercentageChange,
+  ] = React.useState("+∞%");
+  const [
+    upcoming_tournamentsPercentageChange,
+    setUpcomingTournamentsPercentageChange,
+  ] = React.useState("+∞%");
 
   const handleGreetMessage = () => {
     const date = new Date();
@@ -56,6 +71,32 @@ function Dashboard() {
         console.error(err.message);
       });
   }, [user]);
+
+  useEffect(() => {
+    if (!user) return;
+    // getTournamentStats({ token: user.token })
+    //   .then((res) => {
+    //     setTotalTournaments(res.totalTournaments);
+    //     setUpcomingTournaments(res.upcomingTournaments);
+    //     setTotalTournamentsPercentageChange(res.totalPercentageChange);
+    //     setUpcomingTournamentsPercentageChange(res.upcomingPercentageChange);
+    //   })
+    //   .catch((err) => {
+    //     console.error(err.message);
+    //   });
+
+    getOverallSchoolRanking({
+      token: user.token,
+      user_id: user.userId,
+    })
+      .then((res) => {
+        console.log(res);
+        setOverallSchoolRanking(res);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, [user]);
   return (
     <ContentLayout title="dashboard">
       <header>
@@ -64,7 +105,7 @@ function Dashboard() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbPage>Volunteer</BreadcrumbPage>
+                <BreadcrumbPage>School</BreadcrumbPage>
               </BreadcrumbItem>
               <BreadcrumbSeparator>
                 <Slash className="-rotate-12" />
@@ -88,10 +129,23 @@ function Dashboard() {
       </header>
       <div className="flex items-stretch flex-col md:flex-row gap-3 mt-5">
         <div className="flex-1 w-full">
-          <Overview />
+          <Overview
+            totalTournamentsAttended={2000}
+            totalTournamentsUnattended={500}
+            upcomingTournaments={upcomingTournaments}
+            totalTournamentsPercentageChange={
+              total_tournamamentsPercentageChange
+            }
+            upcomingTournamentsPercentageChange={
+              upcoming_tournamentsPercentageChange
+            }
+          />
         </div>
         <div className="flex-1 max-w-full md:max-w-xs w-full">
-          <CurrentRank />
+          <CurrentRank
+            currentRank={overallSchoolRanking?.schoolRank || 0}
+            totalStudents={overallSchoolRanking?.totalSchools || 0}
+          />
         </div>
       </div>
       <div className="flex items-stretch flex-col md:flex-row gap-3 mt-5">
@@ -99,7 +153,12 @@ function Dashboard() {
           <PerformanceTrendChart />
         </div>
         <div className="flex-1 max-w-full md:max-w-xs w-full">
-          <Leaderboard />
+          <Leaderboard
+            studentRank={overallSchoolRanking?.schoolRank || 0}
+            rankChange={overallSchoolRanking?.rankChange || 0}
+            studentInfo={overallSchoolRanking?.schoolInfo || ({} as any)}
+            topStudents={overallSchoolRanking?.topSchoolsList || []}
+          />
         </div>
       </div>
     </ContentLayout>

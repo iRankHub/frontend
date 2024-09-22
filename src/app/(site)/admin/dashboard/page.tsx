@@ -26,8 +26,8 @@ import {
   getUserStatistics,
 } from "@/core/users/users";
 import { GetSchoolsType } from "@/types/user_management/schools";
-import { tournamentsList } from "@/core/tournament/list";
-import { PerformanceTrendChart } from "@/components/pages/admin/dashboard/charts/performance-trend-chart";
+import { getTournamentStats } from "@/core/tournament/list";
+import PerformanceTrendChart from "@/components/pages/admin/dashboard/charts/performance-trend-chart";
 
 const page = withAuth(() => {
   return <Dashboard />;
@@ -37,18 +37,15 @@ function Dashboard() {
   const [totalUsers, setTotalUsers] = React.useState(0);
   const [newSignups, setNewSignups] = React.useState(0);
   const [totalTournaments, setTotalTournaments] = React.useState(0);
+  const [upcomingTournaments, setUpcomingTournaments] = React.useState(0);
+  const [total_tournamamentsPercentageChange, setTotalTournamentsPercentageChange] = React.useState("+∞%");
+  const [upcoming_tournamentsPercentageChange, setUpcomingTournamentsPercentageChange] = React.useState("+∞%");
   const [usersList, setUsersList] = React.useState<UserSummary.AsObject[]>([]);
 
   const [admin_count, setAdminCount] = React.useState(0);
   const [student_count, setStudentCount] = React.useState(0);
   const [school_count, setSchoolCount] = React.useState(0);
   const [volunteer_count, setVolunteerCount] = React.useState(0);
-  const [
-    newRegistrationsPercentageChange,
-    setNewRegistrationsPercentageChange,
-  ] = React.useState<string>("0.0%");
-  const [adminPercentageChange, setAdminPercentageChange] =
-    React.useState<string>("0.0%");
 
   const { user } = useUserStore((state) => state);
   const [currentUser, setCurrentUser] = useState<
@@ -132,9 +129,12 @@ function Dashboard() {
         console.error(err.message);
       });
 
-    tournamentsList({ token: user.token, page_size: 10, page_token: 0 })
+    getTournamentStats({ token: user.token })
       .then((res) => {
-        setTotalTournaments(res.tournamentsList.length);
+        setTotalTournaments(res.totalTournaments);
+        setUpcomingTournaments(res.upcomingTournaments);
+        setTotalTournamentsPercentageChange(res.totalPercentageChange);
+        setUpcomingTournamentsPercentageChange(res.upcomingPercentageChange);
       })
       .catch((err) => {
         console.error(err.message);
@@ -179,6 +179,9 @@ function Dashboard() {
         newSignups={newSignups}
         totalTournaments={totalTournaments}
         totalUsers={totalUsers}
+        upcomingTournaments={upcomingTournaments}
+        totalTournamentsPercentageChange={total_tournamamentsPercentageChange}
+        upcomingTournamentsPercentageChange={upcoming_tournamentsPercentageChange}
       />
       <div className="grid grid-cols-1 md:grid-cols-3 mt-5 md:gap-3">
         <UserCategoryOverview

@@ -39,12 +39,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { countries } from "@/lib/data";
 import { Districts, Provinces } from "@/lib/get-provinces-and-districts";
 import {
-  SchoolDetails,
+  Country,
   UserProfile,
 } from "@/lib/grpc/proto/user_management/users_pb";
 import { cn } from "@/lib/utils";
@@ -59,6 +57,7 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import FileUpload from "../tournaments/tournament-name/file-upload";
+import { getCountriesNoAuth } from "@/core/authentication/auth";
 
 interface ProfileFormProps {
   user: UserProfile.AsObject;
@@ -74,6 +73,14 @@ function ProfileForm({ user }: ProfileFormProps) {
   const [districts, setDisctricts] = React.useState<string[]>(Districts());
   const { user: storeUser } = useUserStore((state) => state);
   const { toast } = useToast();
+  const [countries, setCountries] = React.useState<Country.AsObject[]>([]);
+
+
+  React.useEffect(() => {
+    getCountriesNoAuth().then((res) => {
+      setCountries(res);
+    });
+  }, []);
 
   // react-hook-form
   const form = useForm<Inputs>({

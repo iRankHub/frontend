@@ -12,6 +12,8 @@ import {
     GetInvitationsByUserResponse,
     GetTournamentRequest,
     GetTournamentResponse,
+    GetTournamentStatsRequest,
+    GetTournamentStatsResponse,
     ListTournamentsRequest,
     ListTournamentsResponse,
     ResendInvitationRequest,
@@ -104,7 +106,6 @@ export const getTournament = async ({
 
         tournamentClient.getTournament(request, {}, (err, response) => {
             if (err) {
-                console.log(err);
                 reject(err);
             } else {
                 resolve(response.toObject());
@@ -256,6 +257,25 @@ export const bulkResendInvitations = async ({
         request.setInvitationIdsList(invitation_ids);
 
         tournamentClient.bulkResendInvitations(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const getTournamentStats = async ({
+    token,
+}: {
+    token: string;
+}): Promise<GetTournamentStatsResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new GetTournamentStatsRequest();
+        request.setToken(token);
+
+        tournamentClient.getTournamentStats(request, {}, (err, response) => {
             if (err) {
                 reject(err);
             } else {

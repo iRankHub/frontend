@@ -136,6 +136,9 @@ export class Tournament extends jspb.Message {
   getLeagueId(): number;
   setLeagueId(value: number): Tournament;
 
+  getCoordinatorId(): number;
+  setCoordinatorId(value: number): Tournament;
+
   getCoordinatorName(): string;
   setCoordinatorName(value: string): Tournament;
 
@@ -183,6 +186,7 @@ export namespace Tournament {
     location: string,
     formatId: number,
     leagueId: number,
+    coordinatorId: number,
     coordinatorName: string,
     numberOfPreliminaryRounds: number,
     numberOfEliminationRounds: number,

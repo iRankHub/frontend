@@ -8,9 +8,19 @@ interface OverviewProps {
   totalUsers: number;
   newSignups: number;
   totalTournaments: number;
+  upcomingTournaments: number;
+  totalTournamentsPercentageChange: string;
+  upcomingTournamentsPercentageChange: string;
 }
 
-function Overview({ newSignups, totalTournaments, totalUsers }: OverviewProps) {
+function Overview({
+  newSignups,
+  totalTournaments,
+  totalUsers,
+  upcomingTournaments,
+  totalTournamentsPercentageChange,
+  upcomingTournamentsPercentageChange,
+}: OverviewProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-x gap-4 px-4 py-6 bg-background rounded-lg border-2 border-muted mt-5">
       <Link href={"/admin/users"}>
@@ -61,7 +71,9 @@ function Overview({ newSignups, totalTournaments, totalUsers }: OverviewProps) {
             </h3>
             <div className="flex items-center bg-destructive-foreground px-0.5 rounded-full">
               <Icons.chevronUp size={14} className="text-success-foreground" />
-              <small className="text-xs text-success-foreground">3.2%</small>
+              <small className="text-xs text-success-foreground">
+                {totalTournamentsPercentageChange}
+              </small>
             </div>
           </div>
           <p className="text-xl font-bold text-primary tracking-widest">
@@ -81,10 +93,14 @@ function Overview({ newSignups, totalTournaments, totalUsers }: OverviewProps) {
             </h3>
             <div className="flex items-center bg-destructive-foreground px-0.5 rounded-full">
               <Icons.chevronUp size={14} className="text-success-foreground" />
-              <small className="text-xs text-success-foreground">8.3%</small>
+              <small className="text-xs text-success-foreground">
+                {upcomingTournamentsPercentageChange}
+              </small>
             </div>
           </div>
-          <p className="text-xl font-bold text-primary tracking-widest">15</p>
+          <p className="text-xl font-bold text-primary tracking-widest">
+            {upcomingTournaments}
+          </p>
           <p className="capitalize text-sm text-muted-text">Next 30 days</p>
         </div>
       </Link>

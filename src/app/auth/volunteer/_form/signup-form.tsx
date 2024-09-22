@@ -37,7 +37,6 @@ import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { countries } from "@/lib/data";
 import { CalendarIcon, Check, CheckIcon, ChevronsUpDown } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
@@ -52,8 +51,8 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { UserRole } from "@/types";
-import { signUp } from "@/core/authentication/auth";
-import { School } from "@/lib/grpc/proto/user_management/users_pb";
+import { getCountriesNoAuth, signUp } from "@/core/authentication/auth";
+import { Country, School } from "@/lib/grpc/proto/user_management/users_pb";
 import { getSchoolsNoAuth } from "@/core/users/schools";
 
 type Inputs = z.infer<typeof volunteerSchema>;
@@ -68,6 +67,13 @@ const SignupForm = ({ activeStep, setActiveStep }: SignupFormProps) => {
   const [isPending, setIsPending] = React.useState(false);
   const [openCountries, setOpenCountries] = React.useState(false);
   const { toast } = useToast();
+  const [countries, setCountries] = React.useState<Country.AsObject[]>([]);
+
+  React.useEffect(() => {
+    getCountriesNoAuth().then((res) => {
+      setCountries(res);
+    });
+  }, []);
 
   const steps = [1, 2, 3, 4];
 

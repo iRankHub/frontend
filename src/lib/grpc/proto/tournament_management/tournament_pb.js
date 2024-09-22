@@ -2079,16 +2079,17 @@ proto.tournament_management.Tournament.toObject = function(includeInstance, msg)
     location: jspb.Message.getFieldWithDefault(msg, 5, ""),
     formatId: jspb.Message.getFieldWithDefault(msg, 6, 0),
     leagueId: jspb.Message.getFieldWithDefault(msg, 7, 0),
-    coordinatorName: jspb.Message.getFieldWithDefault(msg, 8, ""),
-    numberOfPreliminaryRounds: jspb.Message.getFieldWithDefault(msg, 9, 0),
-    numberOfEliminationRounds: jspb.Message.getFieldWithDefault(msg, 10, 0),
-    judgesPerDebatePreliminary: jspb.Message.getFieldWithDefault(msg, 11, 0),
-    judgesPerDebateElimination: jspb.Message.getFieldWithDefault(msg, 12, 0),
-    tournamentFee: jspb.Message.getFloatingPointFieldWithDefault(msg, 13, 0.0),
-    imageUrl: jspb.Message.getFieldWithDefault(msg, 14, ""),
-    numberOfSchools: jspb.Message.getFieldWithDefault(msg, 15, 0),
-    numberOfTeams: jspb.Message.getFieldWithDefault(msg, 16, 0),
-    leagueName: jspb.Message.getFieldWithDefault(msg, 17, "")
+    coordinatorId: jspb.Message.getFieldWithDefault(msg, 8, 0),
+    coordinatorName: jspb.Message.getFieldWithDefault(msg, 9, ""),
+    numberOfPreliminaryRounds: jspb.Message.getFieldWithDefault(msg, 10, 0),
+    numberOfEliminationRounds: jspb.Message.getFieldWithDefault(msg, 11, 0),
+    judgesPerDebatePreliminary: jspb.Message.getFieldWithDefault(msg, 12, 0),
+    judgesPerDebateElimination: jspb.Message.getFieldWithDefault(msg, 13, 0),
+    tournamentFee: jspb.Message.getFloatingPointFieldWithDefault(msg, 14, 0.0),
+    imageUrl: jspb.Message.getFieldWithDefault(msg, 15, ""),
+    numberOfSchools: jspb.Message.getFieldWithDefault(msg, 16, 0),
+    numberOfTeams: jspb.Message.getFieldWithDefault(msg, 17, 0),
+    leagueName: jspb.Message.getFieldWithDefault(msg, 18, "")
   };
 
   if (includeInstance) {
@@ -2154,42 +2155,46 @@ proto.tournament_management.Tournament.deserializeBinaryFromReader = function(ms
       msg.setLeagueId(value);
       break;
     case 8:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setCoordinatorId(value);
+      break;
+    case 9:
       var value = /** @type {string} */ (reader.readString());
       msg.setCoordinatorName(value);
       break;
-    case 9:
+    case 10:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setNumberOfPreliminaryRounds(value);
       break;
-    case 10:
+    case 11:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setNumberOfEliminationRounds(value);
       break;
-    case 11:
+    case 12:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setJudgesPerDebatePreliminary(value);
       break;
-    case 12:
+    case 13:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setJudgesPerDebateElimination(value);
       break;
-    case 13:
+    case 14:
       var value = /** @type {number} */ (reader.readDouble());
       msg.setTournamentFee(value);
       break;
-    case 14:
+    case 15:
       var value = /** @type {string} */ (reader.readString());
       msg.setImageUrl(value);
       break;
-    case 15:
+    case 16:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setNumberOfSchools(value);
       break;
-    case 16:
+    case 17:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setNumberOfTeams(value);
       break;
-    case 17:
+    case 18:
       var value = /** @type {string} */ (reader.readString());
       msg.setLeagueName(value);
       break;
@@ -2271,73 +2276,80 @@ proto.tournament_management.Tournament.serializeBinaryToWriter = function(messag
       f
     );
   }
+  f = message.getCoordinatorId();
+  if (f !== 0) {
+    writer.writeInt32(
+      8,
+      f
+    );
+  }
   f = message.getCoordinatorName();
   if (f.length > 0) {
     writer.writeString(
-      8,
+      9,
       f
     );
   }
   f = message.getNumberOfPreliminaryRounds();
   if (f !== 0) {
     writer.writeInt32(
-      9,
+      10,
       f
     );
   }
   f = message.getNumberOfEliminationRounds();
   if (f !== 0) {
     writer.writeInt32(
-      10,
+      11,
       f
     );
   }
   f = message.getJudgesPerDebatePreliminary();
   if (f !== 0) {
     writer.writeInt32(
-      11,
+      12,
       f
     );
   }
   f = message.getJudgesPerDebateElimination();
   if (f !== 0) {
     writer.writeInt32(
-      12,
+      13,
       f
     );
   }
   f = message.getTournamentFee();
   if (f !== 0.0) {
     writer.writeDouble(
-      13,
+      14,
       f
     );
   }
   f = message.getImageUrl();
   if (f.length > 0) {
     writer.writeString(
-      14,
+      15,
       f
     );
   }
   f = message.getNumberOfSchools();
   if (f !== 0) {
     writer.writeInt32(
-      15,
+      16,
       f
     );
   }
   f = message.getNumberOfTeams();
   if (f !== 0) {
     writer.writeInt32(
-      16,
+      17,
       f
     );
   }
   f = message.getLeagueName();
   if (f.length > 0) {
     writer.writeString(
-      17,
+      18,
       f
     );
   }
@@ -2471,11 +2483,29 @@ proto.tournament_management.Tournament.prototype.setLeagueId = function(value) {
 
 
 /**
- * optional string coordinator_name = 8;
+ * optional int32 coordinator_id = 8;
+ * @return {number}
+ */
+proto.tournament_management.Tournament.prototype.getCoordinatorId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 8, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.Tournament} returns this
+ */
+proto.tournament_management.Tournament.prototype.setCoordinatorId = function(value) {
+  return jspb.Message.setProto3IntField(this, 8, value);
+};
+
+
+/**
+ * optional string coordinator_name = 9;
  * @return {string}
  */
 proto.tournament_management.Tournament.prototype.getCoordinatorName = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
 };
 
 
@@ -2484,33 +2514,15 @@ proto.tournament_management.Tournament.prototype.getCoordinatorName = function()
  * @return {!proto.tournament_management.Tournament} returns this
  */
 proto.tournament_management.Tournament.prototype.setCoordinatorName = function(value) {
-  return jspb.Message.setProto3StringField(this, 8, value);
+  return jspb.Message.setProto3StringField(this, 9, value);
 };
 
 
 /**
- * optional int32 number_of_preliminary_rounds = 9;
+ * optional int32 number_of_preliminary_rounds = 10;
  * @return {number}
  */
 proto.tournament_management.Tournament.prototype.getNumberOfPreliminaryRounds = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 9, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.tournament_management.Tournament} returns this
- */
-proto.tournament_management.Tournament.prototype.setNumberOfPreliminaryRounds = function(value) {
-  return jspb.Message.setProto3IntField(this, 9, value);
-};
-
-
-/**
- * optional int32 number_of_elimination_rounds = 10;
- * @return {number}
- */
-proto.tournament_management.Tournament.prototype.getNumberOfEliminationRounds = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
 };
 
@@ -2519,16 +2531,16 @@ proto.tournament_management.Tournament.prototype.getNumberOfEliminationRounds = 
  * @param {number} value
  * @return {!proto.tournament_management.Tournament} returns this
  */
-proto.tournament_management.Tournament.prototype.setNumberOfEliminationRounds = function(value) {
+proto.tournament_management.Tournament.prototype.setNumberOfPreliminaryRounds = function(value) {
   return jspb.Message.setProto3IntField(this, 10, value);
 };
 
 
 /**
- * optional int32 judges_per_debate_preliminary = 11;
+ * optional int32 number_of_elimination_rounds = 11;
  * @return {number}
  */
-proto.tournament_management.Tournament.prototype.getJudgesPerDebatePreliminary = function() {
+proto.tournament_management.Tournament.prototype.getNumberOfEliminationRounds = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 11, 0));
 };
 
@@ -2537,16 +2549,16 @@ proto.tournament_management.Tournament.prototype.getJudgesPerDebatePreliminary =
  * @param {number} value
  * @return {!proto.tournament_management.Tournament} returns this
  */
-proto.tournament_management.Tournament.prototype.setJudgesPerDebatePreliminary = function(value) {
+proto.tournament_management.Tournament.prototype.setNumberOfEliminationRounds = function(value) {
   return jspb.Message.setProto3IntField(this, 11, value);
 };
 
 
 /**
- * optional int32 judges_per_debate_elimination = 12;
+ * optional int32 judges_per_debate_preliminary = 12;
  * @return {number}
  */
-proto.tournament_management.Tournament.prototype.getJudgesPerDebateElimination = function() {
+proto.tournament_management.Tournament.prototype.getJudgesPerDebatePreliminary = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 12, 0));
 };
 
@@ -2555,17 +2567,35 @@ proto.tournament_management.Tournament.prototype.getJudgesPerDebateElimination =
  * @param {number} value
  * @return {!proto.tournament_management.Tournament} returns this
  */
-proto.tournament_management.Tournament.prototype.setJudgesPerDebateElimination = function(value) {
+proto.tournament_management.Tournament.prototype.setJudgesPerDebatePreliminary = function(value) {
   return jspb.Message.setProto3IntField(this, 12, value);
 };
 
 
 /**
- * optional double tournament_fee = 13;
+ * optional int32 judges_per_debate_elimination = 13;
+ * @return {number}
+ */
+proto.tournament_management.Tournament.prototype.getJudgesPerDebateElimination = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 13, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.Tournament} returns this
+ */
+proto.tournament_management.Tournament.prototype.setJudgesPerDebateElimination = function(value) {
+  return jspb.Message.setProto3IntField(this, 13, value);
+};
+
+
+/**
+ * optional double tournament_fee = 14;
  * @return {number}
  */
 proto.tournament_management.Tournament.prototype.getTournamentFee = function() {
-  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 13, 0.0));
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 14, 0.0));
 };
 
 
@@ -2574,16 +2604,16 @@ proto.tournament_management.Tournament.prototype.getTournamentFee = function() {
  * @return {!proto.tournament_management.Tournament} returns this
  */
 proto.tournament_management.Tournament.prototype.setTournamentFee = function(value) {
-  return jspb.Message.setProto3FloatField(this, 13, value);
+  return jspb.Message.setProto3FloatField(this, 14, value);
 };
 
 
 /**
- * optional string image_url = 14;
+ * optional string image_url = 15;
  * @return {string}
  */
 proto.tournament_management.Tournament.prototype.getImageUrl = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 14, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 15, ""));
 };
 
 
@@ -2592,33 +2622,15 @@ proto.tournament_management.Tournament.prototype.getImageUrl = function() {
  * @return {!proto.tournament_management.Tournament} returns this
  */
 proto.tournament_management.Tournament.prototype.setImageUrl = function(value) {
-  return jspb.Message.setProto3StringField(this, 14, value);
+  return jspb.Message.setProto3StringField(this, 15, value);
 };
 
 
 /**
- * optional int32 number_of_schools = 15;
+ * optional int32 number_of_schools = 16;
  * @return {number}
  */
 proto.tournament_management.Tournament.prototype.getNumberOfSchools = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 15, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.tournament_management.Tournament} returns this
- */
-proto.tournament_management.Tournament.prototype.setNumberOfSchools = function(value) {
-  return jspb.Message.setProto3IntField(this, 15, value);
-};
-
-
-/**
- * optional int32 number_of_teams = 16;
- * @return {number}
- */
-proto.tournament_management.Tournament.prototype.getNumberOfTeams = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 16, 0));
 };
 
@@ -2627,17 +2639,35 @@ proto.tournament_management.Tournament.prototype.getNumberOfTeams = function() {
  * @param {number} value
  * @return {!proto.tournament_management.Tournament} returns this
  */
-proto.tournament_management.Tournament.prototype.setNumberOfTeams = function(value) {
+proto.tournament_management.Tournament.prototype.setNumberOfSchools = function(value) {
   return jspb.Message.setProto3IntField(this, 16, value);
 };
 
 
 /**
- * optional string league_name = 17;
+ * optional int32 number_of_teams = 17;
+ * @return {number}
+ */
+proto.tournament_management.Tournament.prototype.getNumberOfTeams = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 17, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.Tournament} returns this
+ */
+proto.tournament_management.Tournament.prototype.setNumberOfTeams = function(value) {
+  return jspb.Message.setProto3IntField(this, 17, value);
+};
+
+
+/**
+ * optional string league_name = 18;
  * @return {string}
  */
 proto.tournament_management.Tournament.prototype.getLeagueName = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 17, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 18, ""));
 };
 
 
@@ -2646,7 +2676,7 @@ proto.tournament_management.Tournament.prototype.getLeagueName = function() {
  * @return {!proto.tournament_management.Tournament} returns this
  */
 proto.tournament_management.Tournament.prototype.setLeagueName = function(value) {
-  return jspb.Message.setProto3StringField(this, 17, value);
+  return jspb.Message.setProto3StringField(this, 18, value);
 };
 
 

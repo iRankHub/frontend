@@ -1,7 +1,6 @@
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { v4 as uuidv4 } from "uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon, Clock, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -15,16 +14,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import FileUpload from "./file-upload";
 import { UpdateTournamentSchema } from "@/lib/validations/admin/tournaments/create-tournament.schema";
 import {
   Popover,
@@ -48,20 +37,11 @@ import {
 import { useUserStore } from "@/stores/auth/auth.store";
 import {
   getTournamentFormat,
-  tournamentFormats,
 } from "@/core/tournament/formats";
 import { School, UserSummary } from "@/lib/grpc/proto/user_management/users_pb";
-import { getSchools } from "@/core/users/schools";
-import {
-  DeleteTournamentType,
-  UpdateTournamentType,
-} from "@/types/tournaments/tournament";
 import { TimePicker } from "@/components/ui/time-picker";
-import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { deleteTournament, updateTournament } from "@/core/tournament/list";
 import { useRouter } from "next/navigation";
-import { getVolunteersAndAdmins } from "@/core/users/users";
 
 type Props = {
   tournament: Tournament.AsObject;
@@ -72,12 +52,8 @@ type Inputs = z.infer<typeof UpdateTournamentSchema>;
 function TournamentUpdateForm({ tournament }: Props) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [formatName, setFormatName] = useState<string>("");
-  const [formats, setFormats] = useState<TournamentFormat.AsObject[]>([]);
-  const [venues, setVenues] = useState<School.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
   const [loading, setLoading] = useState<boolean>(false);
-  const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
   const [coordinators, setCoordinators] = React.useState<
     UserSummary.AsObject[]
   >([]);

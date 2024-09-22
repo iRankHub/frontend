@@ -26,7 +26,6 @@ export const getSchools = ({
       if (err) {
         reject(err);
       } else {
-        console.log(err);
         resolve(response.toObject());
       }
     });

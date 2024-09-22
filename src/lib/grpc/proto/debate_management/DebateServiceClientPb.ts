@@ -340,49 +340,6 @@ export class DebateServiceClient {
     this.methodDescriptorGetPairings);
   }
 
-  methodDescriptorGetPairing = new grpcWeb.MethodDescriptor(
-    '/debate_management.DebateService/GetPairing',
-    grpcWeb.MethodType.UNARY,
-    debate_management_debate_pb.GetPairingRequest,
-    debate_management_debate_pb.GetPairingResponse,
-    (request: debate_management_debate_pb.GetPairingRequest) => {
-      return request.serializeBinary();
-    },
-    debate_management_debate_pb.GetPairingResponse.deserializeBinary
-  );
-
-  getPairing(
-    request: debate_management_debate_pb.GetPairingRequest,
-    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.GetPairingResponse>;
-
-  getPairing(
-    request: debate_management_debate_pb.GetPairingRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.RpcError,
-               response: debate_management_debate_pb.GetPairingResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.GetPairingResponse>;
-
-  getPairing(
-    request: debate_management_debate_pb.GetPairingRequest,
-    metadata?: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.RpcError,
-               response: debate_management_debate_pb.GetPairingResponse) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/debate_management.DebateService/GetPairing',
-        request,
-        metadata || {},
-        this.methodDescriptorGetPairing,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/debate_management.DebateService/GetPairing',
-    request,
-    metadata || {},
-    this.methodDescriptorGetPairing);
-  }
-
   methodDescriptorUpdatePairings = new grpcWeb.MethodDescriptor(
     '/debate_management.DebateService/UpdatePairings',
     grpcWeb.MethodType.UNARY,
@@ -555,90 +512,133 @@ export class DebateServiceClient {
     this.methodDescriptorUpdateBallot);
   }
 
-  methodDescriptorGeneratePairings = new grpcWeb.MethodDescriptor(
-    '/debate_management.DebateService/GeneratePairings',
+  methodDescriptorGetBallotByJudgeID = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetBallotByJudgeID',
     grpcWeb.MethodType.UNARY,
-    debate_management_debate_pb.GeneratePairingsRequest,
+    debate_management_debate_pb.GetBallotByJudgeIDRequest,
+    debate_management_debate_pb.GetBallotByJudgeIDResponse,
+    (request: debate_management_debate_pb.GetBallotByJudgeIDRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.GetBallotByJudgeIDResponse.deserializeBinary
+  );
+
+  getBallotByJudgeID(
+    request: debate_management_debate_pb.GetBallotByJudgeIDRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.GetBallotByJudgeIDResponse>;
+
+  getBallotByJudgeID(
+    request: debate_management_debate_pb.GetBallotByJudgeIDRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.GetBallotByJudgeIDResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.GetBallotByJudgeIDResponse>;
+
+  getBallotByJudgeID(
+    request: debate_management_debate_pb.GetBallotByJudgeIDRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.GetBallotByJudgeIDResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetBallotByJudgeID',
+        request,
+        metadata || {},
+        this.methodDescriptorGetBallotByJudgeID,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetBallotByJudgeID',
+    request,
+    metadata || {},
+    this.methodDescriptorGetBallotByJudgeID);
+  }
+
+  methodDescriptorGeneratePreliminaryPairings = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GeneratePreliminaryPairings',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.GeneratePreliminaryPairingsRequest,
     debate_management_debate_pb.GeneratePairingsResponse,
-    (request: debate_management_debate_pb.GeneratePairingsRequest) => {
+    (request: debate_management_debate_pb.GeneratePreliminaryPairingsRequest) => {
       return request.serializeBinary();
     },
     debate_management_debate_pb.GeneratePairingsResponse.deserializeBinary
   );
 
-  generatePairings(
-    request: debate_management_debate_pb.GeneratePairingsRequest,
+  generatePreliminaryPairings(
+    request: debate_management_debate_pb.GeneratePreliminaryPairingsRequest,
     metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.GeneratePairingsResponse>;
 
-  generatePairings(
-    request: debate_management_debate_pb.GeneratePairingsRequest,
+  generatePreliminaryPairings(
+    request: debate_management_debate_pb.GeneratePreliminaryPairingsRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.RpcError,
                response: debate_management_debate_pb.GeneratePairingsResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.GeneratePairingsResponse>;
 
-  generatePairings(
-    request: debate_management_debate_pb.GeneratePairingsRequest,
+  generatePreliminaryPairings(
+    request: debate_management_debate_pb.GeneratePreliminaryPairingsRequest,
     metadata?: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.RpcError,
                response: debate_management_debate_pb.GeneratePairingsResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/debate_management.DebateService/GeneratePairings',
+          '/debate_management.DebateService/GeneratePreliminaryPairings',
         request,
         metadata || {},
-        this.methodDescriptorGeneratePairings,
+        this.methodDescriptorGeneratePreliminaryPairings,
         callback);
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/debate_management.DebateService/GeneratePairings',
+      '/debate_management.DebateService/GeneratePreliminaryPairings',
     request,
     metadata || {},
-    this.methodDescriptorGeneratePairings);
+    this.methodDescriptorGeneratePreliminaryPairings);
   }
 
-  methodDescriptorAssignJudges = new grpcWeb.MethodDescriptor(
-    '/debate_management.DebateService/AssignJudges',
+  methodDescriptorGenerateEliminationPairings = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GenerateEliminationPairings',
     grpcWeb.MethodType.UNARY,
-    debate_management_debate_pb.AssignJudgesRequest,
-    debate_management_debate_pb.AssignJudgesResponse,
-    (request: debate_management_debate_pb.AssignJudgesRequest) => {
+    debate_management_debate_pb.GenerateEliminationPairingsRequest,
+    debate_management_debate_pb.GeneratePairingsResponse,
+    (request: debate_management_debate_pb.GenerateEliminationPairingsRequest) => {
       return request.serializeBinary();
     },
-    debate_management_debate_pb.AssignJudgesResponse.deserializeBinary
+    debate_management_debate_pb.GeneratePairingsResponse.deserializeBinary
   );
 
-  assignJudges(
-    request: debate_management_debate_pb.AssignJudgesRequest,
-    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.AssignJudgesResponse>;
+  generateEliminationPairings(
+    request: debate_management_debate_pb.GenerateEliminationPairingsRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.GeneratePairingsResponse>;
 
-  assignJudges(
-    request: debate_management_debate_pb.AssignJudgesRequest,
+  generateEliminationPairings(
+    request: debate_management_debate_pb.GenerateEliminationPairingsRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.RpcError,
-               response: debate_management_debate_pb.AssignJudgesResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.AssignJudgesResponse>;
+               response: debate_management_debate_pb.GeneratePairingsResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.GeneratePairingsResponse>;
 
-  assignJudges(
-    request: debate_management_debate_pb.AssignJudgesRequest,
+  generateEliminationPairings(
+    request: debate_management_debate_pb.GenerateEliminationPairingsRequest,
     metadata?: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.RpcError,
-               response: debate_management_debate_pb.AssignJudgesResponse) => void) {
+               response: debate_management_debate_pb.GeneratePairingsResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/debate_management.DebateService/AssignJudges',
+          '/debate_management.DebateService/GenerateEliminationPairings',
         request,
         metadata || {},
-        this.methodDescriptorAssignJudges,
+        this.methodDescriptorGenerateEliminationPairings,
         callback);
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/debate_management.DebateService/AssignJudges',
+      '/debate_management.DebateService/GenerateEliminationPairings',
     request,
     metadata || {},
-    this.methodDescriptorAssignJudges);
+    this.methodDescriptorGenerateEliminationPairings);
   }
 
   methodDescriptorCreateTeam = new grpcWeb.MethodDescriptor(
@@ -856,47 +856,305 @@ export class DebateServiceClient {
     this.methodDescriptorDeleteTeam);
   }
 
-  methodDescriptorRegeneratePairings = new grpcWeb.MethodDescriptor(
-    '/debate_management.DebateService/RegeneratePairings',
+  methodDescriptorGetTournamentStudentRanking = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetTournamentStudentRanking',
     grpcWeb.MethodType.UNARY,
-    debate_management_debate_pb.RegeneratePairingsRequest,
-    debate_management_debate_pb.GeneratePairingsResponse,
-    (request: debate_management_debate_pb.RegeneratePairingsRequest) => {
+    debate_management_debate_pb.TournamentRankingRequest,
+    debate_management_debate_pb.TournamentRankingResponse,
+    (request: debate_management_debate_pb.TournamentRankingRequest) => {
       return request.serializeBinary();
     },
-    debate_management_debate_pb.GeneratePairingsResponse.deserializeBinary
+    debate_management_debate_pb.TournamentRankingResponse.deserializeBinary
   );
 
-  regeneratePairings(
-    request: debate_management_debate_pb.RegeneratePairingsRequest,
-    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.GeneratePairingsResponse>;
+  getTournamentStudentRanking(
+    request: debate_management_debate_pb.TournamentRankingRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.TournamentRankingResponse>;
 
-  regeneratePairings(
-    request: debate_management_debate_pb.RegeneratePairingsRequest,
+  getTournamentStudentRanking(
+    request: debate_management_debate_pb.TournamentRankingRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.RpcError,
-               response: debate_management_debate_pb.GeneratePairingsResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.GeneratePairingsResponse>;
+               response: debate_management_debate_pb.TournamentRankingResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.TournamentRankingResponse>;
 
-  regeneratePairings(
-    request: debate_management_debate_pb.RegeneratePairingsRequest,
+  getTournamentStudentRanking(
+    request: debate_management_debate_pb.TournamentRankingRequest,
     metadata?: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.RpcError,
-               response: debate_management_debate_pb.GeneratePairingsResponse) => void) {
+               response: debate_management_debate_pb.TournamentRankingResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/debate_management.DebateService/RegeneratePairings',
+          '/debate_management.DebateService/GetTournamentStudentRanking',
         request,
         metadata || {},
-        this.methodDescriptorRegeneratePairings,
+        this.methodDescriptorGetTournamentStudentRanking,
         callback);
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/debate_management.DebateService/RegeneratePairings',
+      '/debate_management.DebateService/GetTournamentStudentRanking',
     request,
     metadata || {},
-    this.methodDescriptorRegeneratePairings);
+    this.methodDescriptorGetTournamentStudentRanking);
+  }
+
+  methodDescriptorGetOverallStudentRanking = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetOverallStudentRanking',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.OverallRankingRequest,
+    debate_management_debate_pb.OverallRankingResponse,
+    (request: debate_management_debate_pb.OverallRankingRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.OverallRankingResponse.deserializeBinary
+  );
+
+  getOverallStudentRanking(
+    request: debate_management_debate_pb.OverallRankingRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.OverallRankingResponse>;
+
+  getOverallStudentRanking(
+    request: debate_management_debate_pb.OverallRankingRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.OverallRankingResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.OverallRankingResponse>;
+
+  getOverallStudentRanking(
+    request: debate_management_debate_pb.OverallRankingRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.OverallRankingResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetOverallStudentRanking',
+        request,
+        metadata || {},
+        this.methodDescriptorGetOverallStudentRanking,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetOverallStudentRanking',
+    request,
+    metadata || {},
+    this.methodDescriptorGetOverallStudentRanking);
+  }
+
+  methodDescriptorGetStudentOverallPerformance = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetStudentOverallPerformance',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.PerformanceRequest,
+    debate_management_debate_pb.PerformanceResponse,
+    (request: debate_management_debate_pb.PerformanceRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.PerformanceResponse.deserializeBinary
+  );
+
+  getStudentOverallPerformance(
+    request: debate_management_debate_pb.PerformanceRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.PerformanceResponse>;
+
+  getStudentOverallPerformance(
+    request: debate_management_debate_pb.PerformanceRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.PerformanceResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.PerformanceResponse>;
+
+  getStudentOverallPerformance(
+    request: debate_management_debate_pb.PerformanceRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.PerformanceResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetStudentOverallPerformance',
+        request,
+        metadata || {},
+        this.methodDescriptorGetStudentOverallPerformance,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetStudentOverallPerformance',
+    request,
+    metadata || {},
+    this.methodDescriptorGetStudentOverallPerformance);
+  }
+
+  methodDescriptorGetTournamentTeamsRanking = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetTournamentTeamsRanking',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.TournamentTeamsRankingRequest,
+    debate_management_debate_pb.TournamentTeamsRankingResponse,
+    (request: debate_management_debate_pb.TournamentTeamsRankingRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.TournamentTeamsRankingResponse.deserializeBinary
+  );
+
+  getTournamentTeamsRanking(
+    request: debate_management_debate_pb.TournamentTeamsRankingRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.TournamentTeamsRankingResponse>;
+
+  getTournamentTeamsRanking(
+    request: debate_management_debate_pb.TournamentTeamsRankingRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.TournamentTeamsRankingResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.TournamentTeamsRankingResponse>;
+
+  getTournamentTeamsRanking(
+    request: debate_management_debate_pb.TournamentTeamsRankingRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.TournamentTeamsRankingResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetTournamentTeamsRanking',
+        request,
+        metadata || {},
+        this.methodDescriptorGetTournamentTeamsRanking,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetTournamentTeamsRanking',
+    request,
+    metadata || {},
+    this.methodDescriptorGetTournamentTeamsRanking);
+  }
+
+  methodDescriptorGetTournamentSchoolRanking = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetTournamentSchoolRanking',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.TournamentSchoolRankingRequest,
+    debate_management_debate_pb.TournamentSchoolRankingResponse,
+    (request: debate_management_debate_pb.TournamentSchoolRankingRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.TournamentSchoolRankingResponse.deserializeBinary
+  );
+
+  getTournamentSchoolRanking(
+    request: debate_management_debate_pb.TournamentSchoolRankingRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.TournamentSchoolRankingResponse>;
+
+  getTournamentSchoolRanking(
+    request: debate_management_debate_pb.TournamentSchoolRankingRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.TournamentSchoolRankingResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.TournamentSchoolRankingResponse>;
+
+  getTournamentSchoolRanking(
+    request: debate_management_debate_pb.TournamentSchoolRankingRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.TournamentSchoolRankingResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetTournamentSchoolRanking',
+        request,
+        metadata || {},
+        this.methodDescriptorGetTournamentSchoolRanking,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetTournamentSchoolRanking',
+    request,
+    metadata || {},
+    this.methodDescriptorGetTournamentSchoolRanking);
+  }
+
+  methodDescriptorGetOverallSchoolRanking = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetOverallSchoolRanking',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.OverallSchoolRankingRequest,
+    debate_management_debate_pb.OverallSchoolRankingResponse,
+    (request: debate_management_debate_pb.OverallSchoolRankingRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.OverallSchoolRankingResponse.deserializeBinary
+  );
+
+  getOverallSchoolRanking(
+    request: debate_management_debate_pb.OverallSchoolRankingRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.OverallSchoolRankingResponse>;
+
+  getOverallSchoolRanking(
+    request: debate_management_debate_pb.OverallSchoolRankingRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.OverallSchoolRankingResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.OverallSchoolRankingResponse>;
+
+  getOverallSchoolRanking(
+    request: debate_management_debate_pb.OverallSchoolRankingRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.OverallSchoolRankingResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetOverallSchoolRanking',
+        request,
+        metadata || {},
+        this.methodDescriptorGetOverallSchoolRanking,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetOverallSchoolRanking',
+    request,
+    metadata || {},
+    this.methodDescriptorGetOverallSchoolRanking);
+  }
+
+  methodDescriptorGetSchoolOverallPerformance = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetSchoolOverallPerformance',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.SchoolPerformanceRequest,
+    debate_management_debate_pb.SchoolPerformanceResponse,
+    (request: debate_management_debate_pb.SchoolPerformanceRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.SchoolPerformanceResponse.deserializeBinary
+  );
+
+  getSchoolOverallPerformance(
+    request: debate_management_debate_pb.SchoolPerformanceRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.SchoolPerformanceResponse>;
+
+  getSchoolOverallPerformance(
+    request: debate_management_debate_pb.SchoolPerformanceRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.SchoolPerformanceResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.SchoolPerformanceResponse>;
+
+  getSchoolOverallPerformance(
+    request: debate_management_debate_pb.SchoolPerformanceRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.SchoolPerformanceResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetSchoolOverallPerformance',
+        request,
+        metadata || {},
+        this.methodDescriptorGetSchoolOverallPerformance,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetSchoolOverallPerformance',
+    request,
+    metadata || {},
+    this.methodDescriptorGetSchoolOverallPerformance);
   }
 
 }

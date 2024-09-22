@@ -52,7 +52,6 @@ import {
   updateTournamentLeague,
 } from "@/core/tournament/leagues";
 import { Label } from "../ui/label";
-import { cn } from "@/lib/utils";
 import { createTournamentLeagueSchema } from "@/lib/validations/admin/tournaments/create-tournament-leagues.schema";
 import { Badge } from "../ui/badge";
 import {
@@ -69,6 +68,7 @@ import {
 } from "../ui/form";
 // @ts-ignore
 import { Provinces, Districts } from "rwanda";
+import { countriesPerContinent } from "@/lib/data";
 
 interface LeagueCardProps {
   row: any;
@@ -88,12 +88,36 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
   const [provinces, setProvinces] = React.useState<string[]>(Provinces());
   const [districts, setDisctricts] = React.useState<string[]>(Districts());
   const leagues = JSON.parse(row.original.details);
-  const [selectedProvinces, setSelectedProvinces] = React.useState<string[]>([
-    ...leagues.provinces,
-  ]);
-  const [selectedDistricts, setSelectedDistricts] = React.useState<string[]>([
-    ...leagues.districts,
-  ]);
+  const [selectedProvinces, setSelectedProvinces] = React.useState<string[]>(
+    row.original.leagueType === 0 && leagues.provinces,
+  );
+  const [selectedDistricts, setSelectedDistricts] = React.useState<string[]>(
+    row.original.leagueType === 0 && leagues.districts
+  );
+
+  const [selectedCountries, setSelectedCountries] = React.useState<string[]>(
+    row.original.leagueType === 1 && leagues.countries
+  );
+  const [selectedContinents, setSelectedContinents] = React.useState<string[]>(
+    row.original.leagueType === 1 && leagues.continents
+  );
+
+  const getCountriesPerContinent = (continents: string[]) => {
+    let countries: string[] = [];
+    continents.forEach((continent) => {
+      // @ts-ignore
+      const continentCountries = countriesPerContinent[continent];
+      if (Array.isArray(continentCountries)) {
+        countries = countries.concat(
+          continentCountries.map((country) =>
+            typeof country === "object" ? country.label : country
+          )
+        );
+      }
+    });
+    return countries;
+  };
+
   const {
     updateLeague,
     deleteLeague: debateLeagueStore,
@@ -130,6 +154,14 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
         return LeagueType.INTERNATIONAL;
       }
     };
+
+    console.log(
+      selectedDistricts,
+      selectedProvinces,
+      selectedContinents,
+      selectedCountries
+    );
+
     const options: UpdateTournamentLeague = {
       token: user.token,
       name: data.name,
@@ -138,6 +170,10 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
       local_details: {
         districtsList: selectedDistricts,
         provincesList: selectedProvinces,
+      },
+      international_details: {
+        continentsList: selectedContinents,
+        countriesList: selectedCountries,
       },
     };
 
@@ -161,6 +197,7 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
         });
       })
       .catch((err) => {
+        console.error(err.message);
         setLoading(false);
       })
       .finally(() => {
@@ -217,8 +254,6 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
       });
   };
 
-  console.log(form.formState["errors"])
-
   return (
     <Card key={row.id} className="p-3 hover:shadow-lg">
       <CardTitle className="text-primary font-bold text-lg mb-2 flex items-center justify-between gap-3">
@@ -232,8 +267,8 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
           <div className="flex flex-col gap-1 justify-end">
             <span className="text-muted-text text-sm dark:text-foreground">
               {leagueType() === "Local"
-                ? leagues.districts.length
-                : leagues.provinces.length}
+                ? leagues.provinces.length
+                : leagues.continents.length}
             </span>
             <p className="text-sm">Province(s)</p>
           </div>
@@ -241,7 +276,7 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
             <span className="text-muted-text text-sm dark:text-foreground">
               {leagueType() === "Local"
                 ? leagues.districts.length
-                : leagues.provinces.length}
+                : leagues.countries.length}
             </span>
             <p className="text-sm">District(s)</p>
           </div>
@@ -400,62 +435,155 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
                     )}
                   />
 
-                  <div className="w-full flex items-center gap-3">
-                    <Label htmlFor="type" className="text-sm min-w-[80px]">
-                      Province(s)
-                    </Label>
-                    <MultiSelector
-                      values={selectedProvinces}
-                      onValuesChange={setSelectedProvinces}
-                      loop
-                      className="flex-1"
-                    >
-                      <MultiSelectorTrigger>
-                        <MultiSelectorInput
-                          placeholder="Select your province"
-                          className="placeholder:text-muted-text"
-                          disabled={!isEdit}
-                        />
-                      </MultiSelectorTrigger>
-                      <MultiSelectorContent>
-                        <MultiSelectorList>
-                          {provinces.map((province) => (
-                            <MultiSelectorItem key={province} value={province}>
-                              {province}
-                            </MultiSelectorItem>
-                          ))}
-                        </MultiSelectorList>
-                      </MultiSelectorContent>
-                    </MultiSelector>
-                  </div>
-                  <div className="w-full flex items-center gap-3">
-                    <Label htmlFor="type" className="text-sm min-w-[80px]">
-                      District(s)
-                    </Label>
-                    <MultiSelector
-                      values={selectedDistricts}
-                      onValuesChange={setSelectedDistricts}
-                      loop
-                      className="flex-1"
-                    >
-                      <MultiSelectorTrigger>
-                        <MultiSelectorInput
-                          placeholder="Select your district"
-                          className="placeholder:text-muted-text disabled:opacity-100"
-                          disabled={!isEdit}
-                        />
-                      </MultiSelectorTrigger>
-                      <MultiSelectorContent>
-                        <MultiSelectorList>
-                          {Districts(selectedProvinces).map((district: string) => (
-                            <MultiSelectorItem key={district} value={district}>
-                              {district}
-                            </MultiSelectorItem>
-                          ))}
-                        </MultiSelectorList>
-                      </MultiSelectorContent>
-                    </MultiSelector>
-                  </div>
+                  {row.original.leagueType === 0 && (
+                    <>
+                      <div className="w-full flex items-center gap-3">
+                        <Label htmlFor="type" className="text-sm min-w-[80px]">
+                          Province(s)
+                        </Label>
+                        <MultiSelector
+                          values={selectedProvinces}
+                          onValuesChange={setSelectedProvinces}
+                          loop
+                          className="flex-1"
+                        >
+                          <MultiSelectorTrigger>
+                            <MultiSelectorInput
+                              placeholder="Select your province"
+                              className="placeholder:text-muted-text"
+                              disabled={!isEdit}
+                            />
+                          </MultiSelectorTrigger>
+                          <MultiSelectorContent>
+                            <MultiSelectorList>
+                              {provinces.map((province) => (
+                                <MultiSelectorItem
+                                  key={province}
+                                  value={province}
+                                >
+                                  {province}
+                                </MultiSelectorItem>
+                              ))}
+                            </MultiSelectorList>
+                          </MultiSelectorContent>
+                        </MultiSelector>
+                      </div>
+                      <div className="w-full flex items-center gap-3">
+                        <Label htmlFor="type" className="text-sm min-w-[80px]">
+                          District(s)
+                        </Label>
+                        <MultiSelector
+                          values={selectedDistricts}
+                          onValuesChange={setSelectedDistricts}
+                          loop
+                          className="flex-1"
+                        >
+                          <MultiSelectorTrigger>
+                            <MultiSelectorInput
+                              placeholder="Select your district"
+                              className="placeholder:text-muted-text disabled:opacity-100"
+                              disabled={!isEdit}
+                            />
+                          </MultiSelectorTrigger>
+                          <MultiSelectorContent>
+                            <MultiSelectorList>
+                              {Districts(selectedProvinces).map(
+                                (district: string) => (
+                                  <MultiSelectorItem
+                                    key={district}
+                                    value={district}
+                                  >
+                                    {district}
+                                  </MultiSelectorItem>
+                                )
+                              )}
+                            </MultiSelectorList>
+                          </MultiSelectorContent>
+                        </MultiSelector>
+                      </div>
+                    </>
+                  )}
+
+                  {form.watch("league_type") === "international" && (
+                    <>
+                      <div className="w-full flex items-center gap-3">
+                        <Label
+                          htmlFor="type"
+                          className="text-sm min-w-[80px] text-darkBlue dark:text-foreground"
+                        >
+                          Continent(s)
+                        </Label>
+                        <MultiSelector
+                          values={selectedContinents}
+                          onValuesChange={setSelectedContinents}
+                          loop
+                          className="flex-1"
+                        >
+                          <MultiSelectorTrigger>
+                            <MultiSelectorInput
+                              placeholder="Select your continent"
+                              className="placeholder:text-muted-text"
+                              disabled={!isEdit}
+                            />
+                          </MultiSelectorTrigger>
+                          <MultiSelectorContent>
+                            <MultiSelectorList>
+                              {Object.keys(countriesPerContinent).map(
+                                (continent) => (
+                                  <MultiSelectorItem
+                                    key={continent}
+                                    value={continent}
+                                  >
+                                    {continent}
+                                  </MultiSelectorItem>
+                                )
+                              )}
+                            </MultiSelectorList>
+                          </MultiSelectorContent>
+                        </MultiSelector>
+                      </div>
+
+                      <div className="w-full flex items-center gap-3">
+                        <Label
+                          htmlFor="type"
+                          className="text-sm min-w-[80px] text-darkBlue dark:text-foreground"
+                        >
+                          Country(s)
+                        </Label>
+                        <MultiSelector
+                          values={selectedCountries}
+                          onValuesChange={setSelectedCountries}
+                          loop
+                          className="flex-1"
+                        >
+                          <MultiSelectorTrigger>
+                            <MultiSelectorInput
+                              placeholder="Select your country"
+                              className="placeholder:text-muted-text"
+                              disabled={!isEdit}
+                            />
+                          </MultiSelectorTrigger>
+                          <MultiSelectorContent>
+                            <MultiSelectorList>
+                              {getCountriesPerContinent(selectedContinents).map(
+                                (country) => (
+                                  <MultiSelectorItem
+                                    key={country}
+                                    value={country}
+                                  >
+                                    {typeof country === "object"
+                                      ? (country as { label: string }).label
+                                      : country}
+                                  </MultiSelectorItem>
+                                )
+                              )}
+                            </MultiSelectorList>
+                          </MultiSelectorContent>
+                        </MultiSelector>
+                        <FormMessage />
+                      </div>
+                    </>
+                  )}
                 </div>
                 {/* {form.formState["errors"].name && <p>{}</p>} */}
                 {isEdit && (
@@ -463,7 +591,6 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
                     type="submit"
                     size={"sm"}
                     className="w-full hover:bg-primary"
-
                   >
                     Update League
                     {loading && (

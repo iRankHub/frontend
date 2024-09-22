@@ -41,14 +41,17 @@ import {
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { getUserProfile } from "@/core/users/users";
-import { countries } from "@/lib/data";
 import { Districts, Provinces } from "@/lib/get-provinces-and-districts";
 import {
+  Country,
   SchoolDetails,
   UserProfile,
 } from "@/lib/grpc/proto/user_management/users_pb";
 import { cn } from "@/lib/utils";
-import { adminProfile, schoolProfileSchemaStep1 } from "@/lib/validations/admin/accounts/profile-update.schema";
+import {
+  adminProfile,
+  schoolProfileSchemaStep1,
+} from "@/lib/validations/admin/accounts/profile-update.schema";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Camera, CheckIcon, ChevronsUpDown } from "lucide-react";
@@ -57,20 +60,23 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import FileUpload from "../users/file-upload";
+import { getCountriesNoAuth } from "@/core/authentication/auth";
+
+interface ProfileFormProps {
+  user: UserProfile.AsObject;
+}
 
 type Inputs = z.infer<typeof adminProfile>;
 
-function ProfileForm() {
+function ProfileForm({ user }: ProfileFormProps) {
   const { toast } = useToast();
-  const { user: storeUser } = useUserStore((state) => state);
-  const [isPending, setIsPending] = React.useState(false);
-  const [openCountries, setOpenCountries] = React.useState(false);
-  const [provinces, setProvinces] = React.useState<string[]>(Provinces());
-  const [districts, setDisctricts] = React.useState<string[]>(Districts());
-  const [school, setSchool] = React.useState<SchoolDetails.AsObject | null>(
-    null
-  );
-  const [user, setUser] = React.useState<UserProfile.AsObject | null>(null);
+  const [countries, setCountries] = React.useState<Country.AsObject[]>([]);
+
+  React.useEffect(() => {
+    getCountriesNoAuth().then((res) => {
+      setCountries(res);
+    });
+  }, []);
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -80,87 +86,7 @@ function ProfileForm() {
     },
   });
 
-  const onSubmit = (data: Inputs) => {
-    setIsPending(true);
-
-    // await signUp({
-    //   firstName: data.contact_person_firstname,
-    //   lastName: data.contact_person_lastname,
-    //   address: data.address,
-    //   email: data.email,
-    //   password: data.password,
-    //   userRole: UserRole.SCHOOL,
-    //   schoolName: data.name,
-    //   country: data.country,
-    //   province: data.province_state,
-    //   district: data.district_region,
-    //   contactEmail: data.contact_person_email,
-    //   schoolType: data.type,
-    // })
-    //   .then((res) => {
-    //     toast({
-    //       variant: "success",
-    //       title: "Success",
-    //       description: res.message,
-    //       action: (
-    //         <ToastAction altText="Close" className="bg-primary text-white">
-    //           Close
-    //         </ToastAction>
-    //       ),
-    //     });
-    //     form.reset();
-    //     router.push("/auth/school/login");
-    //   })
-    //   .catch((err) => {
-    //     console.error(err.message);
-    //     toast({
-    //       variant: "destructive",
-    //       title: "Error",
-    //       description:
-    //         "Something went wrong. Please check your credentials and try again later",
-    //       action: (
-    //         <ToastAction altText="Close" className="bg-primary text-white">
-    //           Close
-    //         </ToastAction>
-    //       ),
-    //     });
-    //   })
-    //   .finally(() => {
-    //     setIsPending(false);
-    //   });
-  };
-
-  useEffect(() => {
-    if (!storeUser) return;
-    const getUser = async () => {
-      await getUserProfile({
-        userID: storeUser.userId,
-        token: storeUser.token,
-      }).then((res) => {
-        if (res.profile) {
-          setUser(res.profile);
-        }
-      });
-    };
-    getUser().catch((err) => {
-      toast({
-        variant: "success",
-        title: "Success",
-        description: "Tournament created successfully",
-        action: (
-          <ToastAction altText="Close" className="bg-primary text-white">
-            Close
-          </ToastAction>
-        ),
-      });
-    });
-  }, [storeUser, toast]);
-
-  if (!user) {
-    return (
-      <div className="grid place-content-center mt-auto h-full">loading...</div>
-    );
-  }
+  const onSubmit = (data: Inputs) => {};
 
   const handleUserProfile = (): string => {
     // check if user is not null and if the userProfile is not of type Uint8Array
@@ -176,10 +102,10 @@ function ProfileForm() {
   };
   return (
     <div className="w-full rounded-md overflow-hidden">
-      <div className="flex items-center justify-between flex-wrap gap-5 px-20 py-4 bg-brown">
+      <div className="flex items-center justify-between flex-wrap gap-5 px-5 md:px-20 py-4 bg-brown">
         <h3 className="text-xl text-background">Profile</h3>
       </div>
-      <div className="w-full bg-background px-20 py-5">
+      <div className="w-full bg-background px-5 md:px-20 py-5">
         <Form {...form}>
           <form
             onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}

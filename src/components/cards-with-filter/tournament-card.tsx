@@ -164,6 +164,24 @@ const TournamentCard = ({
                   </Link>
                 </Button>
               </DropdownMenuItem>
+              <DropdownMenuItem className="p-0">
+                <Button
+                  type="button"
+                  size={"sm"}
+                  variant={"link"}
+                  className="w-full justify-start text-foreground hover:no-underline"
+                >
+                  <Link
+                    className="no-underline"
+                    href={`${linkRole()}/${getColumnValue(
+                      row,
+                      "tournamentId"
+                    )}/logistics/billings`}
+                  >
+                    Billings
+                  </Link>
+                </Button>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DialogTrigger className="mt-0.5 w-full">
                 <DropdownMenuItem className="p-0">
@@ -261,7 +279,7 @@ const TournamentCard = ({
               {getColumnValue(row, "coordinatorName")}
             </span>
             <small className="text-secondary-foreground text-xs font-medium">
-              coordinator
+              Coordinator
             </small>
           </div>
         </div>

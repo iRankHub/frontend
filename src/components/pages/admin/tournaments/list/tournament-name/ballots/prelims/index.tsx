@@ -1,11 +1,7 @@
-import { Icons } from "@/components/icons";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { columns } from "./columns";
 import { DataTable } from "@/components/tables/data-table";
-import { Ballot } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { getBallots } from "@/core/debates/ballots";
 import { GetBallotsProps } from "@/types/pairings/ballots";

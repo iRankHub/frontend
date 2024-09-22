@@ -102,7 +102,17 @@ const HandleBallotActions = ({ row }: { row: Row<Ballot.AsObject> }) => {
   return (
     <div className="flex w-full h-6 items-center justify-center">
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-        {isBallotRecord ? (
+        <SheetTrigger>
+          <Button
+            type="button"
+            variant={"secondary"}
+            size={"icon"}
+            className="w-full bg-transparent hover:bg-transparent m-0"
+          >
+            <Icons.pencilLine className="w-5 h-5 text-primary" />
+          </Button>
+        </SheetTrigger>
+        {/* {isBallotRecord ? (
           <Button
             type="button"
             variant={"secondary"}
@@ -122,7 +132,7 @@ const HandleBallotActions = ({ row }: { row: Row<Ballot.AsObject> }) => {
               <Icons.pencilLine className="w-5 h-5 text-primary" />
             </Button>
           </SheetTrigger>
-        )}
+        )} */}
         <SidePanel>
           <Panelheader>
             <div className="flex items-center gap-1">

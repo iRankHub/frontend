@@ -7,8 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
-import { CollapseMenuButton } from "@/components/layout/students-panel/collapse-menu-button";
-import { getMenuList } from "@/lib/utils/volunteer/accounts-menu-list";
+import { getMenuList } from "@/lib/utils/admin/accounts-menu-list";
 
 export function Menu() {
   const pathname = usePathname();
@@ -16,17 +15,6 @@ export function Menu() {
   const [isOpen] = useState(true);
   return (
     <div className="hidden xl:inline w-full max-w-xs">
-      {/* <div className="flex items-center gap-3 mt-2 h-auto">
-        <Command className="rounded-md w-full border">
-          <CommandInput
-            placeholder="Search leagues..."
-            className="ring-0 h-8"
-          />
-        </Command>
-      </div>
-      <p className="text-muted-foreground text-xs italic font-medium mt-1">
-        20 records found
-      </p> */}
       <ScrollArea className="[&>div>div[style]]:!block">
         <nav className="mt-8 h-full w-full">
           <ul className="flex flex-col min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1 px-2">

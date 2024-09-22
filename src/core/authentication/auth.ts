@@ -20,7 +20,7 @@ import {
 import { authClient, userClient } from "../grpc-clients";
 import { TwoFactor } from "@/types/user_management/users";
 import { excelSerialToDate, ParsedDataAdmin, ParsedDataSchool, ParsedDataStudent, ParsedDataVolunteer } from "@/file-parser/parse-excel-file";
-import { GetSchoolIDsByNamesRequest } from "@/lib/grpc/proto/user_management/users_pb";
+import { Country, GetCountriesNoAuthRequest, GetSchoolIDsByNamesRequest } from "@/lib/grpc/proto/user_management/users_pb";
 
 export const signUp = (data: {
     firstName?: string;
@@ -280,123 +280,154 @@ export const handleTwoFactor = async ({
 }
 
 // batch operations
-export const batchCreateUsers = (data: {
+export const batchCreateUsers = async (data: {
     admin: ParsedDataAdmin[];
     student: ParsedDataStudent[];
     school: ParsedDataSchool[];
     volunteer: ParsedDataVolunteer[];
     token: string;
 }): Promise<BatchImportUsersResponse.AsObject> => {
-    return new Promise((resolve, reject) => {
-        const request = new BatchImportUsersRequest();
-        const schoolIdsRequest = new GetSchoolIDsByNamesRequest();
+    // Step 1: Upload admins, volunteers, and schools
+    const nonStudentRequest = new BatchImportUsersRequest();
 
-        const addUserData = (userData: UserData) => {
-            request.addUsers(userData);
-        };
+    const addUserData = (userData: UserData) => {
+        nonStudentRequest.addUsers(userData);
+    };
 
-        // Add admin, school, and volunteer data
-        data.admin.forEach((admin) => {
-            const userData = new UserData();
-            userData.setFirstname(admin.firstName);
-            userData.setLastname(admin.lastName);
-            userData.setEmail(admin.email);
-            userData.setGender(admin.gender.toLowerCase());
-            userData.setUserrole("admin");
-            addUserData(userData);
-        });
-
-        data.school.forEach((school) => {
-            const userData = new UserData();
-            userData.setFirstname(school.firstName);
-            userData.setLastname(school.lastName);
-            userData.setEmail(school.email);
-            userData.setUserrole("school");
-            userData.setGender("female");
-            userData.setNationalid(school.nationalID);
-            userData.setSchoolname(school.schoolName);
-            userData.setAddress(school.address);
-            userData.setCountry(school.country);
-            userData.setProvince(school.province);
-            userData.setDistrict(school.district);
-            userData.setContactemail(school.contactEmail);
-            userData.setSchooltype(school.schoolType);
-            addUserData(userData);
-        });
-
-        data.volunteer.forEach((volunteer) => {
-            const userData = new UserData();
-            userData.setFirstname(volunteer.firstName);
-            userData.setLastname(volunteer.lastName);
-            userData.setEmail(volunteer.email);
-            userData.setGender(volunteer.gender.toLowerCase());
-            userData.setDateofbirth(excelSerialToDate(Number(volunteer.dateOfBirth)));
-            userData.setNationalid(volunteer.nationalID);
-            userData.setRoleinterestedin(volunteer.roleInterestedIn);
-            userData.setGraduationyear(Number(volunteer.graduationYear));
-            userData.setHasinternship(volunteer.hasInternship.toLowerCase() === "yes");
-            userData.setIsenrolledinuniversity(volunteer.isEnrolledInUniversity.toLowerCase() === "yes");
-            userData.setUserrole("volunteer");
-            userData.setSafeguardingcertificate("");
-            addUserData(userData);
-        });
-
-        // Function to add student data
-        const addStudentData = (schoolIds: [string, number][]) => {
-            data.student.forEach((student) => {
-                const userData = new UserData();
-                userData.setFirstname(student.firstName);
-                userData.setLastname(student.lastName);
-                userData.setEmail(student.email);
-                userData.setGender(student.gender.toLowerCase());
-                userData.setDateofbirth(excelSerialToDate(Number(student.dateOfBirth)));
-                userData.setGrade(student.grade);
-                userData.setUserrole("student");
-
-                const schoolIdEntry = schoolIds.find(([name, id]) => name === student.schoolName);
-                if (schoolIdEntry) {
-                    userData.setSchoolid(schoolIdEntry[1]);
-                } else {
-                    console.error(`School ID not found for school name: ${student.schoolName}`);
-                }
-
-                addUserData(userData);
-            });
-        };
-
-        // Function to make the final batchImportUsers call
-        const makeBatchImportUsersCall = () => {
-            console.log(request.toObject());
-            authClient.batchImportUsers(request, {}, (err, response) => {
-                if (err) {
-                    console.error(err);
-                    reject(err);
-                } else {
-                    console.log(response.toObject());
-                    resolve(response.toObject());
-                }
-            });
-        };
-
-        // Handle student data
-        if (data.student.length > 0) {
-            const schools = data.school.map((school) => school.schoolName);
-            schoolIdsRequest.setSchoolNamesList(schools);
-            schoolIdsRequest.setToken(data.token);
-
-            userClient.getSchoolIDsByNames(schoolIdsRequest, {}, (err, response) => {
-                if (err) {
-                    console.error(err);
-                    reject(err);
-                } else {
-                    const schoolIds: [string, number][] = response.toObject().schoolIdsMap;
-                    addStudentData(schoolIds);
-                    makeBatchImportUsersCall();
-                }
-            });
-        } else {
-            // If there are no students, make the call immediately
-            makeBatchImportUsersCall();
-        }
+    // Add admin data
+    data.admin.forEach((admin) => {
+        const userData = new UserData();
+        userData.setFirstname(admin.firstName);
+        userData.setLastname(admin.lastName);
+        userData.setEmail(admin.email);
+        userData.setGender(admin.gender.toLowerCase());
+        userData.setUserrole("admin");
+        addUserData(userData);
     });
+
+    // Add volunteer data
+    data.volunteer.forEach((volunteer) => {
+        const userData = new UserData();
+        userData.setFirstname(volunteer.firstName);
+        userData.setLastname(volunteer.lastName);
+        userData.setEmail(volunteer.email);
+        userData.setGender(volunteer.gender.toLowerCase());
+        userData.setDateofbirth(excelSerialToDate(Number(volunteer.dateOfBirth)));
+        userData.setNationalid(volunteer.nationalID);
+        userData.setRoleinterestedin(volunteer.roleInterestedIn);
+        userData.setGraduationyear(Number(volunteer.graduationYear));
+        userData.setHasinternship(volunteer.hasInternship.toLowerCase() === "yes");
+        userData.setIsenrolledinuniversity(volunteer.isEnrolledInUniversity.toLowerCase() === "yes");
+        userData.setUserrole("volunteer");
+        userData.setSafeguardingcertificate("");
+        addUserData(userData);
+    });
+
+    // Add school data
+    data.school.forEach((school) => {
+        const userData = new UserData();
+        userData.setFirstname(school.firstName);
+        userData.setLastname(school.lastName);
+        userData.setEmail(school.email);
+        userData.setUserrole("school");
+        userData.setGender("female");
+        userData.setNationalid(school.nationalID);
+        userData.setSchoolname(school.schoolName);
+        userData.setAddress(school.address);
+        userData.setCountry(school.country);
+        userData.setProvince(school.province);
+        userData.setDistrict(school.district);
+        userData.setContactemail(school.contactEmail);
+        userData.setSchooltype(school.schoolType);
+        addUserData(userData);
+    });
+
+    // Step 2: Upload non-student users and get the response
+    const nonStudentResponse = await new Promise<BatchImportUsersResponse.AsObject>((resolve, reject) => {
+        authClient.batchImportUsers(nonStudentRequest, {}, (err, response) => {
+            if (err) {
+                console.error(err);
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+
+    // Step 3: Get school IDs for newly created schools
+    const schoolNames = data.school.map(school => school.schoolName);
+    const schoolIdsRequest = new GetSchoolIDsByNamesRequest();
+    schoolIdsRequest.setSchoolNamesList(schoolNames);
+    schoolIdsRequest.setToken(data.token);
+
+    const schoolIds = await new Promise<[string, number][]>((resolve, reject) => {
+        userClient.getSchoolIDsByNames(schoolIdsRequest, {}, (err, response) => {
+            if (err) {
+                console.error(err);
+                reject(err);
+            } else {
+                resolve(response.toObject().schoolIdsMap);
+            }
+        });
+    });
+
+    // Step 4: Upload students with correct school IDs
+    const studentRequest = new BatchImportUsersRequest();
+
+    data.student.forEach((student) => {
+        const userData = new UserData();
+        userData.setFirstname(student.firstName);
+        userData.setLastname(student.lastName);
+        userData.setEmail(student.email);
+        userData.setGender(student.gender.toLowerCase());
+        userData.setDateofbirth(excelSerialToDate(Number(student.dateOfBirth)));
+        userData.setGrade(student.grade);
+        userData.setUserrole("student");
+
+        const schoolId = schoolIds.find(([schoolName]) => schoolName === student.schoolName)?.[1];
+        if (schoolId) {
+            userData.setSchoolid(schoolId);
+        } else {
+            console.error(`School ID not found for school name: ${student.schoolName}`);
+        }
+
+        studentRequest.addUsers(userData);
+    });
+
+    // Step 5: Upload students and get the response
+    const studentResponse = await new Promise<BatchImportUsersResponse.AsObject>((resolve, reject) => {
+        authClient.batchImportUsers(studentRequest, {}, (err, response) => {
+            if (err) {
+                console.error(err);
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+
+    // Step 6: Combine and return the results
+    return {
+        importedcount: nonStudentResponse.importedcount + studentResponse.importedcount,
+        success: nonStudentResponse.success && studentResponse.success,
+        message: nonStudentResponse.message + studentResponse.message,
+        failedemailsList: [
+            ...nonStudentResponse.failedemailsList,
+            ...studentResponse.failedemailsList
+        ]
+    };
 };
+
+export const getCountriesNoAuth = async (): Promise<Country.AsObject[]> => {
+    return new Promise((resolve, reject) => {
+        const request = new GetCountriesNoAuthRequest();
+
+        userClient.getCountriesNoAuth(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject().countriesList);
+            }
+        });
+    });
+}

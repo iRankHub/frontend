@@ -21,14 +21,15 @@ var global =
     (function () { return this; }).call(null) ||
     Function('return this')();
 
-goog.exportSymbol('proto.debate_management.AssignJudgesRequest', null, global);
-goog.exportSymbol('proto.debate_management.AssignJudgesResponse', null, global);
 goog.exportSymbol('proto.debate_management.Ballot', null, global);
 goog.exportSymbol('proto.debate_management.CreateTeamRequest', null, global);
 goog.exportSymbol('proto.debate_management.DeleteTeamRequest', null, global);
 goog.exportSymbol('proto.debate_management.DeleteTeamResponse', null, global);
-goog.exportSymbol('proto.debate_management.GeneratePairingsRequest', null, global);
+goog.exportSymbol('proto.debate_management.GenerateEliminationPairingsRequest', null, global);
 goog.exportSymbol('proto.debate_management.GeneratePairingsResponse', null, global);
+goog.exportSymbol('proto.debate_management.GeneratePreliminaryPairingsRequest', null, global);
+goog.exportSymbol('proto.debate_management.GetBallotByJudgeIDRequest', null, global);
+goog.exportSymbol('proto.debate_management.GetBallotByJudgeIDResponse', null, global);
 goog.exportSymbol('proto.debate_management.GetBallotRequest', null, global);
 goog.exportSymbol('proto.debate_management.GetBallotResponse', null, global);
 goog.exportSymbol('proto.debate_management.GetBallotsRequest', null, global);
@@ -37,8 +38,6 @@ goog.exportSymbol('proto.debate_management.GetJudgeRequest', null, global);
 goog.exportSymbol('proto.debate_management.GetJudgeResponse', null, global);
 goog.exportSymbol('proto.debate_management.GetJudgesRequest', null, global);
 goog.exportSymbol('proto.debate_management.GetJudgesResponse', null, global);
-goog.exportSymbol('proto.debate_management.GetPairingRequest', null, global);
-goog.exportSymbol('proto.debate_management.GetPairingResponse', null, global);
 goog.exportSymbol('proto.debate_management.GetPairingsRequest', null, global);
 goog.exportSymbol('proto.debate_management.GetPairingsResponse', null, global);
 goog.exportSymbol('proto.debate_management.GetRoomRequest', null, global);
@@ -49,15 +48,37 @@ goog.exportSymbol('proto.debate_management.GetTeamRequest', null, global);
 goog.exportSymbol('proto.debate_management.GetTeamsByTournamentRequest', null, global);
 goog.exportSymbol('proto.debate_management.GetTeamsByTournamentResponse', null, global);
 goog.exportSymbol('proto.debate_management.Judge', null, global);
+goog.exportSymbol('proto.debate_management.OverallRankingRequest', null, global);
+goog.exportSymbol('proto.debate_management.OverallRankingResponse', null, global);
+goog.exportSymbol('proto.debate_management.OverallSchoolRankingRequest', null, global);
+goog.exportSymbol('proto.debate_management.OverallSchoolRankingResponse', null, global);
 goog.exportSymbol('proto.debate_management.Pairing', null, global);
-goog.exportSymbol('proto.debate_management.RegeneratePairingsRequest', null, global);
+goog.exportSymbol('proto.debate_management.PerformanceData', null, global);
+goog.exportSymbol('proto.debate_management.PerformanceRequest', null, global);
+goog.exportSymbol('proto.debate_management.PerformanceResponse', null, global);
 goog.exportSymbol('proto.debate_management.Room', null, global);
 goog.exportSymbol('proto.debate_management.RoomInfo', null, global);
 goog.exportSymbol('proto.debate_management.RoomStatus', null, global);
 goog.exportSymbol('proto.debate_management.RoundInfo', null, global);
 goog.exportSymbol('proto.debate_management.RoundStatus', null, global);
+goog.exportSymbol('proto.debate_management.SchoolInfo', null, global);
+goog.exportSymbol('proto.debate_management.SchoolPerformanceData', null, global);
+goog.exportSymbol('proto.debate_management.SchoolPerformanceRequest', null, global);
+goog.exportSymbol('proto.debate_management.SchoolPerformanceResponse', null, global);
+goog.exportSymbol('proto.debate_management.SchoolRanking', null, global);
 goog.exportSymbol('proto.debate_management.Speaker', null, global);
+goog.exportSymbol('proto.debate_management.StudentInfo', null, global);
+goog.exportSymbol('proto.debate_management.StudentRanking', null, global);
 goog.exportSymbol('proto.debate_management.Team', null, global);
+goog.exportSymbol('proto.debate_management.TeamRanking', null, global);
+goog.exportSymbol('proto.debate_management.TopSchool', null, global);
+goog.exportSymbol('proto.debate_management.TopStudent', null, global);
+goog.exportSymbol('proto.debate_management.TournamentRankingRequest', null, global);
+goog.exportSymbol('proto.debate_management.TournamentRankingResponse', null, global);
+goog.exportSymbol('proto.debate_management.TournamentSchoolRankingRequest', null, global);
+goog.exportSymbol('proto.debate_management.TournamentSchoolRankingResponse', null, global);
+goog.exportSymbol('proto.debate_management.TournamentTeamsRankingRequest', null, global);
+goog.exportSymbol('proto.debate_management.TournamentTeamsRankingResponse', null, global);
 goog.exportSymbol('proto.debate_management.UpdateBallotRequest', null, global);
 goog.exportSymbol('proto.debate_management.UpdateBallotResponse', null, global);
 goog.exportSymbol('proto.debate_management.UpdateJudgeRequest', null, global);
@@ -560,48 +581,6 @@ if (goog.DEBUG && !COMPILED) {
  * @extends {jspb.Message}
  * @constructor
  */
-proto.debate_management.GetPairingRequest = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
-};
-goog.inherits(proto.debate_management.GetPairingRequest, jspb.Message);
-if (goog.DEBUG && !COMPILED) {
-  /**
-   * @public
-   * @override
-   */
-  proto.debate_management.GetPairingRequest.displayName = 'proto.debate_management.GetPairingRequest';
-}
-/**
- * Generated by JsPbCodeGenerator.
- * @param {Array=} opt_data Optional initial data array, typically from a
- * server response, or constructed directly in Javascript. The array is used
- * in place and becomes part of the constructed object. It is not cloned.
- * If no data is provided, the constructed object will be empty, but still
- * valid.
- * @extends {jspb.Message}
- * @constructor
- */
-proto.debate_management.GetPairingResponse = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
-};
-goog.inherits(proto.debate_management.GetPairingResponse, jspb.Message);
-if (goog.DEBUG && !COMPILED) {
-  /**
-   * @public
-   * @override
-   */
-  proto.debate_management.GetPairingResponse.displayName = 'proto.debate_management.GetPairingResponse';
-}
-/**
- * Generated by JsPbCodeGenerator.
- * @param {Array=} opt_data Optional initial data array, typically from a
- * server response, or constructed directly in Javascript. The array is used
- * in place and becomes part of the constructed object. It is not cloned.
- * If no data is provided, the constructed object will be empty, but still
- * valid.
- * @extends {jspb.Message}
- * @constructor
- */
 proto.debate_management.UpdatePairingsRequest = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, proto.debate_management.UpdatePairingsRequest.repeatedFields_, null);
 };
@@ -749,6 +728,48 @@ if (goog.DEBUG && !COMPILED) {
  * @extends {jspb.Message}
  * @constructor
  */
+proto.debate_management.GetBallotByJudgeIDRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.GetBallotByJudgeIDRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.GetBallotByJudgeIDRequest.displayName = 'proto.debate_management.GetBallotByJudgeIDRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.GetBallotByJudgeIDResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.GetBallotByJudgeIDResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.GetBallotByJudgeIDResponse.displayName = 'proto.debate_management.GetBallotByJudgeIDResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
 proto.debate_management.UpdateBallotRequest = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
@@ -791,16 +812,37 @@ if (goog.DEBUG && !COMPILED) {
  * @extends {jspb.Message}
  * @constructor
  */
-proto.debate_management.GeneratePairingsRequest = function(opt_data) {
+proto.debate_management.GeneratePreliminaryPairingsRequest = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
-goog.inherits(proto.debate_management.GeneratePairingsRequest, jspb.Message);
+goog.inherits(proto.debate_management.GeneratePreliminaryPairingsRequest, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   /**
    * @public
    * @override
    */
-  proto.debate_management.GeneratePairingsRequest.displayName = 'proto.debate_management.GeneratePairingsRequest';
+  proto.debate_management.GeneratePreliminaryPairingsRequest.displayName = 'proto.debate_management.GeneratePreliminaryPairingsRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.GenerateEliminationPairingsRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.GenerateEliminationPairingsRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.GenerateEliminationPairingsRequest.displayName = 'proto.debate_management.GenerateEliminationPairingsRequest';
 }
 /**
  * Generated by JsPbCodeGenerator.
@@ -822,48 +864,6 @@ if (goog.DEBUG && !COMPILED) {
    * @override
    */
   proto.debate_management.GeneratePairingsResponse.displayName = 'proto.debate_management.GeneratePairingsResponse';
-}
-/**
- * Generated by JsPbCodeGenerator.
- * @param {Array=} opt_data Optional initial data array, typically from a
- * server response, or constructed directly in Javascript. The array is used
- * in place and becomes part of the constructed object. It is not cloned.
- * If no data is provided, the constructed object will be empty, but still
- * valid.
- * @extends {jspb.Message}
- * @constructor
- */
-proto.debate_management.AssignJudgesRequest = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
-};
-goog.inherits(proto.debate_management.AssignJudgesRequest, jspb.Message);
-if (goog.DEBUG && !COMPILED) {
-  /**
-   * @public
-   * @override
-   */
-  proto.debate_management.AssignJudgesRequest.displayName = 'proto.debate_management.AssignJudgesRequest';
-}
-/**
- * Generated by JsPbCodeGenerator.
- * @param {Array=} opt_data Optional initial data array, typically from a
- * server response, or constructed directly in Javascript. The array is used
- * in place and becomes part of the constructed object. It is not cloned.
- * If no data is provided, the constructed object will be empty, but still
- * valid.
- * @extends {jspb.Message}
- * @constructor
- */
-proto.debate_management.AssignJudgesResponse = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, proto.debate_management.AssignJudgesResponse.repeatedFields_, null);
-};
-goog.inherits(proto.debate_management.AssignJudgesResponse, jspb.Message);
-if (goog.DEBUG && !COMPILED) {
-  /**
-   * @public
-   * @override
-   */
-  proto.debate_management.AssignJudgesResponse.displayName = 'proto.debate_management.AssignJudgesResponse';
 }
 /**
  * Generated by JsPbCodeGenerator.
@@ -1022,16 +1022,478 @@ if (goog.DEBUG && !COMPILED) {
  * @extends {jspb.Message}
  * @constructor
  */
-proto.debate_management.RegeneratePairingsRequest = function(opt_data) {
+proto.debate_management.OverallRankingRequest = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
-goog.inherits(proto.debate_management.RegeneratePairingsRequest, jspb.Message);
+goog.inherits(proto.debate_management.OverallRankingRequest, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   /**
    * @public
    * @override
    */
-  proto.debate_management.RegeneratePairingsRequest.displayName = 'proto.debate_management.RegeneratePairingsRequest';
+  proto.debate_management.OverallRankingRequest.displayName = 'proto.debate_management.OverallRankingRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.OverallRankingResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.debate_management.OverallRankingResponse.repeatedFields_, null);
+};
+goog.inherits(proto.debate_management.OverallRankingResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.OverallRankingResponse.displayName = 'proto.debate_management.OverallRankingResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.TopStudent = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.TopStudent, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.TopStudent.displayName = 'proto.debate_management.TopStudent';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.StudentInfo = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.StudentInfo, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.StudentInfo.displayName = 'proto.debate_management.StudentInfo';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.PerformanceRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.PerformanceRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.PerformanceRequest.displayName = 'proto.debate_management.PerformanceRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.PerformanceResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.debate_management.PerformanceResponse.repeatedFields_, null);
+};
+goog.inherits(proto.debate_management.PerformanceResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.PerformanceResponse.displayName = 'proto.debate_management.PerformanceResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.PerformanceData = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.PerformanceData, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.PerformanceData.displayName = 'proto.debate_management.PerformanceData';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.TournamentRankingRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.TournamentRankingRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.TournamentRankingRequest.displayName = 'proto.debate_management.TournamentRankingRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.TournamentRankingResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.debate_management.TournamentRankingResponse.repeatedFields_, null);
+};
+goog.inherits(proto.debate_management.TournamentRankingResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.TournamentRankingResponse.displayName = 'proto.debate_management.TournamentRankingResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.StudentRanking = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.StudentRanking, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.StudentRanking.displayName = 'proto.debate_management.StudentRanking';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.TournamentTeamsRankingRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.TournamentTeamsRankingRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.TournamentTeamsRankingRequest.displayName = 'proto.debate_management.TournamentTeamsRankingRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.TournamentTeamsRankingResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.debate_management.TournamentTeamsRankingResponse.repeatedFields_, null);
+};
+goog.inherits(proto.debate_management.TournamentTeamsRankingResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.TournamentTeamsRankingResponse.displayName = 'proto.debate_management.TournamentTeamsRankingResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.TeamRanking = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.debate_management.TeamRanking.repeatedFields_, null);
+};
+goog.inherits(proto.debate_management.TeamRanking, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.TeamRanking.displayName = 'proto.debate_management.TeamRanking';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.TournamentSchoolRankingRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.TournamentSchoolRankingRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.TournamentSchoolRankingRequest.displayName = 'proto.debate_management.TournamentSchoolRankingRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.TournamentSchoolRankingResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.debate_management.TournamentSchoolRankingResponse.repeatedFields_, null);
+};
+goog.inherits(proto.debate_management.TournamentSchoolRankingResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.TournamentSchoolRankingResponse.displayName = 'proto.debate_management.TournamentSchoolRankingResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.SchoolRanking = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.SchoolRanking, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.SchoolRanking.displayName = 'proto.debate_management.SchoolRanking';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.OverallSchoolRankingRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.OverallSchoolRankingRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.OverallSchoolRankingRequest.displayName = 'proto.debate_management.OverallSchoolRankingRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.OverallSchoolRankingResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.debate_management.OverallSchoolRankingResponse.repeatedFields_, null);
+};
+goog.inherits(proto.debate_management.OverallSchoolRankingResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.OverallSchoolRankingResponse.displayName = 'proto.debate_management.OverallSchoolRankingResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.TopSchool = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.TopSchool, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.TopSchool.displayName = 'proto.debate_management.TopSchool';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.SchoolInfo = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.SchoolInfo, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.SchoolInfo.displayName = 'proto.debate_management.SchoolInfo';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.SchoolPerformanceRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.SchoolPerformanceRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.SchoolPerformanceRequest.displayName = 'proto.debate_management.SchoolPerformanceRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.SchoolPerformanceResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.debate_management.SchoolPerformanceResponse.repeatedFields_, null);
+};
+goog.inherits(proto.debate_management.SchoolPerformanceResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.SchoolPerformanceResponse.displayName = 'proto.debate_management.SchoolPerformanceResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.debate_management.SchoolPerformanceData = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.debate_management.SchoolPerformanceData, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.debate_management.SchoolPerformanceData.displayName = 'proto.debate_management.SchoolPerformanceData';
 }
 
 
@@ -6000,317 +6462,6 @@ proto.debate_management.GetPairingsResponse.prototype.clearPairingsList = functi
 
 
 
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.debate_management.GetPairingRequest.prototype.toObject = function(opt_includeInstance) {
-  return proto.debate_management.GetPairingRequest.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.debate_management.GetPairingRequest} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.debate_management.GetPairingRequest.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    pairingId: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    token: jspb.Message.getFieldWithDefault(msg, 2, "")
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.debate_management.GetPairingRequest}
- */
-proto.debate_management.GetPairingRequest.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.debate_management.GetPairingRequest;
-  return proto.debate_management.GetPairingRequest.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.debate_management.GetPairingRequest} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.debate_management.GetPairingRequest}
- */
-proto.debate_management.GetPairingRequest.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setPairingId(value);
-      break;
-    case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setToken(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.debate_management.GetPairingRequest.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.debate_management.GetPairingRequest.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.debate_management.GetPairingRequest} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.debate_management.GetPairingRequest.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getPairingId();
-  if (f !== 0) {
-    writer.writeInt32(
-      1,
-      f
-    );
-  }
-  f = message.getToken();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
-};
-
-
-/**
- * optional int32 pairing_id = 1;
- * @return {number}
- */
-proto.debate_management.GetPairingRequest.prototype.getPairingId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.debate_management.GetPairingRequest} returns this
- */
-proto.debate_management.GetPairingRequest.prototype.setPairingId = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
-};
-
-
-/**
- * optional string token = 2;
- * @return {string}
- */
-proto.debate_management.GetPairingRequest.prototype.getToken = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.debate_management.GetPairingRequest} returns this
- */
-proto.debate_management.GetPairingRequest.prototype.setToken = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.debate_management.GetPairingResponse.prototype.toObject = function(opt_includeInstance) {
-  return proto.debate_management.GetPairingResponse.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.debate_management.GetPairingResponse} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.debate_management.GetPairingResponse.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    pairing: (f = msg.getPairing()) && proto.debate_management.Pairing.toObject(includeInstance, f)
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.debate_management.GetPairingResponse}
- */
-proto.debate_management.GetPairingResponse.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.debate_management.GetPairingResponse;
-  return proto.debate_management.GetPairingResponse.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.debate_management.GetPairingResponse} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.debate_management.GetPairingResponse}
- */
-proto.debate_management.GetPairingResponse.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = new proto.debate_management.Pairing;
-      reader.readMessage(value,proto.debate_management.Pairing.deserializeBinaryFromReader);
-      msg.setPairing(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.debate_management.GetPairingResponse.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.debate_management.GetPairingResponse.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.debate_management.GetPairingResponse} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.debate_management.GetPairingResponse.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getPairing();
-  if (f != null) {
-    writer.writeMessage(
-      1,
-      f,
-      proto.debate_management.Pairing.serializeBinaryToWriter
-    );
-  }
-};
-
-
-/**
- * optional Pairing pairing = 1;
- * @return {?proto.debate_management.Pairing}
- */
-proto.debate_management.GetPairingResponse.prototype.getPairing = function() {
-  return /** @type{?proto.debate_management.Pairing} */ (
-    jspb.Message.getWrapperField(this, proto.debate_management.Pairing, 1));
-};
-
-
-/**
- * @param {?proto.debate_management.Pairing|undefined} value
- * @return {!proto.debate_management.GetPairingResponse} returns this
-*/
-proto.debate_management.GetPairingResponse.prototype.setPairing = function(value) {
-  return jspb.Message.setWrapperField(this, 1, value);
-};
-
-
-/**
- * Clears the message field making it undefined.
- * @return {!proto.debate_management.GetPairingResponse} returns this
- */
-proto.debate_management.GetPairingResponse.prototype.clearPairing = function() {
-  return this.setPairing(undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.debate_management.GetPairingResponse.prototype.hasPairing = function() {
-  return jspb.Message.getField(this, 1) != null;
-};
-
-
-
 /**
  * List of repeated fields within this message type.
  * @private {!Array<number>}
@@ -7929,6 +8080,347 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
  *     http://goto/soy-param-migration
  * @return {!Object}
  */
+proto.debate_management.GetBallotByJudgeIDRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.GetBallotByJudgeIDRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.GetBallotByJudgeIDRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.GetBallotByJudgeIDRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    judgeId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    tournamentId: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    token: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.GetBallotByJudgeIDRequest}
+ */
+proto.debate_management.GetBallotByJudgeIDRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.GetBallotByJudgeIDRequest;
+  return proto.debate_management.GetBallotByJudgeIDRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.GetBallotByJudgeIDRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.GetBallotByJudgeIDRequest}
+ */
+proto.debate_management.GetBallotByJudgeIDRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setJudgeId(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentId(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.GetBallotByJudgeIDRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.GetBallotByJudgeIDRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.GetBallotByJudgeIDRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.GetBallotByJudgeIDRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getJudgeId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getTournamentId();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 judge_id = 1;
+ * @return {number}
+ */
+proto.debate_management.GetBallotByJudgeIDRequest.prototype.getJudgeId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.GetBallotByJudgeIDRequest} returns this
+ */
+proto.debate_management.GetBallotByJudgeIDRequest.prototype.setJudgeId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional int32 tournament_id = 2;
+ * @return {number}
+ */
+proto.debate_management.GetBallotByJudgeIDRequest.prototype.getTournamentId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.GetBallotByJudgeIDRequest} returns this
+ */
+proto.debate_management.GetBallotByJudgeIDRequest.prototype.setTournamentId = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional string token = 3;
+ * @return {string}
+ */
+proto.debate_management.GetBallotByJudgeIDRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.GetBallotByJudgeIDRequest} returns this
+ */
+proto.debate_management.GetBallotByJudgeIDRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.GetBallotByJudgeIDResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.GetBallotByJudgeIDResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.GetBallotByJudgeIDResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.GetBallotByJudgeIDResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    ballot: (f = msg.getBallot()) && proto.debate_management.Ballot.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.GetBallotByJudgeIDResponse}
+ */
+proto.debate_management.GetBallotByJudgeIDResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.GetBallotByJudgeIDResponse;
+  return proto.debate_management.GetBallotByJudgeIDResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.GetBallotByJudgeIDResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.GetBallotByJudgeIDResponse}
+ */
+proto.debate_management.GetBallotByJudgeIDResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = new proto.debate_management.Ballot;
+      reader.readMessage(value,proto.debate_management.Ballot.deserializeBinaryFromReader);
+      msg.setBallot(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.GetBallotByJudgeIDResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.GetBallotByJudgeIDResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.GetBallotByJudgeIDResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.GetBallotByJudgeIDResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getBallot();
+  if (f != null) {
+    writer.writeMessage(
+      1,
+      f,
+      proto.debate_management.Ballot.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional Ballot ballot = 1;
+ * @return {?proto.debate_management.Ballot}
+ */
+proto.debate_management.GetBallotByJudgeIDResponse.prototype.getBallot = function() {
+  return /** @type{?proto.debate_management.Ballot} */ (
+    jspb.Message.getWrapperField(this, proto.debate_management.Ballot, 1));
+};
+
+
+/**
+ * @param {?proto.debate_management.Ballot|undefined} value
+ * @return {!proto.debate_management.GetBallotByJudgeIDResponse} returns this
+*/
+proto.debate_management.GetBallotByJudgeIDResponse.prototype.setBallot = function(value) {
+  return jspb.Message.setWrapperField(this, 1, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.debate_management.GetBallotByJudgeIDResponse} returns this
+ */
+proto.debate_management.GetBallotByJudgeIDResponse.prototype.clearBallot = function() {
+  return this.setBallot(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.debate_management.GetBallotByJudgeIDResponse.prototype.hasBallot = function() {
+  return jspb.Message.getField(this, 1) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
 proto.debate_management.UpdateBallotRequest.prototype.toObject = function(opt_includeInstance) {
   return proto.debate_management.UpdateBallotRequest.toObject(opt_includeInstance, this);
 };
@@ -8261,8 +8753,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
  *     http://goto/soy-param-migration
  * @return {!Object}
  */
-proto.debate_management.GeneratePairingsRequest.prototype.toObject = function(opt_includeInstance) {
-  return proto.debate_management.GeneratePairingsRequest.toObject(opt_includeInstance, this);
+proto.debate_management.GeneratePreliminaryPairingsRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.GeneratePreliminaryPairingsRequest.toObject(opt_includeInstance, this);
 };
 
 
@@ -8271,15 +8763,14 @@ proto.debate_management.GeneratePairingsRequest.prototype.toObject = function(op
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.debate_management.GeneratePairingsRequest} msg The msg instance to transform.
+ * @param {!proto.debate_management.GeneratePreliminaryPairingsRequest} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.debate_management.GeneratePairingsRequest.toObject = function(includeInstance, msg) {
+proto.debate_management.GeneratePreliminaryPairingsRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     tournamentId: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    isEliminationRound: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
-    token: jspb.Message.getFieldWithDefault(msg, 4, "")
+    token: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -8293,23 +8784,23 @@ proto.debate_management.GeneratePairingsRequest.toObject = function(includeInsta
 /**
  * Deserializes binary data (in protobuf wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.debate_management.GeneratePairingsRequest}
+ * @return {!proto.debate_management.GeneratePreliminaryPairingsRequest}
  */
-proto.debate_management.GeneratePairingsRequest.deserializeBinary = function(bytes) {
+proto.debate_management.GeneratePreliminaryPairingsRequest.deserializeBinary = function(bytes) {
   var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.debate_management.GeneratePairingsRequest;
-  return proto.debate_management.GeneratePairingsRequest.deserializeBinaryFromReader(msg, reader);
+  var msg = new proto.debate_management.GeneratePreliminaryPairingsRequest;
+  return proto.debate_management.GeneratePreliminaryPairingsRequest.deserializeBinaryFromReader(msg, reader);
 };
 
 
 /**
  * Deserializes binary data (in protobuf wire format) from the
  * given reader into the given message object.
- * @param {!proto.debate_management.GeneratePairingsRequest} msg The message object to deserialize into.
+ * @param {!proto.debate_management.GeneratePreliminaryPairingsRequest} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.debate_management.GeneratePairingsRequest}
+ * @return {!proto.debate_management.GeneratePreliminaryPairingsRequest}
  */
-proto.debate_management.GeneratePairingsRequest.deserializeBinaryFromReader = function(msg, reader) {
+proto.debate_management.GeneratePreliminaryPairingsRequest.deserializeBinaryFromReader = function(msg, reader) {
   while (reader.nextField()) {
     if (reader.isEndGroup()) {
       break;
@@ -8320,11 +8811,7 @@ proto.debate_management.GeneratePairingsRequest.deserializeBinaryFromReader = fu
       var value = /** @type {number} */ (reader.readInt32());
       msg.setTournamentId(value);
       break;
-    case 3:
-      var value = /** @type {boolean} */ (reader.readBool());
-      msg.setIsEliminationRound(value);
-      break;
-    case 4:
+    case 2:
       var value = /** @type {string} */ (reader.readString());
       msg.setToken(value);
       break;
@@ -8341,9 +8828,9 @@ proto.debate_management.GeneratePairingsRequest.deserializeBinaryFromReader = fu
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
-proto.debate_management.GeneratePairingsRequest.prototype.serializeBinary = function() {
+proto.debate_management.GeneratePreliminaryPairingsRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  proto.debate_management.GeneratePairingsRequest.serializeBinaryToWriter(this, writer);
+  proto.debate_management.GeneratePreliminaryPairingsRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
@@ -8351,11 +8838,11 @@ proto.debate_management.GeneratePairingsRequest.prototype.serializeBinary = func
 /**
  * Serializes the given message to binary data (in protobuf wire
  * format), writing to the given BinaryWriter.
- * @param {!proto.debate_management.GeneratePairingsRequest} message
+ * @param {!proto.debate_management.GeneratePreliminaryPairingsRequest} message
  * @param {!jspb.BinaryWriter} writer
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.debate_management.GeneratePairingsRequest.serializeBinaryToWriter = function(message, writer) {
+proto.debate_management.GeneratePreliminaryPairingsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getTournamentId();
   if (f !== 0) {
@@ -8364,17 +8851,10 @@ proto.debate_management.GeneratePairingsRequest.serializeBinaryToWriter = functi
       f
     );
   }
-  f = message.getIsEliminationRound();
-  if (f) {
-    writer.writeBool(
-      3,
-      f
-    );
-  }
   f = message.getToken();
   if (f.length > 0) {
     writer.writeString(
-      4,
+      2,
       f
     );
   }
@@ -8385,53 +8865,225 @@ proto.debate_management.GeneratePairingsRequest.serializeBinaryToWriter = functi
  * optional int32 tournament_id = 1;
  * @return {number}
  */
-proto.debate_management.GeneratePairingsRequest.prototype.getTournamentId = function() {
+proto.debate_management.GeneratePreliminaryPairingsRequest.prototype.getTournamentId = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
 /**
  * @param {number} value
- * @return {!proto.debate_management.GeneratePairingsRequest} returns this
+ * @return {!proto.debate_management.GeneratePreliminaryPairingsRequest} returns this
  */
-proto.debate_management.GeneratePairingsRequest.prototype.setTournamentId = function(value) {
+proto.debate_management.GeneratePreliminaryPairingsRequest.prototype.setTournamentId = function(value) {
   return jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
 /**
- * optional bool is_elimination_round = 3;
- * @return {boolean}
- */
-proto.debate_management.GeneratePairingsRequest.prototype.getIsEliminationRound = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 3, false));
-};
-
-
-/**
- * @param {boolean} value
- * @return {!proto.debate_management.GeneratePairingsRequest} returns this
- */
-proto.debate_management.GeneratePairingsRequest.prototype.setIsEliminationRound = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 3, value);
-};
-
-
-/**
- * optional string token = 4;
+ * optional string token = 2;
  * @return {string}
  */
-proto.debate_management.GeneratePairingsRequest.prototype.getToken = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+proto.debate_management.GeneratePreliminaryPairingsRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /**
  * @param {string} value
- * @return {!proto.debate_management.GeneratePairingsRequest} returns this
+ * @return {!proto.debate_management.GeneratePreliminaryPairingsRequest} returns this
  */
-proto.debate_management.GeneratePairingsRequest.prototype.setToken = function(value) {
-  return jspb.Message.setProto3StringField(this, 4, value);
+proto.debate_management.GeneratePreliminaryPairingsRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.GenerateEliminationPairingsRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.GenerateEliminationPairingsRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.GenerateEliminationPairingsRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.GenerateEliminationPairingsRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    tournamentId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    roundNumber: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    token: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.GenerateEliminationPairingsRequest}
+ */
+proto.debate_management.GenerateEliminationPairingsRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.GenerateEliminationPairingsRequest;
+  return proto.debate_management.GenerateEliminationPairingsRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.GenerateEliminationPairingsRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.GenerateEliminationPairingsRequest}
+ */
+proto.debate_management.GenerateEliminationPairingsRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentId(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setRoundNumber(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.GenerateEliminationPairingsRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.GenerateEliminationPairingsRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.GenerateEliminationPairingsRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.GenerateEliminationPairingsRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTournamentId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getRoundNumber();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 tournament_id = 1;
+ * @return {number}
+ */
+proto.debate_management.GenerateEliminationPairingsRequest.prototype.getTournamentId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.GenerateEliminationPairingsRequest} returns this
+ */
+proto.debate_management.GenerateEliminationPairingsRequest.prototype.setTournamentId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional int32 round_number = 2;
+ * @return {number}
+ */
+proto.debate_management.GenerateEliminationPairingsRequest.prototype.getRoundNumber = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.GenerateEliminationPairingsRequest} returns this
+ */
+proto.debate_management.GenerateEliminationPairingsRequest.prototype.setRoundNumber = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional string token = 3;
+ * @return {string}
+ */
+proto.debate_management.GenerateEliminationPairingsRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.GenerateEliminationPairingsRequest} returns this
+ */
+proto.debate_management.GenerateEliminationPairingsRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
@@ -8591,386 +9243,6 @@ proto.debate_management.GeneratePairingsResponse.prototype.addPairings = functio
  * @return {!proto.debate_management.GeneratePairingsResponse} returns this
  */
 proto.debate_management.GeneratePairingsResponse.prototype.clearPairingsList = function() {
-  return this.setPairingsList([]);
-};
-
-
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.debate_management.AssignJudgesRequest.prototype.toObject = function(opt_includeInstance) {
-  return proto.debate_management.AssignJudgesRequest.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.debate_management.AssignJudgesRequest} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.debate_management.AssignJudgesRequest.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    tournamentId: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    roundNumber: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    isElimination: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
-    token: jspb.Message.getFieldWithDefault(msg, 4, "")
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.debate_management.AssignJudgesRequest}
- */
-proto.debate_management.AssignJudgesRequest.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.debate_management.AssignJudgesRequest;
-  return proto.debate_management.AssignJudgesRequest.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.debate_management.AssignJudgesRequest} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.debate_management.AssignJudgesRequest}
- */
-proto.debate_management.AssignJudgesRequest.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setTournamentId(value);
-      break;
-    case 2:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setRoundNumber(value);
-      break;
-    case 3:
-      var value = /** @type {boolean} */ (reader.readBool());
-      msg.setIsElimination(value);
-      break;
-    case 4:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setToken(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.debate_management.AssignJudgesRequest.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.debate_management.AssignJudgesRequest.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.debate_management.AssignJudgesRequest} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.debate_management.AssignJudgesRequest.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getTournamentId();
-  if (f !== 0) {
-    writer.writeInt32(
-      1,
-      f
-    );
-  }
-  f = message.getRoundNumber();
-  if (f !== 0) {
-    writer.writeInt32(
-      2,
-      f
-    );
-  }
-  f = message.getIsElimination();
-  if (f) {
-    writer.writeBool(
-      3,
-      f
-    );
-  }
-  f = message.getToken();
-  if (f.length > 0) {
-    writer.writeString(
-      4,
-      f
-    );
-  }
-};
-
-
-/**
- * optional int32 tournament_id = 1;
- * @return {number}
- */
-proto.debate_management.AssignJudgesRequest.prototype.getTournamentId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.debate_management.AssignJudgesRequest} returns this
- */
-proto.debate_management.AssignJudgesRequest.prototype.setTournamentId = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
-};
-
-
-/**
- * optional int32 round_number = 2;
- * @return {number}
- */
-proto.debate_management.AssignJudgesRequest.prototype.getRoundNumber = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.debate_management.AssignJudgesRequest} returns this
- */
-proto.debate_management.AssignJudgesRequest.prototype.setRoundNumber = function(value) {
-  return jspb.Message.setProto3IntField(this, 2, value);
-};
-
-
-/**
- * optional bool is_elimination = 3;
- * @return {boolean}
- */
-proto.debate_management.AssignJudgesRequest.prototype.getIsElimination = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 3, false));
-};
-
-
-/**
- * @param {boolean} value
- * @return {!proto.debate_management.AssignJudgesRequest} returns this
- */
-proto.debate_management.AssignJudgesRequest.prototype.setIsElimination = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 3, value);
-};
-
-
-/**
- * optional string token = 4;
- * @return {string}
- */
-proto.debate_management.AssignJudgesRequest.prototype.getToken = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.debate_management.AssignJudgesRequest} returns this
- */
-proto.debate_management.AssignJudgesRequest.prototype.setToken = function(value) {
-  return jspb.Message.setProto3StringField(this, 4, value);
-};
-
-
-
-/**
- * List of repeated fields within this message type.
- * @private {!Array<number>}
- * @const
- */
-proto.debate_management.AssignJudgesResponse.repeatedFields_ = [1];
-
-
-
-if (jspb.Message.GENERATE_TO_OBJECT) {
-/**
- * Creates an object representation of this proto.
- * Field names that are reserved in JavaScript and will be renamed to pb_name.
- * Optional fields that are not set will be set to undefined.
- * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
- * For the list of reserved names please see:
- *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
- * @param {boolean=} opt_includeInstance Deprecated. whether to include the
- *     JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @return {!Object}
- */
-proto.debate_management.AssignJudgesResponse.prototype.toObject = function(opt_includeInstance) {
-  return proto.debate_management.AssignJudgesResponse.toObject(opt_includeInstance, this);
-};
-
-
-/**
- * Static version of the {@see toObject} method.
- * @param {boolean|undefined} includeInstance Deprecated. Whether to include
- *     the JSPB instance for transitional soy proto support:
- *     http://goto/soy-param-migration
- * @param {!proto.debate_management.AssignJudgesResponse} msg The msg instance to transform.
- * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.debate_management.AssignJudgesResponse.toObject = function(includeInstance, msg) {
-  var f, obj = {
-    pairingsList: jspb.Message.toObjectList(msg.getPairingsList(),
-    proto.debate_management.Pairing.toObject, includeInstance)
-  };
-
-  if (includeInstance) {
-    obj.$jspbMessageInstance = msg;
-  }
-  return obj;
-};
-}
-
-
-/**
- * Deserializes binary data (in protobuf wire format).
- * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.debate_management.AssignJudgesResponse}
- */
-proto.debate_management.AssignJudgesResponse.deserializeBinary = function(bytes) {
-  var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.debate_management.AssignJudgesResponse;
-  return proto.debate_management.AssignJudgesResponse.deserializeBinaryFromReader(msg, reader);
-};
-
-
-/**
- * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
- * @param {!proto.debate_management.AssignJudgesResponse} msg The message object to deserialize into.
- * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.debate_management.AssignJudgesResponse}
- */
-proto.debate_management.AssignJudgesResponse.deserializeBinaryFromReader = function(msg, reader) {
-  while (reader.nextField()) {
-    if (reader.isEndGroup()) {
-      break;
-    }
-    var field = reader.getFieldNumber();
-    switch (field) {
-    case 1:
-      var value = new proto.debate_management.Pairing;
-      reader.readMessage(value,proto.debate_management.Pairing.deserializeBinaryFromReader);
-      msg.addPairings(value);
-      break;
-    default:
-      reader.skipField();
-      break;
-    }
-  }
-  return msg;
-};
-
-
-/**
- * Serializes the message to binary data (in protobuf wire format).
- * @return {!Uint8Array}
- */
-proto.debate_management.AssignJudgesResponse.prototype.serializeBinary = function() {
-  var writer = new jspb.BinaryWriter();
-  proto.debate_management.AssignJudgesResponse.serializeBinaryToWriter(this, writer);
-  return writer.getResultBuffer();
-};
-
-
-/**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.debate_management.AssignJudgesResponse} message
- * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
- */
-proto.debate_management.AssignJudgesResponse.serializeBinaryToWriter = function(message, writer) {
-  var f = undefined;
-  f = message.getPairingsList();
-  if (f.length > 0) {
-    writer.writeRepeatedMessage(
-      1,
-      f,
-      proto.debate_management.Pairing.serializeBinaryToWriter
-    );
-  }
-};
-
-
-/**
- * repeated Pairing pairings = 1;
- * @return {!Array<!proto.debate_management.Pairing>}
- */
-proto.debate_management.AssignJudgesResponse.prototype.getPairingsList = function() {
-  return /** @type{!Array<!proto.debate_management.Pairing>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.debate_management.Pairing, 1));
-};
-
-
-/**
- * @param {!Array<!proto.debate_management.Pairing>} value
- * @return {!proto.debate_management.AssignJudgesResponse} returns this
-*/
-proto.debate_management.AssignJudgesResponse.prototype.setPairingsList = function(value) {
-  return jspb.Message.setRepeatedWrapperField(this, 1, value);
-};
-
-
-/**
- * @param {!proto.debate_management.Pairing=} opt_value
- * @param {number=} opt_index
- * @return {!proto.debate_management.Pairing}
- */
-proto.debate_management.AssignJudgesResponse.prototype.addPairings = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.debate_management.Pairing, opt_index);
-};
-
-
-/**
- * Clears the list making it empty but non-null.
- * @return {!proto.debate_management.AssignJudgesResponse} returns this
- */
-proto.debate_management.AssignJudgesResponse.prototype.clearPairingsList = function() {
   return this.setPairingsList([]);
 };
 
@@ -10222,8 +10494,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
  *     http://goto/soy-param-migration
  * @return {!Object}
  */
-proto.debate_management.RegeneratePairingsRequest.prototype.toObject = function(opt_includeInstance) {
-  return proto.debate_management.RegeneratePairingsRequest.toObject(opt_includeInstance, this);
+proto.debate_management.OverallRankingRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.OverallRankingRequest.toObject(opt_includeInstance, this);
 };
 
 
@@ -10232,15 +10504,14 @@ proto.debate_management.RegeneratePairingsRequest.prototype.toObject = function(
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.debate_management.RegeneratePairingsRequest} msg The msg instance to transform.
+ * @param {!proto.debate_management.OverallRankingRequest} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.debate_management.RegeneratePairingsRequest.toObject = function(includeInstance, msg) {
+proto.debate_management.OverallRankingRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    tournamentId: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    isEliminationRound: jspb.Message.getBooleanFieldWithDefault(msg, 2, false),
-    token: jspb.Message.getFieldWithDefault(msg, 3, "")
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    token: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -10254,23 +10525,23 @@ proto.debate_management.RegeneratePairingsRequest.toObject = function(includeIns
 /**
  * Deserializes binary data (in protobuf wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.debate_management.RegeneratePairingsRequest}
+ * @return {!proto.debate_management.OverallRankingRequest}
  */
-proto.debate_management.RegeneratePairingsRequest.deserializeBinary = function(bytes) {
+proto.debate_management.OverallRankingRequest.deserializeBinary = function(bytes) {
   var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.debate_management.RegeneratePairingsRequest;
-  return proto.debate_management.RegeneratePairingsRequest.deserializeBinaryFromReader(msg, reader);
+  var msg = new proto.debate_management.OverallRankingRequest;
+  return proto.debate_management.OverallRankingRequest.deserializeBinaryFromReader(msg, reader);
 };
 
 
 /**
  * Deserializes binary data (in protobuf wire format) from the
  * given reader into the given message object.
- * @param {!proto.debate_management.RegeneratePairingsRequest} msg The message object to deserialize into.
+ * @param {!proto.debate_management.OverallRankingRequest} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.debate_management.RegeneratePairingsRequest}
+ * @return {!proto.debate_management.OverallRankingRequest}
  */
-proto.debate_management.RegeneratePairingsRequest.deserializeBinaryFromReader = function(msg, reader) {
+proto.debate_management.OverallRankingRequest.deserializeBinaryFromReader = function(msg, reader) {
   while (reader.nextField()) {
     if (reader.isEndGroup()) {
       break;
@@ -10279,13 +10550,9 @@ proto.debate_management.RegeneratePairingsRequest.deserializeBinaryFromReader = 
     switch (field) {
     case 1:
       var value = /** @type {number} */ (reader.readInt32());
-      msg.setTournamentId(value);
+      msg.setUserId(value);
       break;
     case 2:
-      var value = /** @type {boolean} */ (reader.readBool());
-      msg.setIsEliminationRound(value);
-      break;
-    case 3:
       var value = /** @type {string} */ (reader.readString());
       msg.setToken(value);
       break;
@@ -10302,9 +10569,9 @@ proto.debate_management.RegeneratePairingsRequest.deserializeBinaryFromReader = 
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
-proto.debate_management.RegeneratePairingsRequest.prototype.serializeBinary = function() {
+proto.debate_management.OverallRankingRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  proto.debate_management.RegeneratePairingsRequest.serializeBinaryToWriter(this, writer);
+  proto.debate_management.OverallRankingRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
@@ -10312,11 +10579,1462 @@ proto.debate_management.RegeneratePairingsRequest.prototype.serializeBinary = fu
 /**
  * Serializes the given message to binary data (in protobuf wire
  * format), writing to the given BinaryWriter.
- * @param {!proto.debate_management.RegeneratePairingsRequest} message
+ * @param {!proto.debate_management.OverallRankingRequest} message
  * @param {!jspb.BinaryWriter} writer
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.debate_management.RegeneratePairingsRequest.serializeBinaryToWriter = function(message, writer) {
+proto.debate_management.OverallRankingRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.debate_management.OverallRankingRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.OverallRankingRequest} returns this
+ */
+proto.debate_management.OverallRankingRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string token = 2;
+ * @return {string}
+ */
+proto.debate_management.OverallRankingRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.OverallRankingRequest} returns this
+ */
+proto.debate_management.OverallRankingRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.debate_management.OverallRankingResponse.repeatedFields_ = [4];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.OverallRankingResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.OverallRankingResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.OverallRankingResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.OverallRankingResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    studentRank: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    totalStudents: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    rankChange: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    topStudentsList: jspb.Message.toObjectList(msg.getTopStudentsList(),
+    proto.debate_management.TopStudent.toObject, includeInstance),
+    studentInfo: (f = msg.getStudentInfo()) && proto.debate_management.StudentInfo.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.OverallRankingResponse}
+ */
+proto.debate_management.OverallRankingResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.OverallRankingResponse;
+  return proto.debate_management.OverallRankingResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.OverallRankingResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.OverallRankingResponse}
+ */
+proto.debate_management.OverallRankingResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setStudentRank(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTotalStudents(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setRankChange(value);
+      break;
+    case 4:
+      var value = new proto.debate_management.TopStudent;
+      reader.readMessage(value,proto.debate_management.TopStudent.deserializeBinaryFromReader);
+      msg.addTopStudents(value);
+      break;
+    case 5:
+      var value = new proto.debate_management.StudentInfo;
+      reader.readMessage(value,proto.debate_management.StudentInfo.deserializeBinaryFromReader);
+      msg.setStudentInfo(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.OverallRankingResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.OverallRankingResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.OverallRankingResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.OverallRankingResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getStudentRank();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getTotalStudents();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+  f = message.getRankChange();
+  if (f !== 0) {
+    writer.writeInt32(
+      3,
+      f
+    );
+  }
+  f = message.getTopStudentsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      4,
+      f,
+      proto.debate_management.TopStudent.serializeBinaryToWriter
+    );
+  }
+  f = message.getStudentInfo();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      proto.debate_management.StudentInfo.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional int32 student_rank = 1;
+ * @return {number}
+ */
+proto.debate_management.OverallRankingResponse.prototype.getStudentRank = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.OverallRankingResponse} returns this
+ */
+proto.debate_management.OverallRankingResponse.prototype.setStudentRank = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional int32 total_students = 2;
+ * @return {number}
+ */
+proto.debate_management.OverallRankingResponse.prototype.getTotalStudents = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.OverallRankingResponse} returns this
+ */
+proto.debate_management.OverallRankingResponse.prototype.setTotalStudents = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional int32 rank_change = 3;
+ * @return {number}
+ */
+proto.debate_management.OverallRankingResponse.prototype.getRankChange = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.OverallRankingResponse} returns this
+ */
+proto.debate_management.OverallRankingResponse.prototype.setRankChange = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * repeated TopStudent top_students = 4;
+ * @return {!Array<!proto.debate_management.TopStudent>}
+ */
+proto.debate_management.OverallRankingResponse.prototype.getTopStudentsList = function() {
+  return /** @type{!Array<!proto.debate_management.TopStudent>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.debate_management.TopStudent, 4));
+};
+
+
+/**
+ * @param {!Array<!proto.debate_management.TopStudent>} value
+ * @return {!proto.debate_management.OverallRankingResponse} returns this
+*/
+proto.debate_management.OverallRankingResponse.prototype.setTopStudentsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 4, value);
+};
+
+
+/**
+ * @param {!proto.debate_management.TopStudent=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.debate_management.TopStudent}
+ */
+proto.debate_management.OverallRankingResponse.prototype.addTopStudents = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, proto.debate_management.TopStudent, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.debate_management.OverallRankingResponse} returns this
+ */
+proto.debate_management.OverallRankingResponse.prototype.clearTopStudentsList = function() {
+  return this.setTopStudentsList([]);
+};
+
+
+/**
+ * optional StudentInfo student_info = 5;
+ * @return {?proto.debate_management.StudentInfo}
+ */
+proto.debate_management.OverallRankingResponse.prototype.getStudentInfo = function() {
+  return /** @type{?proto.debate_management.StudentInfo} */ (
+    jspb.Message.getWrapperField(this, proto.debate_management.StudentInfo, 5));
+};
+
+
+/**
+ * @param {?proto.debate_management.StudentInfo|undefined} value
+ * @return {!proto.debate_management.OverallRankingResponse} returns this
+*/
+proto.debate_management.OverallRankingResponse.prototype.setStudentInfo = function(value) {
+  return jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.debate_management.OverallRankingResponse} returns this
+ */
+proto.debate_management.OverallRankingResponse.prototype.clearStudentInfo = function() {
+  return this.setStudentInfo(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.debate_management.OverallRankingResponse.prototype.hasStudentInfo = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.TopStudent.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.TopStudent.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.TopStudent} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TopStudent.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    rank: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    name: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    totalPoints: jspb.Message.getFloatingPointFieldWithDefault(msg, 3, 0.0),
+    rankChange: jspb.Message.getFieldWithDefault(msg, 4, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.TopStudent}
+ */
+proto.debate_management.TopStudent.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.TopStudent;
+  return proto.debate_management.TopStudent.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.TopStudent} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.TopStudent}
+ */
+proto.debate_management.TopStudent.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setRank(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setName(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setTotalPoints(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setRankChange(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.TopStudent.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.TopStudent.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.TopStudent} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TopStudent.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getRank();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getName();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getTotalPoints();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      3,
+      f
+    );
+  }
+  f = message.getRankChange();
+  if (f !== 0) {
+    writer.writeInt32(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 rank = 1;
+ * @return {number}
+ */
+proto.debate_management.TopStudent.prototype.getRank = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TopStudent} returns this
+ */
+proto.debate_management.TopStudent.prototype.setRank = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string name = 2;
+ * @return {string}
+ */
+proto.debate_management.TopStudent.prototype.getName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.TopStudent} returns this
+ */
+proto.debate_management.TopStudent.prototype.setName = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional double total_points = 3;
+ * @return {number}
+ */
+proto.debate_management.TopStudent.prototype.getTotalPoints = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 3, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TopStudent} returns this
+ */
+proto.debate_management.TopStudent.prototype.setTotalPoints = function(value) {
+  return jspb.Message.setProto3FloatField(this, 3, value);
+};
+
+
+/**
+ * optional int32 rank_change = 4;
+ * @return {number}
+ */
+proto.debate_management.TopStudent.prototype.getRankChange = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TopStudent} returns this
+ */
+proto.debate_management.TopStudent.prototype.setRankChange = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.StudentInfo.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.StudentInfo.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.StudentInfo} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.StudentInfo.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    name: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    totalPoints: jspb.Message.getFloatingPointFieldWithDefault(msg, 2, 0.0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.StudentInfo}
+ */
+proto.debate_management.StudentInfo.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.StudentInfo;
+  return proto.debate_management.StudentInfo.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.StudentInfo} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.StudentInfo}
+ */
+proto.debate_management.StudentInfo.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setName(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setTotalPoints(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.StudentInfo.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.StudentInfo.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.StudentInfo} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.StudentInfo.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getName();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getTotalPoints();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string name = 1;
+ * @return {string}
+ */
+proto.debate_management.StudentInfo.prototype.getName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.StudentInfo} returns this
+ */
+proto.debate_management.StudentInfo.prototype.setName = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional double total_points = 2;
+ * @return {number}
+ */
+proto.debate_management.StudentInfo.prototype.getTotalPoints = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 2, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.StudentInfo} returns this
+ */
+proto.debate_management.StudentInfo.prototype.setTotalPoints = function(value) {
+  return jspb.Message.setProto3FloatField(this, 2, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.PerformanceRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.PerformanceRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.PerformanceRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.PerformanceRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    startDate: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    endDate: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    token: jspb.Message.getFieldWithDefault(msg, 4, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.PerformanceRequest}
+ */
+proto.debate_management.PerformanceRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.PerformanceRequest;
+  return proto.debate_management.PerformanceRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.PerformanceRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.PerformanceRequest}
+ */
+proto.debate_management.PerformanceRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setStartDate(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setEndDate(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.PerformanceRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.PerformanceRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.PerformanceRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.PerformanceRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getStartDate();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getEndDate();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.debate_management.PerformanceRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.PerformanceRequest} returns this
+ */
+proto.debate_management.PerformanceRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string start_date = 2;
+ * @return {string}
+ */
+proto.debate_management.PerformanceRequest.prototype.getStartDate = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.PerformanceRequest} returns this
+ */
+proto.debate_management.PerformanceRequest.prototype.setStartDate = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string end_date = 3;
+ * @return {string}
+ */
+proto.debate_management.PerformanceRequest.prototype.getEndDate = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.PerformanceRequest} returns this
+ */
+proto.debate_management.PerformanceRequest.prototype.setEndDate = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string token = 4;
+ * @return {string}
+ */
+proto.debate_management.PerformanceRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.PerformanceRequest} returns this
+ */
+proto.debate_management.PerformanceRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.debate_management.PerformanceResponse.repeatedFields_ = [1];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.PerformanceResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.PerformanceResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.PerformanceResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.PerformanceResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    performanceDataList: jspb.Message.toObjectList(msg.getPerformanceDataList(),
+    proto.debate_management.PerformanceData.toObject, includeInstance)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.PerformanceResponse}
+ */
+proto.debate_management.PerformanceResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.PerformanceResponse;
+  return proto.debate_management.PerformanceResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.PerformanceResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.PerformanceResponse}
+ */
+proto.debate_management.PerformanceResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = new proto.debate_management.PerformanceData;
+      reader.readMessage(value,proto.debate_management.PerformanceData.deserializeBinaryFromReader);
+      msg.addPerformanceData(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.PerformanceResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.PerformanceResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.PerformanceResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.PerformanceResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getPerformanceDataList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      1,
+      f,
+      proto.debate_management.PerformanceData.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * repeated PerformanceData performance_data = 1;
+ * @return {!Array<!proto.debate_management.PerformanceData>}
+ */
+proto.debate_management.PerformanceResponse.prototype.getPerformanceDataList = function() {
+  return /** @type{!Array<!proto.debate_management.PerformanceData>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.debate_management.PerformanceData, 1));
+};
+
+
+/**
+ * @param {!Array<!proto.debate_management.PerformanceData>} value
+ * @return {!proto.debate_management.PerformanceResponse} returns this
+*/
+proto.debate_management.PerformanceResponse.prototype.setPerformanceDataList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.debate_management.PerformanceData=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.debate_management.PerformanceData}
+ */
+proto.debate_management.PerformanceResponse.prototype.addPerformanceData = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.debate_management.PerformanceData, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.debate_management.PerformanceResponse} returns this
+ */
+proto.debate_management.PerformanceResponse.prototype.clearPerformanceDataList = function() {
+  return this.setPerformanceDataList([]);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.PerformanceData.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.PerformanceData.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.PerformanceData} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.PerformanceData.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    tournamentDate: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    studentTotalPoints: jspb.Message.getFloatingPointFieldWithDefault(msg, 2, 0.0),
+    studentAveragePoints: jspb.Message.getFloatingPointFieldWithDefault(msg, 3, 0.0),
+    tournamentRank: jspb.Message.getFieldWithDefault(msg, 6, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.PerformanceData}
+ */
+proto.debate_management.PerformanceData.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.PerformanceData;
+  return proto.debate_management.PerformanceData.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.PerformanceData} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.PerformanceData}
+ */
+proto.debate_management.PerformanceData.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTournamentDate(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setStudentTotalPoints(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setStudentAveragePoints(value);
+      break;
+    case 6:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentRank(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.PerformanceData.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.PerformanceData.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.PerformanceData} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.PerformanceData.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTournamentDate();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getStudentTotalPoints();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      2,
+      f
+    );
+  }
+  f = message.getStudentAveragePoints();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      3,
+      f
+    );
+  }
+  f = message.getTournamentRank();
+  if (f !== 0) {
+    writer.writeInt32(
+      6,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string tournament_date = 1;
+ * @return {string}
+ */
+proto.debate_management.PerformanceData.prototype.getTournamentDate = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.PerformanceData} returns this
+ */
+proto.debate_management.PerformanceData.prototype.setTournamentDate = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional double student_total_points = 2;
+ * @return {number}
+ */
+proto.debate_management.PerformanceData.prototype.getStudentTotalPoints = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 2, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.PerformanceData} returns this
+ */
+proto.debate_management.PerformanceData.prototype.setStudentTotalPoints = function(value) {
+  return jspb.Message.setProto3FloatField(this, 2, value);
+};
+
+
+/**
+ * optional double student_average_points = 3;
+ * @return {number}
+ */
+proto.debate_management.PerformanceData.prototype.getStudentAveragePoints = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 3, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.PerformanceData} returns this
+ */
+proto.debate_management.PerformanceData.prototype.setStudentAveragePoints = function(value) {
+  return jspb.Message.setProto3FloatField(this, 3, value);
+};
+
+
+/**
+ * optional int32 tournament_rank = 6;
+ * @return {number}
+ */
+proto.debate_management.PerformanceData.prototype.getTournamentRank = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.PerformanceData} returns this
+ */
+proto.debate_management.PerformanceData.prototype.setTournamentRank = function(value) {
+  return jspb.Message.setProto3IntField(this, 6, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.TournamentRankingRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.TournamentRankingRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.TournamentRankingRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TournamentRankingRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    tournamentId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    token: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    page: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    pageSize: jspb.Message.getFieldWithDefault(msg, 4, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.TournamentRankingRequest}
+ */
+proto.debate_management.TournamentRankingRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.TournamentRankingRequest;
+  return proto.debate_management.TournamentRankingRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.TournamentRankingRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.TournamentRankingRequest}
+ */
+proto.debate_management.TournamentRankingRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPage(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPageSize(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.TournamentRankingRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.TournamentRankingRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.TournamentRankingRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TournamentRankingRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getTournamentId();
   if (f !== 0) {
@@ -10325,17 +12043,24 @@ proto.debate_management.RegeneratePairingsRequest.serializeBinaryToWriter = func
       f
     );
   }
-  f = message.getIsEliminationRound();
-  if (f) {
-    writer.writeBool(
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
       2,
       f
     );
   }
-  f = message.getToken();
-  if (f.length > 0) {
-    writer.writeString(
+  f = message.getPage();
+  if (f !== 0) {
+    writer.writeInt32(
       3,
+      f
+    );
+  }
+  f = message.getPageSize();
+  if (f !== 0) {
+    writer.writeInt32(
+      4,
       f
     );
   }
@@ -10346,53 +12071,3328 @@ proto.debate_management.RegeneratePairingsRequest.serializeBinaryToWriter = func
  * optional int32 tournament_id = 1;
  * @return {number}
  */
-proto.debate_management.RegeneratePairingsRequest.prototype.getTournamentId = function() {
+proto.debate_management.TournamentRankingRequest.prototype.getTournamentId = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
 /**
  * @param {number} value
- * @return {!proto.debate_management.RegeneratePairingsRequest} returns this
+ * @return {!proto.debate_management.TournamentRankingRequest} returns this
  */
-proto.debate_management.RegeneratePairingsRequest.prototype.setTournamentId = function(value) {
+proto.debate_management.TournamentRankingRequest.prototype.setTournamentId = function(value) {
   return jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
 /**
- * optional bool is_elimination_round = 2;
- * @return {boolean}
- */
-proto.debate_management.RegeneratePairingsRequest.prototype.getIsEliminationRound = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 2, false));
-};
-
-
-/**
- * @param {boolean} value
- * @return {!proto.debate_management.RegeneratePairingsRequest} returns this
- */
-proto.debate_management.RegeneratePairingsRequest.prototype.setIsEliminationRound = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 2, value);
-};
-
-
-/**
- * optional string token = 3;
+ * optional string token = 2;
  * @return {string}
  */
-proto.debate_management.RegeneratePairingsRequest.prototype.getToken = function() {
+proto.debate_management.TournamentRankingRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.TournamentRankingRequest} returns this
+ */
+proto.debate_management.TournamentRankingRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional int32 page = 3;
+ * @return {number}
+ */
+proto.debate_management.TournamentRankingRequest.prototype.getPage = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TournamentRankingRequest} returns this
+ */
+proto.debate_management.TournamentRankingRequest.prototype.setPage = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional int32 page_size = 4;
+ * @return {number}
+ */
+proto.debate_management.TournamentRankingRequest.prototype.getPageSize = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TournamentRankingRequest} returns this
+ */
+proto.debate_management.TournamentRankingRequest.prototype.setPageSize = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.debate_management.TournamentRankingResponse.repeatedFields_ = [1];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.TournamentRankingResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.TournamentRankingResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.TournamentRankingResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TournamentRankingResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    rankingsList: jspb.Message.toObjectList(msg.getRankingsList(),
+    proto.debate_management.StudentRanking.toObject, includeInstance)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.TournamentRankingResponse}
+ */
+proto.debate_management.TournamentRankingResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.TournamentRankingResponse;
+  return proto.debate_management.TournamentRankingResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.TournamentRankingResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.TournamentRankingResponse}
+ */
+proto.debate_management.TournamentRankingResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = new proto.debate_management.StudentRanking;
+      reader.readMessage(value,proto.debate_management.StudentRanking.deserializeBinaryFromReader);
+      msg.addRankings(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.TournamentRankingResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.TournamentRankingResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.TournamentRankingResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TournamentRankingResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getRankingsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      1,
+      f,
+      proto.debate_management.StudentRanking.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * repeated StudentRanking rankings = 1;
+ * @return {!Array<!proto.debate_management.StudentRanking>}
+ */
+proto.debate_management.TournamentRankingResponse.prototype.getRankingsList = function() {
+  return /** @type{!Array<!proto.debate_management.StudentRanking>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.debate_management.StudentRanking, 1));
+};
+
+
+/**
+ * @param {!Array<!proto.debate_management.StudentRanking>} value
+ * @return {!proto.debate_management.TournamentRankingResponse} returns this
+*/
+proto.debate_management.TournamentRankingResponse.prototype.setRankingsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.debate_management.StudentRanking=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.debate_management.StudentRanking}
+ */
+proto.debate_management.TournamentRankingResponse.prototype.addRankings = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.debate_management.StudentRanking, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.debate_management.TournamentRankingResponse} returns this
+ */
+proto.debate_management.TournamentRankingResponse.prototype.clearRankingsList = function() {
+  return this.setRankingsList([]);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.StudentRanking.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.StudentRanking.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.StudentRanking} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.StudentRanking.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    studentId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    studentName: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    schoolName: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    totalWins: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    totalPoints: jspb.Message.getFloatingPointFieldWithDefault(msg, 5, 0.0),
+    averageRank: jspb.Message.getFloatingPointFieldWithDefault(msg, 6, 0.0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.StudentRanking}
+ */
+proto.debate_management.StudentRanking.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.StudentRanking;
+  return proto.debate_management.StudentRanking.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.StudentRanking} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.StudentRanking}
+ */
+proto.debate_management.StudentRanking.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setStudentId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setStudentName(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSchoolName(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTotalWins(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setTotalPoints(value);
+      break;
+    case 6:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setAverageRank(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.StudentRanking.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.StudentRanking.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.StudentRanking} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.StudentRanking.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getStudentId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getStudentName();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getSchoolName();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getTotalWins();
+  if (f !== 0) {
+    writer.writeInt32(
+      4,
+      f
+    );
+  }
+  f = message.getTotalPoints();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      5,
+      f
+    );
+  }
+  f = message.getAverageRank();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      6,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 student_id = 1;
+ * @return {number}
+ */
+proto.debate_management.StudentRanking.prototype.getStudentId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.StudentRanking} returns this
+ */
+proto.debate_management.StudentRanking.prototype.setStudentId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string student_name = 2;
+ * @return {string}
+ */
+proto.debate_management.StudentRanking.prototype.getStudentName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.StudentRanking} returns this
+ */
+proto.debate_management.StudentRanking.prototype.setStudentName = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string school_name = 3;
+ * @return {string}
+ */
+proto.debate_management.StudentRanking.prototype.getSchoolName = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
 /**
  * @param {string} value
- * @return {!proto.debate_management.RegeneratePairingsRequest} returns this
+ * @return {!proto.debate_management.StudentRanking} returns this
  */
-proto.debate_management.RegeneratePairingsRequest.prototype.setToken = function(value) {
+proto.debate_management.StudentRanking.prototype.setSchoolName = function(value) {
   return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional int32 total_wins = 4;
+ * @return {number}
+ */
+proto.debate_management.StudentRanking.prototype.getTotalWins = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.StudentRanking} returns this
+ */
+proto.debate_management.StudentRanking.prototype.setTotalWins = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+/**
+ * optional double total_points = 5;
+ * @return {number}
+ */
+proto.debate_management.StudentRanking.prototype.getTotalPoints = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 5, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.StudentRanking} returns this
+ */
+proto.debate_management.StudentRanking.prototype.setTotalPoints = function(value) {
+  return jspb.Message.setProto3FloatField(this, 5, value);
+};
+
+
+/**
+ * optional double average_rank = 6;
+ * @return {number}
+ */
+proto.debate_management.StudentRanking.prototype.getAverageRank = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 6, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.StudentRanking} returns this
+ */
+proto.debate_management.StudentRanking.prototype.setAverageRank = function(value) {
+  return jspb.Message.setProto3FloatField(this, 6, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.TournamentTeamsRankingRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.TournamentTeamsRankingRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.TournamentTeamsRankingRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TournamentTeamsRankingRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    tournamentId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    token: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    page: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    pageSize: jspb.Message.getFieldWithDefault(msg, 4, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.TournamentTeamsRankingRequest}
+ */
+proto.debate_management.TournamentTeamsRankingRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.TournamentTeamsRankingRequest;
+  return proto.debate_management.TournamentTeamsRankingRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.TournamentTeamsRankingRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.TournamentTeamsRankingRequest}
+ */
+proto.debate_management.TournamentTeamsRankingRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPage(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPageSize(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.TournamentTeamsRankingRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.TournamentTeamsRankingRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.TournamentTeamsRankingRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TournamentTeamsRankingRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTournamentId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getPage();
+  if (f !== 0) {
+    writer.writeInt32(
+      3,
+      f
+    );
+  }
+  f = message.getPageSize();
+  if (f !== 0) {
+    writer.writeInt32(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 tournament_id = 1;
+ * @return {number}
+ */
+proto.debate_management.TournamentTeamsRankingRequest.prototype.getTournamentId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TournamentTeamsRankingRequest} returns this
+ */
+proto.debate_management.TournamentTeamsRankingRequest.prototype.setTournamentId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string token = 2;
+ * @return {string}
+ */
+proto.debate_management.TournamentTeamsRankingRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.TournamentTeamsRankingRequest} returns this
+ */
+proto.debate_management.TournamentTeamsRankingRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional int32 page = 3;
+ * @return {number}
+ */
+proto.debate_management.TournamentTeamsRankingRequest.prototype.getPage = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TournamentTeamsRankingRequest} returns this
+ */
+proto.debate_management.TournamentTeamsRankingRequest.prototype.setPage = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional int32 page_size = 4;
+ * @return {number}
+ */
+proto.debate_management.TournamentTeamsRankingRequest.prototype.getPageSize = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TournamentTeamsRankingRequest} returns this
+ */
+proto.debate_management.TournamentTeamsRankingRequest.prototype.setPageSize = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.debate_management.TournamentTeamsRankingResponse.repeatedFields_ = [1];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.TournamentTeamsRankingResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.TournamentTeamsRankingResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.TournamentTeamsRankingResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TournamentTeamsRankingResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    rankingsList: jspb.Message.toObjectList(msg.getRankingsList(),
+    proto.debate_management.TeamRanking.toObject, includeInstance),
+    totalCount: jspb.Message.getFieldWithDefault(msg, 2, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.TournamentTeamsRankingResponse}
+ */
+proto.debate_management.TournamentTeamsRankingResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.TournamentTeamsRankingResponse;
+  return proto.debate_management.TournamentTeamsRankingResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.TournamentTeamsRankingResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.TournamentTeamsRankingResponse}
+ */
+proto.debate_management.TournamentTeamsRankingResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = new proto.debate_management.TeamRanking;
+      reader.readMessage(value,proto.debate_management.TeamRanking.deserializeBinaryFromReader);
+      msg.addRankings(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTotalCount(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.TournamentTeamsRankingResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.TournamentTeamsRankingResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.TournamentTeamsRankingResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TournamentTeamsRankingResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getRankingsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      1,
+      f,
+      proto.debate_management.TeamRanking.serializeBinaryToWriter
+    );
+  }
+  f = message.getTotalCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * repeated TeamRanking rankings = 1;
+ * @return {!Array<!proto.debate_management.TeamRanking>}
+ */
+proto.debate_management.TournamentTeamsRankingResponse.prototype.getRankingsList = function() {
+  return /** @type{!Array<!proto.debate_management.TeamRanking>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.debate_management.TeamRanking, 1));
+};
+
+
+/**
+ * @param {!Array<!proto.debate_management.TeamRanking>} value
+ * @return {!proto.debate_management.TournamentTeamsRankingResponse} returns this
+*/
+proto.debate_management.TournamentTeamsRankingResponse.prototype.setRankingsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.debate_management.TeamRanking=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.debate_management.TeamRanking}
+ */
+proto.debate_management.TournamentTeamsRankingResponse.prototype.addRankings = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.debate_management.TeamRanking, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.debate_management.TournamentTeamsRankingResponse} returns this
+ */
+proto.debate_management.TournamentTeamsRankingResponse.prototype.clearRankingsList = function() {
+  return this.setRankingsList([]);
+};
+
+
+/**
+ * optional int32 total_count = 2;
+ * @return {number}
+ */
+proto.debate_management.TournamentTeamsRankingResponse.prototype.getTotalCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TournamentTeamsRankingResponse} returns this
+ */
+proto.debate_management.TournamentTeamsRankingResponse.prototype.setTotalCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.debate_management.TeamRanking.repeatedFields_ = [3];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.TeamRanking.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.TeamRanking.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.TeamRanking} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TeamRanking.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    teamId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    teamName: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    schoolNamesList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f,
+    wins: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    totalPoints: jspb.Message.getFloatingPointFieldWithDefault(msg, 5, 0.0),
+    averageRank: jspb.Message.getFloatingPointFieldWithDefault(msg, 6, 0.0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.TeamRanking}
+ */
+proto.debate_management.TeamRanking.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.TeamRanking;
+  return proto.debate_management.TeamRanking.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.TeamRanking} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.TeamRanking}
+ */
+proto.debate_management.TeamRanking.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTeamId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTeamName(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addSchoolNames(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setWins(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setTotalPoints(value);
+      break;
+    case 6:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setAverageRank(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.TeamRanking.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.TeamRanking.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.TeamRanking} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TeamRanking.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTeamId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getTeamName();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getSchoolNamesList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      3,
+      f
+    );
+  }
+  f = message.getWins();
+  if (f !== 0) {
+    writer.writeInt32(
+      4,
+      f
+    );
+  }
+  f = message.getTotalPoints();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      5,
+      f
+    );
+  }
+  f = message.getAverageRank();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      6,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 team_id = 1;
+ * @return {number}
+ */
+proto.debate_management.TeamRanking.prototype.getTeamId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TeamRanking} returns this
+ */
+proto.debate_management.TeamRanking.prototype.setTeamId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string team_name = 2;
+ * @return {string}
+ */
+proto.debate_management.TeamRanking.prototype.getTeamName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.TeamRanking} returns this
+ */
+proto.debate_management.TeamRanking.prototype.setTeamName = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * repeated string school_names = 3;
+ * @return {!Array<string>}
+ */
+proto.debate_management.TeamRanking.prototype.getSchoolNamesList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 3));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.debate_management.TeamRanking} returns this
+ */
+proto.debate_management.TeamRanking.prototype.setSchoolNamesList = function(value) {
+  return jspb.Message.setField(this, 3, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.debate_management.TeamRanking} returns this
+ */
+proto.debate_management.TeamRanking.prototype.addSchoolNames = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.debate_management.TeamRanking} returns this
+ */
+proto.debate_management.TeamRanking.prototype.clearSchoolNamesList = function() {
+  return this.setSchoolNamesList([]);
+};
+
+
+/**
+ * optional int32 wins = 4;
+ * @return {number}
+ */
+proto.debate_management.TeamRanking.prototype.getWins = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TeamRanking} returns this
+ */
+proto.debate_management.TeamRanking.prototype.setWins = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+/**
+ * optional double total_points = 5;
+ * @return {number}
+ */
+proto.debate_management.TeamRanking.prototype.getTotalPoints = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 5, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TeamRanking} returns this
+ */
+proto.debate_management.TeamRanking.prototype.setTotalPoints = function(value) {
+  return jspb.Message.setProto3FloatField(this, 5, value);
+};
+
+
+/**
+ * optional double average_rank = 6;
+ * @return {number}
+ */
+proto.debate_management.TeamRanking.prototype.getAverageRank = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 6, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TeamRanking} returns this
+ */
+proto.debate_management.TeamRanking.prototype.setAverageRank = function(value) {
+  return jspb.Message.setProto3FloatField(this, 6, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.TournamentSchoolRankingRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.TournamentSchoolRankingRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.TournamentSchoolRankingRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TournamentSchoolRankingRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    tournamentId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    token: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    page: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    pageSize: jspb.Message.getFieldWithDefault(msg, 4, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.TournamentSchoolRankingRequest}
+ */
+proto.debate_management.TournamentSchoolRankingRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.TournamentSchoolRankingRequest;
+  return proto.debate_management.TournamentSchoolRankingRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.TournamentSchoolRankingRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.TournamentSchoolRankingRequest}
+ */
+proto.debate_management.TournamentSchoolRankingRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPage(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPageSize(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.TournamentSchoolRankingRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.TournamentSchoolRankingRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.TournamentSchoolRankingRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TournamentSchoolRankingRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTournamentId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getPage();
+  if (f !== 0) {
+    writer.writeInt32(
+      3,
+      f
+    );
+  }
+  f = message.getPageSize();
+  if (f !== 0) {
+    writer.writeInt32(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 tournament_id = 1;
+ * @return {number}
+ */
+proto.debate_management.TournamentSchoolRankingRequest.prototype.getTournamentId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TournamentSchoolRankingRequest} returns this
+ */
+proto.debate_management.TournamentSchoolRankingRequest.prototype.setTournamentId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string token = 2;
+ * @return {string}
+ */
+proto.debate_management.TournamentSchoolRankingRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.TournamentSchoolRankingRequest} returns this
+ */
+proto.debate_management.TournamentSchoolRankingRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional int32 page = 3;
+ * @return {number}
+ */
+proto.debate_management.TournamentSchoolRankingRequest.prototype.getPage = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TournamentSchoolRankingRequest} returns this
+ */
+proto.debate_management.TournamentSchoolRankingRequest.prototype.setPage = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional int32 page_size = 4;
+ * @return {number}
+ */
+proto.debate_management.TournamentSchoolRankingRequest.prototype.getPageSize = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TournamentSchoolRankingRequest} returns this
+ */
+proto.debate_management.TournamentSchoolRankingRequest.prototype.setPageSize = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.debate_management.TournamentSchoolRankingResponse.repeatedFields_ = [1];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.TournamentSchoolRankingResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.TournamentSchoolRankingResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.TournamentSchoolRankingResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TournamentSchoolRankingResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    rankingsList: jspb.Message.toObjectList(msg.getRankingsList(),
+    proto.debate_management.SchoolRanking.toObject, includeInstance),
+    totalCount: jspb.Message.getFieldWithDefault(msg, 2, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.TournamentSchoolRankingResponse}
+ */
+proto.debate_management.TournamentSchoolRankingResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.TournamentSchoolRankingResponse;
+  return proto.debate_management.TournamentSchoolRankingResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.TournamentSchoolRankingResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.TournamentSchoolRankingResponse}
+ */
+proto.debate_management.TournamentSchoolRankingResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = new proto.debate_management.SchoolRanking;
+      reader.readMessage(value,proto.debate_management.SchoolRanking.deserializeBinaryFromReader);
+      msg.addRankings(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTotalCount(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.TournamentSchoolRankingResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.TournamentSchoolRankingResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.TournamentSchoolRankingResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TournamentSchoolRankingResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getRankingsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      1,
+      f,
+      proto.debate_management.SchoolRanking.serializeBinaryToWriter
+    );
+  }
+  f = message.getTotalCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * repeated SchoolRanking rankings = 1;
+ * @return {!Array<!proto.debate_management.SchoolRanking>}
+ */
+proto.debate_management.TournamentSchoolRankingResponse.prototype.getRankingsList = function() {
+  return /** @type{!Array<!proto.debate_management.SchoolRanking>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.debate_management.SchoolRanking, 1));
+};
+
+
+/**
+ * @param {!Array<!proto.debate_management.SchoolRanking>} value
+ * @return {!proto.debate_management.TournamentSchoolRankingResponse} returns this
+*/
+proto.debate_management.TournamentSchoolRankingResponse.prototype.setRankingsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.debate_management.SchoolRanking=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.debate_management.SchoolRanking}
+ */
+proto.debate_management.TournamentSchoolRankingResponse.prototype.addRankings = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.debate_management.SchoolRanking, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.debate_management.TournamentSchoolRankingResponse} returns this
+ */
+proto.debate_management.TournamentSchoolRankingResponse.prototype.clearRankingsList = function() {
+  return this.setRankingsList([]);
+};
+
+
+/**
+ * optional int32 total_count = 2;
+ * @return {number}
+ */
+proto.debate_management.TournamentSchoolRankingResponse.prototype.getTotalCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TournamentSchoolRankingResponse} returns this
+ */
+proto.debate_management.TournamentSchoolRankingResponse.prototype.setTotalCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.SchoolRanking.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.SchoolRanking.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.SchoolRanking} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.SchoolRanking.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    schoolName: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    teamCount: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    totalWins: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    averageRank: jspb.Message.getFloatingPointFieldWithDefault(msg, 4, 0.0),
+    totalPoints: jspb.Message.getFloatingPointFieldWithDefault(msg, 5, 0.0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.SchoolRanking}
+ */
+proto.debate_management.SchoolRanking.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.SchoolRanking;
+  return proto.debate_management.SchoolRanking.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.SchoolRanking} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.SchoolRanking}
+ */
+proto.debate_management.SchoolRanking.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSchoolName(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTeamCount(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTotalWins(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setAverageRank(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setTotalPoints(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.SchoolRanking.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.SchoolRanking.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.SchoolRanking} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.SchoolRanking.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSchoolName();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getTeamCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+  f = message.getTotalWins();
+  if (f !== 0) {
+    writer.writeInt32(
+      3,
+      f
+    );
+  }
+  f = message.getAverageRank();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      4,
+      f
+    );
+  }
+  f = message.getTotalPoints();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string school_name = 1;
+ * @return {string}
+ */
+proto.debate_management.SchoolRanking.prototype.getSchoolName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.SchoolRanking} returns this
+ */
+proto.debate_management.SchoolRanking.prototype.setSchoolName = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional int32 team_count = 2;
+ * @return {number}
+ */
+proto.debate_management.SchoolRanking.prototype.getTeamCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.SchoolRanking} returns this
+ */
+proto.debate_management.SchoolRanking.prototype.setTeamCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional int32 total_wins = 3;
+ * @return {number}
+ */
+proto.debate_management.SchoolRanking.prototype.getTotalWins = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.SchoolRanking} returns this
+ */
+proto.debate_management.SchoolRanking.prototype.setTotalWins = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional double average_rank = 4;
+ * @return {number}
+ */
+proto.debate_management.SchoolRanking.prototype.getAverageRank = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 4, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.SchoolRanking} returns this
+ */
+proto.debate_management.SchoolRanking.prototype.setAverageRank = function(value) {
+  return jspb.Message.setProto3FloatField(this, 4, value);
+};
+
+
+/**
+ * optional double total_points = 5;
+ * @return {number}
+ */
+proto.debate_management.SchoolRanking.prototype.getTotalPoints = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 5, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.SchoolRanking} returns this
+ */
+proto.debate_management.SchoolRanking.prototype.setTotalPoints = function(value) {
+  return jspb.Message.setProto3FloatField(this, 5, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.OverallSchoolRankingRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.OverallSchoolRankingRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.OverallSchoolRankingRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.OverallSchoolRankingRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    token: jspb.Message.getFieldWithDefault(msg, 2, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.OverallSchoolRankingRequest}
+ */
+proto.debate_management.OverallSchoolRankingRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.OverallSchoolRankingRequest;
+  return proto.debate_management.OverallSchoolRankingRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.OverallSchoolRankingRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.OverallSchoolRankingRequest}
+ */
+proto.debate_management.OverallSchoolRankingRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.OverallSchoolRankingRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.OverallSchoolRankingRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.OverallSchoolRankingRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.OverallSchoolRankingRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.debate_management.OverallSchoolRankingRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.OverallSchoolRankingRequest} returns this
+ */
+proto.debate_management.OverallSchoolRankingRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string token = 2;
+ * @return {string}
+ */
+proto.debate_management.OverallSchoolRankingRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.OverallSchoolRankingRequest} returns this
+ */
+proto.debate_management.OverallSchoolRankingRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.debate_management.OverallSchoolRankingResponse.repeatedFields_ = [4];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.OverallSchoolRankingResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.OverallSchoolRankingResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.OverallSchoolRankingResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.OverallSchoolRankingResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    schoolRank: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    totalSchools: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    rankChange: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    topSchoolsList: jspb.Message.toObjectList(msg.getTopSchoolsList(),
+    proto.debate_management.TopSchool.toObject, includeInstance),
+    schoolInfo: (f = msg.getSchoolInfo()) && proto.debate_management.SchoolInfo.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.OverallSchoolRankingResponse}
+ */
+proto.debate_management.OverallSchoolRankingResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.OverallSchoolRankingResponse;
+  return proto.debate_management.OverallSchoolRankingResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.OverallSchoolRankingResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.OverallSchoolRankingResponse}
+ */
+proto.debate_management.OverallSchoolRankingResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setSchoolRank(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTotalSchools(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setRankChange(value);
+      break;
+    case 4:
+      var value = new proto.debate_management.TopSchool;
+      reader.readMessage(value,proto.debate_management.TopSchool.deserializeBinaryFromReader);
+      msg.addTopSchools(value);
+      break;
+    case 5:
+      var value = new proto.debate_management.SchoolInfo;
+      reader.readMessage(value,proto.debate_management.SchoolInfo.deserializeBinaryFromReader);
+      msg.setSchoolInfo(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.OverallSchoolRankingResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.OverallSchoolRankingResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.OverallSchoolRankingResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.OverallSchoolRankingResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSchoolRank();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getTotalSchools();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+  f = message.getRankChange();
+  if (f !== 0) {
+    writer.writeInt32(
+      3,
+      f
+    );
+  }
+  f = message.getTopSchoolsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      4,
+      f,
+      proto.debate_management.TopSchool.serializeBinaryToWriter
+    );
+  }
+  f = message.getSchoolInfo();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      proto.debate_management.SchoolInfo.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional int32 school_rank = 1;
+ * @return {number}
+ */
+proto.debate_management.OverallSchoolRankingResponse.prototype.getSchoolRank = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.OverallSchoolRankingResponse} returns this
+ */
+proto.debate_management.OverallSchoolRankingResponse.prototype.setSchoolRank = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional int32 total_schools = 2;
+ * @return {number}
+ */
+proto.debate_management.OverallSchoolRankingResponse.prototype.getTotalSchools = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.OverallSchoolRankingResponse} returns this
+ */
+proto.debate_management.OverallSchoolRankingResponse.prototype.setTotalSchools = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional int32 rank_change = 3;
+ * @return {number}
+ */
+proto.debate_management.OverallSchoolRankingResponse.prototype.getRankChange = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.OverallSchoolRankingResponse} returns this
+ */
+proto.debate_management.OverallSchoolRankingResponse.prototype.setRankChange = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * repeated TopSchool top_schools = 4;
+ * @return {!Array<!proto.debate_management.TopSchool>}
+ */
+proto.debate_management.OverallSchoolRankingResponse.prototype.getTopSchoolsList = function() {
+  return /** @type{!Array<!proto.debate_management.TopSchool>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.debate_management.TopSchool, 4));
+};
+
+
+/**
+ * @param {!Array<!proto.debate_management.TopSchool>} value
+ * @return {!proto.debate_management.OverallSchoolRankingResponse} returns this
+*/
+proto.debate_management.OverallSchoolRankingResponse.prototype.setTopSchoolsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 4, value);
+};
+
+
+/**
+ * @param {!proto.debate_management.TopSchool=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.debate_management.TopSchool}
+ */
+proto.debate_management.OverallSchoolRankingResponse.prototype.addTopSchools = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, proto.debate_management.TopSchool, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.debate_management.OverallSchoolRankingResponse} returns this
+ */
+proto.debate_management.OverallSchoolRankingResponse.prototype.clearTopSchoolsList = function() {
+  return this.setTopSchoolsList([]);
+};
+
+
+/**
+ * optional SchoolInfo school_info = 5;
+ * @return {?proto.debate_management.SchoolInfo}
+ */
+proto.debate_management.OverallSchoolRankingResponse.prototype.getSchoolInfo = function() {
+  return /** @type{?proto.debate_management.SchoolInfo} */ (
+    jspb.Message.getWrapperField(this, proto.debate_management.SchoolInfo, 5));
+};
+
+
+/**
+ * @param {?proto.debate_management.SchoolInfo|undefined} value
+ * @return {!proto.debate_management.OverallSchoolRankingResponse} returns this
+*/
+proto.debate_management.OverallSchoolRankingResponse.prototype.setSchoolInfo = function(value) {
+  return jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.debate_management.OverallSchoolRankingResponse} returns this
+ */
+proto.debate_management.OverallSchoolRankingResponse.prototype.clearSchoolInfo = function() {
+  return this.setSchoolInfo(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.debate_management.OverallSchoolRankingResponse.prototype.hasSchoolInfo = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.TopSchool.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.TopSchool.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.TopSchool} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TopSchool.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    rank: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    name: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    totalPoints: jspb.Message.getFloatingPointFieldWithDefault(msg, 3, 0.0),
+    rankChange: jspb.Message.getFieldWithDefault(msg, 4, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.TopSchool}
+ */
+proto.debate_management.TopSchool.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.TopSchool;
+  return proto.debate_management.TopSchool.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.TopSchool} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.TopSchool}
+ */
+proto.debate_management.TopSchool.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setRank(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setName(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setTotalPoints(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setRankChange(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.TopSchool.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.TopSchool.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.TopSchool} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.TopSchool.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getRank();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getName();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getTotalPoints();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      3,
+      f
+    );
+  }
+  f = message.getRankChange();
+  if (f !== 0) {
+    writer.writeInt32(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 rank = 1;
+ * @return {number}
+ */
+proto.debate_management.TopSchool.prototype.getRank = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TopSchool} returns this
+ */
+proto.debate_management.TopSchool.prototype.setRank = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string name = 2;
+ * @return {string}
+ */
+proto.debate_management.TopSchool.prototype.getName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.TopSchool} returns this
+ */
+proto.debate_management.TopSchool.prototype.setName = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional double total_points = 3;
+ * @return {number}
+ */
+proto.debate_management.TopSchool.prototype.getTotalPoints = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 3, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TopSchool} returns this
+ */
+proto.debate_management.TopSchool.prototype.setTotalPoints = function(value) {
+  return jspb.Message.setProto3FloatField(this, 3, value);
+};
+
+
+/**
+ * optional int32 rank_change = 4;
+ * @return {number}
+ */
+proto.debate_management.TopSchool.prototype.getRankChange = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.TopSchool} returns this
+ */
+proto.debate_management.TopSchool.prototype.setRankChange = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.SchoolInfo.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.SchoolInfo.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.SchoolInfo} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.SchoolInfo.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    name: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    totalPoints: jspb.Message.getFloatingPointFieldWithDefault(msg, 2, 0.0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.SchoolInfo}
+ */
+proto.debate_management.SchoolInfo.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.SchoolInfo;
+  return proto.debate_management.SchoolInfo.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.SchoolInfo} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.SchoolInfo}
+ */
+proto.debate_management.SchoolInfo.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setName(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setTotalPoints(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.SchoolInfo.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.SchoolInfo.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.SchoolInfo} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.SchoolInfo.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getName();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getTotalPoints();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string name = 1;
+ * @return {string}
+ */
+proto.debate_management.SchoolInfo.prototype.getName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.SchoolInfo} returns this
+ */
+proto.debate_management.SchoolInfo.prototype.setName = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional double total_points = 2;
+ * @return {number}
+ */
+proto.debate_management.SchoolInfo.prototype.getTotalPoints = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 2, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.SchoolInfo} returns this
+ */
+proto.debate_management.SchoolInfo.prototype.setTotalPoints = function(value) {
+  return jspb.Message.setProto3FloatField(this, 2, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.SchoolPerformanceRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.SchoolPerformanceRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.SchoolPerformanceRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.SchoolPerformanceRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    startDate: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    endDate: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    token: jspb.Message.getFieldWithDefault(msg, 4, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.SchoolPerformanceRequest}
+ */
+proto.debate_management.SchoolPerformanceRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.SchoolPerformanceRequest;
+  return proto.debate_management.SchoolPerformanceRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.SchoolPerformanceRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.SchoolPerformanceRequest}
+ */
+proto.debate_management.SchoolPerformanceRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setStartDate(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setEndDate(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.SchoolPerformanceRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.SchoolPerformanceRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.SchoolPerformanceRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.SchoolPerformanceRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getStartDate();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getEndDate();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.debate_management.SchoolPerformanceRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.SchoolPerformanceRequest} returns this
+ */
+proto.debate_management.SchoolPerformanceRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string start_date = 2;
+ * @return {string}
+ */
+proto.debate_management.SchoolPerformanceRequest.prototype.getStartDate = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.SchoolPerformanceRequest} returns this
+ */
+proto.debate_management.SchoolPerformanceRequest.prototype.setStartDate = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string end_date = 3;
+ * @return {string}
+ */
+proto.debate_management.SchoolPerformanceRequest.prototype.getEndDate = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.SchoolPerformanceRequest} returns this
+ */
+proto.debate_management.SchoolPerformanceRequest.prototype.setEndDate = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string token = 4;
+ * @return {string}
+ */
+proto.debate_management.SchoolPerformanceRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.SchoolPerformanceRequest} returns this
+ */
+proto.debate_management.SchoolPerformanceRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.debate_management.SchoolPerformanceResponse.repeatedFields_ = [1];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.SchoolPerformanceResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.SchoolPerformanceResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.SchoolPerformanceResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.SchoolPerformanceResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    performanceDataList: jspb.Message.toObjectList(msg.getPerformanceDataList(),
+    proto.debate_management.SchoolPerformanceData.toObject, includeInstance)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.SchoolPerformanceResponse}
+ */
+proto.debate_management.SchoolPerformanceResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.SchoolPerformanceResponse;
+  return proto.debate_management.SchoolPerformanceResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.SchoolPerformanceResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.SchoolPerformanceResponse}
+ */
+proto.debate_management.SchoolPerformanceResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = new proto.debate_management.SchoolPerformanceData;
+      reader.readMessage(value,proto.debate_management.SchoolPerformanceData.deserializeBinaryFromReader);
+      msg.addPerformanceData(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.SchoolPerformanceResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.SchoolPerformanceResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.SchoolPerformanceResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.SchoolPerformanceResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getPerformanceDataList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      1,
+      f,
+      proto.debate_management.SchoolPerformanceData.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * repeated SchoolPerformanceData performance_data = 1;
+ * @return {!Array<!proto.debate_management.SchoolPerformanceData>}
+ */
+proto.debate_management.SchoolPerformanceResponse.prototype.getPerformanceDataList = function() {
+  return /** @type{!Array<!proto.debate_management.SchoolPerformanceData>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.debate_management.SchoolPerformanceData, 1));
+};
+
+
+/**
+ * @param {!Array<!proto.debate_management.SchoolPerformanceData>} value
+ * @return {!proto.debate_management.SchoolPerformanceResponse} returns this
+*/
+proto.debate_management.SchoolPerformanceResponse.prototype.setPerformanceDataList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.debate_management.SchoolPerformanceData=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.debate_management.SchoolPerformanceData}
+ */
+proto.debate_management.SchoolPerformanceResponse.prototype.addPerformanceData = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.debate_management.SchoolPerformanceData, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.debate_management.SchoolPerformanceResponse} returns this
+ */
+proto.debate_management.SchoolPerformanceResponse.prototype.clearPerformanceDataList = function() {
+  return this.setPerformanceDataList([]);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.debate_management.SchoolPerformanceData.prototype.toObject = function(opt_includeInstance) {
+  return proto.debate_management.SchoolPerformanceData.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.debate_management.SchoolPerformanceData} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.SchoolPerformanceData.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    tournamentDate: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    schoolTotalPoints: jspb.Message.getFloatingPointFieldWithDefault(msg, 2, 0.0),
+    schoolAveragePoints: jspb.Message.getFloatingPointFieldWithDefault(msg, 3, 0.0),
+    tournamentRank: jspb.Message.getFieldWithDefault(msg, 4, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.debate_management.SchoolPerformanceData}
+ */
+proto.debate_management.SchoolPerformanceData.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.debate_management.SchoolPerformanceData;
+  return proto.debate_management.SchoolPerformanceData.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.debate_management.SchoolPerformanceData} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.debate_management.SchoolPerformanceData}
+ */
+proto.debate_management.SchoolPerformanceData.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTournamentDate(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setSchoolTotalPoints(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setSchoolAveragePoints(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentRank(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.debate_management.SchoolPerformanceData.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.debate_management.SchoolPerformanceData.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.debate_management.SchoolPerformanceData} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.debate_management.SchoolPerformanceData.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTournamentDate();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getSchoolTotalPoints();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      2,
+      f
+    );
+  }
+  f = message.getSchoolAveragePoints();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      3,
+      f
+    );
+  }
+  f = message.getTournamentRank();
+  if (f !== 0) {
+    writer.writeInt32(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string tournament_date = 1;
+ * @return {string}
+ */
+proto.debate_management.SchoolPerformanceData.prototype.getTournamentDate = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.debate_management.SchoolPerformanceData} returns this
+ */
+proto.debate_management.SchoolPerformanceData.prototype.setTournamentDate = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional double school_total_points = 2;
+ * @return {number}
+ */
+proto.debate_management.SchoolPerformanceData.prototype.getSchoolTotalPoints = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 2, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.SchoolPerformanceData} returns this
+ */
+proto.debate_management.SchoolPerformanceData.prototype.setSchoolTotalPoints = function(value) {
+  return jspb.Message.setProto3FloatField(this, 2, value);
+};
+
+
+/**
+ * optional double school_average_points = 3;
+ * @return {number}
+ */
+proto.debate_management.SchoolPerformanceData.prototype.getSchoolAveragePoints = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 3, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.SchoolPerformanceData} returns this
+ */
+proto.debate_management.SchoolPerformanceData.prototype.setSchoolAveragePoints = function(value) {
+  return jspb.Message.setProto3FloatField(this, 3, value);
+};
+
+
+/**
+ * optional int32 tournament_rank = 4;
+ * @return {number}
+ */
+proto.debate_management.SchoolPerformanceData.prototype.getTournamentRank = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.debate_management.SchoolPerformanceData} returns this
+ */
+proto.debate_management.SchoolPerformanceData.prototype.setTournamentRank = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
 };
 
 

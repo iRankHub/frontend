@@ -18,6 +18,9 @@ import Leaderboard from "@/components/pages/students/dashboard/leaderboard";
 import { PerformanceTrendChart } from "@/components/pages/students/dashboard/charts/performance-trend-chart";
 import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 import { getUserProfile } from "@/core/users/users";
+import { getTournamentStats } from "@/core/tournament/list";
+import { getOverallStudentRanking } from "@/core/debates/rankings";
+import { OverallRankingResponse } from "@/lib/grpc/proto/debate_management/debate_pb";
 
 const page = withAuth(() => {
   return <Dashboard />;
@@ -25,6 +28,18 @@ const page = withAuth(() => {
 
 function Dashboard() {
   const { user } = useUserStore((state) => state);
+  const [totalTournaments, setTotalTournaments] = React.useState(0);
+  const [upcomingTournaments, setUpcomingTournaments] = React.useState(0);
+  const [
+    total_tournamamentsPercentageChange,
+    setTotalTournamentsPercentageChange,
+  ] = React.useState("+∞%");
+  const [
+    upcoming_tournamentsPercentageChange,
+    setUpcomingTournamentsPercentageChange,
+  ] = React.useState("+∞%");
+  const [overallStudentRanking, setOverallStudentRanking] =
+    React.useState<OverallRankingResponse.AsObject>();
   const [currentUser, setCurrentUser] = useState<
     UserProfile.AsObject | undefined
   >(undefined);
@@ -51,6 +66,32 @@ function Dashboard() {
     })
       .then((res) => {
         setCurrentUser(res.profile);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) return;
+    // getTournamentStats({ token: user.token })
+    //   .then((res) => {
+    //     setTotalTournaments(res.totalTournaments);
+    //     setUpcomingTournaments(res.upcomingTournaments);
+    //     setTotalTournamentsPercentageChange(res.totalPercentageChange);
+    //     setUpcomingTournamentsPercentageChange(res.upcomingPercentageChange);
+    //   })
+    //   .catch((err) => {
+    //     console.error(err.message);
+    //   });
+
+    getOverallStudentRanking({
+      token: user.token,
+      user_id: user.userId,
+    })
+      .then((res) => {
+        console.log(res);
+        setOverallStudentRanking(res);
       })
       .catch((err) => {
         console.error(err.message);
@@ -88,10 +129,23 @@ function Dashboard() {
       </header>
       <div className="flex items-stretch flex-col md:flex-row gap-3 mt-5">
         <div className="flex-1 w-full">
-          <Overview />
+          <Overview
+            totalTournamentsAttended={2000}
+            totalTournamentsUnattended={500}
+            upcomingTournaments={upcomingTournaments}
+            totalTournamentsPercentageChange={
+              total_tournamamentsPercentageChange
+            }
+            upcomingTournamentsPercentageChange={
+              upcoming_tournamentsPercentageChange
+            }
+          />
         </div>
         <div className="flex-1 max-w-full md:max-w-xs w-full">
-          <CurrentRank />
+          <CurrentRank
+            currentRank={overallStudentRanking?.studentRank || 0}
+            totalStudents={overallStudentRanking?.totalStudents || 0}
+          />
         </div>
       </div>
       <div className="flex items-stretch flex-col md:flex-row gap-3 mt-5">
@@ -99,7 +153,12 @@ function Dashboard() {
           <PerformanceTrendChart />
         </div>
         <div className="flex-1 max-w-full md:max-w-xs w-full">
-          <Leaderboard />
+          <Leaderboard
+            studentRank={overallStudentRanking?.studentRank || 0}
+            rankChange={overallStudentRanking?.rankChange || 0}
+            studentInfo={overallStudentRanking?.studentInfo || ({} as any)}
+            topStudents={overallStudentRanking?.topStudentsList || []}
+          />
         </div>
       </div>
     </ContentLayout>

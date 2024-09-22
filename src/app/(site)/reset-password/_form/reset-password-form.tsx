@@ -50,7 +50,7 @@ const ResetPasswordForm = () => {
         </p>
         <Button
           variant="default"
-          onClick={() => router.push("/auth/volunteer/forgot")}
+          onClick={() => router.push("/auth/select")}
         >
           Request New Token
         </Button>
@@ -89,7 +89,7 @@ const ResetPasswordForm = () => {
                 </ToastAction>
               ),
             });
-            router.push("/auth/volunteer/login");
+            router.push("/auth/select");
           } else {
             toast({
               variant: "destructive",
@@ -177,7 +177,7 @@ const ResetPasswordForm = () => {
             variant={"secondary"}
             size={"lg"}
             className="w-full"
-            onClick={() => router.push("/auth/volunteer/login")}
+            onClick={() => router.push("/auth/select")}
           >
             Cancel
             <span className="sr-only">Cancel</span>

@@ -20,13 +20,20 @@ export function DataTableToolbar<TData>({
     <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-3 bg-brown p-5 py-4">
         <Input
-          placeholder="Search invitation..."
-          value={(table.getColumn("idebateId")?.getFilterValue() as string) ?? ""}
+          placeholder="Search user..."
+          value={(table.getColumn("inviteeName")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("idebateId")?.setFilterValue(event.target.value)
+            table.getColumn("inviteeName")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[280px]"
         />
+        {table.getColumn("status") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("status")}
+            title="Status"
+            options={statuses}
+          />
+        )}
         {isFiltered && (
           <Button
             variant="ghost"

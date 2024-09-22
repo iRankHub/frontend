@@ -1,21 +1,35 @@
 import { Icons } from "@/components/icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  StudentInfo,
+  TopStudent,
+} from "@/lib/grpc/proto/debate_management/debate_pb";
 import { cn } from "@/lib/utils";
 import { Crown } from "lucide-react";
 import { Inter } from "next/font/google";
 import Image from "next/image";
 import React from "react";
 
-type Props = {};
+interface LeaderboardProps {
+  studentRank: number;
+  rankChange: number;
+  studentInfo: StudentInfo.AsObject;
+  topStudents: TopStudent.AsObject[];
+}
 
 const inter = Inter({
   weight: "500",
   subsets: ["latin"],
 });
 
-function Leaderboard({}: Props) {
+function Leaderboard({
+  rankChange,
+  studentInfo,
+  studentRank,
+  topStudents,
+}: LeaderboardProps) {
   return (
-    <div className="w-full min-h-40 h-full py-5 flex flex-col items-center justify-start gap-4 bg-background rounded-lg border-2 border-muted">
+    <div className="w-full min-h-40 h-full py-5 flex flex-col items-center justify-center gap-4 bg-background rounded-lg border-2 border-muted">
       <div>
         <h3 className="text-sm text-muted-foreground font-bold uppercase mb-3">
           Leaderboard
@@ -35,8 +49,29 @@ function Leaderboard({}: Props) {
             <Crown size={24} className="text-background m-1.5" />
           </div>
         </div>
-        <h2 className="text-xl font-medium text-foreground m-0 p-0">Sarah Martins</h2>
-        <span className={cn("text-primary text-2xl p-0 m-0 leading-4 font-bold", inter)}>50,000</span>
+        {/* <h2 className="text-xl font-medium text-foreground m-0 p-0">
+          Sarah Martins
+        </h2>
+        <span
+          className={cn(
+            "text-primary text-2xl p-0 m-0 leading-4 font-bold",
+            inter
+          )}
+        >
+          50,000
+        </span> */}
+
+        <h2 className="text-xl font-medium text-foreground m-0 p-0">
+          {studentInfo.name}
+        </h2>
+        <span
+          className={cn(
+            "text-primary text-2xl p-0 m-0 leading-4 font-bold",
+            inter.className
+          )}
+        >
+          {studentInfo.totalPoints}
+        </span>
       </div>
       <div className="w-full px-3">
         <div className="flex items-center justify-between p-3 bg-[#F1F5F9] rounded-lg">
@@ -54,9 +89,9 @@ function Leaderboard({}: Props) {
             </Avatar>
           </div>
           <p className="text-base text-foreground font-medium">
-            Mark Koulibally
+            {studentInfo.name}
           </p>
-          <b className="text-primary text-xl font-bold">2300</b>
+          <b className="text-primary text-xl font-bold">{studentInfo.totalPoints}</b>
         </div>
         <div className="flex items-center justify-between p-3 bg-[#F1F5F9] rounded-lg mt-3">
           <div className="flex items-center gap-3">

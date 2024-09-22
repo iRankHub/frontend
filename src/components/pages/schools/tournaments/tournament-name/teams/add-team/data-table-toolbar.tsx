@@ -12,7 +12,7 @@ import { Table } from "@tanstack/react-table";
 import AddTeamForm from "./add-team-form";
 import { useEffect, useState } from "react";
 import { Student } from "@/lib/grpc/proto/user_management/users_pb";
-import { getStudents } from "@/core/users/users";
+import { getStudents, getUserProfile } from "@/core/users/users";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { GetSchoolsType } from "@/types/user_management/schools";
 import { Team } from "@/lib/grpc/proto/debate_management/debate_pb";
@@ -36,9 +36,14 @@ export function DataTableToolbar<TData>({
       token: user.token,
     };
     getStudents({ ...options })
-      .then((res) => {
+      .then(async (res) => {
+        const schoolsProfile = await getUserProfile({
+          token: user.token,
+          userID: user.userId,
+        });
+
         const schoolStudents = res.studentsList.filter(
-          (student) => student.schoolid === user.userId
+          (student) => student.schoolname === schoolsProfile.profile?.schooldetails?.schoolname
         );
         setAllStudents(schoolStudents);
       })

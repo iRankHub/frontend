@@ -30,7 +30,6 @@ import { PasswordInput } from "@/components/ui/password-Input";
 import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { countries } from "@/lib/data";
 import { CheckIcon, ChevronsUpDown } from "lucide-react";
 import {
   Popover,
@@ -47,9 +46,10 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { UserRole } from "@/types";
-import { signUp } from "@/core/authentication/auth";
+import { getCountriesNoAuth, signUp } from "@/core/authentication/auth";
 // @ts-ignore
 import { Provinces, Districts } from "rwanda";
+import { Country } from "@/lib/grpc/proto/user_management/users_pb";
 
 type Inputs = z.infer<typeof schoolSchema>;
 
@@ -62,6 +62,13 @@ const SignupForm = () => {
   const [provinces, setProvinces] = React.useState<string[]>(Provinces());
   const [districts, setDisctricts] = React.useState<string[]>(Districts());
   const steps = [1, 2, 3, 4];
+  const [countries, setCountries] = React.useState<Country.AsObject[]>([]);
+
+  React.useEffect(() => {
+    getCountriesNoAuth().then((res) => {
+      setCountries(res);
+    });
+  }, []);
 
   // react-hook-form
   const form = useForm<Inputs>({

@@ -727,6 +727,49 @@ export class UserManagementServiceClient {
     this.methodDescriptorGetCountries);
   }
 
+  methodDescriptorGetCountriesNoAuth = new grpcWeb.MethodDescriptor(
+    '/user_management.UserManagementService/GetCountriesNoAuth',
+    grpcWeb.MethodType.UNARY,
+    user_management_users_pb.GetCountriesNoAuthRequest,
+    user_management_users_pb.GetCountriesNoAuthResponse,
+    (request: user_management_users_pb.GetCountriesNoAuthRequest) => {
+      return request.serializeBinary();
+    },
+    user_management_users_pb.GetCountriesNoAuthResponse.deserializeBinary
+  );
+
+  getCountriesNoAuth(
+    request: user_management_users_pb.GetCountriesNoAuthRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<user_management_users_pb.GetCountriesNoAuthResponse>;
+
+  getCountriesNoAuth(
+    request: user_management_users_pb.GetCountriesNoAuthRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.GetCountriesNoAuthResponse) => void): grpcWeb.ClientReadableStream<user_management_users_pb.GetCountriesNoAuthResponse>;
+
+  getCountriesNoAuth(
+    request: user_management_users_pb.GetCountriesNoAuthRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: user_management_users_pb.GetCountriesNoAuthResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/user_management.UserManagementService/GetCountriesNoAuth',
+        request,
+        metadata || {},
+        this.methodDescriptorGetCountriesNoAuth,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/user_management.UserManagementService/GetCountriesNoAuth',
+    request,
+    metadata || {},
+    this.methodDescriptorGetCountriesNoAuth);
+  }
+
   methodDescriptorGetSchools = new grpcWeb.MethodDescriptor(
     '/user_management.UserManagementService/GetSchools',
     grpcWeb.MethodType.UNARY,
