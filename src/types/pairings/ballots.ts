@@ -7,6 +7,12 @@ export interface GetBallotsProps {
     round: number;
 }
 
+export interface GetBallotsByJudgeIdProps {
+    token: string;
+    judge_id: number;
+    tournament_id: number;
+}
+
 export interface GetBallotProps {
     token: string;
     ballot_id: number;

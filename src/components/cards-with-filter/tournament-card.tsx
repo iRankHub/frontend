@@ -178,7 +178,7 @@ const TournamentCard = ({
                       "tournamentId"
                     )}/logistics/billings`}
                   >
-                    billings
+                    Billings
                   </Link>
                 </Button>
               </DropdownMenuItem>

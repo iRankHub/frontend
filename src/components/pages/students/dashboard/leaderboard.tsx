@@ -89,9 +89,9 @@ function Leaderboard({
             </Avatar>
           </div>
           <p className="text-base text-foreground font-medium">
-            Mark Koulibally
+            {studentInfo.name}
           </p>
-          <b className="text-primary text-xl font-bold">2300</b>
+          <b className="text-primary text-xl font-bold">{studentInfo.totalPoints}</b>
         </div>
         <div className="flex items-center justify-between p-3 bg-[#F1F5F9] rounded-lg mt-3">
           <div className="flex items-center gap-3">

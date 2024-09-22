@@ -204,7 +204,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
         judges: ballot?.judgesList as Judge.AsObject[],
         team1: {
           teamId: ballot?.team1?.teamId as number,
-          speakers_names: ballot?.team1?.speakerNamesList as string[],
+          speakers_names: ballot?.team1?.speakerNamesList || [],
           totalPoints: sortedTeam1Speakers.reduce(
             (acc, speaker) => acc + (speaker.points || 0),
             0
@@ -220,7 +220,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
         },
         team2: {
           teamId: ballot?.team2?.teamId as number,
-          speakers_names: ballot?.team2?.speakerNamesList as string[],
+          speakers_names: ballot?.team2?.speakerNamesList || [],
           totalPoints: sortedTeam2Speakers.reduce(
             (acc, speaker) => acc + (speaker.points || 0),
             0
@@ -328,7 +328,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
                   onChange={(e) => {
                     if (
                       Number(e.target.value) < 0 ||
-                      Number(e.target.value) > 100
+                      Number(e.target.value) > 30
                     ) {
                       return;
                     }
@@ -399,7 +399,11 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       {activeStep === 1 && (
         <>
           <div className="w-full flex-1">
-            {renderSpeakerInputs(1, team1Speakers, team1Rankings)}
+            {team1Speakers.length > 0 ? (
+              renderSpeakerInputs(1, team1Speakers, team1Rankings)
+            ) : (
+              <h3>This team is public speaking</h3>
+            )}
           </div>
           <div className="flex items-center gap-5">
             <Button
@@ -436,7 +440,11 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       {activeStep === 2 && (
         <>
           <div className="w-full flex-1">
-            {renderSpeakerInputs(2, team2Speakers, team2Rankings)}
+            {team2Speakers.length > 0 ? (
+              renderSpeakerInputs(2, team2Speakers, team2Rankings)
+            ) : (
+              <h3>This team is public speaking</h3>
+            )}
           </div>
           <div className="flex items-center gap-5">
             <Button
@@ -481,11 +489,11 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
                 <SelectValue placeholder="choose team" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="team1">
-                  Affirmative {ballot?.team1?.name}
+                <SelectItem value={ballot?.team1?.name || "team1"}>
+                  Affirmative ({ballot?.team1?.name})
                 </SelectItem>
-                <SelectItem value="team2">
-                  Negative {ballot?.team2?.name}
+                <SelectItem value={ballot?.team2?.name || "team2"}>
+                  Negative ({ballot?.team2?.name})
                 </SelectItem>
               </SelectContent>
             </Select>

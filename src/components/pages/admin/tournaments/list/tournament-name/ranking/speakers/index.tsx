@@ -25,6 +25,8 @@ function Speakers({ tournamentId }: Props) {
     const options = {
       token: user.token,
       tournament_id: tournamentId,
+      page: 1,
+      page_size: 10,
     };
 
     getTournamentStudentRanking(options)

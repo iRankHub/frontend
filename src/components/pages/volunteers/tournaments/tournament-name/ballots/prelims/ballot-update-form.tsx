@@ -16,11 +16,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { getBallot, updateBallot } from "@/core/debates/ballots";
 import {
   Ballot,
+  Judge,
   Speaker,
   Team,
 } from "@/lib/grpc/proto/debate_management/debate_pb";
@@ -32,7 +32,7 @@ import { BallotUpdateFormProps } from "@/types/pairings/ballots";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Inter } from "next/font/google";
 import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 type Props = {
@@ -47,13 +47,13 @@ const inter = Inter({
 
 function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
   const { name: tournament_id } = useParams();
+  const toast = useToast();
   const { user } = useUserStore((state) => state);
   const { markBallotAsRecorded } = useBallotsStore((state) => state);
   const [activeStep, setActiveStep] = React.useState(1);
   const [ballot, setBallot] = useState<Ballot.AsObject | undefined>(undefined);
   const [isUpdatingBallot, setIsUpdatingBallot] = useState(false);
   const steps = [1, 2, 3];
-  const { toast } = useToast();
 
   const [team1Speakers, setTeam1Speakers] = useState([
     {} as Speaker.AsObject,
@@ -76,6 +76,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     useState(false);
   const [team1PointsChanged, setTeam1PointsChanged] = useState(false);
   const [team2PointsChanged, setTeam2PointsChanged] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const calculateRankings = (teamIndex: number) => {
     const speakers = teamIndex === 1 ? team1Speakers : team2Speakers;
@@ -154,23 +155,69 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     }
   };
 
-  useEffect(() => {
+  const fetchBallot = useCallback(async () => {
     if (!user) return;
-    const options = {
-      token: user.token,
-      ballot_id: ballotId,
-      tournamentId: Number(tournament_id),
-    };
-    getBallot(options)
-      .then((res) => {
-        setTeam1Speakers(res.ballot?.team1?.speakersList as Speaker.AsObject[]);
-        setTeam2Speakers(res.ballot?.team2?.speakersList as Speaker.AsObject[]);
+
+    setIsLoading(true);
+    try {
+      const options = {
+        token: user.token,
+        ballot_id: ballotId,
+        tournamentId: Number(tournament_id),
+      };
+
+      const res = await getBallot(options);
+      console.log("Fetched ballot:", res);
+
+      if (res.ballot) {
         setBallot(res.ballot);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
+
+        // Process team 1 speakers
+        const team1 = res.ballot.team1?.speakersList || [];
+        setTeam1Speakers(
+          team1.map((speaker) => ({
+            ...speaker,
+            points: speaker.points || 0,
+            feedback: speaker.feedback || "",
+          }))
+        );
+        setTeam1Rankings(team1.map((speaker) => speaker.rank || 0));
+
+        // Process team 2 speakers
+        const team2 = res.ballot.team2?.speakersList || [];
+        setTeam2Speakers(
+          team2.map((speaker) => ({
+            ...speaker,
+            points: speaker.points || 0,
+            feedback: speaker.feedback || "",
+          }))
+        );
+        setTeam2Rankings(team2.map((speaker) => speaker.rank || 0));
+
+        // Set winner
+        setWinner(res.ballot.verdict || "");
+      }
+    } catch (err) {
+      console.error("Error fetching ballot:", err);
+      // Handle error (e.g., show error message to user)
+    } finally {
+      setIsLoading(false);
+    }
   }, [ballotId, tournament_id, user]);
+
+  useEffect(() => {
+    fetchBallot();
+  }, [fetchBallot]);
+
+  useEffect(() => {
+    console.log("State updated:", {
+      team1Speakers,
+      team2Speakers,
+      team1Rankings,
+      team2Rankings,
+      winner,
+    });
+  }, [team1Speakers, team2Speakers, team1Rankings, team2Rankings, winner]);
 
   const sortSpeakersByPoints = (speakers: Speaker.AsObject[]) => {
     return speakers
@@ -203,8 +250,10 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       token: user.token,
       ballot: {
         ballotId: ballotId,
+        judges: ballot?.judgesList as Judge.AsObject[],
         team1: {
           teamId: ballot?.team1?.teamId as number,
+          speakers_names: ballot?.team1?.speakerNamesList || [],
           totalPoints: sortedTeam1Speakers.reduce(
             (acc, speaker) => acc + (speaker.points || 0),
             0
@@ -220,6 +269,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
         },
         team2: {
           teamId: ballot?.team2?.teamId as number,
+          speakers_names: ballot?.team2?.speakerNamesList || [],
           totalPoints: sortedTeam2Speakers.reduce(
             (acc, speaker) => acc + (speaker.points || 0),
             0
@@ -239,43 +289,25 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
 
     setIsUpdatingBallot(true);
     try {
-      await updateBallot(options)
-        .then((res) => {
-          markBallotAsRecorded(ballotId);
-          setSheetOpen(false);
-        })
-        .catch((err) => {
-          console.error("err.message:", err.message);
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description:
-              "Something went wrong. This could be an error on our end or you're not allowed to update this ballot.",
-            action: (
-              <ToastAction altText="Close" className="bg-primary text-white">
-                Close
-              </ToastAction>
-            ),
-          });
-        });
+      await updateBallot(options);
+      markBallotAsRecorded(ballotId);
+      setSheetOpen(false);
     } catch (err) {
-      console.error("err:", err);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description:
-          "Something went wrong. This could be an error on our end or you're not allowed to update this ballot.",
-        action: (
-          <ToastAction altText="Close" className="bg-primary text-white">
-            Close
-          </ToastAction>
-        ),
-      });
+      console.error(err);
       // Handle error (e.g., show error message to user)
+      toast.toast({
+        title: "Error",
+        description: "An error occurred while updating the ballot.",
+        variant: "destructive",
+      });
     } finally {
       setIsUpdatingBallot(false);
     }
   };
+
+  if (isLoading) {
+    return <div>Loading ballot data...</div>;
+  }
 
   const Step = ({
     number,
@@ -330,83 +362,84 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     rankings: number[]
   ) => (
     <>
-      {speakers.map((speaker, index) => (
-        <Collapsible key={index} className="w-full">
-          <CollapsibleTrigger className="w-full bg-transparent border-b flex items-center justify-between px-3 py-2">
-            <span className="bg-transparent outline-none text-foreground font-semibold text-start">
-              {speaker.name}
-            </span>
-            <Icons.chevronUpDown className="w-3 h-3 text-border" />
-          </CollapsibleTrigger>
-          <CollapsibleContent className="py-3 w-full px-10">
-            <div className="flex items-center justify-between gap-3 mb-2">
-              <div className="flex flex-col items-center gap-3">
-                <span className="text-sm text-muted-foreground font-medium">
-                  Points
-                </span>
-                <Input
-                  placeholder="points"
-                  className="text-sm text-foreground font-semibold placeholder:font-medium max-w-32 text-center"
-                  type="number"
-                  min="10"
-                  max="100"
-                  value={speaker.points || ""}
-                  onChange={(e) => {
-                    if (
-                      Number(e.target.value) < 0 ||
-                      Number(e.target.value) > 100
-                    ) {
-                      return;
-                    }
-                    handleSpeakerChange(
-                      teamIndex,
-                      index,
-                      "points",
-                      e.target.value
-                    );
-                  }}
-                />
-              </div>
-              <div className="flex flex-col items-center gap-3">
-                <span className="text-sm text-muted-foreground font-medium">
-                  Rank
-                </span>
-                <div className="flex items-center gap-1">
-                  {[1, 2, 3].map((rank) => (
-                    <div
-                      key={rank}
-                      className={cn(
-                        "flex items-center justify-center w-8 h-8 rounded-md",
-                        (teamIndex === 1
-                          ? isTeam1RankingCalculated
-                          : isTeam2RankingCalculated) &&
-                          rankings[index] === rank
-                          ? "bg-primary text-white"
-                          : "border text-foreground"
-                      )}
-                    >
-                      <span>{rank}</span>
-                    </div>
-                  ))}
+      {!isLoading &&
+        speakers.map((speaker, index) => (
+          <Collapsible key={index} className="w-full">
+            <CollapsibleTrigger className="w-full bg-transparent border-b flex items-center justify-between px-3 py-2">
+              <span className="bg-transparent outline-none text-foreground font-semibold text-start">
+                {speaker.name}
+              </span>
+              <Icons.chevronUpDown className="w-3 h-3 text-border" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="py-3 w-full px-10">
+              <div className="flex items-center justify-between gap-3 mb-2">
+                <div className="flex flex-col items-center gap-3">
+                  <span className="text-sm text-muted-foreground font-medium">
+                    Points
+                  </span>
+                  <Input
+                    placeholder="points"
+                    className="text-sm text-foreground font-semibold placeholder:font-medium max-w-32 text-center"
+                    type="number"
+                    min="10"
+                    max="100"
+                    value={speaker.points}
+                    onChange={(e) => {
+                      if (
+                        Number(e.target.value) < 0 ||
+                        Number(e.target.value) > 30
+                      ) {
+                        return;
+                      }
+                      handleSpeakerChange(
+                        teamIndex,
+                        index,
+                        "points",
+                        e.target.value
+                      );
+                    }}
+                  />
+                </div>
+                <div className="flex flex-col items-center gap-3">
+                  <span className="text-sm text-muted-foreground font-medium">
+                    Rank
+                  </span>
+                  <div className="flex items-center gap-1">
+                    {[1, 2, 3].map((rank) => (
+                      <div
+                        key={rank}
+                        className={cn(
+                          "flex items-center justify-center w-8 h-8 rounded-md",
+                          (teamIndex === 1
+                            ? isTeam1RankingCalculated
+                            : isTeam2RankingCalculated) &&
+                            rankings[index] === rank
+                            ? "bg-primary text-white"
+                            : "border text-foreground"
+                        )}
+                      >
+                        <span>{rank}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-            <Textarea
-              placeholder="Add comment"
-              className="resize-none"
-              value={speaker.feedback || ""}
-              onChange={(e) =>
-                handleSpeakerChange(
-                  teamIndex,
-                  index,
-                  "feedback",
-                  e.target.value
-                )
-              }
-            />
-          </CollapsibleContent>
-        </Collapsible>
-      ))}
+              <Textarea
+                placeholder="Add comment"
+                className="resize-none"
+                value={speaker.feedback || ""}
+                onChange={(e) =>
+                  handleSpeakerChange(
+                    teamIndex,
+                    index,
+                    "feedback",
+                    e.target.value
+                  )
+                }
+              />
+            </CollapsibleContent>
+          </Collapsible>
+        ))}
     </>
   );
 
@@ -425,7 +458,11 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       {activeStep === 1 && (
         <>
           <div className="w-full flex-1">
-            {renderSpeakerInputs(1, team1Speakers, team1Rankings)}
+            {team1Speakers.length > 0 ? (
+              renderSpeakerInputs(1, team1Speakers, team1Rankings)
+            ) : (
+              <h3>This team is public speaking</h3>
+            )}
           </div>
           <div className="flex items-center gap-5">
             <Button
@@ -462,7 +499,11 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       {activeStep === 2 && (
         <>
           <div className="w-full flex-1">
-            {renderSpeakerInputs(2, team2Speakers, team2Rankings)}
+            {team2Speakers.length > 0 ? (
+              renderSpeakerInputs(2, team2Speakers, team2Rankings)
+            ) : (
+              <h3>This team is public speaking</h3>
+            )}
           </div>
           <div className="flex items-center gap-5">
             <Button
@@ -476,7 +517,8 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               Back
               <span className="sr-only">Back</span>
             </Button>
-            {!isTeam2RankingCalculated || team2PointsChanged ? (
+            {team2Speakers.length > 0 &&
+            (!isTeam2RankingCalculated || team2PointsChanged) ? (
               <Button
                 type="button"
                 className="mt-5"
@@ -507,11 +549,11 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
                 <SelectValue placeholder="choose team" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="team1">
-                  Affirmative {ballot?.team1?.name}
+                <SelectItem value={ballot?.team1?.name || "team1"}>
+                  Affirmative ({ballot?.team1?.name})
                 </SelectItem>
-                <SelectItem value="team2">
-                  Negative {ballot?.team2?.name}
+                <SelectItem value={ballot?.team2?.name || "team2"}>
+                  Negative ({ballot?.team2?.name})
                 </SelectItem>
               </SelectContent>
             </Select>
@@ -550,9 +592,10 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               type="button"
               onClick={handleSubmitBallot}
               disabled={
-                !isTeam1RankingCalculated ||
-                !isTeam2RankingCalculated ||
-                !winner
+                (!isTeam1RankingCalculated && team1Speakers.length > 0) ||
+                (!isTeam2RankingCalculated && team2Speakers.length > 0) ||
+                !winner ||
+                isUpdatingBallot
               }
             >
               Submit

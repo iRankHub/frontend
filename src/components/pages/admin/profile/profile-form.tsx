@@ -41,9 +41,9 @@ import {
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { getUserProfile } from "@/core/users/users";
-import { countries } from "@/lib/data";
 import { Districts, Provinces } from "@/lib/get-provinces-and-districts";
 import {
+  Country,
   SchoolDetails,
   UserProfile,
 } from "@/lib/grpc/proto/user_management/users_pb";
@@ -60,6 +60,7 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import FileUpload from "../users/file-upload";
+import { getCountriesNoAuth } from "@/core/authentication/auth";
 
 interface ProfileFormProps {
   user: UserProfile.AsObject;
@@ -69,6 +70,13 @@ type Inputs = z.infer<typeof adminProfile>;
 
 function ProfileForm({ user }: ProfileFormProps) {
   const { toast } = useToast();
+  const [countries, setCountries] = React.useState<Country.AsObject[]>([]);
+
+  React.useEffect(() => {
+    getCountriesNoAuth().then((res) => {
+      setCountries(res);
+    });
+  }, []);
 
   // react-hook-form
   const form = useForm<Inputs>({

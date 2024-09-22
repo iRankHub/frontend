@@ -1,6 +1,6 @@
-import { BallotUpdateFormProps, GetBallotProps, GetBallotsProps } from "@/types/pairings/ballots";
+import { BallotUpdateFormProps, GetBallotProps, GetBallotsByJudgeIdProps, GetBallotsProps } from "@/types/pairings/ballots";
 import { debateClient } from "../grpc-clients";
-import { Ballot, GetBallotRequest, GetBallotResponse, GetBallotsRequest, Judge, Speaker, Team, UpdateBallotRequest } from "@/lib/grpc/proto/debate_management/debate_pb";
+import { Ballot, GetBallotByJudgeIDRequest, GetBallotByJudgeIDResponse, GetBallotRequest, GetBallotResponse, GetBallotsRequest, Judge, Speaker, Team, UpdateBallotRequest } from "@/lib/grpc/proto/debate_management/debate_pb";
 
 export const getBallots = async ({
     token,
@@ -20,6 +20,27 @@ export const getBallots = async ({
                 reject(err);
             } else {
                 resolve(response.toObject().ballotsList);
+            }
+        });
+    });
+}
+
+export const getBallotsByJudgeId = async ({
+    token,
+    judge_id,
+    tournament_id,
+}: GetBallotsByJudgeIdProps): Promise<GetBallotByJudgeIDResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new GetBallotByJudgeIDRequest();
+        request.setToken(token);
+        request.setJudgeId(judge_id);
+        request.setTournamentId(tournament_id);
+
+        debateClient.getBallotByJudgeID(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
             }
         });
     });

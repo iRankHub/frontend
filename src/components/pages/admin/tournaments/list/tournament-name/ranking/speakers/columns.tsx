@@ -13,8 +13,6 @@ export const columns: ColumnDef<StudentRanking.AsObject>[] = [
       return (
         <div className="w-full pr-5 text-center">
           <span className="max-w-[200px] truncate font-medium">
-            {/* {row.getValue("schoolName")} */}
-            {/* row count starting from 4 */}
             {row.index + 4}
           </span>
         </div>

@@ -46,7 +46,7 @@ export function Navbar({ title }: NavbarProps) {
           </Command>
         </div>
         <div className="flex flex-1 items-center space-x-3 justify-end">
-          <ThemeToggler className="bg-muted dark:bg-foreground" />
+          <ThemeToggler className="bg-muted dark:bg-primary" />
           {/* <ModeToggle /> */}
           <DropdownMenu>
             <TooltipProvider disableHoverableContent>

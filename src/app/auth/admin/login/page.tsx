@@ -16,7 +16,7 @@ function Login() {
       <div className="max-w-md mx-auto w-full flex flex-col justify-between">
         <div className="w-1 h-1 invisible" />
         <div className="flex flex-col gap-5">
-          <div className="relative w-60 h-60">
+          <div className="relative w-40 h-40">
             <Image src="/static/images/logo-big.png" alt="IDebate Logo" fill />
           </div>
           <div className="flex flex-col gap-4 mb-5">

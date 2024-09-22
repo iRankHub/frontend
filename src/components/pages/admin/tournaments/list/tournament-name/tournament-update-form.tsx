@@ -79,8 +79,7 @@ function TournamentUpdateForm({ tournament }: Props) {
   >([]);
   const router = useRouter();
   const { toast } = useToast();
-  const [coordinatorId, setCoordinatorId] = useState<string>("274");
-
+  
   useEffect(() => {
     if (!user) return;
 
@@ -93,14 +92,13 @@ function TournamentUpdateForm({ tournament }: Props) {
       const coordinator = res.usersList.find(
         (user) => user.name === tournament.coordinatorName
       );
-      setCoordinatorId(String(coordinator?.userid));
       setCoordinators(res.usersList);
     });
   }, [user, tournament]);
 
   // useEffect to force re-render when coordinatorId changes
   useEffect(() => {
-  }, [coordinatorId, user]);
+  }, [user]);
 
   const formatStartDate = (): string => {
     // format return from api: 2023-07-15 09:00
@@ -137,7 +135,7 @@ function TournamentUpdateForm({ tournament }: Props) {
       startTime: new Date(formatStartDate()),
       endDate: new Date(formatEndDate()),
       endTime: new Date(formatEndDate()),
-      coordinator: coordinatorId,
+      coordinator: String(tournament.coordinatorId),
     },
   });
 

@@ -157,7 +157,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
 
   const fetchBallot = useCallback(async () => {
     if (!user) return;
-    
+
     setIsLoading(true);
     try {
       const options = {
@@ -165,31 +165,35 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
         ballot_id: ballotId,
         tournamentId: Number(tournament_id),
       };
-      
+
       const res = await getBallot(options);
       console.log("Fetched ballot:", res);
-      
+
       if (res.ballot) {
         setBallot(res.ballot);
-        
+
         // Process team 1 speakers
         const team1 = res.ballot.team1?.speakersList || [];
-        setTeam1Speakers(team1.map(speaker => ({
-          ...speaker,
-          points: speaker.points || 0,
-          feedback: speaker.feedback || "",
-        })));
-        setTeam1Rankings(team1.map(speaker => speaker.rank || 0));
-        
+        setTeam1Speakers(
+          team1.map((speaker) => ({
+            ...speaker,
+            points: speaker.points || 0,
+            feedback: speaker.feedback || "",
+          }))
+        );
+        setTeam1Rankings(team1.map((speaker) => speaker.rank || 0));
+
         // Process team 2 speakers
         const team2 = res.ballot.team2?.speakersList || [];
-        setTeam2Speakers(team2.map(speaker => ({
-          ...speaker,
-          points: speaker.points || 0,
-          feedback: speaker.feedback || "",
-        })));
-        setTeam2Rankings(team2.map(speaker => speaker.rank || 0));
-        
+        setTeam2Speakers(
+          team2.map((speaker) => ({
+            ...speaker,
+            points: speaker.points || 0,
+            feedback: speaker.feedback || "",
+          }))
+        );
+        setTeam2Rankings(team2.map((speaker) => speaker.rank || 0));
+
         // Set winner
         setWinner(res.ballot.verdict || "");
       }
@@ -206,7 +210,13 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
   }, [fetchBallot]);
 
   useEffect(() => {
-    console.log("State updated:", { team1Speakers, team2Speakers, team1Rankings, team2Rankings, winner });
+    console.log("State updated:", {
+      team1Speakers,
+      team2Speakers,
+      team1Rankings,
+      team2Rankings,
+      winner,
+    });
   }, [team1Speakers, team2Speakers, team1Rankings, team2Rankings, winner]);
 
   const sortSpeakersByPoints = (speakers: Speaker.AsObject[]) => {
@@ -243,7 +253,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
         judges: ballot?.judgesList as Judge.AsObject[],
         team1: {
           teamId: ballot?.team1?.teamId as number,
-          speakers_names: ballot?.team1?.speakerNamesList as string[],
+          speakers_names: ballot?.team1?.speakerNamesList || [],
           totalPoints: sortedTeam1Speakers.reduce(
             (acc, speaker) => acc + (speaker.points || 0),
             0
@@ -259,7 +269,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
         },
         team2: {
           teamId: ballot?.team2?.teamId as number,
-          speakers_names: ballot?.team2?.speakerNamesList as string[],
+          speakers_names: ballot?.team2?.speakerNamesList || [],
           totalPoints: sortedTeam2Speakers.reduce(
             (acc, speaker) => acc + (speaker.points || 0),
             0
@@ -352,83 +362,84 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     rankings: number[]
   ) => (
     <>
-      {!isLoading && speakers.map((speaker, index) => (
-        <Collapsible key={index} className="w-full">
-          <CollapsibleTrigger className="w-full bg-transparent border-b flex items-center justify-between px-3 py-2">
-            <span className="bg-transparent outline-none text-foreground font-semibold text-start">
-              {speaker.name}
-            </span>
-            <Icons.chevronUpDown className="w-3 h-3 text-border" />
-          </CollapsibleTrigger>
-          <CollapsibleContent className="py-3 w-full px-10">
-            <div className="flex items-center justify-between gap-3 mb-2">
-              <div className="flex flex-col items-center gap-3">
-                <span className="text-sm text-muted-foreground font-medium">
-                  Points
-                </span>
-                <Input
-                  placeholder="points"
-                  className="text-sm text-foreground font-semibold placeholder:font-medium max-w-32 text-center"
-                  type="number"
-                  min="10"
-                  max="100"
-                  value={speaker.points}
-                  onChange={(e) => {
-                    if (
-                      Number(e.target.value) < 0 ||
-                      Number(e.target.value) > 30
-                    ) {
-                      return;
-                    }
-                    handleSpeakerChange(
-                      teamIndex,
-                      index,
-                      "points",
-                      e.target.value
-                    );
-                  }}
-                />
-              </div>
-              <div className="flex flex-col items-center gap-3">
-                <span className="text-sm text-muted-foreground font-medium">
-                  Rank
-                </span>
-                <div className="flex items-center gap-1">
-                  {[1, 2, 3].map((rank) => (
-                    <div
-                      key={rank}
-                      className={cn(
-                        "flex items-center justify-center w-8 h-8 rounded-md",
-                        (teamIndex === 1
-                          ? isTeam1RankingCalculated
-                          : isTeam2RankingCalculated) &&
-                          rankings[index] === rank
-                          ? "bg-primary text-white"
-                          : "border text-foreground"
-                      )}
-                    >
-                      <span>{rank}</span>
-                    </div>
-                  ))}
+      {!isLoading &&
+        speakers.map((speaker, index) => (
+          <Collapsible key={index} className="w-full">
+            <CollapsibleTrigger className="w-full bg-transparent border-b flex items-center justify-between px-3 py-2">
+              <span className="bg-transparent outline-none text-foreground font-semibold text-start">
+                {speaker.name}
+              </span>
+              <Icons.chevronUpDown className="w-3 h-3 text-border" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="py-3 w-full px-10">
+              <div className="flex items-center justify-between gap-3 mb-2">
+                <div className="flex flex-col items-center gap-3">
+                  <span className="text-sm text-muted-foreground font-medium">
+                    Points
+                  </span>
+                  <Input
+                    placeholder="points"
+                    className="text-sm text-foreground font-semibold placeholder:font-medium max-w-32 text-center"
+                    type="number"
+                    min="10"
+                    max="100"
+                    value={speaker.points}
+                    onChange={(e) => {
+                      if (
+                        Number(e.target.value) < 0 ||
+                        Number(e.target.value) > 30
+                      ) {
+                        return;
+                      }
+                      handleSpeakerChange(
+                        teamIndex,
+                        index,
+                        "points",
+                        e.target.value
+                      );
+                    }}
+                  />
+                </div>
+                <div className="flex flex-col items-center gap-3">
+                  <span className="text-sm text-muted-foreground font-medium">
+                    Rank
+                  </span>
+                  <div className="flex items-center gap-1">
+                    {[1, 2, 3].map((rank) => (
+                      <div
+                        key={rank}
+                        className={cn(
+                          "flex items-center justify-center w-8 h-8 rounded-md",
+                          (teamIndex === 1
+                            ? isTeam1RankingCalculated
+                            : isTeam2RankingCalculated) &&
+                            rankings[index] === rank
+                            ? "bg-primary text-white"
+                            : "border text-foreground"
+                        )}
+                      >
+                        <span>{rank}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-            <Textarea
-              placeholder="Add comment"
-              className="resize-none"
-              value={speaker.feedback || ""}
-              onChange={(e) =>
-                handleSpeakerChange(
-                  teamIndex,
-                  index,
-                  "feedback",
-                  e.target.value
-                )
-              }
-            />
-          </CollapsibleContent>
-        </Collapsible>
-      ))}
+              <Textarea
+                placeholder="Add comment"
+                className="resize-none"
+                value={speaker.feedback || ""}
+                onChange={(e) =>
+                  handleSpeakerChange(
+                    teamIndex,
+                    index,
+                    "feedback",
+                    e.target.value
+                  )
+                }
+              />
+            </CollapsibleContent>
+          </Collapsible>
+        ))}
     </>
   );
 
@@ -447,7 +458,11 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       {activeStep === 1 && (
         <>
           <div className="w-full flex-1">
-            {renderSpeakerInputs(1, team1Speakers, team1Rankings)}
+            {team1Speakers.length > 0 ? (
+              renderSpeakerInputs(1, team1Speakers, team1Rankings)
+            ) : (
+              <h3>This team is public speaking</h3>
+            )}
           </div>
           <div className="flex items-center gap-5">
             <Button

@@ -16,24 +16,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { ToastAction } from "@/components/ui/toast";
-import { useToast } from "@/components/ui/use-toast";
 import { getBallot, updateBallot } from "@/core/debates/ballots";
 import {
   Ballot,
+  Judge,
   Speaker,
   Team,
 } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { cn } from "@/lib/utils";
-import { ballotSchema } from "@/lib/validations/admin/tournaments/update-ballot.schema";
 import { useBallotsStore } from "@/stores/admin/debate/ballots";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { BallotUpdateFormProps } from "@/types/pairings/ballots";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Inter } from "next/font/google";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
 
 type Props = {
   ballotId: number;
@@ -53,7 +49,6 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
   const [ballot, setBallot] = useState<Ballot.AsObject | undefined>(undefined);
   const [isUpdatingBallot, setIsUpdatingBallot] = useState(false);
   const steps = [1, 2, 3];
-  const { toast } = useToast();
 
   const [team1Speakers, setTeam1Speakers] = useState([
     {} as Speaker.AsObject,
@@ -203,8 +198,10 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       token: user.token,
       ballot: {
         ballotId: ballotId,
+        judges: ballot?.judgesList as Judge.AsObject[],
         team1: {
           teamId: ballot?.team1?.teamId as number,
+          speakers_names: ballot?.team1?.speakerNamesList || [],
           totalPoints: sortedTeam1Speakers.reduce(
             (acc, speaker) => acc + (speaker.points || 0),
             0
@@ -220,6 +217,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
         },
         team2: {
           teamId: ballot?.team2?.teamId as number,
+          speakers_names: ballot?.team2?.speakerNamesList || [],
           totalPoints: sortedTeam2Speakers.reduce(
             (acc, speaker) => acc + (speaker.points || 0),
             0
@@ -239,38 +237,11 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
 
     setIsUpdatingBallot(true);
     try {
-      await updateBallot(options)
-        .then((res) => {
-          markBallotAsRecorded(ballotId);
-          setSheetOpen(false);
-        })
-        .catch((err) => {
-          console.error("err.message:", err.message);
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description:
-              "Something went wrong. This could be an error on our end or you're not allowed to update this ballot.",
-            action: (
-              <ToastAction altText="Close" className="bg-primary text-white">
-                Close
-              </ToastAction>
-            ),
-          });
-        });
+      await updateBallot(options);
+      markBallotAsRecorded(ballotId);
+      setSheetOpen(false);
     } catch (err) {
-      console.error("err:", err);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description:
-          "Something went wrong. This could be an error on our end or you're not allowed to update this ballot.",
-        action: (
-          <ToastAction altText="Close" className="bg-primary text-white">
-            Close
-          </ToastAction>
-        ),
-      });
+      console.error(err);
       // Handle error (e.g., show error message to user)
     } finally {
       setIsUpdatingBallot(false);
@@ -354,7 +325,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
                   onChange={(e) => {
                     if (
                       Number(e.target.value) < 0 ||
-                      Number(e.target.value) > 100
+                      Number(e.target.value) > 30
                     ) {
                       return;
                     }
@@ -425,7 +396,11 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       {activeStep === 1 && (
         <>
           <div className="w-full flex-1">
-            {renderSpeakerInputs(1, team1Speakers, team1Rankings)}
+            {team1Speakers.length > 0 ? (
+              renderSpeakerInputs(1, team1Speakers, team1Rankings)
+            ) : (
+              <h3>This team is public speaking</h3>
+            )}
           </div>
           <div className="flex items-center gap-5">
             <Button
@@ -462,7 +437,11 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       {activeStep === 2 && (
         <>
           <div className="w-full flex-1">
-            {renderSpeakerInputs(2, team2Speakers, team2Rankings)}
+            {team2Speakers.length > 0 ? (
+              renderSpeakerInputs(2, team2Speakers, team2Rankings)
+            ) : (
+              <h3>This team is public speaking</h3>
+            )}
           </div>
           <div className="flex items-center gap-5">
             <Button
@@ -507,11 +486,11 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
                 <SelectValue placeholder="choose team" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="team1">
-                  Affirmative {ballot?.team1?.name}
+                <SelectItem value={ballot?.team1?.name || "team1"}>
+                  Affirmative ({ballot?.team1?.name})
                 </SelectItem>
-                <SelectItem value="team2">
-                  Negative {ballot?.team2?.name}
+                <SelectItem value={ballot?.team2?.name || "team2"}>
+                  Negative ({ballot?.team2?.name})
                 </SelectItem>
               </SelectContent>
             </Select>
@@ -552,7 +531,8 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               disabled={
                 !isTeam1RankingCalculated ||
                 !isTeam2RankingCalculated ||
-                !winner
+                !winner ||
+                isUpdatingBallot
               }
             >
               Submit

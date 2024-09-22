@@ -10,32 +10,7 @@ import { InvitationInfo } from "@/lib/grpc/proto/tournament_management/tournamen
 import ResendInvite from "./actions/resend-invite";
 import AcceptInvite from "./actions/accept-invite";
 import RejectInvite from "./actions/reject-invite copy";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuSeparator,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
-import { Separator } from "@/components/ui/separator";
-import { Icons } from "@/components/icons";
-import {
-  useBulkResendInvites,
-  useBulkUpdateInvite,
-} from "./actions/bulk-invitation-handle";
-import { InvitationStatuses } from "@/types/tournaments/invitations";
 import { cn } from "@/lib/utils";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
 
 export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
   {
@@ -52,56 +27,13 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
       />
     ),
     cell: ({ row, table }) => {
-      // get all selected rows
-      // const selectedRows = table.getFilteredSelectedRowModel().rows;
-      // const bulkInvitationIds = selectedRows.map(
-      //   (row) => row.original.invitationId
-      // );
-      // const { handleUpdate } = useBulkUpdateInvite({
-      //   invitationIds: bulkInvitationIds,
-      // });
-      // const { handleResend } = useBulkResendInvites({
-      //   invitationIds: bulkInvitationIds,
-      // });
       return (
-        <ContextMenu>
-          <ContextMenuTrigger>
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              aria-label="Select row"
-              className="translate-y-[2px]"
-            />
-          </ContextMenuTrigger>
-          <ContextMenuContent>
-            <ContextMenuItem className="text-foreground font-bold">
-              Actions (Selected)
-            </ContextMenuItem>
-            <ContextMenuSeparator />
-            <ContextMenuItem
-              className="flex items-center gap-3"
-              // onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
-            >
-              <Icons.addCircle className="w-4 h-4" />
-              Approve
-            </ContextMenuItem>
-            <ContextMenuItem
-              className="flex items-center gap-3"
-              // onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
-            >
-              <Icons.addCircle className="w-4 h-4" />
-              Rejected
-            </ContextMenuItem>
-            <ContextMenuSeparator className="bg-input" />
-            <ContextMenuItem
-              className="flex items-center gap-3"
-              // onClick={handleResend}
-            >
-              <Icons.trash2 className="w-4 h-4" />
-              Resend
-            </ContextMenuItem>
-          </ContextMenuContent>
-        </ContextMenu>
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+          className="translate-y-[2px]"
+        />
       );
     },
     enableSorting: false,
@@ -113,52 +45,7 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
       <DataTableColumnHeader column={column} title="IDebate ID" />
     ),
     cell: ({ row, table }) => {
-      // get all selected rows
-      // const selectedRows = table.getFilteredSelectedRowModel().rows;
-      // const bulkInvitationIds = selectedRows.map(
-      //   (row) => row.original.invitationId
-      // );
-      // const { handleUpdate } = useBulkUpdateInvite({
-      //   invitationIds: bulkInvitationIds,
-      // });
-      // const { handleResend } = useBulkResendInvites({
-      //   invitationIds: bulkInvitationIds,
-      // });
-      return (
-        <ContextMenu>
-          <ContextMenuTrigger>
-            <div className="w-[80px]">{row.getValue("idebateId")}</div>
-          </ContextMenuTrigger>
-          <ContextMenuContent>
-            <ContextMenuItem className="text-foreground font-bold">
-              Actions (Selected)
-            </ContextMenuItem>
-            <ContextMenuSeparator />
-            <ContextMenuItem
-              className="flex items-center gap-3"
-              // onClick={() => handleUpdate(InvitationStatuses.ACCEPTED)}
-            >
-              <Icons.addCircle className="w-4 h-4" />
-              Approve
-            </ContextMenuItem>
-            <ContextMenuItem
-              className="flex items-center gap-3"
-              // onClick={() => handleUpdate(InvitationStatuses.REJECTED)}
-            >
-              <Icons.addCircle className="w-4 h-4" />
-              Rejected
-            </ContextMenuItem>
-            <ContextMenuSeparator className="bg-input" />
-            <ContextMenuItem
-              className="flex items-center gap-3"
-              // onClick={handleResend}
-            >
-              <Icons.trash2 className="w-4 h-4" />
-              Resend
-            </ContextMenuItem>
-          </ContextMenuContent>
-        </ContextMenu>
-      );
+      return <div className="w-[150px]">{row.getValue("idebateId")}</div>;
     },
     enableSorting: false,
     enableHiding: false,
@@ -168,15 +55,15 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Reason"
+        title="Names"
         className="justify-center"
       />
     ),
-    cell: ({ row }) => {
+    cell: ({ row, table }) => {
       return (
-        <div className="w-full pr-10 text-center">
-          <span className="max-w-[200px] truncate font-medium">
-            Competition
+        <div className="w-full text-center">
+          <span className="max-w-[200px] bg-red-500 truncate font-medium">
+            {row.getValue("inviteeName")}
           </span>
         </div>
       );
@@ -184,20 +71,41 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "status",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Date"
+        title="Status"
         className="justify-center"
       />
     ),
-    cell: ({ row }) => {
+    cell: ({ row, table }) => {
+      let bgColor, textColor;
+      switch (row.getValue("status")) {
+        case "accepted":
+          bgColor = "bg-green-200";
+          textColor = "text-success";
+          break;
+        case "rejected":
+          bgColor = "bg-red-200";
+          textColor = "text-destructive";
+          break;
+        case "pending":
+          bgColor = "bg-slate-400";
+          textColor = "text-background";
+          break;
+        default:
+          bgColor = "bg-secondary";
+          textColor = "text-secondary";
+      }
       return (
-        <div className="w-full text-center">
-          <span className="max-w-[200px] truncate font-medium">
-            {format(new Date(row.getValue("createdAt")), "dd/MM/yyyy")}
-          </span>
+        <div className="w-full pr-5 text-center">
+          <Badge
+            variant="default"
+            className={`${bgColor} ${textColor} hover:${bgColor}`}
+          >
+            {row.getValue("status")}
+          </Badge>
         </div>
       );
     },
@@ -207,12 +115,42 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "inviteeRole",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Category"
+        className="justify-center"
+      />
+    ),
+    cell: ({ row, table }) => {
+      const category = userRoles.find(
+        (category) => category.value === row.getValue("inviteeRole")
+      );
+
+      if (!category) {
+        return null;
+      }
+
+      return (
+        <div className="w-full pr-5 text-center">
+          <Badge variant="default" className="hover:bg-${variant">
+            {category.label}
+          </Badge>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
     accessorKey: "invitationId",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
         title="Actions"
-        className="justify-end"
+        className="text-center"
       />
     ),
     cell: ({ row, table }) => {
@@ -222,57 +160,11 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
       return (
         <div
           className={cn(
-            "w-full flex items-center justify-end gap-2",
-            !isAcceptReject && "pr-10"
+            "w-full flex items-center justify-center gap-2",
+            !isAcceptReject
           )}
         >
-          <Dialog>
-            <DialogTrigger className="mt-0.5">
-              <Button
-                type="button"
-                variant={"secondary"}
-                size={"icon"}
-                className="bg-transparent w-8 h-8 p-1 m-0"
-              >
-                <Icons.mailResend className="w-8 h-8 text-info" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle className="text-base">
-                  Read the invitation
-                </DialogTitle>
-                <DialogDescription className="text-sm text-muted-foreground">
-                  Click to go to your email invitation
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter className="w-full justify-end">
-                <Button
-                  type="submit"
-                  size={"sm"}
-                  variant={"outline"}
-                  className="max-w-32"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  size={"sm"}
-                  variant={"default"}
-                  className="max-w-32 hover:bg-primary"
-                >
-                  Check Email
-                  {/* {deleteLoading && (
-                    <Icons.spinner
-                      className="mr-2 h-4 w-4 animate-spin"
-                      aria-hidden="true"
-                    />
-                  )} */}
-                  <span className="sr-only">Check Email</span>
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <ResendInvite invitationId={row.getValue("invitationId")} />
           {isAcceptReject && (
             <>
               <AcceptInvite invitationId={row.getValue("invitationId")} />
@@ -282,5 +174,6 @@ export const columns: ColumnDef<InvitationInfo.AsObject>[] = [
         </div>
       );
     },
+    enableSorting: false,
   },
 ];

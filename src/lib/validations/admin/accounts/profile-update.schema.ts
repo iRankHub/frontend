@@ -132,8 +132,8 @@ export const volunteerProfileSchemaStep2 = z.object({
 });
 
 export const twoFactorEnableSchema = z.object({
-    password: z.string().min(8, {
-        message: "Password must be atleast 8 characters long"
+    password: z.string().min(1, {
+        message: "Password must be atleast 1 characters long"
     }),
 });
 

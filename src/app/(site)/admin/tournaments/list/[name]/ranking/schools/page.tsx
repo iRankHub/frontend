@@ -1,6 +1,6 @@
 "use client";
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
-import Speakers from "@/components/pages/admin/tournaments/list/tournament-name/ranking/speakers";
+import Schools from "@/components/pages/admin/tournaments/list/tournament-name/ranking/schools";
 import TournamentMenuWrapper from "@/components/pages/admin/tournaments/list/tournament-name/tournament-menu-wrapper";
 import {
   Breadcrumb,
@@ -89,7 +89,7 @@ function Page({ params }: Iparms) {
             </Breadcrumb>
           </div>
           <TournamentMenuWrapper>
-            <Speakers />
+            <Schools tournamentId={Number(tournament?.tournamentId)} />
           </TournamentMenuWrapper>
         </>
       ) : (
