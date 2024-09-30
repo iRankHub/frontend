@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/providers/theme-provider";
 import ElectronInitializer from "./electron";
+import ServiceWorkerRegistration from "./registerSW";
 
 const rubik = Lato({
   weight: "400",
@@ -84,6 +85,7 @@ export default function RootLayout({
           <main className="min-h-screen h-full">{children}</main>
           <Toaster />
         </ThemeProvider>
+        <ServiceWorkerRegistration />
       </body>
     </html>
   );

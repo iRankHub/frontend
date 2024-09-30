@@ -57,10 +57,10 @@ function Page({ params }: Iparms) {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink
-                href="/admin/dashboard"
+                href="/schools/dashboard"
                 className="text-muted-foreground text-base"
               >
-                Admin
+                Schools
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator>
@@ -68,7 +68,7 @@ function Page({ params }: Iparms) {
             </BreadcrumbSeparator>
             <BreadcrumbItem>
               <BreadcrumbLink
-                href="/admin/tournaments/list"
+                href="/schools/tournaments/list"
                 className="text-muted-foreground text-base"
               >
                 Tournament

@@ -60,7 +60,7 @@ function Page({ params }: Iparms) {
                 href="/volunteers/dashboard"
                 className="text-muted-foreground text-base"
               >
-                Volunteer
+                Volunteers
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator>

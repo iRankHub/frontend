@@ -20,6 +20,8 @@ import {
     GetAllUsersRequest,
     GetAllUsersResponse,
     GetCountriesRequest,
+    GetStudentsBySchoolContactRequest,
+    GetStudentsBySchoolContactResponse,
     GetStudentsRequest,
     GetStudentsResponse,
     GetUserProfileRequest,
@@ -173,6 +175,29 @@ export const getStudents = async ({
         request.setPagesize(pageSize);
 
         userClient.getStudents(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const getStudentsBySchool = async ({
+    token,
+    page,
+    pageSize,
+    userID,
+}: GetAllUsers & { userID: number }): Promise<GetStudentsBySchoolContactResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new GetStudentsBySchoolContactRequest();
+        request.setToken(token);
+        request.setPage(page);
+        request.setPagesize(pageSize);
+        request.setUserid(userID);
+
+        userClient.getStudentsBySchoolContact(request, {}, (err, response) => {
             if (err) {
                 reject(err);
             } else {

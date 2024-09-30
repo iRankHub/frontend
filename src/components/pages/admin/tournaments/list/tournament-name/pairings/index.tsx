@@ -35,6 +35,7 @@ const PairingsTable: FC<PairingsTableProps> = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<string>("round 1");
+  const [isInitialLoadComplete, setIsInitialLoadComplete] = useState(false);
 
   const { originalData, setCurrentRound, setOriginalData, isSwapMade } =
     useTeamSwapStore((state) => ({
@@ -71,6 +72,9 @@ const PairingsTable: FC<PairingsTableProps> = ({
       }
     } finally {
       setLoadingRounds(prev => ({ ...prev, [round]: false }));
+      if (round === 1) {
+        setIsInitialLoadComplete(true);
+      }
     }
   };
 
@@ -200,6 +204,14 @@ const PairingsTable: FC<PairingsTableProps> = ({
       />
     );
   };
+
+  if (!isInitialLoadComplete) {
+    return (
+      <div className="flex justify-center items-center h-96 mt-40">
+        <Icons.spinner className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full rounded-md overflow-hidden">

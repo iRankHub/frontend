@@ -40,14 +40,17 @@ function Reports({}: Props) {
               defaultValue="schools"
               className="col-span-2 w-full flex flex-col items-center"
             >
-              <TabsList className="max-w-52 mx-auto">
-                <TabsTrigger value="schools">School</TabsTrigger>
-                <TabsTrigger value="provincial">Provincial</TabsTrigger>
-              </TabsList>
-              <TabsContent value="schools">
+              <div className="flex items-center gap-3">
+                <h4 className="text-sm font-medium">Financial Performance by : </h4>
+                <TabsList className="mx-auto">
+                  <TabsTrigger value="schools">School</TabsTrigger>
+                  <TabsTrigger value="provincial">Provincial</TabsTrigger>
+                </TabsList>
+              </div>
+              <TabsContent value="schools" className="w-full">
                 <SchoolsIncomeChart />
               </TabsContent>
-              <TabsContent value="provincial">
+              <TabsContent value="provincial" className="w-full">
                 <ProvincialChart />
               </TabsContent>
             </Tabs>

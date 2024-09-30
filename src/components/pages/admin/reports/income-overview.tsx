@@ -12,7 +12,7 @@ const archivo = Archivo({
 
 export default function IncomeOverview({}: Props) {
   return (
-    <div className="w-full">
+    <div className="w-full h-full">
       <h3
         className={cn("text-xl font-bold text-foreground", archivo.className)}
       >

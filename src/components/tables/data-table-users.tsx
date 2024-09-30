@@ -39,6 +39,7 @@ import { bulkApproveOrRejectUsers, bulkDeleteUsers } from "@/core/users/users";
 import { Icons } from "../icons";
 import { useToast } from "../ui/use-toast";
 import { ToastAction } from "../ui/toast";
+import { Loader2 } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -47,6 +48,8 @@ interface DataTableProps<TData, TValue> {
     table: TableType<TData>;
   }>;
 }
+
+type ActionType = "approve" | "reject" | "delete";
 
 export function DataTable<TData, TValue>({
   columns,
@@ -60,6 +63,14 @@ export function DataTable<TData, TValue>({
     []
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [loadingActions, setLoadingActions] = React.useState<
+    Record<ActionType, boolean>
+  >({
+    approve: false,
+    reject: false,
+    delete: false,
+  });
+  const [contextMenuOpen, setContextMenuOpen] = React.useState(false);
 
   const table = useReactTable({
     data,
@@ -91,6 +102,7 @@ export function DataTable<TData, TValue>({
     action: "approve" | "reject" | "delete"
   ) => {
     if (!user) return;
+    setLoadingActions((prev) => ({ ...prev, [action]: true }));
     const selectedRows = table
       .getFilteredSelectedRowModel()
       .rows.map((row) => row.original) as UserSummary.AsObject[];
@@ -103,7 +115,6 @@ export function DataTable<TData, TValue>({
     };
 
     if (action === "delete") {
-      // setUsers(users.filter((user) => !userIds.includes(user.userid)));
       bulkDeleteUsers(options)
         .then((res) => {
           if (res.success) {
@@ -139,7 +150,8 @@ export function DataTable<TData, TValue>({
       bulkApproveOrRejectUsers(options)
         .then((res) => {
           if (res.success) {
-            const formattedStatus = action === "approve" ? "approved" : "rejected";
+            const formattedStatus =
+              action === "approve" ? "approved" : "rejected";
             selectedRows.forEach((row) => {
               updateUserStatus(row.userid, formattedStatus);
             });
@@ -173,13 +185,6 @@ export function DataTable<TData, TValue>({
     }
   };
 
-  // const hasPendingSelectedRows = React.useMemo(() => {
-  //   const selectedRows = table.getFilteredSelectedRowModel().rows.map(
-  //     (row) => row.original
-  //   ) as UserSummary.AsObject[];
-  //   return selectedRows.some(row => row.status === 'pending');
-  // }, [table, rowSelection]);
-
   const allSelectedRowsArePending = React.useMemo(() => {
     const selectedRows = table
       .getFilteredSelectedRowModel()
@@ -193,12 +198,34 @@ export function DataTable<TData, TValue>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [table, rowSelection]);
 
+  const ActionMenuItem: React.FC<{
+    action: ActionType;
+    icon: React.ReactNode;
+    label: string;
+  }> = ({ action, icon, label }) => (
+    <ContextMenuItem
+      onClick={(e) => {
+        e.preventDefault();
+        handleContextMenuAction(action);
+      }}
+      className="flex items-center gap-2"
+      disabled={loadingActions[action]}
+    >
+      {loadingActions[action] ? (
+        <Loader2 className="w-4 h-4 animate-spin" />
+      ) : (
+        icon
+      )}
+      {label}
+    </ContextMenuItem>
+  );
+
   return (
     <div>
       {DataTableToolbar && <DataTableToolbar table={table} />}
       <div className="w-full bg-background p-5">
         <div className="rounded-md border mb-10">
-          <ContextMenu>
+          <ContextMenu onOpenChange={setContextMenuOpen}>
             <ContextMenuTrigger className="w-full">
               <Table>
                 <TableHeader>
@@ -250,34 +277,28 @@ export function DataTable<TData, TValue>({
               </Table>
             </ContextMenuTrigger>
             {allSelectedRowsArePending && (
-              <ContextMenuContent>
+              <ContextMenuContent onCloseAutoFocus={(e) => e.preventDefault()}>
                 <ContextMenuItem
                   disabled
                   className="font-semibold text-foreground disabled:opacity-100"
                 >
                   Actions (selected)
                 </ContextMenuItem>
-                <ContextMenuItem
-                  onClick={() => handleContextMenuAction("approve")}
-                  className="flex items-center gap-2"
-                >
-                  <Icons.addCircle className="w-4 h-4" />
-                  Approve
-                </ContextMenuItem>
-                <ContextMenuItem
-                  onClick={() => handleContextMenuAction("reject")}
-                  className="flex items-center gap-2"
-                >
-                  <Icons.circleX className="w-4 h-4" />
-                  Reject
-                </ContextMenuItem>
-                <ContextMenuItem
-                  onClick={() => handleContextMenuAction("delete")}
-                  className="flex items-center gap-2"
-                >
-                  <Icons.trash2 className="w-4 h-4" />
-                  Delete
-                </ContextMenuItem>
+                <ActionMenuItem
+                  action="approve"
+                  icon={<Icons.addCircle className="w-4 h-4" />}
+                  label="Approve"
+                />
+                <ActionMenuItem
+                  action="reject"
+                  icon={<Icons.circleX className="w-4 h-4" />}
+                  label="Reject"
+                />
+                <ActionMenuItem
+                  action="delete"
+                  icon={<Icons.trash2 className="w-4 h-4" />}
+                  label="Delete"
+                />
               </ContextMenuContent>
             )}
           </ContextMenu>

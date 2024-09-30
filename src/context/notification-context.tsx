@@ -46,7 +46,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
     // handle initial notifications fetch
     getUnreadNotifications({ token: user.token, user_id: user.userId }).then(
       (notifications) => {
-        console.log("Initial notifications fetched:", notifications);
+        console.log("Initial notifications fetchedsss:", notifications); 
         setNotifications(notifications);
       }
     );
@@ -64,7 +64,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
     console.log("Subscribed to notifications:", stream);
 
     stream.on("status", (status) => {
-      console.log("Notification stream status:", status);
+      // console.log("Notification stream status:", status);
     });
 
     stream.on("data", (response) => {

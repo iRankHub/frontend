@@ -12,10 +12,11 @@ import { Table } from "@tanstack/react-table";
 import AddTeamForm from "./add-team-form";
 import { useEffect, useState } from "react";
 import { Student } from "@/lib/grpc/proto/user_management/users_pb";
-import { getStudents, getUserProfile } from "@/core/users/users";
+import { getStudents, getStudentsBySchool, getUserProfile } from "@/core/users/users";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { GetSchoolsType } from "@/types/user_management/schools";
 import { Team } from "@/lib/grpc/proto/debate_management/debate_pb";
+import { GetAllUsers } from "@/types/user_management/users";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -30,22 +31,15 @@ export function DataTableToolbar<TData>({
 
   useEffect(() => {
     if (!user) return;
-    const options: GetSchoolsType = {
+    const options: GetAllUsers & { userID: number } = {
       pageSize: 1000,
       page: 1,
       token: user.token,
+      userID: user.userId,
     };
-    getStudents({ ...options })
+    getStudentsBySchool({ ...options })
       .then(async (res) => {
-        const schoolsProfile = await getUserProfile({
-          token: user.token,
-          userID: user.userId,
-        });
-
-        const schoolStudents = res.studentsList.filter(
-          (student) => student.schoolname === schoolsProfile.profile?.schooldetails?.schoolname
-        );
-        setAllStudents(schoolStudents);
+        setAllStudents(res.studentsList);
       })
       .catch((err) => {
         console.error(err.message);

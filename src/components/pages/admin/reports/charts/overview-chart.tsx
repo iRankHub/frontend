@@ -42,9 +42,9 @@ const chartConfig = {
 
 export function OverviewChart() {
   return (
-    <Card className="border-none w-full">
+    <Card className="border-none w-full h-full">
       <CardContent className="w-full border-none">
-        <ChartContainer config={chartConfig} className="border-none w-auto h-auto">
+        <ChartContainer config={chartConfig} className="border-none w-full h-full">
           <LineChart
             accessibilityLayer
             data={chartData}

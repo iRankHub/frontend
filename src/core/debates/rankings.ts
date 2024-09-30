@@ -7,8 +7,10 @@ import {
     SchoolPerformanceResponse,
     SchoolRanking,
     StudentRanking,
+    TeamRanking,
     TournamentRankingRequest,
-    TournamentSchoolRankingRequest
+    TournamentSchoolRankingRequest,
+    TournamentTeamsRankingRequest
 } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { debateClient } from "../grpc-clients";
 
@@ -158,6 +160,34 @@ export const getSchoolOverallPerformance = async ({
                 reject(err);
             } else {
                 resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const getTournamentTeamsRanking = async ({
+    token,
+    tournament_id,
+    page,
+    page_size,
+}: {
+    token: string;
+    tournament_id: number;
+    page: number;
+    page_size: number;
+}): Promise<TeamRanking.AsObject[]> => {
+    return new Promise((resolve, reject) => {
+        const request = new TournamentTeamsRankingRequest();
+        request.setToken(token);
+        request.setTournamentId(tournament_id);
+        request.setPage(page);
+        request.setPageSize(page_size);
+
+        debateClient.getTournamentTeamsRanking(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject().rankingsList);
             }
         });
     });
