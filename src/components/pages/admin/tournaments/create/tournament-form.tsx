@@ -293,7 +293,6 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                               selected={field.value}
                               onSelect={field.onChange}
                               initialFocus
-                              fromDate={new Date()}
                               toDate={form.watch("endDate")}
                             />
                           </PopoverContent>
