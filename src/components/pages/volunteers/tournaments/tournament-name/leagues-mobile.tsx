@@ -41,7 +41,7 @@ function LeaguesMobile() {
         <div className="flex items-center gap-3 mt-2 h-auto">
           <Command className="rounded-md w-full border">
             <Input
-              placeholder="Search leagues..."
+              placeholder="Search menu..."
               className="ring-0 h-8"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}

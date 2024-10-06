@@ -89,7 +89,7 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
   const [districts, setDisctricts] = React.useState<string[]>(Districts());
   const leagues = JSON.parse(row.original.details);
   const [selectedProvinces, setSelectedProvinces] = React.useState<string[]>(
-    row.original.leagueType === 0 && leagues.provinces,
+    row.original.leagueType === 0 && leagues.provinces
   );
   const [selectedDistricts, setSelectedDistricts] = React.useState<string[]>(
     row.original.leagueType === 0 && leagues.districts
@@ -270,7 +270,9 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
                 ? leagues.provinces.length
                 : leagues.continents.length}
             </span>
-            <p className="text-sm">Province(s)</p>
+            <p className="text-sm">
+              {leagueType() === "Local" ? <>Province(s)</> : <>Continent(s)</>}
+            </p>
           </div>
           <div className="flex flex-col gap-1 justify-end">
             <span className="text-muted-text text-sm dark:text-foreground">
@@ -278,7 +280,9 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
                 ? leagues.districts.length
                 : leagues.countries.length}
             </span>
-            <p className="text-sm">District(s)</p>
+            <p className="text-sm">
+              {leagueType() === "Local" ? <>District(s)</> : <>Country(s)</>}
+            </p>
           </div>
         </div>
         <Sheet

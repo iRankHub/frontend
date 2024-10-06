@@ -440,7 +440,7 @@ function TournamentUpdateForm({ tournament }: Props) {
                   <FormLabel className="text-foreground font-medium">
                     Tournament Fees
                   </FormLabel>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-3 gap-2 mt-2">
                     <FormField
                       control={form.control}
                       name="fees_currency"

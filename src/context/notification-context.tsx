@@ -8,7 +8,7 @@ import {
 import { SubscribeRequest } from "@/lib/grpc/proto/notification/notification_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { useNotificationStore } from "@/stores/notifications/notifications.store";
-import React, { createContext, useContext, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useCallback } from "react";
 
 interface NotificationContextType {
   subscribeToNotifications: (userId: number) => void;
@@ -38,24 +38,26 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   const { addNotification, setNotifications } = useNotificationStore();
   const { user } = useUserStore();
 
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
+  const handleInitialNotifications = useCallback(async () => {
+    if (!user) return;
 
-    // handle initial notifications fetch
-    getUnreadNotifications({ token: user.token, user_id: user.userId }).then(
-      (notifications) => {
-        console.log("Initial notifications fetched:", notifications);
-        setNotifications(notifications);
-      }
-    );
+    try {
+      const notifications = await getUnreadNotifications({
+        token: user.token,
+        user_id: user.userId,
+      });
+      setNotifications(notifications);
+    } catch (error) {
+      console.error("Failed to fetch initial notifications:", error);
+    }
   }, [user, setNotifications]);
 
   useEffect(() => {
-    if (!user) {
-      return;
-    }
+    handleInitialNotifications();
+  }, [handleInitialNotifications]);
+
+  const handleSubscription = useCallback(() => {
+    if (!user) return;
 
     const request = new SubscribeRequest();
     request.setUserId(user.userId);
@@ -69,33 +71,42 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
 
     stream.on("data", (response) => {
       const newNotification = response.getNotification();
-      // Handle the new notification (e.g., update UI, show a toast message)
-      console.log("New notification received:", newNotification);
-
       if (newNotification) {
         addNotification(newNotification.toObject());
       }
     });
 
-    stream.on("error", (error) => {
-      console.error("Error in notification stream:", error);
-      // Implement reconnection logic here
-    });
+    const handleError = (error: Error) => {
+      console.error("Notification stream error:", error);
+      // Implement reconnection logic
+      setTimeout(() => handleSubscription(), 5000); // Retry after 5 seconds
+    };
+
+    stream.on("error", handleError);
 
     stream.on("end", () => {
       console.log("Notification stream ended");
-      // Implement reconnection logic here
+      // Implement reconnection logic
+      setTimeout(() => handleSubscription(), 5000); // Retry after 5 seconds
     });
 
     return () => {
-      // Clean up the subscription when the component unmounts
       stream.cancel();
     };
   }, [user, addNotification]);
 
+  useEffect(() => {
+    const unsubscribe = handleSubscription();
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, [handleSubscription]);
+
   const contextValue: NotificationContextType = {
-    subscribeToNotifications: (userId: number) =>
-      subscribeToNotifications({ userId }),
+    subscribeToNotifications: useCallback(
+      (userId: number) => subscribeToNotifications({ userId }),
+      []
+    ),
   };
 
   return (

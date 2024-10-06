@@ -32,11 +32,8 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "../ui/context-menu";
-import { useUsersStore } from "@/stores/admin/users/users.store";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { UserSummary } from "@/lib/grpc/proto/user_management/users_pb";
-import { bulkApproveOrRejectUsers } from "@/core/users/users";
-import { Icons } from "../icons";
 import { useToast } from "../ui/use-toast";
 import { ToastAction } from "../ui/toast";
 import {
@@ -45,6 +42,7 @@ import {
 } from "@/core/tournament/list";
 import { useInvitationsStore } from "@/stores/admin/tournaments/invitations.store";
 import { InvitationInfo } from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import { CheckCheck, Loader2, RefreshCw, XIcon } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -53,6 +51,8 @@ interface DataTableProps<TData, TValue> {
     table: TableType<TData>;
   }>;
 }
+
+type ActionType = "accepted" | "rejected" | "resend";
 
 export function DataTable<TData, TValue>({
   columns,
@@ -66,6 +66,14 @@ export function DataTable<TData, TValue>({
     []
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [loadingActions, setLoadingActions] = React.useState<
+    Record<ActionType, boolean>
+  >({
+    accepted: false,
+    rejected: false,
+    resend: false,
+  });
+  const [contextMenuOpen, setContextMenuOpen] = React.useState(false);
 
   const table = useReactTable({
     data,
@@ -97,6 +105,7 @@ export function DataTable<TData, TValue>({
     action: "accepted" | "rejected" | "resend"
   ) => {
     if (!user) return;
+    setLoadingActions((prev) => ({ ...prev, [action]: true }));
     const selectedRows = table
       .getFilteredSelectedRowModel()
       .rows.map((row) => row.original) as InvitationInfo.AsObject[];
@@ -135,6 +144,10 @@ export function DataTable<TData, TValue>({
               </ToastAction>
             ),
           });
+        })
+        .finally(() => {
+          setLoadingActions((prev) => ({ ...prev, [action]: false }));
+          setContextMenuOpen(false);
         });
     } else {
       bulkUpdateInvitation(options)
@@ -169,16 +182,13 @@ export function DataTable<TData, TValue>({
         })
         .catch((err) => {
           console.error(err.message);
+        })
+        .finally(() => {
+          setLoadingActions((prev) => ({ ...prev, [action]: false }));
+          setContextMenuOpen(false);
         });
     }
   };
-
-  // const hasPendingSelectedRows = React.useMemo(() => {
-  //   const selectedRows = table.getFilteredSelectedRowModel().rows.map(
-  //     (row) => row.original
-  //   ) as UserSummary.AsObject[];
-  //   return selectedRows.some(row => row.status === 'pending');
-  // }, [table, rowSelection]);
 
   const allSelectedRowsArePending = React.useMemo(() => {
     const selectedRows = table
@@ -191,12 +201,34 @@ export function DataTable<TData, TValue>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [table, rowSelection]);
 
+  const ActionMenuItem: React.FC<{
+    action: ActionType;
+    icon: React.ReactNode;
+    label: string;
+  }> = ({ action, icon, label }) => (
+    <ContextMenuItem
+      onClick={(e) => {
+        e.preventDefault();
+        handleContextMenuAction(action);
+      }}
+      className="flex items-center gap-2"
+      disabled={loadingActions[action]}
+    >
+      {loadingActions[action] ? (
+        <Loader2 className="w-4 h-4 animate-spin" />
+      ) : (
+        icon
+      )}
+      {label}
+    </ContextMenuItem>
+  );
+
   return (
     <div>
       {DataTableToolbar && <DataTableToolbar table={table} />}
       <div className="w-full bg-background p-5">
         <div className="rounded-md border mb-10">
-          <ContextMenu>
+          <ContextMenu onOpenChange={setContextMenuOpen}>
             <ContextMenuTrigger className="w-full">
               <Table>
                 <TableHeader>
@@ -255,27 +287,21 @@ export function DataTable<TData, TValue>({
                 >
                   Actions (selected)
                 </ContextMenuItem>
-                <ContextMenuItem
-                  onClick={() => handleContextMenuAction("accepted")}
-                  className="flex items-center gap-2"
-                >
-                  <Icons.addCircle className="w-4 h-4" />
-                  Accept
-                </ContextMenuItem>
-                <ContextMenuItem
-                  onClick={() => handleContextMenuAction("rejected")}
-                  className="flex items-center gap-2"
-                >
-                  <Icons.circleX className="w-4 h-4" />
-                  Reject
-                </ContextMenuItem>
-                <ContextMenuItem
-                  onClick={() => handleContextMenuAction("resend")}
-                  className="flex items-center gap-2"
-                >
-                  <Icons.trash2 className="w-4 h-4" />
-                  Resend
-                </ContextMenuItem>
+                <ActionMenuItem
+                  action="accepted"
+                  icon={<CheckCheck className="w-4 h-4" />}
+                  label="Accept"
+                />
+                <ActionMenuItem
+                  action="rejected"
+                  icon={<XIcon className="w-4 h-4" />}
+                  label="Reject"
+                />
+                <ActionMenuItem
+                  action="resend"
+                  icon={<RefreshCw className="w-4 h-4" />}
+                  label="Resend"
+                />
               </ContextMenuContent>
             )}
           </ContextMenu>

@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import { ContentLayout } from "@/components/layout/volunteer-panel/content-layout";
 import {
   Breadcrumb,
@@ -9,7 +10,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Slash } from "lucide-react";
-import React, { useEffect, useState } from "react";
 import { withAuth } from "@/stores/auth/middleware.store";
 import { Roles, useUserStore } from "@/stores/auth/auth.store";
 import Overview from "@/components/pages/volunteers/dashboard/overview";
@@ -19,15 +19,15 @@ import { PerformanceTrendChart } from "@/components/pages/volunteers/dashboard/c
 import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 import { getUserProfile } from "@/core/users/users";
 
-const page = withAuth(() => {
+const Page = withAuth(() => {
   return <Dashboard />;
 }, [Roles.VOLUNTEER]);
 
 function Dashboard() {
   const { user } = useUserStore((state) => state);
-  const [currentUser, setCurrentUser] = useState<
-    UserProfile.AsObject | undefined
-  >(undefined);
+  const [currentUser, setCurrentUser] = useState<UserProfile.AsObject | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   const handleGreetMessage = () => {
     const date = new Date();
@@ -45,17 +45,51 @@ function Dashboard() {
   useEffect(() => {
     if (!user) return;
 
+    setIsLoading(true);
+    setHasError(false);
+
     getUserProfile({
       userID: user.userId,
       token: user.token,
     })
       .then((res) => {
         setCurrentUser(res.profile);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.error(err.message);
+        setIsLoading(false);
+        setHasError(true);
       });
   }, [user]);
+
+  if (isLoading) {
+    return (
+      <ContentLayout title="dashboard">
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center">
+            <h2 className="text-2xl font-semibold mb-4">Loading...</h2>
+            <p>Please wait while we fetch your information.</p>
+          </div>
+        </div>
+      </ContentLayout>
+    );
+  }
+
+  if (hasError || !currentUser) {
+    return (
+      <ContentLayout title="dashboard">
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center">
+            <h2 className="text-2xl font-semibold mb-4">No Information Available</h2>
+            <p className="mb-2">We couldn{`'`}t fetch your volunteer information.</p>
+            <p>This could be because you{`'`}re new or there was an error in our system.</p>
+          </div>
+        </div>
+      </ContentLayout>
+    );
+  }
+
   return (
     <ContentLayout title="dashboard">
       <header>
@@ -79,7 +113,7 @@ function Dashboard() {
         </div>
         <div className="w-full mt-2">
           <h1 className="text-xl text-foreground font-semibold capitalize">
-            {handleGreetMessage()}, {currentUser?.name}!
+            {handleGreetMessage()}, {currentUser.name}!
           </h1>
           <span className="text-sm text-muted-foreground">
             Hope you have a good day
@@ -106,4 +140,4 @@ function Dashboard() {
   );
 }
 
-export default page;
+export default Page;

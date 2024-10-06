@@ -1,6 +1,7 @@
 "use client";
 
 import { Icons } from "@/components/icons";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
 
@@ -11,6 +12,8 @@ interface OverviewProps {
   upcomingTournaments: number;
   totalTournamentsPercentageChange: string;
   upcomingTournamentsPercentageChange: string;
+  newRegistrationsPercentageChange: string;
+  approvedUsersPercentageChange: string;
 }
 
 function Overview({
@@ -20,7 +23,30 @@ function Overview({
   upcomingTournaments,
   totalTournamentsPercentageChange,
   upcomingTournamentsPercentageChange,
+  newRegistrationsPercentageChange,
+  approvedUsersPercentageChange,
 }: OverviewProps) {
+  const changeColorBasedOnPercentage = (percentage: string) => {
+    if (percentage.includes("+")) {
+      return {
+        color: "text-success-foreground",
+        textWithNoSign: percentage.replace("+", ""),
+        background: "bg-accent",
+      };
+    } else if (percentage.includes("-")) {
+      return {
+        color: "text-destructive",
+        textWithNoSign: percentage.replace("-", ""),
+        background: "bg-destructive",
+      };
+    } else {
+      return {
+        color: "text-muted-text",
+        textWithNoSign: percentage,
+        background: "bg-accent",
+      };
+    }
+  };
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-x gap-4 px-4 py-6 bg-background rounded-lg border-2 border-muted mt-5">
       <Link href={"/admin/users"}>
@@ -29,9 +55,32 @@ function Overview({
             <h3 className="font-semibold text-sm capitalize text-foreground">
               Number of users
             </h3>
-            <div className="flex items-center bg-destructive-foreground px-0.5 rounded-full">
-              <Icons.chevronUp size={14} className="text-success-foreground" />
-              <small className="text-xs text-success-foreground">10.0%</small>
+            <div
+              className={cn(
+                "flex items-center bg-destructive-foreground px-0.5 rounded-full",
+                changeColorBasedOnPercentage(approvedUsersPercentageChange)
+                  .background
+              )}
+            >
+              <Icons.chevronUp
+                size={14}
+                className={cn(
+                  changeColorBasedOnPercentage(approvedUsersPercentageChange)
+                    .color
+                )}
+              />
+              <small
+                className={cn(
+                  "text-xs",
+                  changeColorBasedOnPercentage(approvedUsersPercentageChange)
+                    .color
+                )}
+              >
+                {
+                  changeColorBasedOnPercentage(approvedUsersPercentageChange)
+                    .textWithNoSign
+                }
+              </small>
             </div>
           </div>
           <p className="text-xl font-bold text-primary tracking-widest">
@@ -49,9 +98,32 @@ function Overview({
             <h3 className="font-semibold text-sm capitalize text-foreground">
               New user registrations
             </h3>
-            <div className="flex items-center bg-destructive/10 rounded-full px-0.5">
-              <Icons.chevronDown size={14} className="text-destructive" />
-              <small className="text-xs text-destructive">3.0%</small>
+            <div
+              className={cn(
+                "flex items-center rounded-full px-0.5",
+                changeColorBasedOnPercentage(newRegistrationsPercentageChange)
+                  .background
+              )}
+            >
+              <Icons.chevronDown
+                size={14}
+                className={cn(
+                  changeColorBasedOnPercentage(newRegistrationsPercentageChange)
+                    .color
+                )}
+              />
+              <small
+                className={cn(
+                  "text-xs",
+                  changeColorBasedOnPercentage(newRegistrationsPercentageChange)
+                    .color
+                )}
+              >
+                {
+                  changeColorBasedOnPercentage(newRegistrationsPercentageChange)
+                    .textWithNoSign
+                }
+              </small>
             </div>
           </div>
           <p className="text-xl font-bold text-primary tracking-widest">
@@ -70,9 +142,24 @@ function Overview({
               Number of Tournaments
             </h3>
             <div className="flex items-center bg-destructive-foreground px-0.5 rounded-full">
-              <Icons.chevronUp size={14} className="text-success-foreground" />
-              <small className="text-xs text-success-foreground">
-                {totalTournamentsPercentageChange}
+              <Icons.chevronUp
+                size={14}
+                className={cn(
+                  changeColorBasedOnPercentage(totalTournamentsPercentageChange)
+                    .color
+                )}
+              />
+              <small
+                className={cn(
+                  `text-xs`,
+                  changeColorBasedOnPercentage(totalTournamentsPercentageChange)
+                    .color
+                )}
+              >
+                {
+                  changeColorBasedOnPercentage(totalTournamentsPercentageChange)
+                    .textWithNoSign
+                }
               </small>
             </div>
           </div>
@@ -92,9 +179,27 @@ function Overview({
               Upcoming Tournaments
             </h3>
             <div className="flex items-center bg-destructive-foreground px-0.5 rounded-full">
-              <Icons.chevronUp size={14} className="text-success-foreground" />
-              <small className="text-xs text-success-foreground">
-                {upcomingTournamentsPercentageChange}
+              <Icons.chevronUp
+                size={14}
+                className={cn(
+                  changeColorBasedOnPercentage(
+                    upcomingTournamentsPercentageChange
+                  ).color
+                )}
+              />
+              <small
+                className={cn(
+                  "text-xs",
+                  changeColorBasedOnPercentage(
+                    upcomingTournamentsPercentageChange
+                  ).color
+                )}
+              >
+                {
+                  changeColorBasedOnPercentage(
+                    upcomingTournamentsPercentageChange
+                  ).textWithNoSign
+                }
               </small>
             </div>
           </div>

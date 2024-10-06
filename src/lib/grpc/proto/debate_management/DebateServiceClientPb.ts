@@ -985,6 +985,49 @@ export class DebateServiceClient {
     this.methodDescriptorGetStudentOverallPerformance);
   }
 
+  methodDescriptorGetStudentTournamentStats = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetStudentTournamentStats',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.StudentTournamentStatsRequest,
+    debate_management_debate_pb.StudentTournamentStatsResponse,
+    (request: debate_management_debate_pb.StudentTournamentStatsRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.StudentTournamentStatsResponse.deserializeBinary
+  );
+
+  getStudentTournamentStats(
+    request: debate_management_debate_pb.StudentTournamentStatsRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.StudentTournamentStatsResponse>;
+
+  getStudentTournamentStats(
+    request: debate_management_debate_pb.StudentTournamentStatsRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.StudentTournamentStatsResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.StudentTournamentStatsResponse>;
+
+  getStudentTournamentStats(
+    request: debate_management_debate_pb.StudentTournamentStatsRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.StudentTournamentStatsResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetStudentTournamentStats',
+        request,
+        metadata || {},
+        this.methodDescriptorGetStudentTournamentStats,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetStudentTournamentStats',
+    request,
+    metadata || {},
+    this.methodDescriptorGetStudentTournamentStats);
+  }
+
   methodDescriptorGetTournamentTeamsRanking = new grpcWeb.MethodDescriptor(
     '/debate_management.DebateService/GetTournamentTeamsRanking',
     grpcWeb.MethodType.UNARY,

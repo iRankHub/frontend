@@ -1844,3 +1844,63 @@ export namespace SchoolPerformanceData {
   }
 }
 
+export class StudentTournamentStatsRequest extends jspb.Message {
+  getStudentId(): number;
+  setStudentId(value: number): StudentTournamentStatsRequest;
+
+  getToken(): string;
+  setToken(value: string): StudentTournamentStatsRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): StudentTournamentStatsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: StudentTournamentStatsRequest): StudentTournamentStatsRequest.AsObject;
+  static serializeBinaryToWriter(message: StudentTournamentStatsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): StudentTournamentStatsRequest;
+  static deserializeBinaryFromReader(message: StudentTournamentStatsRequest, reader: jspb.BinaryReader): StudentTournamentStatsRequest;
+}
+
+export namespace StudentTournamentStatsRequest {
+  export type AsObject = {
+    studentId: number,
+    token: string,
+  }
+}
+
+export class StudentTournamentStatsResponse extends jspb.Message {
+  getTotalTournaments(): number;
+  setTotalTournaments(value: number): StudentTournamentStatsResponse;
+
+  getTotalTournamentsChange(): string;
+  setTotalTournamentsChange(value: string): StudentTournamentStatsResponse;
+
+  getAttendedTournaments(): number;
+  setAttendedTournaments(value: number): StudentTournamentStatsResponse;
+
+  getAttendedTournamentsChange(): string;
+  setAttendedTournamentsChange(value: string): StudentTournamentStatsResponse;
+
+  getUpcomingTournaments(): number;
+  setUpcomingTournaments(value: number): StudentTournamentStatsResponse;
+
+  getUpcomingTournamentsChange(): string;
+  setUpcomingTournamentsChange(value: string): StudentTournamentStatsResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): StudentTournamentStatsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: StudentTournamentStatsResponse): StudentTournamentStatsResponse.AsObject;
+  static serializeBinaryToWriter(message: StudentTournamentStatsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): StudentTournamentStatsResponse;
+  static deserializeBinaryFromReader(message: StudentTournamentStatsResponse, reader: jspb.BinaryReader): StudentTournamentStatsResponse;
+}
+
+export namespace StudentTournamentStatsResponse {
+  export type AsObject = {
+    totalTournaments: number,
+    totalTournamentsChange: string,
+    attendedTournaments: number,
+    attendedTournamentsChange: string,
+    upcomingTournaments: number,
+    upcomingTournamentsChange: string,
+  }
+}
+

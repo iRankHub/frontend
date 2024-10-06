@@ -50,7 +50,7 @@ export function ProvincialChart() {
       <CardContent>
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[150px] w-[400px]"
+          className="aspect-auto h-[150px] w-full"
         >
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />

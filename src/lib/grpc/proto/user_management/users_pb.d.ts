@@ -1835,3 +1835,57 @@ export namespace GetSchoolIDsByNamesResponse {
   }
 }
 
+export class GetStudentsBySchoolContactRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): GetStudentsBySchoolContactRequest;
+
+  getUserid(): number;
+  setUserid(value: number): GetStudentsBySchoolContactRequest;
+
+  getPage(): number;
+  setPage(value: number): GetStudentsBySchoolContactRequest;
+
+  getPagesize(): number;
+  setPagesize(value: number): GetStudentsBySchoolContactRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetStudentsBySchoolContactRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetStudentsBySchoolContactRequest): GetStudentsBySchoolContactRequest.AsObject;
+  static serializeBinaryToWriter(message: GetStudentsBySchoolContactRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetStudentsBySchoolContactRequest;
+  static deserializeBinaryFromReader(message: GetStudentsBySchoolContactRequest, reader: jspb.BinaryReader): GetStudentsBySchoolContactRequest;
+}
+
+export namespace GetStudentsBySchoolContactRequest {
+  export type AsObject = {
+    token: string,
+    userid: number,
+    page: number,
+    pagesize: number,
+  }
+}
+
+export class GetStudentsBySchoolContactResponse extends jspb.Message {
+  getStudentsList(): Array<Student>;
+  setStudentsList(value: Array<Student>): GetStudentsBySchoolContactResponse;
+  clearStudentsList(): GetStudentsBySchoolContactResponse;
+  addStudents(value?: Student, index?: number): Student;
+
+  getTotalcount(): number;
+  setTotalcount(value: number): GetStudentsBySchoolContactResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetStudentsBySchoolContactResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetStudentsBySchoolContactResponse): GetStudentsBySchoolContactResponse.AsObject;
+  static serializeBinaryToWriter(message: GetStudentsBySchoolContactResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetStudentsBySchoolContactResponse;
+  static deserializeBinaryFromReader(message: GetStudentsBySchoolContactResponse, reader: jspb.BinaryReader): GetStudentsBySchoolContactResponse;
+}
+
+export namespace GetStudentsBySchoolContactResponse {
+  export type AsObject = {
+    studentsList: Array<Student.AsObject>,
+    totalcount: number,
+  }
+}
+

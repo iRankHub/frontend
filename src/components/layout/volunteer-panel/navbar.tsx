@@ -22,6 +22,8 @@ import {
 import SidePanel, { Panelheader } from "./side-panel";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { ThemeToggler } from "@/components/ui/switch-sun";
+import Notifications from "./notifications";
+import { useNotificationStore } from "@/stores/notifications/notifications.store";
 
 interface NavbarProps {
   title: string;
@@ -29,6 +31,7 @@ interface NavbarProps {
 
 export function Navbar({ title }: NavbarProps) {
   const sidebar = useStore(useSidebarToggle, (state) => state);
+  const { notifications } = useNotificationStore();
   return (
     <header className="sticky top-0 z-10 w-full bg-background/95 shadow backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:shadow-secondary">
       <div className="mx-4 flex h-14 items-center gap-10">
@@ -46,7 +49,7 @@ export function Navbar({ title }: NavbarProps) {
           </Command>
         </div>
         <div className="flex flex-1 items-center space-x-3 justify-end">
-          <ThemeToggler className="bg-muted dark:bg-primary" />
+          <ThemeToggler className="bg-muted dark:bg-[#272A2F]" />
           {/* <ModeToggle /> */}
           <DropdownMenu>
             <TooltipProvider disableHoverableContent>
@@ -73,7 +76,7 @@ export function Navbar({ title }: NavbarProps) {
                             <div className="flex items-center gap-2">
                               <h3 className="text- font-bold">Notifications</h3>
                               <span className="w-5 h-5 bg-primary rounded-full text-sm flex items-center justify-center text-white font-bold">
-                                2
+                                {notifications.length}
                               </span>
                             </div>
                             <Button
@@ -85,7 +88,9 @@ export function Navbar({ title }: NavbarProps) {
                             </Button>
                           </div>
                         </Panelheader>
-                        <div className="w-full h-[calc(100%_-_70px)] p-5 flex flex-col"></div>
+                        <div className="w-full h-[calc(100%_-_70px)] flex flex-col">
+                          <Notifications />
+                        </div>
                       </SidePanel>
                     </Sheet>
                   </DropdownMenuTrigger>

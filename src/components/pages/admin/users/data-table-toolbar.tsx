@@ -43,7 +43,7 @@ export function DataTableToolbar<TData>({
   const [sheetOpen, setSheetOpen] = useState<boolean>();
 
   return (
-    <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between flex-wrap pb-2 md:pb-0 bg-brown">
+    <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between flex-wrap pb-2 bg-brown">
       <div className="flex flex-1 items-center space-x-3 p-5 py-4">
         <Input
           placeholder="Search names..."
@@ -78,7 +78,7 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <div className="flex items-center gap-1 mx-5">
+      <div className="flex items-center gap-1 mr-5">
         <Sheet onOpenChange={setSheetOpen} open={sheetOpen} modal>
           <Dialog onOpenChange={setDialogOpen} open={dialogOpen}>
             <DialogTrigger>

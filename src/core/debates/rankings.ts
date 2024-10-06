@@ -7,10 +7,15 @@ import {
     SchoolPerformanceResponse,
     SchoolRanking,
     StudentRanking,
+    StudentTournamentStatsRequest,
+    StudentTournamentStatsResponse,
+    TeamRanking,
     TournamentRankingRequest,
-    TournamentSchoolRankingRequest
+    TournamentSchoolRankingRequest,
+    TournamentTeamsRankingRequest
 } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { debateClient } from "../grpc-clients";
+import { GetTournamentStatsRequest, GetTournamentStatsResponse } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 
 export const getTournamentStudentRanking = async ({
     token,
@@ -90,6 +95,28 @@ export const getStudentOverallPerformance = async ({
     });
 }
 
+export const getStudentTournamentStats = async ({
+    student_id,
+    token
+}: {
+    student_id: number;
+    token: string;
+}): Promise<StudentTournamentStatsResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new StudentTournamentStatsRequest();
+        request.setToken("v2.public.eyJleHAiOjE3Mjg4Mjk4NjIsInVzZXJfZW1haWwiOiJkZXN5am9obmpvaG5AZ21haWwuY29tIiwidXNlcl9pZCI6MjgsInVzZXJfbmFtZSI6ImRlc3kgam9obiIsInVzZXJfcm9sZSI6InN0dWRlbnQifRvbKjTb2ywJRMXUuYZOwTaP1hBQ7_x0LhvI3PJDHGlJbbd2Lk2EvzdYokIvR5wpYnm4vs9_Bmnn9LGXtibHcgY.bnVsbA");
+        request.setStudentId(student_id);
+
+        debateClient.getStudentTournamentStats(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        })
+    });
+}
+
 // schools
 export const getTournamentSchoolRanking = async ({
     token,
@@ -158,6 +185,34 @@ export const getSchoolOverallPerformance = async ({
                 reject(err);
             } else {
                 resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const getTournamentTeamsRanking = async ({
+    token,
+    tournament_id,
+    page,
+    page_size,
+}: {
+    token: string;
+    tournament_id: number;
+    page: number;
+    page_size: number;
+}): Promise<TeamRanking.AsObject[]> => {
+    return new Promise((resolve, reject) => {
+        const request = new TournamentTeamsRankingRequest();
+        request.setToken(token);
+        request.setTournamentId(tournament_id);
+        request.setPage(page);
+        request.setPageSize(page_size);
+
+        debateClient.getTournamentTeamsRanking(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject().rankingsList);
             }
         });
     });

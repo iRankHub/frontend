@@ -22,6 +22,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { DailyRegistration } from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import { useUserStore } from "@/stores/auth/auth.store";
+import { getTournamentRegistration } from "@/core/tournament/list";
 
 const initialData = [
   { date: "2024-09-21", count: 26 },
@@ -34,40 +37,59 @@ const initialData = [
   { date: "2024-09-30", count: 16 },
 ];
 
-const PerformanceTrendChart = () => {
-  const [chartData, setChartData] = useState(initialData);
+const UserRegistrationsChart = () => {
+  const [chartData, setChartData] = useState<DailyRegistration.AsObject[]>([]);
   const [filterValue, setFilterValue] = useState("90d");
+  const [tournamentRegistrations, setTournamentRegistrations] = useState<
+    DailyRegistration.AsObject[]
+  >([]);
+  const { user } = useUserStore();
+
+  const filterData = (data: DailyRegistration.AsObject[]) => {
+    const today = new Date();
+    let filteredData;
+
+    switch (filterValue) {
+      case "7d":
+        filteredData = data.filter((item) => {
+          const itemDate = new Date(item.date);
+          const diffTime = Math.abs(today.getTime() - itemDate.getTime());
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          return diffDays <= 7;
+        });
+        break;
+      case "30d":
+        filteredData = data.filter((item) => {
+          const itemDate = new Date(item.date);
+          const diffTime = Math.abs(today.getTime() - itemDate.getTime());
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          return diffDays <= 30;
+        });
+        break;
+      default:
+        filteredData = data;
+    }
+
+    setChartData(filteredData);
+  };
 
   useEffect(() => {
-    // Simulate API call and filter data
-    const filterData = () => {
-      const today = new Date("2024-09-30");
-      let filteredData;
-      switch (filterValue) {
-        case "7d":
-          filteredData = initialData.filter((item) => {
-            const itemDate = new Date(item.date);
-            const diffTime = Math.abs(today.getTime() - itemDate.getTime());
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            return diffDays <= 7;
-          });
-          break;
-        case "30d":
-          filteredData = initialData.filter((item) => {
-            const itemDate = new Date(item.date);
-            const diffTime = Math.abs(today.getTime() - itemDate.getTime());
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            return diffDays <= 30;
-          });
-          break;
-        default:
-          filteredData = initialData;
-      }
-      setChartData(filteredData);
+    if (!user) return;
+
+    const params = {
+      token: user.token,
     };
 
-    filterData();
-  }, [filterValue]);
+    getTournamentRegistration(params)
+      .then((response) => {
+        setTournamentRegistrations(response);
+        filterData(response);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch tournament registrations:", error);
+      });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <Card className="w-full h-full border-muted">
@@ -112,9 +134,13 @@ const PerformanceTrendChart = () => {
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={(value) =>
+                new Date(value).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                })
+              }
             />
-            {/* <ChartTooltip cursor={false} content={<ChartTooltipContent />} /> */}
             <Tooltip />
             <Area
               type="monotone"
@@ -125,15 +151,6 @@ const PerformanceTrendChart = () => {
               strokeWidth={2}
               stackId="a"
             />
-            {/* <Area
-              type="monotone"
-              dataKey="count"
-              stroke="#8884d8"
-              fill="#8884d8"
-              fillOpacity={0.4}
-              strokeWidth={2}
-              stackId="a"
-            /> */}
           </AreaChart>
         </ResponsiveContainer>
       </CardContent>
@@ -141,4 +158,4 @@ const PerformanceTrendChart = () => {
   );
 };
 
-export default PerformanceTrendChart;
+export default UserRegistrationsChart;

@@ -7922,6 +7922,232 @@ export namespace user_management {
             return GetSchoolIDsByNamesResponse.deserialize(bytes);
         }
     }
+    export class GetStudentsBySchoolContactRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            token?: string;
+            userID?: number;
+            page?: number;
+            pageSize?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+                if ("userID" in data && data.userID != undefined) {
+                    this.userID = data.userID;
+                }
+                if ("page" in data && data.page != undefined) {
+                    this.page = data.page;
+                }
+                if ("pageSize" in data && data.pageSize != undefined) {
+                    this.pageSize = data.pageSize;
+                }
+            }
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get userID() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set userID(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get page() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set page(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get pageSize() {
+            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+        }
+        set pageSize(value: number) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        static fromObject(data: {
+            token?: string;
+            userID?: number;
+            page?: number;
+            pageSize?: number;
+        }): GetStudentsBySchoolContactRequest {
+            const message = new GetStudentsBySchoolContactRequest({});
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            if (data.userID != null) {
+                message.userID = data.userID;
+            }
+            if (data.page != null) {
+                message.page = data.page;
+            }
+            if (data.pageSize != null) {
+                message.pageSize = data.pageSize;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                token?: string;
+                userID?: number;
+                page?: number;
+                pageSize?: number;
+            } = {};
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            if (this.userID != null) {
+                data.userID = this.userID;
+            }
+            if (this.page != null) {
+                data.page = this.page;
+            }
+            if (this.pageSize != null) {
+                data.pageSize = this.pageSize;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.token.length)
+                writer.writeString(1, this.token);
+            if (this.userID != 0)
+                writer.writeInt32(2, this.userID);
+            if (this.page != 0)
+                writer.writeInt32(3, this.page);
+            if (this.pageSize != 0)
+                writer.writeInt32(4, this.pageSize);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetStudentsBySchoolContactRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetStudentsBySchoolContactRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.token = reader.readString();
+                        break;
+                    case 2:
+                        message.userID = reader.readInt32();
+                        break;
+                    case 3:
+                        message.page = reader.readInt32();
+                        break;
+                    case 4:
+                        message.pageSize = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetStudentsBySchoolContactRequest {
+            return GetStudentsBySchoolContactRequest.deserialize(bytes);
+        }
+    }
+    export class GetStudentsBySchoolContactResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            students?: Student[];
+            totalCount?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("students" in data && data.students != undefined) {
+                    this.students = data.students;
+                }
+                if ("totalCount" in data && data.totalCount != undefined) {
+                    this.totalCount = data.totalCount;
+                }
+            }
+        }
+        get students() {
+            return pb_1.Message.getRepeatedWrapperField(this, Student, 1) as Student[];
+        }
+        set students(value: Student[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        get totalCount() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set totalCount(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            students?: ReturnType<typeof Student.prototype.toObject>[];
+            totalCount?: number;
+        }): GetStudentsBySchoolContactResponse {
+            const message = new GetStudentsBySchoolContactResponse({});
+            if (data.students != null) {
+                message.students = data.students.map(item => Student.fromObject(item));
+            }
+            if (data.totalCount != null) {
+                message.totalCount = data.totalCount;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                students?: ReturnType<typeof Student.prototype.toObject>[];
+                totalCount?: number;
+            } = {};
+            if (this.students != null) {
+                data.students = this.students.map((item: Student) => item.toObject());
+            }
+            if (this.totalCount != null) {
+                data.totalCount = this.totalCount;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.students.length)
+                writer.writeRepeatedMessage(1, this.students, (item: Student) => item.serialize(writer));
+            if (this.totalCount != 0)
+                writer.writeInt32(2, this.totalCount);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetStudentsBySchoolContactResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetStudentsBySchoolContactResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.students, () => pb_1.Message.addToRepeatedWrapperField(message, 1, Student.deserialize(reader), Student));
+                        break;
+                    case 2:
+                        message.totalCount = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetStudentsBySchoolContactResponse {
+            return GetStudentsBySchoolContactResponse.deserialize(bytes);
+        }
+    }
     interface GrpcUnaryServiceInterface<P, R> {
         (message: P, metadata: grpc_1.Metadata, options: grpc_1.CallOptions, callback: grpc_1.requestCallback<R>): grpc_1.ClientUnaryCall;
         (message: P, metadata: grpc_1.Metadata, callback: grpc_1.requestCallback<R>): grpc_1.ClientUnaryCall;
@@ -8190,6 +8416,15 @@ export namespace user_management {
                 requestDeserialize: (bytes: Buffer) => GetSchoolIDsByNamesRequest.deserialize(new Uint8Array(bytes)),
                 responseSerialize: (message: GetSchoolIDsByNamesResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => GetSchoolIDsByNamesResponse.deserialize(new Uint8Array(bytes))
+            },
+            GetStudentsBySchoolContact: {
+                path: "/user_management.UserManagementService/GetStudentsBySchoolContact",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GetStudentsBySchoolContactRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetStudentsBySchoolContactRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: GetStudentsBySchoolContactResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => GetStudentsBySchoolContactResponse.deserialize(new Uint8Array(bytes))
             }
         };
         [method: string]: grpc_1.UntypedHandleCall;
@@ -8220,6 +8455,7 @@ export namespace user_management {
         abstract InitiatePasswordUpdate(call: grpc_1.ServerUnaryCall<InitiatePasswordUpdateRequest, InitiatePasswordUpdateResponse>, callback: grpc_1.sendUnaryData<InitiatePasswordUpdateResponse>): void;
         abstract VerifyAndUpdatePassword(call: grpc_1.ServerUnaryCall<VerifyAndUpdatePasswordRequest, VerifyAndUpdatePasswordResponse>, callback: grpc_1.sendUnaryData<VerifyAndUpdatePasswordResponse>): void;
         abstract GetSchoolIDsByNames(call: grpc_1.ServerUnaryCall<GetSchoolIDsByNamesRequest, GetSchoolIDsByNamesResponse>, callback: grpc_1.sendUnaryData<GetSchoolIDsByNamesResponse>): void;
+        abstract GetStudentsBySchoolContact(call: grpc_1.ServerUnaryCall<GetStudentsBySchoolContactRequest, GetStudentsBySchoolContactResponse>, callback: grpc_1.sendUnaryData<GetStudentsBySchoolContactResponse>): void;
     }
     export class UserManagementServiceClient extends grpc_1.makeGenericClientConstructor(UnimplementedUserManagementServiceService.definition, "UserManagementService", {}) {
         constructor(address: string, credentials: grpc_1.ChannelCredentials, options?: Partial<grpc_1.ChannelOptions>) {
@@ -8305,6 +8541,9 @@ export namespace user_management {
         };
         GetSchoolIDsByNames: GrpcUnaryServiceInterface<GetSchoolIDsByNamesRequest, GetSchoolIDsByNamesResponse> = (message: GetSchoolIDsByNamesRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetSchoolIDsByNamesResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetSchoolIDsByNamesResponse>, callback?: grpc_1.requestCallback<GetSchoolIDsByNamesResponse>): grpc_1.ClientUnaryCall => {
             return super.GetSchoolIDsByNames(message, metadata, options, callback);
+        };
+        GetStudentsBySchoolContact: GrpcUnaryServiceInterface<GetStudentsBySchoolContactRequest, GetStudentsBySchoolContactResponse> = (message: GetStudentsBySchoolContactRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetStudentsBySchoolContactResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetStudentsBySchoolContactResponse>, callback?: grpc_1.requestCallback<GetStudentsBySchoolContactResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetStudentsBySchoolContact(message, metadata, options, callback);
         };
     }
 }

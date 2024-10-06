@@ -4,12 +4,15 @@ import {
     BulkResendInvitationsResponse,
     BulkUpdateInvitationStatusRequest,
     BulkUpdateInvitationStatusResponse,
+    DailyRegistration,
     DeleteTournamentRequest,
     DeleteTournamentResponse,
     GetInvitationsByTournamentRequest,
     GetInvitationsByTournamentResponse,
     GetInvitationsByUserRequest,
     GetInvitationsByUserResponse,
+    GetTournamentRegistrationsRequest,
+    GetTournamentRegistrationsResponse,
     GetTournamentRequest,
     GetTournamentResponse,
     GetTournamentStatsRequest,
@@ -133,7 +136,7 @@ export const deleteTournament = async ({
     });
 }
 
-export const getTournamentCoordinator = async (token: string): Promise<any> => {}
+export const getTournamentCoordinator = async (token: string): Promise<any> => { }
 
 // invitations
 export const getInvitationsByTournament = async (
@@ -280,6 +283,25 @@ export const getTournamentStats = async ({
                 reject(err);
             } else {
                 resolve(response.toObject());
+            }
+        });
+    });
+}
+
+export const getTournamentRegistration = async ({
+    token
+}: {
+    token: string
+}): Promise<DailyRegistration.AsObject[]> => {
+    return new Promise((resolve, reject) => {
+        const request = new GetTournamentRegistrationsRequest();
+        request.setToken(token);
+
+        tournamentClient.getTournamentRegistrations(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject().registrationsList);
             }
         });
     });

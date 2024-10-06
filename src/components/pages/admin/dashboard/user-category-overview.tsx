@@ -1,5 +1,3 @@
-import { Icons } from "@/components/icons";
-import { UserSummary } from "@/lib/grpc/proto/user_management/users_pb";
 import {
   CircleUserRound,
   GraduationCap,
@@ -9,7 +7,6 @@ import {
 import React from "react";
 
 type Props = {
-  usersList: UserSummary.AsObject[];
   admin_count: number;
   student_count: number;
   school_count: number;
@@ -17,23 +14,11 @@ type Props = {
 };
 
 function UserCategoryOverview({
-  usersList,
   admin_count,
   school_count,
   student_count,
   volunteer_count,
 }: Props) {
-  // const adminUsersCount = usersList.filter((user) => user.userrole === "admin");
-  // const volunteerUsersCount = usersList.filter(
-  //   (user) => user.userrole === "volunteer"
-  // );
-  // const studentUsersCount = usersList.filter(
-  //   (user) => user.userrole === "student"
-  // );
-  // const schoolUsersCount = usersList.filter(
-  //   (user) => user.userrole === "school"
-  // );
-
   return (
     <div className="p-7 bg-background rounded-lg border-2 border-muted mb-3 md:mb-0">
       <h2 className="text-foreground text-xl capitalize">Users Per Category</h2>

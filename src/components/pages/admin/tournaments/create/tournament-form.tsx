@@ -293,7 +293,6 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                               selected={field.value}
                               onSelect={field.onChange}
                               initialFocus
-                              fromDate={new Date()}
                               toDate={form.watch("endDate")}
                             />
                           </PopoverContent>
@@ -632,11 +631,6 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                             <SelectItem value="3">Round 3</SelectItem>
                             <SelectItem value="4">Round 4</SelectItem>
                             <SelectItem value="5">Round 5</SelectItem>
-                            <SelectItem value="6">Round 6</SelectItem>
-                            <SelectItem value="7">Round 7</SelectItem>
-                            <SelectItem value="8">Round 8</SelectItem>
-                            <SelectItem value="9">Round 9</SelectItem>
-                            <SelectItem value="10">Round 10</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -673,11 +667,6 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                             <SelectItem value="3">Round 3</SelectItem>
                             <SelectItem value="4">Round 4</SelectItem>
                             <SelectItem value="5">Round 5</SelectItem>
-                            <SelectItem value="6">Round 6</SelectItem>
-                            <SelectItem value="7">Round 7</SelectItem>
-                            <SelectItem value="8">Round 8</SelectItem>
-                            <SelectItem value="9">Round 9</SelectItem>
-                            <SelectItem value="10">Round 10</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
