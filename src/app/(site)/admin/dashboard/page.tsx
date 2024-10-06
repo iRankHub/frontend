@@ -21,13 +21,11 @@ import {
   UserSummary,
 } from "@/lib/grpc/proto/user_management/users_pb";
 import {
-  getAllUsers,
   getUserProfile,
   getUserStatistics,
 } from "@/core/users/users";
-import { GetSchoolsType } from "@/types/user_management/schools";
 import { getTournamentStats } from "@/core/tournament/list";
-import PerformanceTrendChart from "@/components/pages/admin/dashboard/charts/performance-trend-chart";
+import UserRegistrationsChart from "@/components/pages/admin/dashboard/charts/user-registration-chart";
 
 const page = withAuth(() => {
   return <Dashboard />;
@@ -40,6 +38,8 @@ function Dashboard() {
   const [upcomingTournaments, setUpcomingTournaments] = React.useState(0);
   const [total_tournamamentsPercentageChange, setTotalTournamentsPercentageChange] = React.useState("+∞%");
   const [upcoming_tournamentsPercentageChange, setUpcomingTournamentsPercentageChange] = React.useState("+∞%");
+  const [newRegistrationsPercentageChange, setNewRegistrationsPercentageChange] = React.useState("+∞%");
+  const [approvedUsersPercentageChange, setApprovedUsersPercentageChange] = React.useState("+∞%");
   const [usersList, setUsersList] = React.useState<UserSummary.AsObject[]>([]);
 
   const [admin_count, setAdminCount] = React.useState(0);
@@ -65,21 +65,6 @@ function Dashboard() {
     }
   };
 
-  const calculatePercentageChange = (
-    newValue: string,
-    oldValue: string
-  ): string => {
-    const newVal = parseFloat(newValue);
-    const oldVal = parseFloat(oldValue);
-
-    if (oldVal === 0) {
-      return "+∞%"; // Handle division by zero case
-    }
-
-    const percentageChange = ((newVal - oldVal) / oldVal) * 100;
-    return `${percentageChange.toFixed(2)}%`; // Round to two decimal places
-  };
-
   useEffect(() => {
     if (!user) return;
 
@@ -97,21 +82,6 @@ function Dashboard() {
 
   React.useEffect(() => {
     if (!user) return;
-    const options: GetSchoolsType = {
-      pageSize: 200,
-      page: 1,
-      token: user.token,
-    };
-    getAllUsers({ ...options })
-      .then((res) => {
-        setTotalUsers(res.totalcount);
-        setNewSignups(0);
-        setUsersList(res.usersList);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
-
     const optionsUsers: {
       token: string;
     } = {
@@ -119,11 +89,14 @@ function Dashboard() {
     };
     getUserStatistics({ ...optionsUsers })
       .then((res) => {
+        setTotalUsers(res.approvedCount);
         setNewSignups(res.newRegistrationsCount);
         setAdminCount(res.adminCount);
         setStudentCount(res.studentCount);
         setSchoolCount(res.schoolCount);
         setVolunteerCount(res.volunteerCount);
+        setNewRegistrationsPercentageChange(res.newRegistrationsPercentageChange);
+        setApprovedUsersPercentageChange(res.approvedUsersPercentageChange);
       })
       .catch((err) => {
         console.error(err.message);
@@ -182,17 +155,18 @@ function Dashboard() {
         upcomingTournaments={upcomingTournaments}
         totalTournamentsPercentageChange={total_tournamamentsPercentageChange}
         upcomingTournamentsPercentageChange={upcoming_tournamentsPercentageChange}
+        newRegistrationsPercentageChange={newRegistrationsPercentageChange}
+        approvedUsersPercentageChange={approvedUsersPercentageChange}
       />
       <div className="grid grid-cols-1 md:grid-cols-3 mt-5 md:gap-3">
         <UserCategoryOverview
-          usersList={usersList}
           admin_count={admin_count}
           student_count={student_count}
           school_count={school_count}
           volunteer_count={volunteer_count}
         />
         <div className="col-span-2">
-          <PerformanceTrendChart />
+          <UserRegistrationsChart />
         </div>
       </div>
       <SystemMonitor />

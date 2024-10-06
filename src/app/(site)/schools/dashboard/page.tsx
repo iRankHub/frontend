@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import { ContentLayout } from "@/components/layout/schools-panel/content-layout";
 import {
   Breadcrumb,
@@ -9,40 +10,31 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Slash } from "lucide-react";
-import React, { useEffect, useState } from "react";
 import { withAuth } from "@/stores/auth/middleware.store";
 import { Roles, useUserStore } from "@/stores/auth/auth.store";
 import Overview from "@/components/pages/schools/dashboard/overview";
 import CurrentRank from "@/components/pages/schools/dashboard/current-rank";
 import Leaderboard from "@/components/pages/schools/dashboard/leaderboard";
-import { PerformanceTrendChart } from "@/components/pages/schools/dashboard/charts/performance-trend-chart";
+import PerformanceTrendChart from "@/components/pages/schools/dashboard/charts/performance-trend-chart";
 import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 import { getUserProfile } from "@/core/users/users";
 import { getOverallSchoolRanking } from "@/core/debates/rankings";
 import { OverallSchoolRankingResponse } from "@/lib/grpc/proto/debate_management/debate_pb";
-import { getTournamentStats } from "@/core/tournament/list";
 
-const page = withAuth(() => {
+const Page = withAuth(() => {
   return <Dashboard />;
 }, [Roles.SCHOOL]);
 
 function Dashboard() {
   const { user } = useUserStore((state) => state);
-  const [currentUser, setCurrentUser] = useState<
-    UserProfile.AsObject | undefined
-  >(undefined);
-  const [overallSchoolRanking, setOverallSchoolRanking] =
-    React.useState<OverallSchoolRankingResponse.AsObject>();
-  const [totalTournaments, setTotalTournaments] = React.useState(0);
-  const [upcomingTournaments, setUpcomingTournaments] = React.useState(0);
-  const [
-    total_tournamamentsPercentageChange,
-    setTotalTournamentsPercentageChange,
-  ] = React.useState("+∞%");
-  const [
-    upcoming_tournamentsPercentageChange,
-    setUpcomingTournamentsPercentageChange,
-  ] = React.useState("+∞%");
+  const [currentUser, setCurrentUser] = useState<UserProfile.AsObject | undefined>(undefined);
+  const [overallSchoolRanking, setOverallSchoolRanking] = useState<OverallSchoolRankingResponse.AsObject>();
+  const [totalTournaments, setTotalTournaments] = useState(0);
+  const [upcomingTournaments, setUpcomingTournaments] = useState(0);
+  const [totalTournamentsPercentageChange, setTotalTournamentsPercentageChange] = useState("+∞%");
+  const [upcomingTournamentsPercentageChange, setUpcomingTournamentsPercentageChange] = useState("+∞%");
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   const handleGreetMessage = () => {
     const date = new Date();
@@ -60,43 +52,58 @@ function Dashboard() {
   useEffect(() => {
     if (!user) return;
 
-    getUserProfile({
-      userID: user.userId,
-      token: user.token,
-    })
-      .then((res) => {
-        setCurrentUser(res.profile);
+    setIsLoading(true);
+    setHasError(false);
+
+    Promise.all([
+      getUserProfile({
+        userID: user.userId,
+        token: user.token,
+      }),
+      getOverallSchoolRanking({
+        token: user.token,
+        user_id: user.userId,
+      })
+    ])
+      .then(([userProfileRes, schoolRankingRes]) => {
+        setCurrentUser(userProfileRes.profile);
+        setOverallSchoolRanking(schoolRankingRes);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.error(err.message);
+        setIsLoading(false);
+        setHasError(true);
       });
   }, [user]);
 
-  useEffect(() => {
-    if (!user) return;
-    // getTournamentStats({ token: user.token })
-    //   .then((res) => {
-    //     setTotalTournaments(res.totalTournaments);
-    //     setUpcomingTournaments(res.upcomingTournaments);
-    //     setTotalTournamentsPercentageChange(res.totalPercentageChange);
-    //     setUpcomingTournamentsPercentageChange(res.upcomingPercentageChange);
-    //   })
-    //   .catch((err) => {
-    //     console.error(err.message);
-    //   });
+  if (isLoading) {
+    return (
+      <ContentLayout title="dashboard">
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center">
+            <h2 className="text-2xl font-semibold mb-4">Loading...</h2>
+            <p>Please wait while we fetch your school{`'`}s information.</p>
+          </div>
+        </div>
+      </ContentLayout>
+    );
+  }
 
-    getOverallSchoolRanking({
-      token: user.token,
-      user_id: user.userId,
-    })
-      .then((res) => {
-        console.log(res);
-        setOverallSchoolRanking(res);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
-  }, [user]);
+  if (hasError || !overallSchoolRanking) {
+    return (
+      <ContentLayout title="dashboard">
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center">
+            <h2 className="text-2xl font-semibold mb-4">No Information Available</h2>
+            <p className="mb-2">We couldn{`'`}t find any ranking information for your school.</p>
+            <p>This could be because your account is new or hasn{`'`}t participated in any events yet.</p>
+          </div>
+        </div>
+      </ContentLayout>
+    );
+  }
+
   return (
     <ContentLayout title="dashboard">
       <header>
@@ -133,18 +140,14 @@ function Dashboard() {
             totalTournamentsAttended={2000}
             totalTournamentsUnattended={500}
             upcomingTournaments={upcomingTournaments}
-            totalTournamentsPercentageChange={
-              total_tournamamentsPercentageChange
-            }
-            upcomingTournamentsPercentageChange={
-              upcoming_tournamentsPercentageChange
-            }
+            totalTournamentsPercentageChange={totalTournamentsPercentageChange}
+            upcomingTournamentsPercentageChange={upcomingTournamentsPercentageChange}
           />
         </div>
         <div className="flex-1 max-w-full md:max-w-xs w-full">
           <CurrentRank
-            currentRank={overallSchoolRanking?.schoolRank || 0}
-            totalStudents={overallSchoolRanking?.totalSchools || 0}
+            currentRank={overallSchoolRanking.schoolRank || 0}
+            totalStudents={overallSchoolRanking.totalSchools || 0}
           />
         </div>
       </div>
@@ -154,10 +157,10 @@ function Dashboard() {
         </div>
         <div className="flex-1 max-w-full md:max-w-xs w-full">
           <Leaderboard
-            studentRank={overallSchoolRanking?.schoolRank || 0}
-            rankChange={overallSchoolRanking?.rankChange || 0}
-            studentInfo={overallSchoolRanking?.schoolInfo || ({} as any)}
-            topStudents={overallSchoolRanking?.topSchoolsList || []}
+            studentRank={overallSchoolRanking.schoolRank || 0}
+            rankChange={overallSchoolRanking.rankChange || 0}
+            studentInfo={overallSchoolRanking.schoolInfo || ({} as any)}
+            topStudents={overallSchoolRanking.topSchoolsList || []}
           />
         </div>
       </div>
@@ -165,4 +168,4 @@ function Dashboard() {
   );
 }
 
-export default page;
+export default Page;

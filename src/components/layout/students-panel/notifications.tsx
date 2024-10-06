@@ -34,7 +34,7 @@ function NotificationItem({
         <p className="text-foreground text-sm font-semibold">
           {notification.content}
         </p>
-        <span className="text-sm">8 min ago</span>
+        {/* <span className="text-sm">8 min ago</span> */}
       </div>
       <Pin className="w-5 h-5 rotate-45 text-primary" />
     </div>

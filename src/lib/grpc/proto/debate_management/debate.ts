@@ -7847,6 +7847,278 @@ export namespace debate_management {
             return SchoolPerformanceData.deserialize(bytes);
         }
     }
+    export class StudentTournamentStatsRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            student_id?: number;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("student_id" in data && data.student_id != undefined) {
+                    this.student_id = data.student_id;
+                }
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get student_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set student_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            student_id?: number;
+            token?: string;
+        }): StudentTournamentStatsRequest {
+            const message = new StudentTournamentStatsRequest({});
+            if (data.student_id != null) {
+                message.student_id = data.student_id;
+            }
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                student_id?: number;
+                token?: string;
+            } = {};
+            if (this.student_id != null) {
+                data.student_id = this.student_id;
+            }
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.student_id != 0)
+                writer.writeInt32(1, this.student_id);
+            if (this.token.length)
+                writer.writeString(2, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): StudentTournamentStatsRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new StudentTournamentStatsRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.student_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): StudentTournamentStatsRequest {
+            return StudentTournamentStatsRequest.deserialize(bytes);
+        }
+    }
+    export class StudentTournamentStatsResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            total_tournaments?: number;
+            total_tournaments_change?: string;
+            attended_tournaments?: number;
+            attended_tournaments_change?: string;
+            upcoming_tournaments?: number;
+            upcoming_tournaments_change?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("total_tournaments" in data && data.total_tournaments != undefined) {
+                    this.total_tournaments = data.total_tournaments;
+                }
+                if ("total_tournaments_change" in data && data.total_tournaments_change != undefined) {
+                    this.total_tournaments_change = data.total_tournaments_change;
+                }
+                if ("attended_tournaments" in data && data.attended_tournaments != undefined) {
+                    this.attended_tournaments = data.attended_tournaments;
+                }
+                if ("attended_tournaments_change" in data && data.attended_tournaments_change != undefined) {
+                    this.attended_tournaments_change = data.attended_tournaments_change;
+                }
+                if ("upcoming_tournaments" in data && data.upcoming_tournaments != undefined) {
+                    this.upcoming_tournaments = data.upcoming_tournaments;
+                }
+                if ("upcoming_tournaments_change" in data && data.upcoming_tournaments_change != undefined) {
+                    this.upcoming_tournaments_change = data.upcoming_tournaments_change;
+                }
+            }
+        }
+        get total_tournaments() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set total_tournaments(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get total_tournaments_change() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set total_tournaments_change(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get attended_tournaments() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set attended_tournaments(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get attended_tournaments_change() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set attended_tournaments_change(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get upcoming_tournaments() {
+            return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
+        }
+        set upcoming_tournaments(value: number) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        get upcoming_tournaments_change() {
+            return pb_1.Message.getFieldWithDefault(this, 6, "") as string;
+        }
+        set upcoming_tournaments_change(value: string) {
+            pb_1.Message.setField(this, 6, value);
+        }
+        static fromObject(data: {
+            total_tournaments?: number;
+            total_tournaments_change?: string;
+            attended_tournaments?: number;
+            attended_tournaments_change?: string;
+            upcoming_tournaments?: number;
+            upcoming_tournaments_change?: string;
+        }): StudentTournamentStatsResponse {
+            const message = new StudentTournamentStatsResponse({});
+            if (data.total_tournaments != null) {
+                message.total_tournaments = data.total_tournaments;
+            }
+            if (data.total_tournaments_change != null) {
+                message.total_tournaments_change = data.total_tournaments_change;
+            }
+            if (data.attended_tournaments != null) {
+                message.attended_tournaments = data.attended_tournaments;
+            }
+            if (data.attended_tournaments_change != null) {
+                message.attended_tournaments_change = data.attended_tournaments_change;
+            }
+            if (data.upcoming_tournaments != null) {
+                message.upcoming_tournaments = data.upcoming_tournaments;
+            }
+            if (data.upcoming_tournaments_change != null) {
+                message.upcoming_tournaments_change = data.upcoming_tournaments_change;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                total_tournaments?: number;
+                total_tournaments_change?: string;
+                attended_tournaments?: number;
+                attended_tournaments_change?: string;
+                upcoming_tournaments?: number;
+                upcoming_tournaments_change?: string;
+            } = {};
+            if (this.total_tournaments != null) {
+                data.total_tournaments = this.total_tournaments;
+            }
+            if (this.total_tournaments_change != null) {
+                data.total_tournaments_change = this.total_tournaments_change;
+            }
+            if (this.attended_tournaments != null) {
+                data.attended_tournaments = this.attended_tournaments;
+            }
+            if (this.attended_tournaments_change != null) {
+                data.attended_tournaments_change = this.attended_tournaments_change;
+            }
+            if (this.upcoming_tournaments != null) {
+                data.upcoming_tournaments = this.upcoming_tournaments;
+            }
+            if (this.upcoming_tournaments_change != null) {
+                data.upcoming_tournaments_change = this.upcoming_tournaments_change;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.total_tournaments != 0)
+                writer.writeInt32(1, this.total_tournaments);
+            if (this.total_tournaments_change.length)
+                writer.writeString(2, this.total_tournaments_change);
+            if (this.attended_tournaments != 0)
+                writer.writeInt32(3, this.attended_tournaments);
+            if (this.attended_tournaments_change.length)
+                writer.writeString(4, this.attended_tournaments_change);
+            if (this.upcoming_tournaments != 0)
+                writer.writeInt32(5, this.upcoming_tournaments);
+            if (this.upcoming_tournaments_change.length)
+                writer.writeString(6, this.upcoming_tournaments_change);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): StudentTournamentStatsResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new StudentTournamentStatsResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.total_tournaments = reader.readInt32();
+                        break;
+                    case 2:
+                        message.total_tournaments_change = reader.readString();
+                        break;
+                    case 3:
+                        message.attended_tournaments = reader.readInt32();
+                        break;
+                    case 4:
+                        message.attended_tournaments_change = reader.readString();
+                        break;
+                    case 5:
+                        message.upcoming_tournaments = reader.readInt32();
+                        break;
+                    case 6:
+                        message.upcoming_tournaments_change = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): StudentTournamentStatsResponse {
+            return StudentTournamentStatsResponse.deserialize(bytes);
+        }
+    }
     interface GrpcUnaryServiceInterface<P, R> {
         (message: P, metadata: grpc_1.Metadata, options: grpc_1.CallOptions, callback: grpc_1.requestCallback<R>): grpc_1.ClientUnaryCall;
         (message: P, metadata: grpc_1.Metadata, callback: grpc_1.requestCallback<R>): grpc_1.ClientUnaryCall;
@@ -8071,6 +8343,15 @@ export namespace debate_management {
                 responseSerialize: (message: PerformanceResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => PerformanceResponse.deserialize(new Uint8Array(bytes))
             },
+            GetStudentTournamentStats: {
+                path: "/debate_management.DebateService/GetStudentTournamentStats",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: StudentTournamentStatsRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => StudentTournamentStatsRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: StudentTournamentStatsResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => StudentTournamentStatsResponse.deserialize(new Uint8Array(bytes))
+            },
             GetTournamentTeamsRanking: {
                 path: "/debate_management.DebateService/GetTournamentTeamsRanking",
                 requestStream: false,
@@ -8131,6 +8412,7 @@ export namespace debate_management {
         abstract GetTournamentStudentRanking(call: grpc_1.ServerUnaryCall<TournamentRankingRequest, TournamentRankingResponse>, callback: grpc_1.sendUnaryData<TournamentRankingResponse>): void;
         abstract GetOverallStudentRanking(call: grpc_1.ServerUnaryCall<OverallRankingRequest, OverallRankingResponse>, callback: grpc_1.sendUnaryData<OverallRankingResponse>): void;
         abstract GetStudentOverallPerformance(call: grpc_1.ServerUnaryCall<PerformanceRequest, PerformanceResponse>, callback: grpc_1.sendUnaryData<PerformanceResponse>): void;
+        abstract GetStudentTournamentStats(call: grpc_1.ServerUnaryCall<StudentTournamentStatsRequest, StudentTournamentStatsResponse>, callback: grpc_1.sendUnaryData<StudentTournamentStatsResponse>): void;
         abstract GetTournamentTeamsRanking(call: grpc_1.ServerUnaryCall<TournamentTeamsRankingRequest, TournamentTeamsRankingResponse>, callback: grpc_1.sendUnaryData<TournamentTeamsRankingResponse>): void;
         abstract GetTournamentSchoolRanking(call: grpc_1.ServerUnaryCall<TournamentSchoolRankingRequest, TournamentSchoolRankingResponse>, callback: grpc_1.sendUnaryData<TournamentSchoolRankingResponse>): void;
         abstract GetOverallSchoolRanking(call: grpc_1.ServerUnaryCall<OverallSchoolRankingRequest, OverallSchoolRankingResponse>, callback: grpc_1.sendUnaryData<OverallSchoolRankingResponse>): void;
@@ -8205,6 +8487,9 @@ export namespace debate_management {
         };
         GetStudentOverallPerformance: GrpcUnaryServiceInterface<PerformanceRequest, PerformanceResponse> = (message: PerformanceRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<PerformanceResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<PerformanceResponse>, callback?: grpc_1.requestCallback<PerformanceResponse>): grpc_1.ClientUnaryCall => {
             return super.GetStudentOverallPerformance(message, metadata, options, callback);
+        };
+        GetStudentTournamentStats: GrpcUnaryServiceInterface<StudentTournamentStatsRequest, StudentTournamentStatsResponse> = (message: StudentTournamentStatsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<StudentTournamentStatsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<StudentTournamentStatsResponse>, callback?: grpc_1.requestCallback<StudentTournamentStatsResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetStudentTournamentStats(message, metadata, options, callback);
         };
         GetTournamentTeamsRanking: GrpcUnaryServiceInterface<TournamentTeamsRankingRequest, TournamentTeamsRankingResponse> = (message: TournamentTeamsRankingRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<TournamentTeamsRankingResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<TournamentTeamsRankingResponse>, callback?: grpc_1.requestCallback<TournamentTeamsRankingResponse>): grpc_1.ClientUnaryCall => {
             return super.GetTournamentTeamsRanking(message, metadata, options, callback);

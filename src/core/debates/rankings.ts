@@ -7,12 +7,15 @@ import {
     SchoolPerformanceResponse,
     SchoolRanking,
     StudentRanking,
+    StudentTournamentStatsRequest,
+    StudentTournamentStatsResponse,
     TeamRanking,
     TournamentRankingRequest,
     TournamentSchoolRankingRequest,
     TournamentTeamsRankingRequest
 } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { debateClient } from "../grpc-clients";
+import { GetTournamentStatsRequest, GetTournamentStatsResponse } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 
 export const getTournamentStudentRanking = async ({
     token,
@@ -89,6 +92,28 @@ export const getStudentOverallPerformance = async ({
                 resolve(response.toObject());
             }
         });
+    });
+}
+
+export const getStudentTournamentStats = async ({
+    student_id,
+    token
+}: {
+    student_id: number;
+    token: string;
+}): Promise<StudentTournamentStatsResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new StudentTournamentStatsRequest();
+        request.setToken("v2.public.eyJleHAiOjE3Mjg4Mjk4NjIsInVzZXJfZW1haWwiOiJkZXN5am9obmpvaG5AZ21haWwuY29tIiwidXNlcl9pZCI6MjgsInVzZXJfbmFtZSI6ImRlc3kgam9obiIsInVzZXJfcm9sZSI6InN0dWRlbnQifRvbKjTb2ywJRMXUuYZOwTaP1hBQ7_x0LhvI3PJDHGlJbbd2Lk2EvzdYokIvR5wpYnm4vs9_Bmnn9LGXtibHcgY.bnVsbA");
+        request.setStudentId(student_id);
+
+        debateClient.getStudentTournamentStats(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        })
     });
 }
 
