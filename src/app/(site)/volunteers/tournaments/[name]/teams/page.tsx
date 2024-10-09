@@ -13,6 +13,7 @@ import {
 import { getTournament } from "@/core/tournament/list";
 import { getTeamsByTournament } from "@/core/tournament/teams";
 import { Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import AppLoader from "@/lib/loader";
 import { useTeamsStore } from "@/stores/admin/debate/teams.store";
 import { Roles, useUserStore } from "@/stores/auth/auth.store";
 import { withAuth } from "@/stores/auth/middleware.store";
@@ -35,29 +36,58 @@ function Page({ params }: Iparms) {
     Tournament.AsObject | undefined
   >(undefined);
   const { setTeams } = useTeamsStore((state) => state);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   useEffect(() => {
     if (!user) return;
+    setIsLoading(true);
+
     const data: GetTournamentType = {
       tournament_id: Number(tourn_id) || 0,
       token: user.token,
     };
-    getTournament({ ...data })
-      .then((res) => {
-        setTournament(res.tournament);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
 
-    getTeamsByTournament({ ...data })
-      .then((res) => {
-        setTeams(res.teamsList);
+    const fetchTournament = getTournament({ ...data });
+    const fetchTeams = getTeamsByTournament({ ...data });
+
+    Promise.all([fetchTournament, fetchTeams])
+      .then(([tournamentRes, teamsRes]) => {
+        setTournament(tournamentRes.tournament);
+        setTeams(teamsRes.teamsList);
       })
       .catch((err) => {
         console.error(err.message);
+        // You might want to add a toast notification here
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, [user, tourn_id, setTeams]);
+
+  if (isLoading) {
+    return <AppLoader />;
+  }
+
+  if (!tournament) {
+    return (
+      <ContentLayout title="format">
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center">
+            <h2 className="text-2xl font-semibold mb-4">
+              Tournament Not Found
+            </h2>
+            <p className="mb-2">
+              We couldn&apos;t fetch the tournament details.
+            </p>
+            <p>
+              This could be because the tournament doesn&apos;t exist or due to
+              a system error.
+            </p>
+          </div>
+        </div>
+      </ContentLayout>
+    );
+  }
   return (
     <ContentLayout title="format">
       <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-5">

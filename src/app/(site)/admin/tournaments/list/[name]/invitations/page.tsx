@@ -36,8 +36,7 @@ const Page = withAuth(
 function TournamentInvitationsPage({ params }: Iparms) {
   const { name: tourn_id } = params;
   const { user } = useUserStore((state) => state);
-  const [tournament, setTournament] = useState<Tournament.AsObject | undefined>(undefined);
-  const { setInvitations } = useInvitationsStore((state) => state);
+  const { setInvitations, tournament, setTournament } = useInvitationsStore((state) => state);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -54,7 +53,7 @@ function TournamentInvitationsPage({ params }: Iparms) {
 
     Promise.all([fetchTournament, fetchInvitations])
       .then(([tournamentRes, invitationsRes]) => {
-        setTournament(tournamentRes.tournament);
+        setTournament(tournamentRes.tournament as Tournament.AsObject);
         setInvitations(invitationsRes.invitationsList);
       })
       .catch((err) => {
@@ -64,7 +63,7 @@ function TournamentInvitationsPage({ params }: Iparms) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [user, tourn_id, setInvitations]);
+  }, [user, tourn_id, setInvitations, setTournament]);
 
   if (isLoading) {
     return <AppLoader />;
