@@ -1,38 +1,41 @@
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import React, { useEffect, useState } from "react";
-
 import { useUserStore } from "@/stores/auth/auth.store";
 import { tournamentFormats } from "@/core/tournament/formats";
 import { DataCardView } from "@/components/cards-with-filter/data-card";
 import { columns } from "./columns";
 import { DataTableToolbar } from "./data-table-toolbar";
 import { useFormatsStore } from "@/stores/admin/tournaments/formats.store";
+import AppLoader from "@/lib/loader";
 
-function Formats({}) {
-  const [pageLoading, setPageLoading] = useState<boolean>(true);
+function Formats() {
+  const [isLoading, setIsLoading] = useState(true);
   const { user } = useUserStore((state) => state);
   const { setFormats, formats } = useFormatsStore((state) => state);
-  const [defaultPageToken, setDefaultPageToken] = useState<number>(0);
-  const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(false);
+  const [defaultPageToken, setDefaultPageToken] = useState(0);
+  const [loadMoreLoading, setLoadMoreLoading] = useState(false);
 
   useEffect(() => {
     if (!user) return;
-    const data = {
+    setIsLoading(true);
+
+    const fetchFormats = tournamentFormats({
       page_size: 10,
       page_token: 0,
       token: user.token,
-    };
-    tournamentFormats({ ...data })
-      .then((res) => {
-        setFormats(res.formatsList);
+    });
+
+    Promise.all([fetchFormats])
+      .then(([formatsRes]) => {
+        setFormats(formatsRes.formatsList);
       })
       .catch((err) => {
         console.error(err.message);
+        // You might want to add a toast notification here
       })
       .finally(() => {
-        setPageLoading(false);
+        setIsLoading(false);
       });
   }, [user, setFormats]);
 
@@ -56,30 +59,39 @@ function Formats({}) {
         setLoadMoreLoading(false);
       });
   };
+
+  if (isLoading) {
+    return <AppLoader />;
+  }
+
+  if (!formats.length) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold mb-4">No Formats Available</h2>
+          <p className="mb-2">We couldn&apos;t fetch any tournament formats.</p>
+          <p>This could be because there are no formats created yet or due to a system error.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full mt-5 rounded-md overflow-hidden border border-muted bg-background">
-      {pageLoading ? (
+      <DataCardView
+        data={formats}
+        columns={columns}
+        DataTableToolbar={DataTableToolbar}
+        setFormats={setFormats}
+        cardType="format"
+      />
+      {loadMoreLoading && (
         <div className="flex items-center justify-center w-full h-96">
           <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
         </div>
-      ) : (
-        <>
-          <DataCardView
-            data={formats}
-            columns={columns}
-            DataTableToolbar={DataTableToolbar}
-            setFormats={setFormats}
-            cardType="format"
-          />
-          {loadMoreLoading && (
-            <div className="flex items-center justify-center w-full h-96">
-              <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
-            </div>
-          )}
-        </>
       )}
       <div className="p-5">
-        {formats.length > 20 && (
+        {formats.length >= 10 && (
           <Button
             type="button"
             size={"sm"}

@@ -18,6 +18,7 @@ import Leaderboard from "@/components/pages/volunteers/dashboard/leaderboard";
 import { PerformanceTrendChart } from "@/components/pages/volunteers/dashboard/charts/performance-trend-chart";
 import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 import { getUserProfile } from "@/core/users/users";
+import AppLoader from "@/lib/loader";
 
 const Page = withAuth(() => {
   return <Dashboard />;
@@ -44,36 +45,29 @@ function Dashboard() {
 
   useEffect(() => {
     if (!user) return;
-
     setIsLoading(true);
     setHasError(false);
 
-    getUserProfile({
+    const fetchUserProfile = getUserProfile({
       userID: user.userId,
       token: user.token,
-    })
-      .then((res) => {
-        setCurrentUser(res.profile);
-        setIsLoading(false);
+    });
+
+    Promise.all([fetchUserProfile])
+      .then(([userProfileRes]) => {
+        setCurrentUser(userProfileRes.profile);
       })
       .catch((err) => {
         console.error(err.message);
-        setIsLoading(false);
         setHasError(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, [user]);
 
   if (isLoading) {
-    return (
-      <ContentLayout title="dashboard">
-        <div className="flex items-center justify-center h-screen">
-          <div className="text-center">
-            <h2 className="text-2xl font-semibold mb-4">Loading...</h2>
-            <p>Please wait while we fetch your information.</p>
-          </div>
-        </div>
-      </ContentLayout>
-    );
+    return <AppLoader />;
   }
 
   if (hasError || !currentUser) {

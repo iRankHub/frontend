@@ -17,45 +17,69 @@ import { useEffect, useState } from "react";
 import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 import { getUserProfile } from "@/core/users/users";
 import { ToastAction } from "@radix-ui/react-toast";
+import AppLoader from "@/lib/loader";
 
-const page = withAuth(() => {
-  return <Page />;
+const Page = withAuth(() => {
+  return <ProfilePage />;
 }, [Roles.ADMIN]);
 
-function Page() {
+function ProfilePage() {
   const { toast } = useToast();
   const { user: storeUser } = useUserStore((state) => state);
   const [user, setUser] = useState<UserProfile.AsObject | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!storeUser) return;
-    const getUser = async () => {
-      await getUserProfile({
-        userID: storeUser.userId,
-        token: storeUser.token,
-      }).then((res) => {
-        if (res.profile) {
-          setUser(res.profile);
-        }
-      });
-    };
-    getUser().catch((err) => {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Something went wrong. Please try again later",
-        action: (
-          <ToastAction altText="Close" className="bg-primary text-white">
-            Close
-          </ToastAction>
-        ),
-      });
+    setIsLoading(true);
+
+    const fetchUserProfile = getUserProfile({
+      userID: storeUser.userId,
+      token: storeUser.token,
     });
+
+    Promise.all([fetchUserProfile])
+      .then(([userProfileRes]) => {
+        if (userProfileRes.profile) {
+          setUser(userProfileRes.profile);
+        }
+      })
+      .catch((err) => {
+        console.error(err.message);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Something went wrong. Please try again later",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [storeUser, toast]);
 
-  if (!user) {
-    return <div>Loading...</div>;
+  if (isLoading) {
+    return <AppLoader />;
   }
+
+  if (!user) {
+    return (
+      <ContentLayout title="format">
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center">
+            <h2 className="text-2xl font-semibold mb-4">No Information Available</h2>
+            <p className="mb-2">We couldn{`'`}t fetch your profile information.</p>
+            <p>This could be because of a system error. Please try again later.</p>
+          </div>
+        </div>
+      </ContentLayout>
+    );
+  }
+
   return (
     <ContentLayout title="format">
       <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-5">
@@ -85,4 +109,4 @@ function Page() {
   );
 }
 
-export default page;
+export default Page;

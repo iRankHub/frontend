@@ -1,9 +1,11 @@
-import { InvitationInfo } from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import { InvitationInfo, Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { create } from "zustand";
 
 interface InvitationsStore {
     invitations: InvitationInfo.AsObject[];
+    tournament: Tournament.AsObject | undefined;
     setInvitations: (invitations: InvitationInfo.AsObject[]) => void;
+    setTournament: (tournament: Tournament.AsObject) => void;
     updateInvitationStatus: (invitationID: number, newStatus: string) => void;
     bulkUpdateInvitationStatus: (invitationIDs: number[], newStatus: string) => void;
     bulkDeleteInvitations: (invitationIDs: number[]) => void;
@@ -12,7 +14,9 @@ interface InvitationsStore {
 
 export const useInvitationsStore = create<InvitationsStore>((set) => ({
     invitations: [],
+    tournament: undefined,
     setInvitations: (invitations: InvitationInfo.AsObject[]) => set({ invitations }),
+    setTournament: (tournament: Tournament.AsObject) => set({ tournament }),
     updateInvitationStatus: (invitationID: number, newStatus: string) => {
         set((state: InvitationsStore) => {
             const newInvitations = state.invitations.map((invitation) => {

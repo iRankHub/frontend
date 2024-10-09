@@ -1,6 +1,6 @@
-import "./styles.css";
 import * as React from "react";
 import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 const loadingMessages = [
   "Warming up our debate muscles...",
@@ -22,8 +22,9 @@ const loadingMessages = [
   "Practicing our awards dance moves...",
 ];
 
-export default function App() {
-  const [darkMode, setDarkMode] = React.useState(false);
+export default function AppLoader() {
+  // const [darkMode, setDarkMode] = React.useState(false);
+  const { theme } = useTheme();
   const [message, setMessage] = React.useState(loadingMessages[0]);
 
   React.useEffect(() => {
@@ -35,21 +36,13 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  const bgColor = darkMode ? "bg-gray-900" : "bg-gray-100";
-  const textColor = darkMode ? "text-gray-200" : "text-gray-800";
+  const bgColor = theme === "dark" ? "bg-gray-900" : "bg-gray-100";
+  const textColor = theme === "dark" ? "text-gray-200" : "text-gray-800";
 
   return (
     <div
       className={`flex flex-col items-center justify-center h-screen ${bgColor}`}
     >
-      <button
-        onClick={() => setDarkMode(!darkMode)}
-        className={`absolute top-4 right-4 p-2 rounded-full ${
-          darkMode ? "bg-gray-800 text-gray-200" : "bg-gray-200 text-gray-800"
-        }`}
-      >
-        {darkMode ? <Sun size={24} /> : <Moon size={24} />}
-      </button>
       <div className="w-48 h-48 relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"

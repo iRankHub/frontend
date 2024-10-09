@@ -127,7 +127,7 @@ const ForgotPasswordForm = () => {
             variant={"secondary"}
             size={"lg"}
             className="w-full"
-            onClick={() => router.push("/auth/volunteer/login")}
+            onClick={() => router.push("/auth/select")}
           >
             Cancel
             <span className="sr-only">Cancel</span>

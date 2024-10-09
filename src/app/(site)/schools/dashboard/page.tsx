@@ -20,6 +20,7 @@ import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 import { getUserProfile } from "@/core/users/users";
 import { getOverallSchoolRanking } from "@/core/debates/rankings";
 import { OverallSchoolRankingResponse } from "@/lib/grpc/proto/debate_management/debate_pb";
+import AppLoader from "@/lib/loader";
 
 const Page = withAuth(() => {
   return <Dashboard />;
@@ -79,14 +80,7 @@ function Dashboard() {
 
   if (isLoading) {
     return (
-      <ContentLayout title="dashboard">
-        <div className="flex items-center justify-center h-screen">
-          <div className="text-center">
-            <h2 className="text-2xl font-semibold mb-4">Loading...</h2>
-            <p>Please wait while we fetch your school{`'`}s information.</p>
-          </div>
-        </div>
-      </ContentLayout>
+      <AppLoader />
     );
   }
 

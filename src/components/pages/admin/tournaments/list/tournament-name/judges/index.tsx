@@ -9,32 +9,10 @@ import { GetTournamentJudgesProps } from "@/types/pairings";
 import { getTournamentJudges } from "@/core/debates/judges";
 
 type JudgesTableProps = {
-  tournamentId: number;
-  totalRounds: number;
-  is_elimination: boolean;
+  judges: Judge.AsObject[];
 };
 
-function Judges({
-  tournamentId,
-  is_elimination,
-}: JudgesTableProps) {
-  const [judges, setJudges] = React.useState<Judge.AsObject[]>([]);
-  const { user } = useUserStore((state) => state);
-
-  React.useEffect(() => {
-    if (!user) return;
-    const options: GetTournamentJudgesProps = {
-      token: user.token,
-      tournament_id: tournamentId,
-    };
-    getTournamentJudges(options)
-      .then((res) => {
-        setJudges(res);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
-  }, [tournamentId, user, is_elimination]);
+function Judges({ judges }: JudgesTableProps) {
   return (
     <div className="w-full rounded-md overflow-hidden">
       <DataTable

@@ -7,30 +7,34 @@ import { Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb
 import { DataCardView } from "@/components/cards-with-filter/data-card";
 import { DataTableToolbar } from "./data-table-toolbar";
 import { columns } from "./columns";
+import AppLoader from "@/lib/loader";
 
-function Tournaments({}) {
-  const [pageLoading, setPageLoading] = useState<boolean>(true);
+function Tournaments() {
+  const [isLoading, setIsLoading] = useState(true);
   const [tournaments, setTournaments] = useState<Tournament.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
-  const [defaultPageToken, setDefaultPageToken] = useState<number>(0);
-  const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(false);
+  const [defaultPageToken, setDefaultPageToken] = useState(0);
+  const [loadMoreLoading, setLoadMoreLoading] = useState(false);
 
   useEffect(() => {
     if (!user) return;
-    const data = {
+    setIsLoading(true);
+
+    const fetchTournaments = tournamentsList({
       page_size: 20,
       page_token: 0,
       token: user.token,
-    };
-    tournamentsList({ ...data })
-      .then((res) => {
-        setTournaments(res.tournamentsList);
+    });
+
+    Promise.all([fetchTournaments])
+      .then(([tournamentsRes]) => {
+        setTournaments(tournamentsRes.tournamentsList);
       })
       .catch((err) => {
         console.error(err.message);
       })
       .finally(() => {
-        setPageLoading(false);
+        setIsLoading(false);
       });
   }, [user]);
 
@@ -54,32 +58,41 @@ function Tournaments({}) {
         setLoadMoreLoading(false);
       });
   };
+
+  if (isLoading) {
+    return <AppLoader />;
+  }
+
+  if (!tournaments.length) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold mb-4">No Tournaments Available</h2>
+          <p className="mb-2">We couldn&apos;t fetch any tournaments.</p>
+          <p>This could be because there are no tournaments created yet or due to a system error.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full mt-5 rounded-md overflow-hidden border border-muted bg-background">
-      {pageLoading ? (
+      <DataCardView
+        data={tournaments}
+        columns={columns}
+        DataTableToolbar={DataTableToolbar}
+        setTournaments={setTournaments}
+        cardType="tournament"
+      />
+
+      {loadMoreLoading && (
         <div className="flex items-center justify-center w-full h-96">
           <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
         </div>
-      ) : (
-        <>
-          <DataCardView
-            data={tournaments}
-            columns={columns}
-            DataTableToolbar={DataTableToolbar}
-            setTournaments={setTournaments}
-            cardType="tournament"
-          />
-
-          {loadMoreLoading && (
-            <div className="flex items-center justify-center w-full h-96">
-              <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
-            </div>
-          )}
-        </>
       )}
 
       <div className="p-5">
-        {tournaments.length > 20 && (
+        {tournaments.length >= 20 && (
           <Button
             type="button"
             size={"sm"}

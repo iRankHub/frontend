@@ -10,7 +10,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { getTournament } from "@/core/tournament/list";
 import { Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
@@ -19,56 +18,75 @@ import { withAuth } from "@/stores/auth/middleware.store";
 import { Iparms } from "@/types";
 import { GetTournamentType } from "@/types/tournaments/tournament";
 import { Slash } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import AppLoader from "@/lib/loader";
 
-const page = withAuth(
+const Page = withAuth(
   ({ params }: Iparms) => {
-    return <Page params={params} />;
+    return <TournamentPreliminaryRoundsPage params={params} />;
   },
   [Roles.ADMIN]
 );
 
-function Page({ params }: Iparms) {
+function TournamentPreliminaryRoundsPage({ params }: Iparms) {
   const { name: tourn_id } = params;
   const { user } = useUserStore((state) => state);
-  const {toast} = useToast();
-  const [pageLoading, setPageLoading] = React.useState(true);
-  const [tournament, setTournament] = React.useState<
-    Tournament.AsObject | undefined
-  >(undefined);
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(true);
+  const [tournament, setTournament] = useState<Tournament.AsObject | undefined>(undefined);
 
   useEffect(() => {
     if (!user) return;
+    setIsLoading(true);
+
     const data: GetTournamentType = {
       tournament_id: Number(tourn_id) || 0,
       token: user.token,
     };
+
     getTournament({ ...data })
       .then((res) => {
         setTournament(res.tournament);
       })
       .catch((err) => {
         console.error(err.message);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to fetch tournament details. Please try again.",
+        });
       })
       .finally(() => {
-        setPageLoading(false);
+        setIsLoading(false);
       });
-  }, [user, tourn_id]);
+  }, [user, tourn_id, toast]);
 
-  if (pageLoading) {
-    return <ContentLayout title="format">Loading...</ContentLayout>;
+  if (isLoading) {
+    return <AppLoader />;
   }
+
+  if (!tournament) {
+    return (
+      <ContentLayout title="format">
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center">
+            <h2 className="text-2xl font-semibold mb-4">Tournament Not Found</h2>
+            <p className="mb-2">We couldn&apos;t fetch the tournament details.</p>
+            <p>This could be because the tournament doesn&apos;t exist or due to a system error.</p>
+          </div>
+        </div>
+      </ContentLayout>
+    );
+  }
+
   return (
     <ContentLayout title="format">
       <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-5">
-        <h3 className="text-lg text-primary font-bold">{tournament?.name}</h3>
+        <h3 className="text-lg text-primary font-bold">{tournament.name}</h3>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink
-                href="/admin/dashboard"
-                className="text-muted-foreground text-base"
-              >
+              <BreadcrumbLink href="/admin/dashboard" className="text-muted-foreground text-base">
                 Admin
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -76,10 +94,7 @@ function Page({ params }: Iparms) {
               <Slash className="-rotate-12" />
             </BreadcrumbSeparator>
             <BreadcrumbItem>
-              <BreadcrumbLink
-                href="/admin/tournaments/list"
-                className="text-muted-foreground text-base"
-              >
+              <BreadcrumbLink href="/admin/tournaments/list" className="text-muted-foreground text-base">
                 Tournament
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -88,7 +103,7 @@ function Page({ params }: Iparms) {
             </BreadcrumbSeparator>
             <BreadcrumbItem>
               <BreadcrumbPage className="text-primary text-base">
-                {tournament?.name}
+                {tournament.name}
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
@@ -96,8 +111,8 @@ function Page({ params }: Iparms) {
       </div>
       <TournamentMenuWrapper>
         <PairingsTable
-          tournamentId={Number(tournament?.tournamentId)}
-          totalRounds={tournament?.numberOfPreliminaryRounds || 0}
+          tournamentId={Number(tournament.tournamentId)}
+          totalRounds={tournament.numberOfPreliminaryRounds || 0}
           is_elimination={false}
         />
       </TournamentMenuWrapper>
@@ -105,4 +120,4 @@ function Page({ params }: Iparms) {
   );
 }
 
-export default page;
+export default Page;

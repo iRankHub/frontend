@@ -104,7 +104,7 @@ export const getStudentTournamentStats = async ({
 }): Promise<StudentTournamentStatsResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new StudentTournamentStatsRequest();
-        request.setToken("v2.public.eyJleHAiOjE3Mjg4Mjk4NjIsInVzZXJfZW1haWwiOiJkZXN5am9obmpvaG5AZ21haWwuY29tIiwidXNlcl9pZCI6MjgsInVzZXJfbmFtZSI6ImRlc3kgam9obiIsInVzZXJfcm9sZSI6InN0dWRlbnQifRvbKjTb2ywJRMXUuYZOwTaP1hBQ7_x0LhvI3PJDHGlJbbd2Lk2EvzdYokIvR5wpYnm4vs9_Bmnn9LGXtibHcgY.bnVsbA");
+        request.setToken(token);
         request.setStudentId(student_id);
 
         debateClient.getStudentTournamentStats(request, {}, (err, response) => {

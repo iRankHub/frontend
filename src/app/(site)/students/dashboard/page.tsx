@@ -27,6 +27,7 @@ import {
   OverallRankingResponse,
   StudentTournamentStatsResponse,
 } from "@/lib/grpc/proto/debate_management/debate_pb";
+import AppLoader from "@/lib/loader";
 
 const Page = withAuth(() => {
   return <Dashboard />;
@@ -70,21 +71,28 @@ function Dashboard() {
 
   useEffect(() => {
     if (!user) return;
-
     setIsLoading(true);
     setHasError(false);
 
+    const fetchUserProfile = getUserProfile({
+      userID: user.userId,
+      token: user.token,
+    });
+
+    const fetchStudentRanking = getOverallStudentRanking({
+      token: user.token,
+      user_id: user.userId,
+    });
+
+    const fetchStudentTournamentStats = getStudentTournamentStats({
+      student_id: user.userId,
+      token: user.token,
+    });
+
     Promise.all([
-      getUserProfile({
-        userID: user.userId,
-        token: user.token,
-      }),
-      getOverallStudentRanking({
-        token: user.token,
-        user_id: user.userId,
-      }),
-      // getTournamentStats({ token: user.token }),
-      getStudentTournamentStats({ student_id: user.userId, token: user.token }),
+      fetchUserProfile,
+      fetchStudentRanking,
+      fetchStudentTournamentStats,
     ])
       .then(
         ([userProfileRes, studentRankingRes, studentTournamentStatsRes]) => {
@@ -98,29 +106,20 @@ function Dashboard() {
           setUpcomingTournamentsPercentageChange(
             studentTournamentStatsRes.upcomingTournamentsChange
           );
-          setIsLoading(false);
           setStudentTournamentStats(studentTournamentStatsRes);
-          console.log(studentTournamentStatsRes);
         }
       )
       .catch((err) => {
         console.error(err.message);
-        setIsLoading(false);
         setHasError(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, [user]);
 
   if (isLoading) {
-    return (
-      <ContentLayout title="dashboard">
-        <div className="flex items-center justify-center h-screen">
-          <div className="text-center">
-            <h2 className="text-2xl font-semibold mb-4">Loading...</h2>
-            <p>Please wait while we fetch your information.</p>
-          </div>
-        </div>
-      </ContentLayout>
-    );
+    return <AppLoader />;
   }
 
   if (hasError || !overallStudentRanking) {

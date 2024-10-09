@@ -20,12 +20,10 @@ import {
   UserProfile,
   UserSummary,
 } from "@/lib/grpc/proto/user_management/users_pb";
-import {
-  getUserProfile,
-  getUserStatistics,
-} from "@/core/users/users";
+import { getUserProfile, getUserStatistics } from "@/core/users/users";
 import { getTournamentStats } from "@/core/tournament/list";
 import UserRegistrationsChart from "@/components/pages/admin/dashboard/charts/user-registration-chart";
+import AppLoader from "@/lib/loader";
 
 const page = withAuth(() => {
   return <Dashboard />;
@@ -36,11 +34,22 @@ function Dashboard() {
   const [newSignups, setNewSignups] = React.useState(0);
   const [totalTournaments, setTotalTournaments] = React.useState(0);
   const [upcomingTournaments, setUpcomingTournaments] = React.useState(0);
-  const [total_tournamamentsPercentageChange, setTotalTournamentsPercentageChange] = React.useState("+∞%");
-  const [upcoming_tournamentsPercentageChange, setUpcomingTournamentsPercentageChange] = React.useState("+∞%");
-  const [newRegistrationsPercentageChange, setNewRegistrationsPercentageChange] = React.useState("+∞%");
-  const [approvedUsersPercentageChange, setApprovedUsersPercentageChange] = React.useState("+∞%");
+  const [
+    total_tournamamentsPercentageChange,
+    setTotalTournamentsPercentageChange,
+  ] = React.useState("+∞%");
+  const [
+    upcoming_tournamentsPercentageChange,
+    setUpcomingTournamentsPercentageChange,
+  ] = React.useState("+∞%");
+  const [
+    newRegistrationsPercentageChange,
+    setNewRegistrationsPercentageChange,
+  ] = React.useState("+∞%");
+  const [approvedUsersPercentageChange, setApprovedUsersPercentageChange] =
+    React.useState("+∞%");
   const [usersList, setUsersList] = React.useState<UserSummary.AsObject[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const [admin_count, setAdminCount] = React.useState(0);
   const [student_count, setStudentCount] = React.useState(0);
@@ -67,52 +76,52 @@ function Dashboard() {
 
   useEffect(() => {
     if (!user) return;
+    setIsLoading(true);
 
-    getUserProfile({
+    const fetchUserProfile = getUserProfile({
       userID: user.userId,
       token: user.token,
-    })
-      .then((res) => {
-        setCurrentUser(res.profile);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
-  }, [user]);
+    }).then((res) => {
+      setCurrentUser(res.profile);
+    });
 
-  React.useEffect(() => {
-    if (!user) return;
-    const optionsUsers: {
-      token: string;
-    } = {
-      token: user.token,
-    };
-    getUserStatistics({ ...optionsUsers })
-      .then((res) => {
+    const fetchUserStatistics = getUserStatistics({ token: user.token }).then(
+      (res) => {
         setTotalUsers(res.approvedCount);
         setNewSignups(res.newRegistrationsCount);
         setAdminCount(res.adminCount);
         setStudentCount(res.studentCount);
         setSchoolCount(res.schoolCount);
         setVolunteerCount(res.volunteerCount);
-        setNewRegistrationsPercentageChange(res.newRegistrationsPercentageChange);
+        setNewRegistrationsPercentageChange(
+          res.newRegistrationsPercentageChange
+        );
         setApprovedUsersPercentageChange(res.approvedUsersPercentageChange);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
+      }
+    );
 
-    getTournamentStats({ token: user.token })
-      .then((res) => {
+    const fetchTournamentStats = getTournamentStats({ token: user.token }).then(
+      (res) => {
         setTotalTournaments(res.totalTournaments);
         setUpcomingTournaments(res.upcomingTournaments);
         setTotalTournamentsPercentageChange(res.totalPercentageChange);
         setUpcomingTournamentsPercentageChange(res.upcomingPercentageChange);
-      })
+      }
+    );
+
+    Promise.all([fetchUserProfile, fetchUserStatistics, fetchTournamentStats])
       .catch((err) => {
-        console.error(err.message);
+        console.error("Error fetching data:", err.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, [user]);
+
+  if (isLoading) {
+    return <AppLoader />;
+  }
+
   return (
     <ContentLayout title="dashboard">
       <header>
@@ -154,7 +163,9 @@ function Dashboard() {
         totalUsers={totalUsers}
         upcomingTournaments={upcomingTournaments}
         totalTournamentsPercentageChange={total_tournamamentsPercentageChange}
-        upcomingTournamentsPercentageChange={upcoming_tournamentsPercentageChange}
+        upcomingTournamentsPercentageChange={
+          upcoming_tournamentsPercentageChange
+        }
         newRegistrationsPercentageChange={newRegistrationsPercentageChange}
         approvedUsersPercentageChange={approvedUsersPercentageChange}
       />

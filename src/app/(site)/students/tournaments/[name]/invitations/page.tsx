@@ -35,10 +35,7 @@ const page = withAuth(
 function Page({ params }: Iparms) {
   const { name: tourn_id } = params;
   const { user } = useUserStore((state) => state);
-  const [tournament, setTournament] = React.useState<
-    Tournament.AsObject | undefined
-  >(undefined);
-  const { setInvitations } = useInvitationsStore((state) => state);
+  const { setInvitations, setTournament, tournament } = useInvitationsStore((state) => state);
 
   useEffect(() => {
     if (!user) return;
@@ -48,7 +45,7 @@ function Page({ params }: Iparms) {
     };
     getTournament({ ...data })
       .then((res) => {
-        setTournament(res.tournament);
+        setTournament(res.tournament as Tournament.AsObject);
       })
       .catch((err) => {
         console.error(err.message);
@@ -61,7 +58,7 @@ function Page({ params }: Iparms) {
       .catch((err) => {
         console.error(err.message);
       });
-  }, [user, tourn_id, setInvitations]);
+  }, [user, tourn_id, setInvitations, setTournament]);
   return (
     <ContentLayout title="format">
       <div className="w-full flex items-center justify-between gap-5">
