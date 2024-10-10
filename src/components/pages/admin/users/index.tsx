@@ -44,18 +44,6 @@ function Users() {
     return <AppLoader />;
   }
 
-  if (!users.length) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold mb-4">No Users Available</h2>
-          <p className="mb-2">We couldn&apos;t fetch any users.</p>
-          <p>This could be because there are no users in the system or due to a system error.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full rounded-md overflow-hidden border border-muted">
       <DataTable

@@ -64,18 +64,6 @@ function Formats() {
     return <AppLoader />;
   }
 
-  if (!formats.length) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold mb-4">No Formats Available</h2>
-          <p className="mb-2">We couldn&apos;t fetch any tournament formats.</p>
-          <p>This could be because there are no formats created yet or due to a system error.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full mt-5 rounded-md overflow-hidden border border-muted bg-background">
       <DataCardView

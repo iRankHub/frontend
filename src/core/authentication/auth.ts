@@ -166,6 +166,33 @@ export const schoolLogin = (
     })
 }
 
+export const createAdminAccount = (): Promise<SignUpResponse.AsObject> => {
+    const dumyData = {
+        firstName: "John",
+        lastName: "Doe",
+        email: "benconte201@gmail.com",
+        password: "localhost",
+        userRole: "admin",
+        gender: "male"
+    }
+    const request = new SignUpRequest();
+    request.setFirstname(dumyData.firstName);
+    request.setLastname(dumyData.lastName);
+    request.setEmail(dumyData.email);
+    request.setPassword(dumyData.password);
+    request.setUserrole(dumyData.userRole);
+    request.setGender(dumyData.gender);
+    return new Promise((resolve, reject) => {
+        authClient.signUp(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
 // forgot password
 export const forgotPassword = (email: string): Promise<PasswordResetResponse.AsObject> => {
     return new Promise((resolve, reject) => {

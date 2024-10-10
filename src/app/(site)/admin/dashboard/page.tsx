@@ -87,6 +87,7 @@ function Dashboard() {
 
     const fetchUserStatistics = getUserStatistics({ token: user.token }).then(
       (res) => {
+        console.log(res)
         setTotalUsers(res.approvedCount);
         setNewSignups(res.newRegistrationsCount);
         setAdminCount(res.adminCount);

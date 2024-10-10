@@ -64,18 +64,6 @@ function Leagues() {
     return <AppLoader />;
   }
 
-  if (!leagues.length) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold mb-4">No Leagues Available</h2>
-          <p className="mb-2">We couldn&apos;t fetch any tournament leagues.</p>
-          <p>This could be because there are no leagues created yet or due to a system error.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full mt-5 rounded-md overflow-hidden border border-muted bg-background">
       <DataCardView

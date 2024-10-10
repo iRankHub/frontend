@@ -56,18 +56,6 @@ function CreateTournament() {
     return <AppLoader />;
   }
 
-  if (!leagues.length || !coordinators.length) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold mb-4">No Information Available</h2>
-          <p className="mb-2">We couldn&apos;t fetch the necessary information to create a tournament.</p>
-          <p>This could be because of a system error. Please try again later.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="mt-7 flex gap-5 relative">
       <Leagues

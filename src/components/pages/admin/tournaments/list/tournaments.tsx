@@ -63,18 +63,6 @@ function Tournaments() {
     return <AppLoader />;
   }
 
-  if (!tournaments.length) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold mb-4">No Tournaments Available</h2>
-          <p className="mb-2">We couldn&apos;t fetch any tournaments.</p>
-          <p>This could be because there are no tournaments created yet or due to a system error.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full mt-5 rounded-md overflow-hidden border border-muted bg-background">
       <DataCardView
