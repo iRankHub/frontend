@@ -17,6 +17,8 @@ import { withAuth } from "@/stores/auth/middleware.store";
 import { Slash } from "lucide-react";
 import React from "react";
 
+export const runtime = 'edge';
+
 const page = withAuth(() => {
   return <Page />;
 }, [Roles.ADMIN]);

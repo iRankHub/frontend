@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import React from "react";
 import { columns } from "./columns";
 import { DataTableToolbar } from "./data-table-toolbar";

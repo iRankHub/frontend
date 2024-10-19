@@ -1,10 +1,8 @@
 "use client";
 
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
-import Billings from "@/components/pages/admin/logistics/billings";
 import Expenses from "@/components/pages/admin/logistics/billings/expenses";
 import MenuWrapper from "@/components/pages/admin/logistics/menu-wrapper";
-import Users from "@/components/pages/admin/users";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,6 +15,8 @@ import { Roles } from "@/stores/auth/auth.store";
 import { withAuth } from "@/stores/auth/middleware.store";
 import { Slash } from "lucide-react";
 import React from "react";
+
+export const runtime = 'edge';
 
 const page = withAuth(() => {
   return <Page />;

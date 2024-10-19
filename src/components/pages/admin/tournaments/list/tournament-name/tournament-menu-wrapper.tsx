@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import React from "react";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import LeaguesMobile from "./leagues-mobile";

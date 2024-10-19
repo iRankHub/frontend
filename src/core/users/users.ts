@@ -141,6 +141,7 @@ export const getAllUsers = async ({
             if (err) {
                 reject(err);
             } else {
+                console.log(response.toObject());
                 resolve(response.toObject());
             }
         });
