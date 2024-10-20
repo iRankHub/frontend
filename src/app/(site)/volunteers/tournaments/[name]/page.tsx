@@ -20,7 +20,7 @@ import { GetTournamentType } from "@/types/tournaments/tournament";
 import { Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import AppLoader from "@/lib/loader";
 
-export const runtime = 'edge';
+
 
 const page = withAuth(
   ({ params }: Iparms) => {

@@ -22,7 +22,7 @@ import { Slash } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import AppLoader from "@/lib/loader";
 
-export const runtime = 'edge';
+
 
 const Page = withAuth(
   ({ params }: Iparms) => {

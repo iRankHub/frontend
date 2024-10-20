@@ -19,7 +19,7 @@ import { GetTournamentType } from "@/types/tournaments/tournament";
 import { Slash } from "lucide-react";
 import React, { useEffect } from "react";
 
-export const runtime = 'edge';
+
 
 const page = withAuth(
   ({ params }: Iparms) => {

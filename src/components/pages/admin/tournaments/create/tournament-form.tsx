@@ -59,6 +59,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
   const [venues, setVenues] = useState<School.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
   const [loading, setLoading] = useState<boolean>(false);
+  const [tournamentImage, setTournamentImage] = useState<string | null>(null);
   const { toast } = useToast();
 
   // react-hook-form
@@ -252,7 +253,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                     <span className="sr-only">Image</span>
                   </Button>
                 </DialogTrigger>
-                <FileUpload />
+                <FileUpload setTournamentImage={setTournamentImage} />
               </Dialog>
             </div>
           </div>

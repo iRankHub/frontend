@@ -15,6 +15,7 @@ export const createTournamentSchema = z.object({
     preliminaries_end_at: z.string(),
     no_of_judges: z.string(),
     no_of_elimination_judges: z.string(),
+    image_url: z.string().optional(),
 })
 
 export const UpdateTournamentSchema = z.object({
@@ -32,4 +33,5 @@ export const UpdateTournamentSchema = z.object({
     preliminaries_end_at: z.string(),
     no_of_judges: z.string(),
     no_of_elimination_judges: z.string(),
+    image_url: z.string().optional(),
 })
