@@ -28,6 +28,7 @@ function Tournaments() {
 
     Promise.all([fetchTournaments])
       .then(([tournamentsRes]) => {
+        console.log(tournamentsRes.tournamentsList)
         setTournaments(tournamentsRes.tournamentsList);
       })
       .catch((err) => {
@@ -48,6 +49,7 @@ function Tournaments() {
     };
     await tournamentsList({ ...data })
       .then((res) => {
+        console.log(res.tournamentsList)
         setTournaments((prev) => [...prev, ...res.tournamentsList]);
         setDefaultPageToken((prev) => prev + 1);
       })

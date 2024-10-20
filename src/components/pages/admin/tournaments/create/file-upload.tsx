@@ -8,9 +8,15 @@ import { Progress } from "@/components/ui/progress";
 import { Trash2 } from "lucide-react";
 import useLinodeUpload from "@/hooks/use-linode-upload";
 
+interface ImageType {
+  previewUrl: string;
+  url: string;
+}
+
 type Props = {
-  setTournamentImage: (url: string) => void;
+  setTournamentImage: React.Dispatch<React.SetStateAction<ImageType | null>>;
 };
+
 
 function FileUpload({ setTournamentImage }: Props) {
   const [file, setFile] = useState<File | null>(null);
@@ -37,7 +43,11 @@ function FileUpload({ setTournamentImage }: Props) {
     setUploadStatus("uploading");
     try {
       const url = await uploadFile(file, `tournaments/${file.name}`);
-      setTournamentImage(url);
+      const newFile: ImageType = {
+        previewUrl: URL.createObjectURL(file),
+        url: url,
+      }
+      setTournamentImage(newFile);
       setUploadStatus("success");
     } catch (error) {
       setUploadStatus("failed");

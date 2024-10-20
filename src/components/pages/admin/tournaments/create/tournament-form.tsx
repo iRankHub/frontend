@@ -46,6 +46,7 @@ import { TimePicker } from "@/components/ui/time-picker";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { getSchools } from "@/core/users/schools";
+import Image from "next/image";
 
 type Props = {
   selectedLeague: League.AsObject | null;
@@ -54,12 +55,19 @@ type Props = {
 
 type Inputs = z.infer<typeof createTournamentSchema>;
 
+interface ImageType {
+  previewUrl: string;
+  url: string;
+}
+
 function TournamentForm({ selectedLeague, coordinators }: Props) {
   const [formats, setFormats] = useState<TournamentFormat.AsObject[]>([]);
   const [venues, setVenues] = useState<School.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
   const [loading, setLoading] = useState<boolean>(false);
-  const [tournamentImage, setTournamentImage] = useState<string | null>(null);
+  const [tournamentImage, setTournamentImage] = useState<ImageType | null>(
+    null
+  );
   const { toast } = useToast();
 
   // react-hook-form
@@ -126,7 +134,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
       number_of_elimination_rounds: Number(data.preliminaries_end_at),
       number_of_preliminary_rounds: Number(data.preliminaries_start_from),
       tournament_fee: Number(data.fees),
-      image_url: null,
+      image_url: tournamentImage ? tournamentImage.url : null,
     };
 
     setLoading(true);
@@ -205,56 +213,65 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
     <div className="p-5">
       <Form {...form}>
         <form onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}>
-          <div className="w-full bg-brown rounded-md h-60 p-5 flex items-end">
-            <div className="flex-1">
-              <div className="flex items-center gap-5">
-                <div className="flex items-center gap-1 text-sm text-white font-medium">
-                  <Icons.calendar className="w-3.5 h-3.5 text-white" />
-                  {form.watch("startDate") && form.watch("endDate") ? (
-                    <span>
-                      {format(form.watch("startDate"), "PPP")} -{" "}
-                      {format(form.watch("endDate"), "PPP")}
-                    </span>
-                  ) : (
-                    "Pick a Date"
-                  )}
-                </div>
-                <div className="flex items-center gap-1 text-sm text-white font-medium">
-                  <Icons.mapPin className="w-3.5 h-3.5 text-white" />
-                  {form.watch("location") ? form.watch("location") : "Location"}
-                </div>
+          <div className="w-full bg-brown rounded-md h-60 relative overflow-hidden">
+            {tournamentImage && (
+              <div className="w-full h-full">
+                <Image
+                  src={tournamentImage.previewUrl}
+                  alt="some image"
+                  fill
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem className="col-span-2">
-                    <FormControl>
-                      <Input
-                        placeholder="Your Tournament Name"
-                        className="text-white placeholder:text-white text-xl font-bold w-72 mt-1 bg-transparent outline-none border-none focus-visible:outline-none focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 p-0"
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormMessage className="font-bold" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex items-center gap-3">
-              <Dialog>
-                <DialogTrigger>
-                  <Button
-                    className="rounded-full w-8 h-8 bg-primary cursor-pointer"
-                    size="icon"
-                  >
-                    <Icons.imagePlus className="w-[1rem] h-[1rem] text-white m-1" />
+            )}
+            <div className="w-full px-5 absolute h-full bg-black/30 top-0 bottom-0 right-0 flex items-end">
+              <div className="flex-1">
+                <div className="flex items-center gap-5">
+                  <div className="flex items-center gap-1 text-sm text-white font-medium">
+                    <Icons.calendar className="w-3.5 h-3.5 text-white" />
+                    {form.watch("startDate") && form.watch("endDate") ? (
+                      <span>
+                        {format(form.watch("startDate"), "PPP")} -{" "}
+                        {format(form.watch("endDate"), "PPP")}
+                      </span>
+                    ) : (
+                      "Pick a Date"
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1 text-sm text-white font-medium">
+                    <Icons.mapPin className="w-3.5 h-3.5 text-white" />
+                    {form.watch("location")
+                      ? form.watch("location")
+                      : "Location"}
+                  </div>
+                </div>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem className="col-span-2">
+                      <FormControl>
+                        <Input
+                          placeholder="Your Tournament Name"
+                          className="text-white placeholder:text-white text-xl font-bold w-72 mt-1 bg-transparent outline-none border-none focus-visible:outline-none focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 p-0"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormMessage className="py-1 font-bold" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="p-5 flex items-center gap-3">
+                <Dialog>
+                  <DialogTrigger className="rounded-full bg-primary cursor-pointer">
+                    <Icons.imagePlus className="w-[1rem] h-[1rem] text-white m-2" />
                     <span className="sr-only">Image</span>
-                  </Button>
-                </DialogTrigger>
-                <FileUpload setTournamentImage={setTournamentImage} />
-              </Dialog>
+                  </DialogTrigger>
+                  <FileUpload setTournamentImage={setTournamentImage} />
+                </Dialog>
+              </div>
             </div>
           </div>
           <div className="mt-10 w-full">

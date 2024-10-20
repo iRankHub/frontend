@@ -1,3 +1,5 @@
+import React from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -23,9 +25,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "../ui/dialog";
-import React from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 interface TournamentCardProps {
   row: any;
@@ -112,7 +118,6 @@ const TournamentCard = ({
     }
   };
 
-  // format date from 2024-09-05 12:00 to 09/05
   const formatDate = (date: string) => {
     const d = new Date(date);
     const month = String(d.getMonth() + 1).padStart(2, "0");
@@ -120,37 +125,80 @@ const TournamentCard = ({
     return `${month}/${day}`;
   };
 
-  return userRole === "admin" ? (
+  const tournament = row.original as Tournament.AsObject;
+  return (
     <Card key={row.id} className="p-3">
-      <div className="flex items-center justify-between gap-5">
-        <div className="flex items-center gap-3">
-          <Button
-            size={"sm"}
-            className="bg-[#FFD19A] w-8 h-8 text-sm cursor-default hover:bg-[#FFD19A]"
-          >
-            <div className="bg-primary rounded p-0.5 m-0 leading-3 text-white text-xs">
-              IC
+      <div className="flex justify-between items-start">
+        <div className="flex-1 flex gap-2">
+          {tournament.imageUrl ? (
+            <div className="relative w-20 h-16 rounded overflow-hidden">
+              <Image
+                src={tournament.imageUrl}
+                alt={tournament.name}
+                fill
+                className="object-cover"
+              />
             </div>
-          </Button>
-          <h3 className="text-sm font-medium">{getColumnValue(row, "name")}</h3>
+          ) : (
+            <div className="relative w-20 h-16 rounded overflow-hidden">
+              <Image
+                src="/static/images/mic-speech.jpg"
+                alt="placeholder image"
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
+          <div className="flex flex-col">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className="line-clamp-1 text-sm font-medium mb-1 text-start">
+                  {getColumnValue(row, "name")}
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{getColumnValue(row, "name")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <div className="text-xs">
+              <div className="text-muted-foreground">Venue</div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger className="line-clamp-1 text-secondary-foreground text-xs font-medium">
+                    {getColumnValue(row, "location")}
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{getColumnValue(row, "location")}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <div className="md:hidden mt-1">
+                <div className="text-muted-foreground">Date</div>
+                <div className="text-secondary-foreground font-medium">
+                  {formatDate(getColumnValue(row, "startDate"))} -{" "}
+                  {formatDate(getColumnValue(row, "endDate"))}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <div className="flex flex-col items-end">
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Button
                 type="button"
-                size={"sm"}
+                size="sm"
                 className="gap-2 text-sm font-semibold p-0 w-6 h-6 bg-transparent hover:bg-transparent hover:text-foreground group"
               >
-                <Icons.ellipsisVertical className="text-muted-foreground w-34 h-4 group-hover:text-foreground" />
+                <Icons.ellipsisVertical className="text-muted-foreground w-4 h-4 group-hover:text-foreground" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem className="p-0">
                 <Button
                   type="button"
-                  size={"sm"}
-                  variant={"link"}
+                  size="sm"
+                  variant="link"
                   className="w-full justify-start text-foreground hover:no-underline"
                 >
                   <Link
@@ -164,39 +212,99 @@ const TournamentCard = ({
                   </Link>
                 </Button>
               </DropdownMenuItem>
-              <DropdownMenuItem className="p-0">
-                <Button
-                  type="button"
-                  size={"sm"}
-                  variant={"link"}
-                  className="w-full justify-start text-foreground hover:no-underline"
-                >
-                  <Link
-                    className="no-underline"
-                    href={`${linkRole()}/${getColumnValue(
-                      row,
-                      "tournamentId"
-                    )}/logistics/billings`}
-                  >
-                    Billings
-                  </Link>
-                </Button>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DialogTrigger className="mt-0.5 w-full">
+              {userRole === "admin" && (
                 <DropdownMenuItem className="p-0">
                   <Button
                     type="button"
-                    size={"sm"}
-                    variant={"ghost"}
-                    className="w-full justify-start"
+                    size="sm"
+                    variant="link"
+                    className="w-full justify-start text-foreground hover:no-underline"
                   >
-                    Delete
+                    <Link
+                      className="no-underline"
+                      href={`${linkRole()}/${getColumnValue(
+                        row,
+                        "tournamentId"
+                      )}/logistics/billings`}
+                    >
+                      Billings
+                    </Link>
                   </Button>
                 </DropdownMenuItem>
-              </DialogTrigger>
+              )}
+              {userRole === "student" && (
+                <DropdownMenuItem className="p-0">
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="link"
+                    className="w-full justify-start text-foreground hover:no-underline"
+                  >
+                    <Link
+                      className="no-underline"
+                      href={`${linkRole()}/${getColumnValue(
+                        row,
+                        "tournamentId"
+                      )}/feedback`}
+                    >
+                      Feedback
+                    </Link>
+                  </Button>
+                </DropdownMenuItem>
+              )}
+              {userRole === "admin" && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onSelect={() => setDialogOpen(true)}
+                    className="text-destructive focus:text-destructive"
+                  >
+                    Delete
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
+          <div className="hidden md:block text-xs w-full">
+            <div className="text-muted-foreground">Date</div>
+            <div className="text-secondary-foreground font-medium">
+              {formatDate(getColumnValue(row, "startDate"))} -{" "}
+              {formatDate(getColumnValue(row, "endDate"))}
+            </div>
+          </div>
+        </div>
+      </div>
+      <Separator className="my-3" />
+      <div className="flex items-center justify-between">
+        <div className="flex gap-4">
+          <div className="flex flex-col">
+            <span className="text-xs font-medium text-primary">
+              {getColumnValue(row, "numberOfSchools")}
+            </span>
+            <small className="text-secondary-foreground text-xs font-medium">
+              Schools
+            </small>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xs font-medium text-primary">
+              {getColumnValue(row, "numberOfTeams")}
+            </span>
+            <small className="text-secondary-foreground text-xs font-medium">
+              Teams
+            </small>
+          </div>
+        </div>
+        <div className="flex flex-col items-end">
+          <span className="text-xs font-medium text-primary">
+            {getColumnValue(row, "coordinatorName")}
+          </span>
+          <small className="text-secondary-foreground text-xs font-medium">
+            Coordinator
+          </small>
+        </div>
+      </div>
+      {userRole === "admin" && (
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent>
             <DialogHeader>
               <DialogTitle className="text-base">
@@ -209,9 +317,9 @@ const TournamentCard = ({
             </DialogHeader>
             <DialogFooter className="w-full justify-end">
               <Button
-                type="submit"
-                size={"sm"}
-                variant={"outline"}
+                type="button"
+                size="sm"
+                variant="outline"
                 className="max-w-32"
                 onClick={() => setDialogOpen(false)}
               >
@@ -219,8 +327,8 @@ const TournamentCard = ({
               </Button>
               <Button
                 type="submit"
-                size={"sm"}
-                variant={"destructive"}
+                size="sm"
+                variant="destructive"
                 className="max-w-32"
                 onClick={() =>
                   handleDeleteTournament(getColumnValue(row, "tournamentId"))
@@ -238,164 +346,7 @@ const TournamentCard = ({
             </DialogFooter>
           </DialogContent>
         </Dialog>
-      </div>
-      <div className="w-full my-3">
-        <div className="flex items-center gap-4 justify-between mb-3">
-          <div className="flex flex-col">
-            <span className="text-xs font-medium text-muted-text">Venue</span>
-            <small className="text-secondary-foreground text-xs font-medium">
-              {getColumnValue(row, "location")}
-            </small>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-xs font-medium text-muted-text">Date</span>
-            <small className="text-secondary-foreground text-xs font-medium">
-              {formatDate(getColumnValue(row, "startDate"))} -{" "}
-              {formatDate(getColumnValue(row, "endDate"))}
-            </small>
-          </div>
-        </div>
-        <Separator />
-        <div className="flex items-center gap-4 justify-between mt-3">
-          <div className="flex gap-10 items-center">
-            <div className="flex flex-col">
-              <span className="text-xs font-medium text-primary">
-                {getColumnValue(row, "numberOfSchools")}
-              </span>
-              <small className="text-secondary-foreground text-xs font-medium">
-                Schools
-              </small>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xs font-medium text-primary">
-                {getColumnValue(row, "numberOfTeams")}
-              </span>
-              <small className="text-secondary-foreground text-xs font-medium">
-                Teams
-              </small>
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-xs font-medium text-primary">
-              {getColumnValue(row, "coordinatorName")}
-            </span>
-            <small className="text-secondary-foreground text-xs font-medium">
-              Coordinator
-            </small>
-          </div>
-        </div>
-      </div>
-    </Card>
-  ) : (
-    <Card key={row.id} className="p-3">
-      <div className="flex items-center justify-between gap-5">
-        <div className="flex items-center gap-3">
-          <Button
-            size={"sm"}
-            className="bg-[#FFD19A] w-8 h-8 text-sm cursor-default hover:bg-[#FFD19A]"
-          >
-            <div className="bg-primary rounded p-0.5 m-0 leading-3 text-white text-xs">
-              IC
-            </div>
-          </Button>
-          <h3 className="text-sm font-medium">{getColumnValue(row, "name")}</h3>
-        </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Button
-              type="button"
-              size={"sm"}
-              className="gap-2 text-sm font-semibold p-0 w-6 h-6 bg-transparent hover:bg-transparent hover:text-foreground group"
-            >
-              <Icons.ellipsisVertical className="text-muted-foreground w-34 h-4 group-hover:text-foreground" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem className="p-0">
-              <Button
-                type="button"
-                size={"sm"}
-                variant={"link"}
-                className="w-full justify-start text-foreground hover:no-underline"
-              >
-                <Link
-                  className="no-underline"
-                  href={`${linkRole()}/${getColumnValue(row, "tournamentId")}`}
-                >
-                  Go To Tournament
-                </Link>
-              </Button>
-            </DropdownMenuItem>
-            {userRole === "student" && (
-              <DropdownMenuItem className="p-0">
-                <Button
-                  type="button"
-                  size={"sm"}
-                  variant={"link"}
-                  className="w-full justify-start text-foreground hover:no-underline"
-                >
-                  <Link
-                    className="no-underline"
-                    href={`${linkRole()}/${getColumnValue(
-                      row,
-                      "tournamentId"
-                    )}/feedback`}
-                  >
-                    Feedback
-                  </Link>
-                </Button>
-              </DropdownMenuItem>
-            )}
-            <DropdownMenuSeparator />
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <div className="w-full my-3">
-        <div className="flex items-center gap-4 justify-between mb-3">
-          <div className="flex flex-col">
-            <span className="text-xs font-medium text-muted-text">Venue</span>
-            <small className="text-secondary-foreground text-xs font-medium">
-              {getColumnValue(row, "location")}
-            </small>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-xs font-medium text-muted-text">Date</span>
-            <small className="text-secondary-foreground text-xs font-medium">
-              {formatDate(getColumnValue(row, "startDate"))} -{" "}
-              {formatDate(getColumnValue(row, "endDate"))}
-            </small>
-          </div>
-        </div>
-        <Separator />
-        <div className="flex items-center gap-4 justify-between mt-3">
-          <div className="flex gap-10 items-center">
-            <div className="flex flex-col">
-              <span className="text-xs font-medium text-primary">
-                {getColumnValue(row, "numberOfSchools")}
-              </span>
-              <small className="text-secondary-foreground text-xs font-medium">
-                Schools
-              </small>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xs font-medium text-primary">
-                {getColumnValue(row, "numberOfTeams")}
-              </span>
-              <small className="text-secondary-foreground text-xs font-medium">
-                Teams
-              </small>
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-xs font-medium text-primary">
-              {getColumnValue(row, "coordinatorName")}
-            </span>
-            <small className="text-secondary-foreground text-xs font-medium">
-              coordinator
-            </small>
-          </div>
-        </div>
-      </div>
+      )}
     </Card>
   );
 };

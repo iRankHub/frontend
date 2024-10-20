@@ -15,6 +15,10 @@ const nextConfig = {
         {
           protocol: "https",
           hostname: "https://docs.google.com/"
+        },
+        {
+          protocol: "https",
+          hostname: "it-mil-1.linodeobjects.com"
         }
       ],
   },
