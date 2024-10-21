@@ -1,21 +1,14 @@
 "use client";
+
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import Image from "next/image";
+import { Camera } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
+
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -26,80 +19,118 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { ToastAction } from "@/components/ui/toast";
-import { useToast } from "@/components/ui/use-toast";
-import { getUserProfile } from "@/core/users/users";
-import { Districts, Provinces } from "@/lib/get-provinces-and-districts";
-import {
-  Country,
-  SchoolDetails,
-  UserProfile,
-} from "@/lib/grpc/proto/user_management/users_pb";
-import { cn } from "@/lib/utils";
-import {
-  adminProfile,
-  schoolProfileSchemaStep1,
-} from "@/lib/validations/admin/accounts/profile-update.schema";
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+
+import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
+import FileUpload from "../tournaments/create/file-upload";
+import { updateAdminProfile } from "@/core/users/users";
 import { useUserStore } from "@/stores/auth/auth.store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Camera, CheckIcon, ChevronsUpDown } from "lucide-react";
-import Image from "next/image";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import FileUpload from "../users/file-upload";
-import { getCountriesNoAuth } from "@/core/authentication/auth";
+import { ToastAction } from "@/components/ui/toast";
+import { Icons } from "@/components/icons";
+
+// Define the schema for the form
+const profileSchema = z.object({
+  username: z.string().min(2, "Username must be at least 2 characters"),
+});
+
+type ProfileFormInputs = z.infer<typeof profileSchema>;
 
 interface ProfileFormProps {
   user: UserProfile.AsObject;
 }
 
-type Inputs = z.infer<typeof adminProfile>;
+interface ImageType {
+  previewUrl: string;
+  url: string;
+}
 
 function ProfileForm({ user }: ProfileFormProps) {
   const { toast } = useToast();
-  const [countries, setCountries] = React.useState<Country.AsObject[]>([]);
+  const [loading, setLoading] = useState(false);
+  const { user: authUser, updateUsername } = useUserStore((state) => state);
+  const [profileImage, setProfileImage] = useState<ImageType | null>(
+    user.profilePicturePresignedUrl
+      ? {
+          previewUrl: user.profilePictureUrl,
+          url: user.profilePictureUrl,
+        }
+      : null
+  );
 
-  React.useEffect(() => {
-    getCountriesNoAuth().then((res) => {
-      setCountries(res);
-    });
-  }, []);
-
-  // react-hook-form
-  const form = useForm<Inputs>({
-    resolver: zodResolver(adminProfile),
+  const form = useForm<ProfileFormInputs>({
+    resolver: zodResolver(profileSchema),
     defaultValues: {
       username: user?.name || "",
     },
   });
 
-  const onSubmit = (data: Inputs) => {};
-
-  const handleUserProfile = (): string => {
-    // check if user is not null and if the userProfile is not of type Uint8Array
-    if (user.profilePicturePresignedUrl) {
-      // convert the Uint8Array to a string
-      const blob = new Blob([user.profilePicturePresignedUrl]);
-      const url = URL.createObjectURL(blob);
-
-      return url;
+  const onSubmit = async (data: ProfileFormInputs) => {
+    try {
+      if (!authUser) {
+        return;
+      }
+      setLoading(true);
+      const NewProfile = {
+        token: authUser.token,
+        userID: user.userid,
+        name: data.username,
+        gender: user.gender,
+        address: user.address,
+        bio: user.address,
+        phone: user.phone,
+        profilePicture: profileImage ? profileImage.url : undefined,
+      };
+      await updateAdminProfile(NewProfile)
+        .then((res) => {
+          updateUsername(data.username);
+          toast({
+            variant: "success",
+            title: "Success",
+            description: res.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        })
+        .catch((err) => {
+          console.error(err.message);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description:
+              "Something went wrong. Please check your credentials and try again later",
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+      toast({
+        variant: "success",
+        title: "Profile updated successfully",
+        description: "Your profile information has been updated.",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
+      });
+    } catch (error) {
+      toast({
+        title: "Error updating profile",
+        description:
+          "There was an error updating your profile. Please try again.",
+        variant: "destructive",
+      });
     }
-
-    return user.profilePicturePresignedUrl;
   };
+
   return (
     <div className="w-full rounded-md overflow-hidden">
       <div className="flex items-center justify-between flex-wrap gap-5 px-5 md:px-20 py-4 bg-brown">
@@ -108,25 +139,21 @@ function ProfileForm({ user }: ProfileFormProps) {
       <div className="w-full bg-background px-5 md:px-20 py-5">
         <Form {...form}>
           <form
-            onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+            onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
           >
             <div className="w-full flex items-center gap-10">
               <div className="w-24 h-24 rounded-full relative cursor-pointer">
                 <Image
-                  src={
-                    handleUserProfile().length > 0
-                      ? handleUserProfile()
-                      : "https://res.cloudinary.com/dmgv5azym/image/upload/v1701979624/jp5kql33vh3he0qsjnd7.jpg"
-                  }
+                  src={profileImage?.previewUrl || "/static/images/mic-speech.jpg"}
                   alt={user.name}
                   layout="fill"
                   objectFit="cover"
                   className="rounded-full"
                 />
-                <div className="absolute bottom-3 right-4">
+                {/* <div className="absolute bottom-3 right-4">
                   <Camera className="w-5 h-5 text-background dark:text-foreground" />
-                </div>
+                </div> */}
               </div>
               <div>
                 <h4>Picture</h4>
@@ -137,15 +164,20 @@ function ProfileForm({ user }: ProfileFormProps) {
                         Choose file
                       </h3>
                       <span className="text-muted-foreground text-sm">
-                        No file selected
+                        {profileImage ? "Image selected" : "No file selected"}
                       </span>
                     </div>
-                    <p className="text-sm text-muted-foreground font-medium">
-                      Add a nice photo of yourself for your profile.
-                    </p>
                   </DialogTrigger>
-                  <FileUpload />
+                  <DialogContent>
+                    <FileUpload
+                      setTournamentImage={setProfileImage}
+                      folderType="profile"
+                    />
+                  </DialogContent>
                 </Dialog>
+                <p className="text-sm text-muted-foreground font-medium">
+                  Add a nice photo of yourself for your profile.
+                </p>
               </div>
             </div>
             <FormField
@@ -155,13 +187,7 @@ function ProfileForm({ user }: ProfileFormProps) {
                 <FormItem className="col-span-2">
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="User name"
-                      value={field.value}
-                      onChange={field.onChange}
-                      className="disabled:opacity-100"
-                      disabled
-                    />
+                    <Input placeholder="User name" {...field} />
                   </FormControl>
                   <FormDescription className="text-sm text-muted-foreground">
                     This is your public display name. It can be your real name
@@ -171,6 +197,20 @@ function ProfileForm({ user }: ProfileFormProps) {
                 </FormItem>
               )}
             />
+            <Button
+              type="submit"
+              size={"sm"}
+              className="max-w-36 md:w-auto"
+              disabled={loading}
+            >
+              Update Profile
+              {loading && (
+                <Icons.spinner
+                  className="ml-2 h-4 w-4 animate-spin"
+                  aria-hidden="true"
+                />
+              )}
+            </Button>
           </form>
         </Form>
       </div>

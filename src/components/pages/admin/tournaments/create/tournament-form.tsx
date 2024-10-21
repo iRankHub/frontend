@@ -269,7 +269,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                     <Icons.imagePlus className="w-[1rem] h-[1rem] text-white m-2" />
                     <span className="sr-only">Image</span>
                   </DialogTrigger>
-                  <FileUpload setTournamentImage={setTournamentImage} />
+                  <FileUpload setTournamentImage={setTournamentImage} folderType="tournaments" />
                 </Dialog>
               </div>
             </div>

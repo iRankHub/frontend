@@ -7,6 +7,7 @@ import { DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog
 import { Progress } from "@/components/ui/progress";
 import { Trash2 } from "lucide-react";
 import useLinodeUpload from "@/hooks/use-linode-upload";
+import { LinodeFolderType } from "@/types";
 
 interface ImageType {
   previewUrl: string;
@@ -15,10 +16,11 @@ interface ImageType {
 
 type Props = {
   setTournamentImage: React.Dispatch<React.SetStateAction<ImageType | null>>;
+  folderType: LinodeFolderType;
 };
 
 
-function FileUpload({ setTournamentImage }: Props) {
+function FileUpload({ setTournamentImage, folderType }: Props) {
   const [file, setFile] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "success" | "failed">("idle");
   const { uploadFile, uploadProgress, uploadError } = useLinodeUpload();
@@ -42,7 +44,7 @@ function FileUpload({ setTournamentImage }: Props) {
 
     setUploadStatus("uploading");
     try {
-      const url = await uploadFile(file, `tournaments/${file.name}`);
+      const url = await uploadFile(file, `${folderType}/${file.name}`);
       const newFile: ImageType = {
         previewUrl: URL.createObjectURL(file),
         url: url,

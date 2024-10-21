@@ -31,7 +31,7 @@ export function UserNav() {
   const [currentUser, setCurrentUser] = useState<
     UserProfile.AsObject | undefined
   >(undefined);
-  user
+
   useEffect(() => {
     if (!user) return;
 
@@ -40,6 +40,7 @@ export function UserNav() {
       token: user.token,
     })
       .then((res) => {
+        console.log(res.profile?.name)
         setCurrentUser(res.profile);
       })
       .catch((err) => {
@@ -76,7 +77,7 @@ export function UserNav() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{currentUser?.name}</p>
+            <p className="text-sm font-medium leading-none">{currentUser?.name}sss</p>
             <p className="text-xs leading-none text-muted-foreground">
               {currentUser?.email}
             </p>

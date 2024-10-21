@@ -40,7 +40,7 @@ function TeamsRanking({ tournamentId }: Props) {
   return (
     <div className="w-full rounded-md overflow-hidden">
       <div className="flex items-center justify-between gap-5 p-5 py-4 bg-brown">
-        <h3 className="text-lg text-background font-medium">Team Ranking</h3>
+        <h3 className="text-lg text-background font-medium text-white">Team Ranking</h3>
         <Button
           type="button"
           className="border border-dashed border-white text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground group"

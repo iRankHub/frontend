@@ -41,7 +41,7 @@ function Speakers({ tournamentId }: Props) {
   return (
     <div className="w-full rounded-md overflow-hidden">
       <div className="flex items-center justify-between gap-5 p-5 py-4 bg-brown">
-        <h3 className="text-lg text-background font-medium">Speaker Ranking</h3>
+        <h3 className="text-lg text-background font-medium text-white">Speaker Ranking</h3>
         <Button
           type="button"
           className="border border-dashed border-white text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground group"
@@ -53,10 +53,9 @@ function Speakers({ tournamentId }: Props) {
       <div className="w-full bg-background p-8 px-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-3">
           {studentRankings.slice(0, 3).map((speaker, index) => (
-            <WinnerCard key={index} speaker={speaker} />
+            <WinnerCard key={index} speaker={speaker} count={index + 1} />
           ))}
         </div>
-        {/* <DataTable data={rankings} columns={columns} /> */}
 
         <DataTable data={studentRankings.slice(3)} columns={columns} />
       </div>
@@ -66,15 +65,16 @@ function Speakers({ tournamentId }: Props) {
 
 interface WinnerCardProps {
   speaker: StudentRanking.AsObject;
+  count: number;
 }
 
-const WinnerCard = ({ speaker }: WinnerCardProps) => {
+const WinnerCard = ({ speaker, count }: WinnerCardProps) => {
   return (
     <Card>
       <CardContent className="flex gap-3 p-2">
         <div className="relative w-[73px] h-20 rounded-md overflow-hidden">
           <Image
-            src="https://res.cloudinary.com/dmgv5azym/image/upload/v1701766208/samples/smile.jpg"
+            src="/static/images/mic-speech.jpg"
             alt="user image"
             fill
             className="w-full h-full object-cover"
@@ -92,7 +92,7 @@ const WinnerCard = ({ speaker }: WinnerCardProps) => {
             </div>
             <div className="w-8 h-8 relative">
               <Image
-                src="/static/images/medal-1.png"
+                src={`/static/images/medal-${count}.png`}
                 alt="medal first"
                 fill
                 className="w-full h-full"

@@ -22,10 +22,12 @@ export interface AuthStateUser {
 interface AuthState {
     user: AuthStateUser | null;
     userRole: Roles | null;
-    isLoading: boolean,
+    isLoading: boolean;
     login: (user: AuthStateUser, role: Roles) => void;
     logout: () => void;
     setIsLoading: (isLoading: boolean) => void;
+    updateUser: (updatedUser: Partial<AuthStateUser>) => void; 
+    updateUsername: (name: string) => void;
 }
 
 // Define persist options
@@ -47,6 +49,12 @@ export const useUserStore = create<AuthState>(
                 localStorage.setItem('theme', 'light');
             },
             setIsLoading: (isLoading) => set({ isLoading }),
+            updateUser: (updatedUser) => set((state) => ({
+                user: state.user ? { ...state.user, ...updatedUser } : null
+            })),
+            updateUsername: (name) => set((state) => ({
+                user: state.user ? {...state.user, name} : null,
+            }))
         }),
         {
             name: 'user-store',

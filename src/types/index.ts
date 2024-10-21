@@ -21,3 +21,5 @@ export interface Iparms {
         name: string;
     };
 }
+
+export type LinodeFolderType = "tournaments" | "profile";
