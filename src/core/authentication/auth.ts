@@ -93,6 +93,10 @@ export const adminLogin = (
         request.setEmailOrId(data.emailOrId);
         request.setPassword(data.password)
 
+        const metadata = {
+            'X-Requested-With': 'XMLHttpRequest'
+        };
+
         authClient.adminLogin(request, {}, (err, response) => {
             if (err) {
                 reject(err);
