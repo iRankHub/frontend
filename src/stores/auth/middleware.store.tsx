@@ -1,8 +1,9 @@
 import { useRouter } from "next/navigation";
 import { Roles, useUserStore } from "./auth.store";
 import { useEffect } from "react";
+import { handleInvalidToken, validateToken } from "./tokenValidator";
+import AppLoader from "@/lib/loader";
 
-// Auth middleware for pages
 export function withAuth<P extends object>(
   WrappedComponent: React.ComponentType<P>,
   allowedRoles: Roles[]
@@ -14,16 +15,23 @@ export function withAuth<P extends object>(
     const router = useRouter();
 
     useEffect(() => {
-      // Set loading to false once the component mounts on the client side
       setIsLoading(false);
-    }, [setIsLoading]);
+      
+      if (user && userRole) {
+        if (!validateToken()) {
+          handleInvalidToken();
+          return;
+        }
+      }
+    }, [user, userRole, setIsLoading]);
 
     if (isLoading) {
-      return <div>Loading...</div>; // Or your custom loading component
+      return <AppLoader />
     }
 
     if (!user || !userRole || !allowedRoles.includes(userRole)) {
       router.replace("/auth/select");
+      return null;
     }
 
     return <WrappedComponent {...props} />;

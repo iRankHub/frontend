@@ -231,6 +231,12 @@ export class GetTournamentStatsResponse extends jspb.Message {
   getUpcomingPercentageChange(): string;
   setUpcomingPercentageChange(value: string): GetTournamentStatsResponse;
 
+  getActiveDebaters(): number;
+  setActiveDebaters(value: number): GetTournamentStatsResponse;
+
+  getActiveDebatersPercentageChange(): string;
+  setActiveDebatersPercentageChange(value: string): GetTournamentStatsResponse;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetTournamentStatsResponse.AsObject;
   static toObject(includeInstance: boolean, msg: GetTournamentStatsResponse): GetTournamentStatsResponse.AsObject;
@@ -245,6 +251,8 @@ export namespace GetTournamentStatsResponse {
     upcomingTournaments: number,
     totalPercentageChange: string,
     upcomingPercentageChange: string,
+    activeDebaters: number,
+    activeDebatersPercentageChange: string,
   }
 }
 

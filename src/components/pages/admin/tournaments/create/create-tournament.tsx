@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
@@ -10,15 +10,15 @@ import { useUserStore } from "@/stores/auth/auth.store";
 import { tournamentLeagues } from "@/core/tournament/leagues";
 import { League } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { getVolunteersAndAdmins } from "@/core/users/users";
-import {
-  UserSummary,
-} from "@/lib/grpc/proto/user_management/users_pb";
+import { UserSummary } from "@/lib/grpc/proto/user_management/users_pb";
 import AppLoader from "@/lib/loader";
 
 function CreateTournament() {
   const [leagues, setLeagues] = useState<League.AsObject[]>([]);
   const [coordinators, setCoordinators] = useState<UserSummary.AsObject[]>([]);
-  const [selectedLeague, setSelectedLeague] = useState<League.AsObject | null>(null);
+  const [selectedLeague, setSelectedLeague] = useState<League.AsObject | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useUserStore((state) => state);
 
@@ -65,7 +65,10 @@ function CreateTournament() {
         selectedLeague={selectedLeague}
       />
       <div className="bg-background w-full min-h-full rounded-md border border-gray-200 pb-4">
-        <TournamentForm selectedLeague={selectedLeague} coordinators={coordinators} />
+        <TournamentForm
+          selectedLeague={selectedLeague}
+          coordinators={coordinators}
+        />
       </div>
       <Sheet>
         <SheetTrigger>
@@ -79,6 +82,7 @@ function CreateTournament() {
         </SheetTrigger>
         <LeaguesMobile
           leagues={leagues}
+          setLeagues={setLeagues}
           setSelectedLeague={setSelectedLeague}
           selectedLeague={selectedLeague}
         />

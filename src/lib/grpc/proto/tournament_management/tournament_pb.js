@@ -2845,7 +2845,9 @@ proto.tournament_management.GetTournamentStatsResponse.toObject = function(inclu
     totalTournaments: jspb.Message.getFieldWithDefault(msg, 1, 0),
     upcomingTournaments: jspb.Message.getFieldWithDefault(msg, 2, 0),
     totalPercentageChange: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    upcomingPercentageChange: jspb.Message.getFieldWithDefault(msg, 4, "")
+    upcomingPercentageChange: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    activeDebaters: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    activeDebatersPercentageChange: jspb.Message.getFieldWithDefault(msg, 6, "")
   };
 
   if (includeInstance) {
@@ -2897,6 +2899,14 @@ proto.tournament_management.GetTournamentStatsResponse.deserializeBinaryFromRead
     case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.setUpcomingPercentageChange(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setActiveDebaters(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setActiveDebatersPercentageChange(value);
       break;
     default:
       reader.skipField();
@@ -2952,6 +2962,20 @@ proto.tournament_management.GetTournamentStatsResponse.serializeBinaryToWriter =
   if (f.length > 0) {
     writer.writeString(
       4,
+      f
+    );
+  }
+  f = message.getActiveDebaters();
+  if (f !== 0) {
+    writer.writeInt32(
+      5,
+      f
+    );
+  }
+  f = message.getActiveDebatersPercentageChange();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
       f
     );
   }
@@ -3027,6 +3051,42 @@ proto.tournament_management.GetTournamentStatsResponse.prototype.getUpcomingPerc
  */
 proto.tournament_management.GetTournamentStatsResponse.prototype.setUpcomingPercentageChange = function(value) {
   return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional int32 active_debaters = 5;
+ * @return {number}
+ */
+proto.tournament_management.GetTournamentStatsResponse.prototype.getActiveDebaters = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.GetTournamentStatsResponse} returns this
+ */
+proto.tournament_management.GetTournamentStatsResponse.prototype.setActiveDebaters = function(value) {
+  return jspb.Message.setProto3IntField(this, 5, value);
+};
+
+
+/**
+ * optional string active_debaters_percentage_change = 6;
+ * @return {string}
+ */
+proto.tournament_management.GetTournamentStatsResponse.prototype.getActiveDebatersPercentageChange = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.GetTournamentStatsResponse} returns this
+ */
+proto.tournament_management.GetTournamentStatsResponse.prototype.setActiveDebatersPercentageChange = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
 };
 
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -23,7 +23,7 @@ import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 
 import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 import FileUpload from "../tournaments/create/file-upload";
-import { updateAdminProfile } from "@/core/users/users";
+import { getUserProfile, updateAdminProfile } from "@/core/users/users";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { ToastAction } from "@/components/ui/toast";
 import { Icons } from "@/components/icons";
@@ -48,15 +48,33 @@ function ProfileForm({ user }: ProfileFormProps) {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const { user: authUser, updateUsername } = useUserStore((state) => state);
-  const [profileImage, setProfileImage] = useState<ImageType | null>(
-    user.profilePicturePresignedUrl
-      ? {
-          previewUrl: user.profilePictureUrl,
-          url: user.profilePictureUrl,
-        }
-      : null
-  );
+  const [profileImage, setProfileImage] = useState<ImageType | null>(null);
+  const [currentUser, setCurrentUser] = useState<
+    UserProfile.AsObject | undefined
+  >(undefined);
 
+  useEffect(() => {
+    if (!authUser) return;
+
+    getUserProfile({
+      userID: authUser.userId,
+      token: authUser.token,
+    })
+      .then((res) => {
+        setCurrentUser(res.profile);
+        setProfileImage(
+          res.profile
+            ? {
+                previewUrl: res.profile.profilePicturePresignedUrl,
+                url: res.profile.profilePicturePresignedUrl,
+              }
+            : null
+        );
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, [authUser]);
   const form = useForm<ProfileFormInputs>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -70,6 +88,7 @@ function ProfileForm({ user }: ProfileFormProps) {
         return;
       }
       setLoading(true);
+      console.log(profileImage?.url);
       const NewProfile = {
         token: authUser.token,
         userID: user.userid,
@@ -145,7 +164,9 @@ function ProfileForm({ user }: ProfileFormProps) {
             <div className="w-full flex items-center gap-10">
               <div className="w-24 h-24 rounded-full relative cursor-pointer">
                 <Image
-                  src={profileImage?.previewUrl || "/static/images/mic-speech.jpg"}
+                  src={
+                    profileImage?.previewUrl || "/static/images/mic-speech.jpg"
+                  }
                   alt={user.name}
                   layout="fill"
                   objectFit="cover"

@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { getTournament } from "@/core/tournament/list";
 import { Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import AppLoader from "@/lib/loader";
 import { Roles, useUserStore } from "@/stores/auth/auth.store";
 import { withAuth } from "@/stores/auth/middleware.store";
 import { Iparms } from "@/types";
@@ -93,7 +94,7 @@ function Page({ params }: Iparms) {
           </TournamentMenuWrapper>
         </>
       ) : (
-        <div>Loading...</div>
+        <AppLoader />
       )}
     </ContentLayout>
   );

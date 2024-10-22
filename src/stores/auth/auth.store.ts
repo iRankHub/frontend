@@ -18,9 +18,14 @@ export interface AuthStateUser {
     requireTwoFactor: boolean;
 }
 
+// Internal interface that includes tokenExpiresAt
+interface InternalAuthStateUser extends AuthStateUser {
+    tokenExpiresAt: number;
+}
+
 // Define user store state interface
 interface AuthState {
-    user: AuthStateUser | null;
+    user: InternalAuthStateUser | null;
     userRole: Roles | null;
     isLoading: boolean;
     login: (user: AuthStateUser, role: Roles) => void;
@@ -28,6 +33,8 @@ interface AuthState {
     setIsLoading: (isLoading: boolean) => void;
     updateUser: (updatedUser: Partial<AuthStateUser>) => void; 
     updateUsername: (name: string) => void;
+    deleteToken: () => void;
+    isTokenValid: () => boolean;
 }
 
 // Define persist options
@@ -36,14 +43,22 @@ type UserPersist = (
     options: PersistOptions<AuthState>
 ) => StateCreator<AuthState>;
 
+// Helper function to calculate token expiration
+const calculateTokenExpiration = () => Math.floor(Date.now() / 1000) + 5 * 24 * 3600; // 5 days in seconds
 // User store
 export const useUserStore = create<AuthState>(
     (persist as UserPersist)(
-        (set) => ({
+        (set, get) => ({
             user: null,
             userRole: null,
             isLoading: true,
-            login: (user, role) => set({ user, userRole: role }),
+            login: (user, role) => set({ 
+                user: { 
+                    ...user, 
+                    tokenExpiresAt: calculateTokenExpiration()
+                }, 
+                userRole: role 
+            }),
             logout: () => {
                 set({ user: null, userRole: null });
                 localStorage.setItem('theme', 'light');
@@ -54,7 +69,15 @@ export const useUserStore = create<AuthState>(
             })),
             updateUsername: (name) => set((state) => ({
                 user: state.user ? {...state.user, name} : null,
-            }))
+            })),
+            deleteToken: () => set((state) => ({
+                user: state.user ? { ...state.user, token: '', tokenExpiresAt: 0 } : null
+            })),
+            isTokenValid: () => {
+                const { user } = get();
+                if (!user) return false;
+                return Math.floor(Date.now() / 1000) < user.tokenExpiresAt;
+            },
         }),
         {
             name: 'user-store',

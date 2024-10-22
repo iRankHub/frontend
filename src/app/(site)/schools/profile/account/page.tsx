@@ -41,6 +41,7 @@ function SchoolAccountPage() {
     Promise.all([fetchUserProfile])
       .then(([userProfileRes]) => {
         if (userProfileRes.profile) {
+          console.log(userProfileRes.profile)
           setUser(userProfileRes.profile);
         }
       })

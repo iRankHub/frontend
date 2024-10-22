@@ -1,3 +1,4 @@
+"use client"
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
@@ -9,51 +10,81 @@ import { DataTableToolbar } from "./data-table-toolbar";
 import { useFormatsStore } from "@/stores/admin/tournaments/formats.store";
 import AppLoader from "@/lib/loader";
 
+const PAGE_SIZE_COUNT = 20;
+
 function Formats() {
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useUserStore((state) => state);
   const { setFormats, formats } = useFormatsStore((state) => state);
   const [defaultPageToken, setDefaultPageToken] = useState(0);
   const [loadMoreLoading, setLoadMoreLoading] = useState(false);
+  const [hasMoreData, setHasMoreData] = useState(true);
+
+  // Helper function to filter out duplicates
+  const removeDuplicates = (existingData: any[], newData: any[]) => {
+    const existingIds = new Set(existingData.map(f => f.formatId));
+    return newData.filter(format => !existingIds.has(format.formatId));
+  };
 
   useEffect(() => {
     if (!user) return;
     setIsLoading(true);
 
     const fetchFormats = tournamentFormats({
-      page_size: 10,
+      page_size: PAGE_SIZE_COUNT,
       page_token: 0,
       token: user.token,
     });
 
     Promise.all([fetchFormats])
       .then(([formatsRes]) => {
-        setFormats(formatsRes.formatsList);
+        const uniqueFormats = Array.from(
+          new Map(formatsRes.formatsList.map(item => [item.formatId, item])).values()
+        );
+        setFormats(uniqueFormats);
+
+        if (uniqueFormats.length < PAGE_SIZE_COUNT) {
+          setHasMoreData(false);
+        }
       })
       .catch((err) => {
         console.error(err.message);
-        // You might want to add a toast notification here
       })
       .finally(() => {
         setIsLoading(false);
       });
   }, [user, setFormats]);
 
-  const handleLoadMore = async () => {
+  const loadMore = async () => {
     if (!user) return;
-    setDefaultPageToken(defaultPageToken + 1);
+    setLoadMoreLoading(true);
+
     const data = {
-      page_size: 20,
+      page_size: PAGE_SIZE_COUNT,
       page_token: defaultPageToken + 1,
       token: user.token,
     };
-    setLoadMoreLoading(true);
+
     await tournamentFormats({ ...data })
       .then((res) => {
-        setFormats([...formats, ...res.formatsList]);
+        if (res.formatsList.length > 0) {
+          const newUniqueData = removeDuplicates(formats, res.formatsList);
+
+          if (newUniqueData.length > 0) {
+            setFormats([...formats, ...newUniqueData]);
+            setDefaultPageToken(prev => prev + 1);
+          }
+
+          if (res.formatsList.length < PAGE_SIZE_COUNT || newUniqueData.length === 0) {
+            setHasMoreData(false);
+          }
+        } else {
+          console.log("No new data returned");
+          setHasMoreData(false);
+        }
       })
       .catch((err) => {
-        console.error(err.message);
+        console.error("Error loading more formats:", err.message);
       })
       .finally(() => {
         setLoadMoreLoading(false);
@@ -70,22 +101,23 @@ function Formats() {
         data={formats}
         columns={columns}
         DataTableToolbar={DataTableToolbar}
-        setFormats={setFormats}
         cardType="format"
       />
+      
       {loadMoreLoading && (
         <div className="flex items-center justify-center w-full h-96">
           <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
         </div>
       )}
+      
       <div className="p-5">
-        {formats.length >= 10 && (
+        {formats.length >= PAGE_SIZE_COUNT && hasMoreData && (
           <Button
             type="button"
-            size={"sm"}
-            variant={"link"}
+            size="sm"
+            variant="link"
             className="max-w-auto mx-auto ring-0 border-none outline-none mt-10 hover:bg-primary hover:text-white underline"
-            onClick={handleLoadMore}
+            onClick={loadMore}
           >
             Load More
           </Button>

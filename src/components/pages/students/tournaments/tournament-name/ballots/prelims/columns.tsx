@@ -59,7 +59,7 @@ export const columns: ColumnDef<Ballot.AsObject>[] = [
     cell: ({ row }) => {
       const status = row.getValue("recordingStatus");
       const variant =
-        status === "recorded"
+        status === "Recorded"
           ? "bg-green-200 text-success hover:bg-green-200"
           : "bg-secondary text-foreground hover:bg-secondary";
       return (

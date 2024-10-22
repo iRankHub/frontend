@@ -27,13 +27,6 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[280px]"
         />
-        {table.getColumn("inviteeRole") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("inviteeRole")}
-            title="Category"
-            options={userRoles}
-          />
-        )}
         {table.getColumn("status") && (
           <DataTableFacetedFilter
             column={table.getColumn("status")}

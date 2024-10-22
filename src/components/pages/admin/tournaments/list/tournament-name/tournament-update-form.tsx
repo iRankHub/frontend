@@ -215,12 +215,11 @@ function TournamentUpdateForm({ tournament }: Props) {
         });
       })
       .catch((err) => {
-        console.error(err.message);
         toast({
           variant: "destructive",
           title: "Error",
           description:
-            "An error occurred while updating tournament. Please try again",
+            err.message,
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close
@@ -821,11 +820,6 @@ function TournamentUpdateForm({ tournament }: Props) {
                             <SelectItem value="3">Round 3</SelectItem>
                             <SelectItem value="4">Round 4</SelectItem>
                             <SelectItem value="5">Round 5</SelectItem>
-                            <SelectItem value="6">Round 6</SelectItem>
-                            <SelectItem value="7">Round 7</SelectItem>
-                            <SelectItem value="8">Round 8</SelectItem>
-                            <SelectItem value="9">Round 9</SelectItem>
-                            <SelectItem value="10">Round 10</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -863,11 +857,6 @@ function TournamentUpdateForm({ tournament }: Props) {
                             <SelectItem value="3">Round 3</SelectItem>
                             <SelectItem value="4">Round 4</SelectItem>
                             <SelectItem value="5">Round 5</SelectItem>
-                            <SelectItem value="6">Round 6</SelectItem>
-                            <SelectItem value="7">Round 7</SelectItem>
-                            <SelectItem value="8">Round 8</SelectItem>
-                            <SelectItem value="9">Round 9</SelectItem>
-                            <SelectItem value="10">Round 10</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>

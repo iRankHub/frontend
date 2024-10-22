@@ -19,7 +19,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
 import { PasswordInput } from "@/components/ui/password-Input";
-import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
@@ -44,7 +43,7 @@ const LoginFormEmail = () => {
 
   async function onSubmit(data: Inputs) {
     setIsPending(true);
-    await adminLogin({ emailOrId: data.email, password: data.password })
+    await adminLogin({ emailOrId: data.email.trim(), password: data.password })
       .then((res) => {
         if (res.success) {
           form.reset();

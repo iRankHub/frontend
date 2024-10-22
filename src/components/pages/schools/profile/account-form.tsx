@@ -30,6 +30,7 @@ import { useUserStore } from "@/stores/auth/auth.store";
 import { useToast } from "@/components/ui/use-toast";
 import { UpdateSchoolProfile, UpdateUserProfile } from "@/types/user_management/users";
 import { UserRole } from "@/types";
+import { updateSchoolProfile } from "@/core/users/users";
 // import { updateUserProfile } from "@/core/users/users";
 
 interface AccountFormProps {
@@ -49,60 +50,61 @@ function AccountForm({ user }: AccountFormProps) {
     resolver: zodResolver(schoolProfileSchemaStep2),
     defaultValues: {
       email: user?.email,
-      contact_person: user?.name,
+      contact_person: user?.schooldetails?.schoolname,
       contact_person_email: user?.email,
       contact_person_number: user?.phone,
     },
   });
 
   const onSubmit = async (data: Inputs) => {
-    // if (!storeUser) return;
-    // setIsPending(true);
+    if (!storeUser) return;
+    setIsPending(true);
 
-    // const NewProfile: UpdateSchoolProfile = {
-    //   name: data.contact_person,
-    //   address: user.address,
-    //   bio: user.bio,
-    //   email: data.contact_person_email,
-    //   phone: data.contact_person_number,
-    //   profilePicture: user.profilepicture,
-    //   token: storeUser.token,
-    //   userID: user.userid,
-    //   gender: user.gender,
-    //   role: UserRole.SCHOOL,
-    // };
+    const NewProfile: UpdateSchoolProfile = {
+      token: storeUser.token,
+      userID: user.userid,
+      address: user.address,
+      bio: user.bio,
+      contactEmail: data.contact_person_email,
+      contactPersonName: data.contact_person,
+      // contactPersonNationalId: data.
+      gender: user.gender,
+      phone: data.contact_person_number,
+      schoolEmail: data.contact_person_email,
+      schoolName: data.contact_person,
+    };
 
-    // await updateUserProfile(NewProfile)
-    //   .then((res) => {
-    //     toast({
-    //       variant: "success",
-    //       title: "Success",
-    //       description: res.message,
-    //       action: (
-    //         <ToastAction altText="Close" className="bg-primary text-white">
-    //           Close
-    //         </ToastAction>
-    //       ),
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.error(err.message);
-    //     toast({
-    //       variant: "destructive",
-    //       title: "Error",
-    //       description:
-    //         "Something went wrong. Please check your credentials and try again later",
-    //       action: (
-    //         <ToastAction altText="Close" className="bg-primary text-white">
-    //           Close
-    //         </ToastAction>
-    //       ),
-    //     });
-    //   })
-    //   .finally(() => {
-    //     setIsPending(false);
-    //     setDialogOpen(false);
-    //   });
+    await updateSchoolProfile(NewProfile)
+      .then((res) => {
+        toast({
+          variant: "success",
+          title: "Success",
+          description: res.message,
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+      })
+      .catch((err) => {
+        console.error(err.message);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description:
+            "Something went wrong. Please check your credentials and try again later",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+      })
+      .finally(() => {
+        setIsPending(false);
+        setDialogOpen(false);
+      });
   };
 
   return (
@@ -124,10 +126,9 @@ function AccountForm({ user }: AccountFormProps) {
                   <FormLabel>School Email</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="school name"
+                      placeholder="School email"
                       className=""
                       value={field.value}
-                      disabled
                     />
                   </FormControl>
                   <FormDescription className="text-sm text-muted-foreground">
@@ -195,7 +196,7 @@ function AccountForm({ user }: AccountFormProps) {
                     />
                   </FormControl>
                   <FormDescription className="text-sm text-muted-foreground">
-                    This is the email of the contact person name
+                    This is the phone of the contact person
                   </FormDescription>
                   <FormMessage className="font-bold" />
                 </FormItem>

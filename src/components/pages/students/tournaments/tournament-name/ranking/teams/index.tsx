@@ -25,7 +25,7 @@ function TeamsRanking({ tournamentId }: Props) {
       token: user.token,
       tournament_id: tournamentId,
       page: 1,
-      page_size: 10,
+      page_size: 500,
     };
 
     getTournamentTeamsRanking(options)

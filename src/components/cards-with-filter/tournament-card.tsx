@@ -304,7 +304,7 @@ const TournamentCard = ({
         </div>
       </div>
       {userRole === "admin" && (
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen} modal>
           <DialogContent>
             <DialogHeader>
               <DialogTitle className="text-base">

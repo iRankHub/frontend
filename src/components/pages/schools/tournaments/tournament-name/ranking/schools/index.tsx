@@ -28,7 +28,7 @@ function Schools({ tournamentId }: Props) {
       token: user.token,
       tournament_id: tournamentId,
       page: 1,
-      page_size: 10,
+      page_size: 500,
     };
 
     getTournamentSchoolRanking(options)
@@ -44,13 +44,6 @@ function Schools({ tournamentId }: Props) {
     <div className="w-full rounded-md overflow-hidden">
       <div className="flex items-center justify-between gap-5 p-5 py-4 bg-brown">
         <h3 className="text-lg text-background font-medium">Speaker Ranking</h3>
-        <Button
-          type="button"
-          className="border border-dashed border-white text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground group"
-        >
-          Activate
-          <span className="sr-only">Activate</span>
-        </Button>
       </div>
       <div className="w-full bg-background p-8 px-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-3">

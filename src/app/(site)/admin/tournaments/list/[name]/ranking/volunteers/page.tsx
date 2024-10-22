@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { getTournament } from "@/core/tournament/list";
 import { Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import AppLoader from "@/lib/loader";
 import { Roles, useUserStore } from "@/stores/auth/auth.store";
 import { withAuth } from "@/stores/auth/middleware.store";
 import { Iparms } from "@/types";
@@ -48,7 +49,7 @@ function Page({ params }: Iparms) {
       });
   }, [user, tourn_id]);
 
-  if (!tournament) return <div>loading...</div>;
+  if (!tournament) return <AppLoader />;
   return (
     <ContentLayout title="format">
       <div className="w-full flex items-center justify-between gap-5">

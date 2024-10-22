@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 import { getBallot, updateBallot } from "@/core/debates/ballots";
 import {
   Ballot,
@@ -44,6 +45,7 @@ const inter = Inter({
 function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
   const { name: tournament_id } = useParams();
   const { user } = useUserStore((state) => state);
+  const toast = useToast();
   const { markBallotAsRecorded } = useBallotsStore((state) => state);
   const [activeStep, setActiveStep] = React.useState(1);
   const [ballot, setBallot] = useState<Ballot.AsObject | undefined>(undefined);
@@ -243,6 +245,12 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     } catch (err) {
       console.error(err);
       // Handle error (e.g., show error message to user)
+      toast.toast({
+        title: "Error",
+        description:
+          "An error occurred while updating the ballot. This can happen if you are not the head judge of this debate or an error on our end!",
+        variant: "destructive",
+      });
     } finally {
       setIsUpdatingBallot(false);
     }
@@ -402,6 +410,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               <h3>This team is public speaking</h3>
             )}
           </div>
+          <p>The minimum score for speakers should be 23!</p>
           <div className="flex items-center gap-5">
             <Button
               variant="outline"
@@ -443,6 +452,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               <h3>This team is public speaking</h3>
             )}
           </div>
+          <p>The minimum score for speakers should be 23!</p>
           <div className="flex items-center gap-5">
             <Button
               variant="outline"

@@ -9,27 +9,43 @@ import { DataTableToolbar } from "./data-table-toolbar";
 import { columns } from "./columns";
 import AppLoader from "@/lib/loader";
 
+const PAGE_SIZE_COUNT = 20;
+
 function Tournaments() {
   const [isLoading, setIsLoading] = useState(true);
   const [tournaments, setTournaments] = useState<Tournament.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
   const [defaultPageToken, setDefaultPageToken] = useState(0);
   const [loadMoreLoading, setLoadMoreLoading] = useState(false);
+  const [hasMoreData, setHasMoreData] = useState(true);
+
+  // Helper function to filter out duplicates
+  const removeDuplicates = (existingData: Tournament.AsObject[], newData: Tournament.AsObject[]) => {
+    const existingIds = new Set(existingData.map(t => t.tournamentId));
+    return newData.filter(tournament => !existingIds.has(tournament.tournamentId));
+  };
 
   useEffect(() => {
     if (!user) return;
     setIsLoading(true);
 
     const fetchTournaments = tournamentsList({
-      page_size: 20,
+      page_size: PAGE_SIZE_COUNT,
       page_token: 0,
       token: user.token,
     });
 
     Promise.all([fetchTournaments])
       .then(([tournamentsRes]) => {
-        console.log(tournamentsRes.tournamentsList)
-        setTournaments(tournamentsRes.tournamentsList);
+        const uniqueTournaments = Array.from(
+          new Map(tournamentsRes.tournamentsList.map(item => [item.tournamentId, item])).values()
+        );
+        console.log(uniqueTournaments)
+        setTournaments(uniqueTournaments);
+
+        if (uniqueTournaments.length < PAGE_SIZE_COUNT) {
+          setHasMoreData(false);
+        }
       })
       .catch((err) => {
         console.error(err.message);
@@ -42,19 +58,33 @@ function Tournaments() {
   const loadMore = async () => {
     if (!user) return;
     setLoadMoreLoading(true);
+
     const data = {
-      page_size: 20,
+      page_size: PAGE_SIZE_COUNT,
       page_token: defaultPageToken + 1,
       token: user.token,
     };
+
     await tournamentsList({ ...data })
       .then((res) => {
-        console.log(res.tournamentsList)
-        setTournaments((prev) => [...prev, ...res.tournamentsList]);
-        setDefaultPageToken((prev) => prev + 1);
+        if (res.tournamentsList.length > 0) {
+          const newUniqueData = removeDuplicates(tournaments, res.tournamentsList);
+
+          if (newUniqueData.length > 0) {
+            setTournaments(prev => [...prev, ...newUniqueData]);
+            setDefaultPageToken(prev => prev + 1);
+          }
+
+          // Check if we should load more
+          if (res.tournamentsList.length < PAGE_SIZE_COUNT || newUniqueData.length === 0) {
+            setHasMoreData(false);
+          }
+        } else {
+          setHasMoreData(false);
+        }
       })
       .catch((err) => {
-        console.error(err.message);
+        console.error("Error loading more tournaments:", err.message);
       })
       .finally(() => {
         setLoadMoreLoading(false);
@@ -82,11 +112,11 @@ function Tournaments() {
       )}
 
       <div className="p-5">
-        {tournaments.length >= 20 && (
+        {tournaments.length >= PAGE_SIZE_COUNT && hasMoreData && (
           <Button
             type="button"
-            size={"sm"}
-            variant={"link"}
+            size="sm"
+            variant="link"
             className="max-w-auto mx-auto ring-0 border-none outline-none mt-10 hover:bg-primary hover:text-white underline"
             onClick={loadMore}
           >

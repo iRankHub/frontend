@@ -519,10 +519,6 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
             />
           </div>
 
-          <p className="mt-5 text-sm font-semibold text-foreground">
-            Once you submit the ballot, you will not be able to edit or view it.
-            Are you sure you want to submit?
-          </p>
           <div className="flex items-center gap-4">
             <Button
               variant="outline"

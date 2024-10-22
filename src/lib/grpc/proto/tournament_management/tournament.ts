@@ -994,6 +994,8 @@ export namespace tournament_management {
             upcoming_tournaments?: number;
             total_percentage_change?: string;
             upcoming_percentage_change?: string;
+            active_debaters?: number;
+            active_debaters_percentage_change?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -1009,6 +1011,12 @@ export namespace tournament_management {
                 }
                 if ("upcoming_percentage_change" in data && data.upcoming_percentage_change != undefined) {
                     this.upcoming_percentage_change = data.upcoming_percentage_change;
+                }
+                if ("active_debaters" in data && data.active_debaters != undefined) {
+                    this.active_debaters = data.active_debaters;
+                }
+                if ("active_debaters_percentage_change" in data && data.active_debaters_percentage_change != undefined) {
+                    this.active_debaters_percentage_change = data.active_debaters_percentage_change;
                 }
             }
         }
@@ -1036,11 +1044,25 @@ export namespace tournament_management {
         set upcoming_percentage_change(value: string) {
             pb_1.Message.setField(this, 4, value);
         }
+        get active_debaters() {
+            return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
+        }
+        set active_debaters(value: number) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        get active_debaters_percentage_change() {
+            return pb_1.Message.getFieldWithDefault(this, 6, "") as string;
+        }
+        set active_debaters_percentage_change(value: string) {
+            pb_1.Message.setField(this, 6, value);
+        }
         static fromObject(data: {
             total_tournaments?: number;
             upcoming_tournaments?: number;
             total_percentage_change?: string;
             upcoming_percentage_change?: string;
+            active_debaters?: number;
+            active_debaters_percentage_change?: string;
         }): GetTournamentStatsResponse {
             const message = new GetTournamentStatsResponse({});
             if (data.total_tournaments != null) {
@@ -1055,6 +1077,12 @@ export namespace tournament_management {
             if (data.upcoming_percentage_change != null) {
                 message.upcoming_percentage_change = data.upcoming_percentage_change;
             }
+            if (data.active_debaters != null) {
+                message.active_debaters = data.active_debaters;
+            }
+            if (data.active_debaters_percentage_change != null) {
+                message.active_debaters_percentage_change = data.active_debaters_percentage_change;
+            }
             return message;
         }
         toObject() {
@@ -1063,6 +1091,8 @@ export namespace tournament_management {
                 upcoming_tournaments?: number;
                 total_percentage_change?: string;
                 upcoming_percentage_change?: string;
+                active_debaters?: number;
+                active_debaters_percentage_change?: string;
             } = {};
             if (this.total_tournaments != null) {
                 data.total_tournaments = this.total_tournaments;
@@ -1075,6 +1105,12 @@ export namespace tournament_management {
             }
             if (this.upcoming_percentage_change != null) {
                 data.upcoming_percentage_change = this.upcoming_percentage_change;
+            }
+            if (this.active_debaters != null) {
+                data.active_debaters = this.active_debaters;
+            }
+            if (this.active_debaters_percentage_change != null) {
+                data.active_debaters_percentage_change = this.active_debaters_percentage_change;
             }
             return data;
         }
@@ -1090,6 +1126,10 @@ export namespace tournament_management {
                 writer.writeString(3, this.total_percentage_change);
             if (this.upcoming_percentage_change.length)
                 writer.writeString(4, this.upcoming_percentage_change);
+            if (this.active_debaters != 0)
+                writer.writeInt32(5, this.active_debaters);
+            if (this.active_debaters_percentage_change.length)
+                writer.writeString(6, this.active_debaters_percentage_change);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1110,6 +1150,12 @@ export namespace tournament_management {
                         break;
                     case 4:
                         message.upcoming_percentage_change = reader.readString();
+                        break;
+                    case 5:
+                        message.active_debaters = reader.readInt32();
+                        break;
+                    case 6:
+                        message.active_debaters_percentage_change = reader.readString();
                         break;
                     default: reader.skipField();
                 }

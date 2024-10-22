@@ -279,12 +279,9 @@ function Leagues({
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger>
-            <Button
-              type="button"
-              className="text-white gap-2 text-sm font-semibold h-8 hover:bg-white hover:text-foreground hover:dark:text-background group mr-5"
-            >
-              <Icons.add className="text-white w-3.5 h-3.5 group-hover:text-foreground group-hover:dark:text-background" />
-            </Button>
+            <div className="bg-primary w-full rounded text-white text-sm flex items-center justify-center font-semibold h-8 dark:hover:bg-white hover:text-foreground hover:dark:text-background group mr-5">
+              <Icons.add className="text-white w-4 h-4 group-hover:text-foreground group-hover:dark:text-background" />
+            </div>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>

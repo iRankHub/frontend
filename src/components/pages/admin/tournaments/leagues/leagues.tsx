@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
@@ -11,49 +10,80 @@ import { columns } from "./columns";
 import { DataTableToolbar } from "./data-table-toolbar";
 import AppLoader from "@/lib/loader";
 
+const PAGE_SIZE_COUNT = 20;
+
 function Leagues() {
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useUserStore((state) => state);
   const { setLeagues, leagues } = useLeaguesStore((state) => state);
+  const [defaultPageToken, setDefaultPageToken] = useState(0);
   const [loadMoreLoading, setLoadMoreLoading] = useState(false);
+  const [hasMoreData, setHasMoreData] = useState(true);
+
+  // Helper function to filter out duplicates
+  const removeDuplicates = (existingData: any[], newData: any[]) => {
+    const existingIds = new Set(existingData.map(l => l.leagueId));
+    return newData.filter(league => !existingIds.has(league.leagueId));
+  };
 
   useEffect(() => {
     if (!user) return;
     setIsLoading(true);
 
     const fetchLeagues = tournamentLeagues({
-      page_size: 10,
+      page_size: PAGE_SIZE_COUNT,
       page_token: 0,
       token: user.token,
     });
 
     Promise.all([fetchLeagues])
       .then(([leaguesRes]) => {
-        setLeagues(leaguesRes.leaguesList);
+        const uniqueLeagues = Array.from(
+          new Map(leaguesRes.leaguesList.map(item => [item.leagueId, item])).values()
+        );
+        setLeagues(uniqueLeagues);
+
+        if (uniqueLeagues.length < PAGE_SIZE_COUNT) {
+          setHasMoreData(false);
+        }
       })
       .catch((err) => {
         console.error(err.message);
-        // You might want to add a toast notification here
       })
       .finally(() => {
         setIsLoading(false);
       });
   }, [user, setLeagues]);
 
-  const loadMoreLeagues = () => {
+  const loadMore = async () => {
     if (!user) return;
+    setLoadMoreLoading(true);
+
     const data = {
-      page_size: 10,
-      page_token: leagues.length,
+      page_size: PAGE_SIZE_COUNT,
+      page_token: defaultPageToken + 1,
       token: user.token,
     };
-    setLoadMoreLoading(true);
-    tournamentLeagues({ ...data })
+
+    await tournamentLeagues({ ...data })
       .then((res) => {
-        setLeagues([...leagues, ...res.leaguesList]);
+        if (res.leaguesList.length > 0) {
+          const newUniqueData = removeDuplicates(leagues, res.leaguesList);
+
+          if (newUniqueData.length > 0) {
+            setLeagues([...leagues, ...newUniqueData]);
+            setDefaultPageToken(prev => prev + 1);
+          }
+
+          if (res.leaguesList.length < PAGE_SIZE_COUNT || newUniqueData.length === 0) {
+            setHasMoreData(false);
+          }
+        } else {
+          setHasMoreData(false);
+        }
       })
       .catch((err) => {
-        console.error(err.message);
+        console.error("Error loading more leagues:", err.message);
       })
       .finally(() => {
         setLoadMoreLoading(false);
@@ -70,27 +100,28 @@ function Leagues() {
         data={leagues}
         columns={columns}
         DataTableToolbar={DataTableToolbar}
-        setLeagues={setLeagues}
         cardType="league"
       />
+      
       {loadMoreLoading && (
         <div className="flex items-center justify-center w-full h-96">
           <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
         </div>
       )}
-      {leagues.length >= 10 && (
-        <div className="p-5">
+      
+      <div className="p-5">
+        {leagues.length >= PAGE_SIZE_COUNT && hasMoreData && (
           <Button
             type="button"
-            size={"sm"}
-            variant={"link"}
+            size="sm"
+            variant="link"
             className="max-w-auto mx-auto ring-0 border-none outline-none mt-10 hover:bg-primary hover:text-white underline"
-            onClick={loadMoreLeagues}
+            onClick={loadMore}
           >
             Load More
           </Button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

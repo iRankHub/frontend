@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { v4 as uuidv4 } from "uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon, Clock, Trash2 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -75,9 +75,44 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
     resolver: zodResolver(createTournamentSchema),
     defaultValues: {
       fees_currency: "rwf",
+      name: "",
+      format: "",
+      location: "",
+      coordinator: "",
+      no_of_elimination_judges: "",
+      no_of_judges: "",
+      preliminaries_end_at: "",
+      preliminaries_start_from: "",
+      fees: 0,
+      startDate: undefined,
+      endDate: undefined,
+      startTime: undefined,
+      endTime: undefined,
     },
   });
 
+  const resetForm = () => {
+    // Reset form values
+    form.reset({
+      fees_currency: "rwf",
+      name: "",
+      format: "",
+      location: "",
+      coordinator: "",
+      no_of_elimination_judges: "",
+      no_of_judges: "",
+      preliminaries_end_at: "",
+      preliminaries_start_from: "",
+      fees: 0,
+      startDate: undefined,
+      endDate: undefined,
+      startTime: undefined,
+      endTime: undefined,
+    });
+
+    // Reset tournament image
+    setTournamentImage(null);
+  };
   async function onSubmit(data: Inputs) {
     if (!user) return;
 
@@ -141,14 +176,25 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
     await createTournament({ ...options })
       .then(() => {
         setLoading(false);
-        form.reset();
+        form.reset({
+          fees_currency: "rwf",
+          name: "",
+          format: "",
+          location: "",
+          coordinator: "",
+          no_of_elimination_judges: "",
+          no_of_judges: "",
+          preliminaries_end_at: "",
+          preliminaries_start_from: "",
+          fees: 0,
+          startDate: undefined,
+          endDate: undefined,
+          startTime: undefined,
+          endTime: undefined,
+        });
 
-        form.setValue("name", "");
-        form.setValue("format", "");
-        form.setValue("location", "");
-        form.setValue("coordinator", "");
-        form.setValue("no_of_elimination_judges", "");
-        form.setValue("no_of_judges", "");
+        // Reset tournament image
+        setTournamentImage(null);
 
         toast({
           variant: "success",
@@ -269,7 +315,10 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                     <Icons.imagePlus className="w-[1rem] h-[1rem] text-white m-2" />
                     <span className="sr-only">Image</span>
                   </DialogTrigger>
-                  <FileUpload setTournamentImage={setTournamentImage} folderType="tournaments" />
+                  <FileUpload
+                    setTournamentImage={setTournamentImage}
+                    folderType="tournaments"
+                  />
                 </Dialog>
               </div>
             </div>
@@ -455,7 +504,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          value={field.value}
                         >
                           <SelectTrigger
                             className={cn(
@@ -494,7 +543,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          value={field.value}
                         >
                           <SelectTrigger
                             className={cn(
@@ -594,7 +643,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          value={field.value}
                         >
                           <SelectTrigger
                             className={cn(
@@ -633,7 +682,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          value={field.value}
                         >
                           <SelectTrigger
                             className={cn(
@@ -669,7 +718,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          value={field.value}
                         >
                           <SelectTrigger
                             className={cn(
@@ -707,7 +756,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          value={field.value}
                         >
                           <SelectTrigger
                             className={cn(
@@ -743,7 +792,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          value={field.value}
                         >
                           <SelectTrigger
                             className={cn(

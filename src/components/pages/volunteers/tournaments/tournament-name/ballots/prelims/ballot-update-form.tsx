@@ -297,7 +297,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       // Handle error (e.g., show error message to user)
       toast.toast({
         title: "Error",
-        description: "An error occurred while updating the ballot.",
+        description: "An error occurred while updating the ballot. This can happen if you are not the head judge of this debate or an error on our end!",
         variant: "destructive",
       });
     } finally {
@@ -464,6 +464,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               <h3>This team is public speaking</h3>
             )}
           </div>
+          <p>The minimum score for speakers should be 23!</p>
           <div className="flex items-center gap-5">
             <Button
               variant="outline"
@@ -505,6 +506,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               <h3>This team is public speaking</h3>
             )}
           </div>
+          <p>The minimum score for speakers should be 23!</p>
           <div className="flex items-center gap-5">
             <Button
               variant="outline"

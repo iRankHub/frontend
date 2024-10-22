@@ -35,8 +35,6 @@ interface DataCardViewProps<TData, TValue> {
     table: TableType<TData>;
   }>;
   setTournaments?: React.Dispatch<React.SetStateAction<Tournament.AsObject[]>>;
-  setFormats?: (formats: TournamentFormat.AsObject[]) => void;
-  setLeagues?: (leagues: League.AsObject[]) => void;
   cardType: "tournament" | "format" | "league" | "feedback";
 }
 
@@ -46,8 +44,6 @@ export function DataCardView<TData, TValue>({
   DataTableToolbar,
   setTournaments,
   cardType,
-  setFormats,
-  setLeagues,
 }: DataCardViewProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -73,7 +69,7 @@ export function DataCardView<TData, TValue>({
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    manualPagination: true,
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),

@@ -40,7 +40,6 @@ export function UserNav() {
       token: user.token,
     })
       .then((res) => {
-        console.log(res.profile?.name)
         setCurrentUser(res.profile);
       })
       .catch((err) => {
@@ -62,7 +61,13 @@ export function UserNav() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Avatar className="w-8 h-8">
-                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarImage
+                      src={
+                        currentUser && currentUser.profilePicturePresignedUrl
+                          ? currentUser.profilePicturePresignedUrl
+                          : "/static/images/mic-speech.jpg"
+                      }
+                    />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                   <Icons.chevronDown size={16} className="text-[#637381]" />
@@ -77,7 +82,9 @@ export function UserNav() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{currentUser?.name}sss</p>
+            <p className="text-sm font-medium leading-none">
+              {currentUser?.name}
+            </p>
             <p className="text-xs leading-none text-muted-foreground">
               {currentUser?.email}
             </p>
