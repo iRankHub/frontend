@@ -81,7 +81,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
                 router.push("/auth/2fa");
               } else {
                 authLogin(user, role);
-                router.push("/student/dashboard");
+                router.push("/students/dashboard");
               }
             } else {
               toast({

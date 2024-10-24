@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
-import { StudentFeedbackEntry } from "@/lib/grpc/proto/debate_management/debate_pb";
+import { JudgeFeedbackEntry } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
@@ -12,14 +12,12 @@ import { Icons } from "@/components/icons";
 import SidePanel, {
   Panelheader,
 } from "@/components/layout/admin-panel/side-panel";
-import ProvideFeedback from "./submit-feedback";
 import ViewFeedback from "./ViewFeedback";
 import { useState } from "react";
 
 const ActionCell = ({ row }: { row: any }) => {
   const [viewOpen, setViewOpen] = useState(false);
-  const [feedbackOpen, setFeedbackOpen] = useState(false);
-  const data = row.original as StudentFeedbackEntry.AsObject;
+  const data = row.original as JudgeFeedbackEntry.AsObject;
 
   return (
     <div className="w-full text-center flex items-center justify-center gap-2">
@@ -37,42 +35,17 @@ const ActionCell = ({ row }: { row: any }) => {
         <SidePanel>
           <Panelheader>
             <div className="flex items-center gap-1">
-              <h3 className="text-sm font-bold capitalize">Details Summary</h3>
+              <h3 className="text-sm font-bold capitalize">Feedback Summary</h3>
             </div>
           </Panelheader>
           <ViewFeedback feedbackData={data} />
-        </SidePanel>
-      </Sheet>
-      <Sheet modal open={feedbackOpen} onOpenChange={setFeedbackOpen}>
-        <SheetTrigger>
-          <Button
-            type="button"
-            variant={"secondary"}
-            size={"icon"}
-            className="bg-transparent w-6 h-6 p-1 m-0"
-          >
-            <Icons.pencilLine className="w-4 h-4 text-primary" />
-          </Button>
-        </SheetTrigger>
-        <SidePanel>
-          <Panelheader>
-            <div className="flex items-center gap-1">
-              <h3 className="text-sm font-bold capitalize">Feedback</h3>
-            </div>
-          </Panelheader>
-          <ProvideFeedback
-            debateId={1}
-            judgeId={3}
-            onClose={() => setFeedbackOpen(false)}
-            feedbackData={data}
-          />
         </SidePanel>
       </Sheet>
     </div>
   );
 };
 
-export const columns: ColumnDef<StudentFeedbackEntry.AsObject>[] = [
+export const columns: ColumnDef<JudgeFeedbackEntry.AsObject>[] = [
   {
     id: "select",
     header: () => null,
@@ -80,89 +53,54 @@ export const columns: ColumnDef<StudentFeedbackEntry.AsObject>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "roomName",
+    accessorKey: "roundNumber",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Rounds"
-        className="justify-start"
-      />
-    ),
-    enableHiding: false,
-  },
-  {
-    accessorKey: "studentTeamName",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Team"
-        className="justify-start"
-      />
-    ),
-    enableHiding: false,
-  },
-  {
-    accessorKey: "opponentTeamName",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Opponent"
-        className="justify-start"
-      />
-    ),
-    enableHiding: false,
-  },
-  {
-    accessorKey: "isEliminationRound",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Elimination"
-        className="justify-start"
+        title="Round"
+        className="justify-center"
       />
     ),
     cell: ({ row }) => {
       return (
-        <div className="w-full pl-5 text-start">
-          {(row.getValue("isEliminationRound") as boolean) === true
-            ? "Yes"
-            : "No"}
+        <div className="w-full pl-5 text-center pr-10">
+          {row.getValue("roundNumber")}
         </div>
       );
     },
     enableHiding: false,
   },
   {
-    accessorKey: "headJudgeName",
+    accessorKey: "studentAlias",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Head Judge"
-        className="justify-start"
+        title="Students"
+        className="justify-center"
       />
     ),
     cell: ({ row }) => {
       return (
-        <div className="w-full text-start">
-          {row.getValue("headJudgeName")}
+        <div className="w-full text-center">
+          {row.getValue("studentAlias")}
         </div>
       );
     },
     enableHiding: false,
   },
   {
-    accessorKey: "speakerPoints",
+    accessorKey: "tournamentDate",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Points"
-        className="justify-start"
+        title="Date"
+        className="justify-center"
       />
     ),
     cell: ({ row }) => {
       return (
-        <div className="w-full pl-5 text-start">
-          {row.getValue("speakerPoints")}
+        <div className="w-full text-center">
+          {row.getValue("tournamentDate")}
         </div>
       );
     },
@@ -174,7 +112,7 @@ export const columns: ColumnDef<StudentFeedbackEntry.AsObject>[] = [
       <DataTableColumnHeader
         column={column}
         title="Status"
-        className="justify-start"
+        className="justify-center"
       />
     ),
     cell: ({ row }) => {
@@ -184,7 +122,7 @@ export const columns: ColumnDef<StudentFeedbackEntry.AsObject>[] = [
           ? "bg-green-200 text-success hover:bg-green-200"
           : "bg-secondary text-foreground hover:bg-secondary";
       return (
-        <div className="w-full pr-5 text-start">
+        <div className="w-full text-center">
           <Badge variant="default" className={cn("rounded-md", variant)}>
             {(row.getValue("isRead") as boolean) === true ? "Read" : "Not Read"}
           </Badge>

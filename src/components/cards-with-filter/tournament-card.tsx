@@ -232,7 +232,7 @@ const TournamentCard = ({
                   </Button>
                 </DropdownMenuItem>
               )}
-              {userRole === "student" && (
+              {(userRole === "student" || userRole === "volunteer") && (
                 <DropdownMenuItem className="p-0">
                   <Button
                     type="button"

@@ -12,11 +12,16 @@ import { Table } from "@tanstack/react-table";
 import AddTeamForm from "./add-team-form";
 import { useEffect, useState } from "react";
 import { Student } from "@/lib/grpc/proto/user_management/users_pb";
-import { getStudents, getStudentsBySchool, getUserProfile } from "@/core/users/users";
+import {
+  getStudents,
+  getStudentsBySchool,
+  getUserProfile,
+} from "@/core/users/users";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { GetSchoolsType } from "@/types/user_management/schools";
 import { Team } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { GetAllUsers } from "@/types/user_management/users";
+import { getStudentsByContact } from "@/core/users/students";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -31,37 +36,25 @@ export function DataTableToolbar<TData>({
 
   useEffect(() => {
     if (!user) return;
-    const options: GetAllUsers & { userID: number } = {
-      pageSize: 1000,
+    const options: {
+      token: string;
+      userId: number;
+      page: number;
+      pageSize: number;
+    } = {
+      pageSize: 2000,
       page: 1,
       token: user.token,
-      userID: user.userId,
+      userId: user.userId,
     };
-    getStudents({ ...options })
+    getStudentsByContact(options)
       .then((res) => {
-        const schoolStudents = res.studentsList.filter(
-          (student) => student.schoolid === user.userId
-        );
-        setAllStudents(schoolStudents);
+        setAllStudents(res);
       })
       .catch((err) => {
         console.error(err.message);
       });
   }, [user]);
-
-  // Step 1: Extract speakers from existing teams
-  const teams = table
-    .getRowModel()
-    .rows.map((row) => row.original) as Team.AsObject[]; // Adjust based on your table structure
-
-  const usedStudents = teams.flatMap((team) =>
-    team.speakersList.map((speaker) => speaker.speakerId)
-  );
-
-  // Step 2: Filter students to exclude already assigned ones
-  const availableStudents = allStudents.filter(
-    (student) => !usedStudents.includes(student.studentid)
-  );
 
   return (
     <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown">
@@ -100,7 +93,7 @@ export function DataTableToolbar<TData>({
           <SidePanel>
             <Panelheader>Add Team</Panelheader>
             <AddTeamForm
-              availableStudents={availableStudents}
+              availableStudents={allStudents}
               setAllStudents={setAllStudents}
             />
           </SidePanel>

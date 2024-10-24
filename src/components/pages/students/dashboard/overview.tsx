@@ -3,7 +3,6 @@ import React from "react";
 
 interface OverviewProps {
   totalTournamentsAttended: number;
-  totalTournamentsUnattended: number;
   upcomingTournaments: number;
   totalTournamentsPercentageChange: string;
   upcomingTournamentsPercentageChange: string;
@@ -14,7 +13,6 @@ function Overview({
   totalTournamentsPercentageChange,
   upcomingTournamentsPercentageChange,
   totalTournamentsAttended,
-  totalTournamentsUnattended,
 }: OverviewProps) {
   return (
     <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-x gap-4 px-4 py-6 bg-background rounded-lg border-2 border-muted">
@@ -31,7 +29,7 @@ function Overview({
           </div>
         </div>
         <p className="text-xl font-bold text-primary tracking-widest">
-          {totalTournamentsAttended + totalTournamentsUnattended}
+          {totalTournamentsAttended}
         </p>
         <p className="capitalize text-sm text-muted-text">
           Attended and Unattended

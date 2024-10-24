@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Roles, useUserStore } from "@/stores/auth/auth.store";
 import { Undo2 } from "lucide-react";
 import { Rubik } from "next/font/google";
 import Image from "next/image";
@@ -14,13 +15,30 @@ const rubik = Rubik({
 
 function NotFound() {
   const router = useRouter();
+  const {user, userRole} = useUserStore((state) => state);
   const handleNavigateBack = () => {
-    router.push("/");
+    if (user && userRole) {
+      let endpoint;
+      if (userRole === Roles.ADMIN) {
+        endpoint = "/admin/dashboard"
+      } else if (userRole === Roles.SCHOOL) {
+        endpoint = "/schools/dashboard"
+      } else if (userRole === Roles.STUDENT) {
+        endpoint = "/students/dashboard"
+      } else if (userRole === Roles.VOLUNTEER) {
+        endpoint = "/volunteers/dashboard"
+      } else {
+        endpoint = "/auth/select"
+      }
+      router.push(endpoint);
+    } else {
+      router.push("/auth/select");
+    }
   };
   return (
     <div className="bg-white min-h-screen grid place-content-center">
-      <h1 className={cn("text-6xl text-center font-bold mb-4", rubik.className)}>Oops!</h1>
-      <h2 className={cn("text-3xl mb-8 text-center font-semibold", rubik.className)}>Welcome to 70&apos;s</h2>
+      <h1 className={cn("text-6xl text-center font-bold mb-4 text-muted dark:text-white", rubik.className)}>Oops!</h1>
+      <h2 className={cn("text-3xl mb-8 text-center font-semibold text-muted dark:text-white", rubik.className)}>Welcome to 70&apos;s</h2>
       <div className="w-[600px] h-[400px] relative">
         <div className="w-full h-full z-0 relative">
           <Image

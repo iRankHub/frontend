@@ -25,34 +25,28 @@ import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { DailyRegistration } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { getTournamentRegistration } from "@/core/tournament/list";
-
-const initialData = [
-  { date: "2024-09-21", count: 26 },
-  { date: "2024-09-23", count: 38 },
-  { date: "2024-09-25", count: 11 },
-  { date: "2024-09-26", count: 15 },
-  { date: "2024-09-27", count: 21 },
-  { date: "2024-09-28", count: 26 },
-  { date: "2024-09-29", count: 6 },
-  { date: "2024-09-30", count: 16 },
-];
+import { getStudentPerformance } from "@/core/debates/rankings";
+import {
+  PerformanceData,
+  PerformanceResponse,
+} from "@/lib/grpc/proto/debate_management/debate_pb";
 
 const PerformanceTrendChart = () => {
-  const [chartData, setChartData] = useState<DailyRegistration.AsObject[]>([]);
+  const [chartData, setChartData] = useState<PerformanceData.AsObject[]>([]);
   const [filterValue, setFilterValue] = useState("90d");
-  const [tournamentRegistrations, setTournamentRegistrations] = useState<
-    DailyRegistration.AsObject[]
-  >([]);
+  const [performance, setPerformance] = useState<PerformanceData.AsObject[]>(
+    []
+  );
   const { user } = useUserStore();
 
-  const filterData = (data: DailyRegistration.AsObject[]) => {
+  const filterData = (data: PerformanceData.AsObject[]) => {
     const today = new Date();
     let filteredData;
 
     switch (filterValue) {
       case "7d":
         filteredData = data.filter((item) => {
-          const itemDate = new Date(item.date);
+          const itemDate = new Date(item.tournamentDate);
           const diffTime = Math.abs(today.getTime() - itemDate.getTime());
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
           return diffDays <= 7;
@@ -60,7 +54,7 @@ const PerformanceTrendChart = () => {
         break;
       case "30d":
         filteredData = data.filter((item) => {
-          const itemDate = new Date(item.date);
+          const itemDate = new Date(item.tournamentDate);
           const diffTime = Math.abs(today.getTime() - itemDate.getTime());
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
           return diffDays <= 30;
@@ -77,25 +71,29 @@ const PerformanceTrendChart = () => {
     if (!user) return;
 
     const params = {
+      user_id: 26,
+      start_date: "2024-10-10",
+      end_date: "2024-10-30",
       token: user.token,
     };
 
-    getTournamentRegistration(params)
+    getStudentPerformance(params)
       .then((response) => {
-        setTournamentRegistrations(response);
+        setPerformance(response);
         filterData(response);
       })
       .catch((error) => {
         console.error("Failed to fetch tournament registrations:", error);
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (
     <Card className="w-full h-full border-muted">
       <CardHeader className="flex items-center gap-2 space-y-0 py-5 sm:flex-row">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
-          <CardTitle>Tournament Registrations</CardTitle>
+          <CardTitle>Performance Trend</CardTitle>
         </div>
         <Select value={filterValue} onValueChange={setFilterValue}>
           <SelectTrigger

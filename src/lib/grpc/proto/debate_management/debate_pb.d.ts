@@ -1904,3 +1904,571 @@ export namespace StudentTournamentStatsResponse {
   }
 }
 
+export class VolunteerTournamentStatsRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): VolunteerTournamentStatsRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): VolunteerTournamentStatsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: VolunteerTournamentStatsRequest): VolunteerTournamentStatsRequest.AsObject;
+  static serializeBinaryToWriter(message: VolunteerTournamentStatsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): VolunteerTournamentStatsRequest;
+  static deserializeBinaryFromReader(message: VolunteerTournamentStatsRequest, reader: jspb.BinaryReader): VolunteerTournamentStatsRequest;
+}
+
+export namespace VolunteerTournamentStatsRequest {
+  export type AsObject = {
+    token: string,
+  }
+}
+
+export class VolunteerTournamentStatsResponse extends jspb.Message {
+  getTotalRoundsJudged(): number;
+  setTotalRoundsJudged(value: number): VolunteerTournamentStatsResponse;
+
+  getRoundsJudgedChange(): string;
+  setRoundsJudgedChange(value: string): VolunteerTournamentStatsResponse;
+
+  getTournamentsAttended(): number;
+  setTournamentsAttended(value: number): VolunteerTournamentStatsResponse;
+
+  getTournamentsAttendedChange(): string;
+  setTournamentsAttendedChange(value: string): VolunteerTournamentStatsResponse;
+
+  getUpcomingTournaments(): number;
+  setUpcomingTournaments(value: number): VolunteerTournamentStatsResponse;
+
+  getUpcomingTournamentsChange(): string;
+  setUpcomingTournamentsChange(value: string): VolunteerTournamentStatsResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): VolunteerTournamentStatsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: VolunteerTournamentStatsResponse): VolunteerTournamentStatsResponse.AsObject;
+  static serializeBinaryToWriter(message: VolunteerTournamentStatsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): VolunteerTournamentStatsResponse;
+  static deserializeBinaryFromReader(message: VolunteerTournamentStatsResponse, reader: jspb.BinaryReader): VolunteerTournamentStatsResponse;
+}
+
+export namespace VolunteerTournamentStatsResponse {
+  export type AsObject = {
+    totalRoundsJudged: number,
+    roundsJudgedChange: string,
+    tournamentsAttended: number,
+    tournamentsAttendedChange: string,
+    upcomingTournaments: number,
+    upcomingTournamentsChange: string,
+  }
+}
+
+export class GetStudentFeedbackRequest extends jspb.Message {
+  getTournamentId(): number;
+  setTournamentId(value: number): GetStudentFeedbackRequest;
+
+  getToken(): string;
+  setToken(value: string): GetStudentFeedbackRequest;
+
+  getPage(): number;
+  setPage(value: number): GetStudentFeedbackRequest;
+
+  getPageSize(): number;
+  setPageSize(value: number): GetStudentFeedbackRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetStudentFeedbackRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetStudentFeedbackRequest): GetStudentFeedbackRequest.AsObject;
+  static serializeBinaryToWriter(message: GetStudentFeedbackRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetStudentFeedbackRequest;
+  static deserializeBinaryFromReader(message: GetStudentFeedbackRequest, reader: jspb.BinaryReader): GetStudentFeedbackRequest;
+}
+
+export namespace GetStudentFeedbackRequest {
+  export type AsObject = {
+    tournamentId: number,
+    token: string,
+    page: number,
+    pageSize: number,
+  }
+}
+
+export class StudentFeedbackEntry extends jspb.Message {
+  getRoundNumber(): number;
+  setRoundNumber(value: number): StudentFeedbackEntry;
+
+  getIsEliminationRound(): boolean;
+  setIsEliminationRound(value: boolean): StudentFeedbackEntry;
+
+  getSpeakerPoints(): number;
+  setSpeakerPoints(value: number): StudentFeedbackEntry;
+
+  getFeedback(): string;
+  setFeedback(value: string): StudentFeedbackEntry;
+
+  getIsRead(): boolean;
+  setIsRead(value: boolean): StudentFeedbackEntry;
+
+  getHeadJudgeName(): string;
+  setHeadJudgeName(value: string): StudentFeedbackEntry;
+
+  getRoomName(): string;
+  setRoomName(value: string): StudentFeedbackEntry;
+
+  getOpponentTeamName(): string;
+  setOpponentTeamName(value: string): StudentFeedbackEntry;
+
+  getStudentTeamName(): string;
+  setStudentTeamName(value: string): StudentFeedbackEntry;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): StudentFeedbackEntry.AsObject;
+  static toObject(includeInstance: boolean, msg: StudentFeedbackEntry): StudentFeedbackEntry.AsObject;
+  static serializeBinaryToWriter(message: StudentFeedbackEntry, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): StudentFeedbackEntry;
+  static deserializeBinaryFromReader(message: StudentFeedbackEntry, reader: jspb.BinaryReader): StudentFeedbackEntry;
+}
+
+export namespace StudentFeedbackEntry {
+  export type AsObject = {
+    roundNumber: number,
+    isEliminationRound: boolean,
+    speakerPoints: number,
+    feedback: string,
+    isRead: boolean,
+    headJudgeName: string,
+    roomName: string,
+    opponentTeamName: string,
+    studentTeamName: string,
+  }
+}
+
+export class GetStudentFeedbackResponse extends jspb.Message {
+  getFeedbackEntriesList(): Array<StudentFeedbackEntry>;
+  setFeedbackEntriesList(value: Array<StudentFeedbackEntry>): GetStudentFeedbackResponse;
+  clearFeedbackEntriesList(): GetStudentFeedbackResponse;
+  addFeedbackEntries(value?: StudentFeedbackEntry, index?: number): StudentFeedbackEntry;
+
+  getTotalCount(): number;
+  setTotalCount(value: number): GetStudentFeedbackResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetStudentFeedbackResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetStudentFeedbackResponse): GetStudentFeedbackResponse.AsObject;
+  static serializeBinaryToWriter(message: GetStudentFeedbackResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetStudentFeedbackResponse;
+  static deserializeBinaryFromReader(message: GetStudentFeedbackResponse, reader: jspb.BinaryReader): GetStudentFeedbackResponse;
+}
+
+export namespace GetStudentFeedbackResponse {
+  export type AsObject = {
+    feedbackEntriesList: Array<StudentFeedbackEntry.AsObject>,
+    totalCount: number,
+  }
+}
+
+export class SubmitJudgeFeedbackRequest extends jspb.Message {
+  getJudgeId(): number;
+  setJudgeId(value: number): SubmitJudgeFeedbackRequest;
+
+  getDebateId(): number;
+  setDebateId(value: number): SubmitJudgeFeedbackRequest;
+
+  getClarityRating(): number;
+  setClarityRating(value: number): SubmitJudgeFeedbackRequest;
+
+  getConstructivenessRating(): number;
+  setConstructivenessRating(value: number): SubmitJudgeFeedbackRequest;
+
+  getTimelinessRating(): number;
+  setTimelinessRating(value: number): SubmitJudgeFeedbackRequest;
+
+  getFairnessRating(): number;
+  setFairnessRating(value: number): SubmitJudgeFeedbackRequest;
+
+  getEngagementRating(): number;
+  setEngagementRating(value: number): SubmitJudgeFeedbackRequest;
+
+  getTextFeedback(): string;
+  setTextFeedback(value: string): SubmitJudgeFeedbackRequest;
+
+  getToken(): string;
+  setToken(value: string): SubmitJudgeFeedbackRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SubmitJudgeFeedbackRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: SubmitJudgeFeedbackRequest): SubmitJudgeFeedbackRequest.AsObject;
+  static serializeBinaryToWriter(message: SubmitJudgeFeedbackRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SubmitJudgeFeedbackRequest;
+  static deserializeBinaryFromReader(message: SubmitJudgeFeedbackRequest, reader: jspb.BinaryReader): SubmitJudgeFeedbackRequest;
+}
+
+export namespace SubmitJudgeFeedbackRequest {
+  export type AsObject = {
+    judgeId: number,
+    debateId: number,
+    clarityRating: number,
+    constructivenessRating: number,
+    timelinessRating: number,
+    fairnessRating: number,
+    engagementRating: number,
+    textFeedback: string,
+    token: string,
+  }
+}
+
+export class SubmitJudgeFeedbackResponse extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): SubmitJudgeFeedbackResponse;
+
+  getMessage(): string;
+  setMessage(value: string): SubmitJudgeFeedbackResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SubmitJudgeFeedbackResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: SubmitJudgeFeedbackResponse): SubmitJudgeFeedbackResponse.AsObject;
+  static serializeBinaryToWriter(message: SubmitJudgeFeedbackResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SubmitJudgeFeedbackResponse;
+  static deserializeBinaryFromReader(message: SubmitJudgeFeedbackResponse, reader: jspb.BinaryReader): SubmitJudgeFeedbackResponse;
+}
+
+export namespace SubmitJudgeFeedbackResponse {
+  export type AsObject = {
+    success: boolean,
+    message: string,
+  }
+}
+
+export class GetJudgeFeedbackRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): GetJudgeFeedbackRequest;
+
+  getPage(): number;
+  setPage(value: number): GetJudgeFeedbackRequest;
+
+  getPageSize(): number;
+  setPageSize(value: number): GetJudgeFeedbackRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetJudgeFeedbackRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetJudgeFeedbackRequest): GetJudgeFeedbackRequest.AsObject;
+  static serializeBinaryToWriter(message: GetJudgeFeedbackRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetJudgeFeedbackRequest;
+  static deserializeBinaryFromReader(message: GetJudgeFeedbackRequest, reader: jspb.BinaryReader): GetJudgeFeedbackRequest;
+}
+
+export namespace GetJudgeFeedbackRequest {
+  export type AsObject = {
+    token: string,
+    page: number,
+    pageSize: number,
+  }
+}
+
+export class JudgeFeedbackEntry extends jspb.Message {
+  getStudentAlias(): string;
+  setStudentAlias(value: string): JudgeFeedbackEntry;
+
+  getTournamentDate(): string;
+  setTournamentDate(value: string): JudgeFeedbackEntry;
+
+  getIsRead(): boolean;
+  setIsRead(value: boolean): JudgeFeedbackEntry;
+
+  getClarityRating(): number;
+  setClarityRating(value: number): JudgeFeedbackEntry;
+
+  getConstructivenessRating(): number;
+  setConstructivenessRating(value: number): JudgeFeedbackEntry;
+
+  getTimelinessRating(): number;
+  setTimelinessRating(value: number): JudgeFeedbackEntry;
+
+  getFairnessRating(): number;
+  setFairnessRating(value: number): JudgeFeedbackEntry;
+
+  getEngagementRating(): number;
+  setEngagementRating(value: number): JudgeFeedbackEntry;
+
+  getTextFeedback(): string;
+  setTextFeedback(value: string): JudgeFeedbackEntry;
+
+  getRoundNumber(): number;
+  setRoundNumber(value: number): JudgeFeedbackEntry;
+
+  getIsEliminationRound(): boolean;
+  setIsEliminationRound(value: boolean): JudgeFeedbackEntry;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): JudgeFeedbackEntry.AsObject;
+  static toObject(includeInstance: boolean, msg: JudgeFeedbackEntry): JudgeFeedbackEntry.AsObject;
+  static serializeBinaryToWriter(message: JudgeFeedbackEntry, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): JudgeFeedbackEntry;
+  static deserializeBinaryFromReader(message: JudgeFeedbackEntry, reader: jspb.BinaryReader): JudgeFeedbackEntry;
+}
+
+export namespace JudgeFeedbackEntry {
+  export type AsObject = {
+    studentAlias: string,
+    tournamentDate: string,
+    isRead: boolean,
+    clarityRating: number,
+    constructivenessRating: number,
+    timelinessRating: number,
+    fairnessRating: number,
+    engagementRating: number,
+    textFeedback: string,
+    roundNumber: number,
+    isEliminationRound: boolean,
+  }
+}
+
+export class GetJudgeFeedbackResponse extends jspb.Message {
+  getFeedbackEntriesList(): Array<JudgeFeedbackEntry>;
+  setFeedbackEntriesList(value: Array<JudgeFeedbackEntry>): GetJudgeFeedbackResponse;
+  clearFeedbackEntriesList(): GetJudgeFeedbackResponse;
+  addFeedbackEntries(value?: JudgeFeedbackEntry, index?: number): JudgeFeedbackEntry;
+
+  getTotalCount(): number;
+  setTotalCount(value: number): GetJudgeFeedbackResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetJudgeFeedbackResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetJudgeFeedbackResponse): GetJudgeFeedbackResponse.AsObject;
+  static serializeBinaryToWriter(message: GetJudgeFeedbackResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetJudgeFeedbackResponse;
+  static deserializeBinaryFromReader(message: GetJudgeFeedbackResponse, reader: jspb.BinaryReader): GetJudgeFeedbackResponse;
+}
+
+export namespace GetJudgeFeedbackResponse {
+  export type AsObject = {
+    feedbackEntriesList: Array<JudgeFeedbackEntry.AsObject>,
+    totalCount: number,
+  }
+}
+
+export class GetVolunteerRankingRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): GetVolunteerRankingRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetVolunteerRankingRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetVolunteerRankingRequest): GetVolunteerRankingRequest.AsObject;
+  static serializeBinaryToWriter(message: GetVolunteerRankingRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetVolunteerRankingRequest;
+  static deserializeBinaryFromReader(message: GetVolunteerRankingRequest, reader: jspb.BinaryReader): GetVolunteerRankingRequest;
+}
+
+export namespace GetVolunteerRankingRequest {
+  export type AsObject = {
+    token: string,
+  }
+}
+
+export class TopVolunteer extends jspb.Message {
+  getRank(): number;
+  setRank(value: number): TopVolunteer;
+
+  getName(): string;
+  setName(value: string): TopVolunteer;
+
+  getAverageRating(): number;
+  setAverageRating(value: number): TopVolunteer;
+
+  getRankChange(): number;
+  setRankChange(value: number): TopVolunteer;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): TopVolunteer.AsObject;
+  static toObject(includeInstance: boolean, msg: TopVolunteer): TopVolunteer.AsObject;
+  static serializeBinaryToWriter(message: TopVolunteer, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): TopVolunteer;
+  static deserializeBinaryFromReader(message: TopVolunteer, reader: jspb.BinaryReader): TopVolunteer;
+}
+
+export namespace TopVolunteer {
+  export type AsObject = {
+    rank: number,
+    name: string,
+    averageRating: number,
+    rankChange: number,
+  }
+}
+
+export class VolunteerInfo extends jspb.Message {
+  getName(): string;
+  setName(value: string): VolunteerInfo;
+
+  getAverageRating(): number;
+  setAverageRating(value: number): VolunteerInfo;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): VolunteerInfo.AsObject;
+  static toObject(includeInstance: boolean, msg: VolunteerInfo): VolunteerInfo.AsObject;
+  static serializeBinaryToWriter(message: VolunteerInfo, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): VolunteerInfo;
+  static deserializeBinaryFromReader(message: VolunteerInfo, reader: jspb.BinaryReader): VolunteerInfo;
+}
+
+export namespace VolunteerInfo {
+  export type AsObject = {
+    name: string,
+    averageRating: number,
+  }
+}
+
+export class GetVolunteerRankingResponse extends jspb.Message {
+  getVolunteerRank(): number;
+  setVolunteerRank(value: number): GetVolunteerRankingResponse;
+
+  getTotalVolunteers(): number;
+  setTotalVolunteers(value: number): GetVolunteerRankingResponse;
+
+  getRankChange(): number;
+  setRankChange(value: number): GetVolunteerRankingResponse;
+
+  getTopVolunteersList(): Array<TopVolunteer>;
+  setTopVolunteersList(value: Array<TopVolunteer>): GetVolunteerRankingResponse;
+  clearTopVolunteersList(): GetVolunteerRankingResponse;
+  addTopVolunteers(value?: TopVolunteer, index?: number): TopVolunteer;
+
+  getVolunteerInfo(): VolunteerInfo | undefined;
+  setVolunteerInfo(value?: VolunteerInfo): GetVolunteerRankingResponse;
+  hasVolunteerInfo(): boolean;
+  clearVolunteerInfo(): GetVolunteerRankingResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetVolunteerRankingResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetVolunteerRankingResponse): GetVolunteerRankingResponse.AsObject;
+  static serializeBinaryToWriter(message: GetVolunteerRankingResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetVolunteerRankingResponse;
+  static deserializeBinaryFromReader(message: GetVolunteerRankingResponse, reader: jspb.BinaryReader): GetVolunteerRankingResponse;
+}
+
+export namespace GetVolunteerRankingResponse {
+  export type AsObject = {
+    volunteerRank: number,
+    totalVolunteers: number,
+    rankChange: number,
+    topVolunteersList: Array<TopVolunteer.AsObject>,
+    volunteerInfo?: VolunteerInfo.AsObject,
+  }
+}
+
+export class GetVolunteerPerformanceRequest extends jspb.Message {
+  getStartDate(): string;
+  setStartDate(value: string): GetVolunteerPerformanceRequest;
+
+  getEndDate(): string;
+  setEndDate(value: string): GetVolunteerPerformanceRequest;
+
+  getToken(): string;
+  setToken(value: string): GetVolunteerPerformanceRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetVolunteerPerformanceRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetVolunteerPerformanceRequest): GetVolunteerPerformanceRequest.AsObject;
+  static serializeBinaryToWriter(message: GetVolunteerPerformanceRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetVolunteerPerformanceRequest;
+  static deserializeBinaryFromReader(message: GetVolunteerPerformanceRequest, reader: jspb.BinaryReader): GetVolunteerPerformanceRequest;
+}
+
+export namespace GetVolunteerPerformanceRequest {
+  export type AsObject = {
+    startDate: string,
+    endDate: string,
+    token: string,
+  }
+}
+
+export class VolunteerPerformanceData extends jspb.Message {
+  getTournamentDate(): string;
+  setTournamentDate(value: string): VolunteerPerformanceData;
+
+  getVolunteerAverageRating(): number;
+  setVolunteerAverageRating(value: number): VolunteerPerformanceData;
+
+  getOverallAverageRating(): number;
+  setOverallAverageRating(value: number): VolunteerPerformanceData;
+
+  getTournamentRank(): number;
+  setTournamentRank(value: number): VolunteerPerformanceData;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): VolunteerPerformanceData.AsObject;
+  static toObject(includeInstance: boolean, msg: VolunteerPerformanceData): VolunteerPerformanceData.AsObject;
+  static serializeBinaryToWriter(message: VolunteerPerformanceData, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): VolunteerPerformanceData;
+  static deserializeBinaryFromReader(message: VolunteerPerformanceData, reader: jspb.BinaryReader): VolunteerPerformanceData;
+}
+
+export namespace VolunteerPerformanceData {
+  export type AsObject = {
+    tournamentDate: string,
+    volunteerAverageRating: number,
+    overallAverageRating: number,
+    tournamentRank: number,
+  }
+}
+
+export class GetVolunteerPerformanceResponse extends jspb.Message {
+  getPerformanceDataList(): Array<VolunteerPerformanceData>;
+  setPerformanceDataList(value: Array<VolunteerPerformanceData>): GetVolunteerPerformanceResponse;
+  clearPerformanceDataList(): GetVolunteerPerformanceResponse;
+  addPerformanceData(value?: VolunteerPerformanceData, index?: number): VolunteerPerformanceData;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetVolunteerPerformanceResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetVolunteerPerformanceResponse): GetVolunteerPerformanceResponse.AsObject;
+  static serializeBinaryToWriter(message: GetVolunteerPerformanceResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetVolunteerPerformanceResponse;
+  static deserializeBinaryFromReader(message: GetVolunteerPerformanceResponse, reader: jspb.BinaryReader): GetVolunteerPerformanceResponse;
+}
+
+export namespace GetVolunteerPerformanceResponse {
+  export type AsObject = {
+    performanceDataList: Array<VolunteerPerformanceData.AsObject>,
+  }
+}
+
+export class MarkFeedbackAsReadRequest extends jspb.Message {
+  getFeedbackId(): number;
+  setFeedbackId(value: number): MarkFeedbackAsReadRequest;
+
+  getToken(): string;
+  setToken(value: string): MarkFeedbackAsReadRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): MarkFeedbackAsReadRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: MarkFeedbackAsReadRequest): MarkFeedbackAsReadRequest.AsObject;
+  static serializeBinaryToWriter(message: MarkFeedbackAsReadRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): MarkFeedbackAsReadRequest;
+  static deserializeBinaryFromReader(message: MarkFeedbackAsReadRequest, reader: jspb.BinaryReader): MarkFeedbackAsReadRequest;
+}
+
+export namespace MarkFeedbackAsReadRequest {
+  export type AsObject = {
+    feedbackId: number,
+    token: string,
+  }
+}
+
+export class MarkFeedbackAsReadResponse extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): MarkFeedbackAsReadResponse;
+
+  getMessage(): string;
+  setMessage(value: string): MarkFeedbackAsReadResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): MarkFeedbackAsReadResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: MarkFeedbackAsReadResponse): MarkFeedbackAsReadResponse.AsObject;
+  static serializeBinaryToWriter(message: MarkFeedbackAsReadResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): MarkFeedbackAsReadResponse;
+  static deserializeBinaryFromReader(message: MarkFeedbackAsReadResponse, reader: jspb.BinaryReader): MarkFeedbackAsReadResponse;
+}
+
+export namespace MarkFeedbackAsReadResponse {
+  export type AsObject = {
+    success: boolean,
+    message: string,
+  }
+}
+

@@ -177,7 +177,6 @@ function Dashboard() {
         <div className="flex-1 w-full">
           <Overview
             totalTournamentsAttended={totalTournaments}
-            totalTournamentsUnattended={500}
             upcomingTournaments={upcomingTournaments}
             totalTournamentsPercentageChange={totalTournamentsPercentageChange}
             upcomingTournamentsPercentageChange={

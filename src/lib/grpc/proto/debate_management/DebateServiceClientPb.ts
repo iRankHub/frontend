@@ -1200,5 +1200,349 @@ export class DebateServiceClient {
     this.methodDescriptorGetSchoolOverallPerformance);
   }
 
+  methodDescriptorGetVolunteerTournamentStats = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetVolunteerTournamentStats',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.VolunteerTournamentStatsRequest,
+    debate_management_debate_pb.VolunteerTournamentStatsResponse,
+    (request: debate_management_debate_pb.VolunteerTournamentStatsRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.VolunteerTournamentStatsResponse.deserializeBinary
+  );
+
+  getVolunteerTournamentStats(
+    request: debate_management_debate_pb.VolunteerTournamentStatsRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.VolunteerTournamentStatsResponse>;
+
+  getVolunteerTournamentStats(
+    request: debate_management_debate_pb.VolunteerTournamentStatsRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.VolunteerTournamentStatsResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.VolunteerTournamentStatsResponse>;
+
+  getVolunteerTournamentStats(
+    request: debate_management_debate_pb.VolunteerTournamentStatsRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.VolunteerTournamentStatsResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetVolunteerTournamentStats',
+        request,
+        metadata || {},
+        this.methodDescriptorGetVolunteerTournamentStats,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetVolunteerTournamentStats',
+    request,
+    metadata || {},
+    this.methodDescriptorGetVolunteerTournamentStats);
+  }
+
+  methodDescriptorGetStudentFeedback = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetStudentFeedback',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.GetStudentFeedbackRequest,
+    debate_management_debate_pb.GetStudentFeedbackResponse,
+    (request: debate_management_debate_pb.GetStudentFeedbackRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.GetStudentFeedbackResponse.deserializeBinary
+  );
+
+  getStudentFeedback(
+    request: debate_management_debate_pb.GetStudentFeedbackRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.GetStudentFeedbackResponse>;
+
+  getStudentFeedback(
+    request: debate_management_debate_pb.GetStudentFeedbackRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.GetStudentFeedbackResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.GetStudentFeedbackResponse>;
+
+  getStudentFeedback(
+    request: debate_management_debate_pb.GetStudentFeedbackRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.GetStudentFeedbackResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetStudentFeedback',
+        request,
+        metadata || {},
+        this.methodDescriptorGetStudentFeedback,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetStudentFeedback',
+    request,
+    metadata || {},
+    this.methodDescriptorGetStudentFeedback);
+  }
+
+  methodDescriptorSubmitJudgeFeedback = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/SubmitJudgeFeedback',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.SubmitJudgeFeedbackRequest,
+    debate_management_debate_pb.SubmitJudgeFeedbackResponse,
+    (request: debate_management_debate_pb.SubmitJudgeFeedbackRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.SubmitJudgeFeedbackResponse.deserializeBinary
+  );
+
+  submitJudgeFeedback(
+    request: debate_management_debate_pb.SubmitJudgeFeedbackRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.SubmitJudgeFeedbackResponse>;
+
+  submitJudgeFeedback(
+    request: debate_management_debate_pb.SubmitJudgeFeedbackRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.SubmitJudgeFeedbackResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.SubmitJudgeFeedbackResponse>;
+
+  submitJudgeFeedback(
+    request: debate_management_debate_pb.SubmitJudgeFeedbackRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.SubmitJudgeFeedbackResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/SubmitJudgeFeedback',
+        request,
+        metadata || {},
+        this.methodDescriptorSubmitJudgeFeedback,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/SubmitJudgeFeedback',
+    request,
+    metadata || {},
+    this.methodDescriptorSubmitJudgeFeedback);
+  }
+
+  methodDescriptorGetJudgeFeedback = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetJudgeFeedback',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.GetJudgeFeedbackRequest,
+    debate_management_debate_pb.GetJudgeFeedbackResponse,
+    (request: debate_management_debate_pb.GetJudgeFeedbackRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.GetJudgeFeedbackResponse.deserializeBinary
+  );
+
+  getJudgeFeedback(
+    request: debate_management_debate_pb.GetJudgeFeedbackRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.GetJudgeFeedbackResponse>;
+
+  getJudgeFeedback(
+    request: debate_management_debate_pb.GetJudgeFeedbackRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.GetJudgeFeedbackResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.GetJudgeFeedbackResponse>;
+
+  getJudgeFeedback(
+    request: debate_management_debate_pb.GetJudgeFeedbackRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.GetJudgeFeedbackResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetJudgeFeedback',
+        request,
+        metadata || {},
+        this.methodDescriptorGetJudgeFeedback,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetJudgeFeedback',
+    request,
+    metadata || {},
+    this.methodDescriptorGetJudgeFeedback);
+  }
+
+  methodDescriptorGetVolunteerRanking = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetVolunteerRanking',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.GetVolunteerRankingRequest,
+    debate_management_debate_pb.GetVolunteerRankingResponse,
+    (request: debate_management_debate_pb.GetVolunteerRankingRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.GetVolunteerRankingResponse.deserializeBinary
+  );
+
+  getVolunteerRanking(
+    request: debate_management_debate_pb.GetVolunteerRankingRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.GetVolunteerRankingResponse>;
+
+  getVolunteerRanking(
+    request: debate_management_debate_pb.GetVolunteerRankingRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.GetVolunteerRankingResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.GetVolunteerRankingResponse>;
+
+  getVolunteerRanking(
+    request: debate_management_debate_pb.GetVolunteerRankingRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.GetVolunteerRankingResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetVolunteerRanking',
+        request,
+        metadata || {},
+        this.methodDescriptorGetVolunteerRanking,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetVolunteerRanking',
+    request,
+    metadata || {},
+    this.methodDescriptorGetVolunteerRanking);
+  }
+
+  methodDescriptorGetVolunteerPerformance = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetVolunteerPerformance',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.GetVolunteerPerformanceRequest,
+    debate_management_debate_pb.GetVolunteerPerformanceResponse,
+    (request: debate_management_debate_pb.GetVolunteerPerformanceRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.GetVolunteerPerformanceResponse.deserializeBinary
+  );
+
+  getVolunteerPerformance(
+    request: debate_management_debate_pb.GetVolunteerPerformanceRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.GetVolunteerPerformanceResponse>;
+
+  getVolunteerPerformance(
+    request: debate_management_debate_pb.GetVolunteerPerformanceRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.GetVolunteerPerformanceResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.GetVolunteerPerformanceResponse>;
+
+  getVolunteerPerformance(
+    request: debate_management_debate_pb.GetVolunteerPerformanceRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.GetVolunteerPerformanceResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetVolunteerPerformance',
+        request,
+        metadata || {},
+        this.methodDescriptorGetVolunteerPerformance,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetVolunteerPerformance',
+    request,
+    metadata || {},
+    this.methodDescriptorGetVolunteerPerformance);
+  }
+
+  methodDescriptorMarkStudentFeedbackAsRead = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/MarkStudentFeedbackAsRead',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.MarkFeedbackAsReadRequest,
+    debate_management_debate_pb.MarkFeedbackAsReadResponse,
+    (request: debate_management_debate_pb.MarkFeedbackAsReadRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.MarkFeedbackAsReadResponse.deserializeBinary
+  );
+
+  markStudentFeedbackAsRead(
+    request: debate_management_debate_pb.MarkFeedbackAsReadRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.MarkFeedbackAsReadResponse>;
+
+  markStudentFeedbackAsRead(
+    request: debate_management_debate_pb.MarkFeedbackAsReadRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.MarkFeedbackAsReadResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.MarkFeedbackAsReadResponse>;
+
+  markStudentFeedbackAsRead(
+    request: debate_management_debate_pb.MarkFeedbackAsReadRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.MarkFeedbackAsReadResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/MarkStudentFeedbackAsRead',
+        request,
+        metadata || {},
+        this.methodDescriptorMarkStudentFeedbackAsRead,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/MarkStudentFeedbackAsRead',
+    request,
+    metadata || {},
+    this.methodDescriptorMarkStudentFeedbackAsRead);
+  }
+
+  methodDescriptorMarkJudgeFeedbackAsRead = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/MarkJudgeFeedbackAsRead',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.MarkFeedbackAsReadRequest,
+    debate_management_debate_pb.MarkFeedbackAsReadResponse,
+    (request: debate_management_debate_pb.MarkFeedbackAsReadRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.MarkFeedbackAsReadResponse.deserializeBinary
+  );
+
+  markJudgeFeedbackAsRead(
+    request: debate_management_debate_pb.MarkFeedbackAsReadRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.MarkFeedbackAsReadResponse>;
+
+  markJudgeFeedbackAsRead(
+    request: debate_management_debate_pb.MarkFeedbackAsReadRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.MarkFeedbackAsReadResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.MarkFeedbackAsReadResponse>;
+
+  markJudgeFeedbackAsRead(
+    request: debate_management_debate_pb.MarkFeedbackAsReadRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.MarkFeedbackAsReadResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/MarkJudgeFeedbackAsRead',
+        request,
+        metadata || {},
+        this.methodDescriptorMarkJudgeFeedbackAsRead,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/MarkJudgeFeedbackAsRead',
+    request,
+    metadata || {},
+    this.methodDescriptorMarkJudgeFeedbackAsRead);
+  }
+
 }
 
