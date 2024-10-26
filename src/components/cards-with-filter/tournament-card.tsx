@@ -252,6 +252,26 @@ const TournamentCard = ({
                       </Button>
                     </DropdownMenuItem>
                   )}
+                  {userRole === "school" && (
+                    <DropdownMenuItem className="p-0">
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="link"
+                        className="w-full justify-start text-foreground hover:no-underline"
+                      >
+                        <Link
+                          className="no-underline"
+                          href={`${linkRole()}/${getColumnValue(
+                            row,
+                            "tournamentId"
+                          )}/billings`}
+                        >
+                          Billings
+                        </Link>
+                      </Button>
+                    </DropdownMenuItem>
+                  )}
                   {userRole === "admin" && (
                     <>
                       <DropdownMenuSeparator />
@@ -266,7 +286,9 @@ const TournamentCard = ({
                 </DropdownMenuContent>
               </DropdownMenu>
               <div className="md:hidden">
-                <div className="text-muted-foreground text-end text-xs">Date</div>
+                <div className="text-muted-foreground text-end text-xs">
+                  Date
+                </div>
                 <div className="text-secondary-foreground font-medium text-xs">
                   {formatDate(getColumnValue(row, "startDate"))} -{" "}
                   {formatDate(getColumnValue(row, "endDate"))}
@@ -341,6 +363,26 @@ const TournamentCard = ({
                       )}/feedback`}
                     >
                       Feedback
+                    </Link>
+                  </Button>
+                </DropdownMenuItem>
+              )}
+              {userRole === "school" && (
+                <DropdownMenuItem className="p-0">
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="link"
+                    className="w-full justify-start text-foreground hover:no-underline"
+                  >
+                    <Link
+                      className="no-underline"
+                      href={`${linkRole()}/${getColumnValue(
+                        row,
+                        "tournamentId"
+                      )}/billings`}
+                    >
+                      Billings
                     </Link>
                   </Button>
                 </DropdownMenuItem>
