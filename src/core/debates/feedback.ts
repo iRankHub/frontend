@@ -1,4 +1,4 @@
-import { GetJudgeFeedbackRequest, GetJudgeFeedbackResponse, GetStudentFeedbackRequest, GetStudentFeedbackResponse, JudgeFeedbackEntry, MarkFeedbackAsReadRequest, StudentFeedbackEntry, SubmitJudgeFeedbackRequest, SubmitJudgeFeedbackResponse } from "@/lib/grpc/proto/debate_management/debate_pb";
+import { GetJudgeFeedbackRequest, GetJudgeFeedbackResponse, GetStudentFeedbackRequest, GetStudentFeedbackResponse, JudgeFeedbackEntry, MarkFeedbackAsReadRequest, MarkFeedbackAsReadResponse, StudentFeedbackEntry, SubmitJudgeFeedbackRequest, SubmitJudgeFeedbackResponse } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { number, string } from "zod";
 import { debateClient } from "../grpc-clients";
 
@@ -130,7 +130,7 @@ export const markVolunteerFeedbackAsRead = async ({
 }: {
     feedback_id: number;
     token: string
-}): Promise<any> => {
+}): Promise<MarkFeedbackAsReadResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new MarkFeedbackAsReadRequest();
         request.setFeedbackId(feedback_id);

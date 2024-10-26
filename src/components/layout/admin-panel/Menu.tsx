@@ -92,8 +92,6 @@ export function Menu({ isOpen }: MenuProps) {
                         active={active}
                         submenus={submenus}
                         isOpen={isOpen}
-                        isExpanded={openDropdownIndex === menuIndex}
-                        onToggle={() => handleDropdownToggle(menuIndex)}
                       />
                     </div>
                   )

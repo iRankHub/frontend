@@ -3,6 +3,8 @@ import { Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StudentFeedbackEntry } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { useFeedbacksStore } from "@/stores/admin/debate/feedbacks.store";
+import { useUserStore } from "@/stores/auth/auth.store";
+import { markStudentFeedbackAsRead } from "@/core/debates/feedback";
 
 interface ViewFeedbackProps {
   feedbackData: StudentFeedbackEntry.AsObject;
@@ -20,22 +22,30 @@ export default function ViewFeedback({
     isEliminationRound,
     speakerPoints,
     isRead,
-    // debateId,
-    // judgeId,
     headJudgeName,
     roundNumber,
     feedback: textFeedback,
   } = feedbackData;
 
+  const { user } = useUserStore((state) => state);
   const { updateFeedbackReadStatus } = useFeedbacksStore((state) => state);
   useEffect(() => {
+    if (!user) return;
+
     const updateReadStatus = async () => {
       if (!isRead) {
+        await markStudentFeedbackAsRead({
+          feedback_id: feedbackData.ballotId,
+          token: user.token
+        })
+        .then(() => {
+          updateFeedbackReadStatus(feedbackData.ballotId);
+        })
       }
     };
 
     updateReadStatus();
-  }, [isRead]);
+  }, [isRead, user, feedbackData, updateFeedbackReadStatus]);
 
   return (
     <div className="w-full sm:max-w-md overflow-y-auto p-5">
@@ -93,14 +103,6 @@ export default function ViewFeedback({
             {textFeedback || "No feedback provided yet."}
           </p>
         </div>
-
-        {/* Provide Feedback Button */}
-        <Button
-          className="w-full bg-orange-500 hover:bg-orange-600 text-white"
-          onClick={onFeedbackClick}
-        >
-          {isRead ? "Update Feedback" : "Provide Feedback"}
-        </Button>
       </div>
     </div>
   );

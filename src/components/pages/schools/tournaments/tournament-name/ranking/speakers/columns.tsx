@@ -121,3 +121,4 @@ export const columns: ColumnDef<StudentRanking.AsObject>[] = [
     },
   },
 ];
+

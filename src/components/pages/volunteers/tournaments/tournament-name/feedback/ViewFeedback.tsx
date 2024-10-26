@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { Lightbulb } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { JudgeFeedbackEntry } from "@/lib/grpc/proto/debate_management/debate_pb";
-import { useFeedbacksStore } from "@/stores/admin/debate/feedbacks.store";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useUserStore } from "@/stores/auth/auth.store";
+import { markVolunteerFeedbackAsRead } from "@/core/debates/feedback";
+import { useJudgeFeedbacksStore } from "@/stores/admin/debate/feedbacksVolunteer.store";
 
 interface ViewFeedbackProps {
   feedbackData: JudgeFeedbackEntry.AsObject;
-  onFeedbackClick?: () => void;
 }
 
 const getRatingEvaluation = (rating: number) => {
@@ -29,7 +29,6 @@ const getRatingEvaluation = (rating: number) => {
 
 export default function ViewFeedback({
   feedbackData,
-  onFeedbackClick,
 }: ViewFeedbackProps) {
   const {
     clarityRating,
@@ -41,8 +40,6 @@ export default function ViewFeedback({
     timelinessRating,
   } = feedbackData;
 
-  const { updateFeedbackReadStatus } = useFeedbacksStore((state) => state);
-
   // Calculate total score
   const totalScore = Math.round(
     (clarityRating +
@@ -53,14 +50,41 @@ export default function ViewFeedback({
       5
   );
 
+  const { user } = useUserStore((state) => state);
+  const { updateFeedbackReadStatus } = useJudgeFeedbacksStore((state) => state);
+
+  // Separated read status update into its own effect
   useEffect(() => {
+    let isMounted = true;
+
     const updateReadStatus = async () => {
-      if (!isRead) {
-        // await updateFeedbackReadStatus(feedbackData.debateId);
+      // Only proceed if conditions are met
+      if (!user || isRead) return;
+
+      try {
+        const res = await markVolunteerFeedbackAsRead({
+          feedback_id: feedbackData.ballotId,
+          token: user.token
+        });
+
+        // Only update state if component is still mounted and the request succeeded
+        if (isMounted && res) {
+          updateFeedbackReadStatus(feedbackData.ballotId);
+        }
+      } catch (error) {
+        // Silently fail - no error handling needed as per requirements
+        console.debug('Failed to update read status:', error);
       }
     };
-    updateReadStatus();
-  }, [isRead, updateFeedbackReadStatus]);
+
+    // Fire and forget
+    void updateReadStatus();
+
+    // Cleanup function to prevent state updates if component unmounts
+    return () => {
+      isMounted = false;
+    };
+  }, [user, isRead, feedbackData.ballotId, updateFeedbackReadStatus]);
 
   return (
     <ScrollArea className="w-full sm:max-w-md p-5 pb-24 h-full">

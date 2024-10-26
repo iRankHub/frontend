@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTableFacetedFilter } from "@/components/tables/data-table-faceted-filter";
-import { roomStatus } from "@/components/tables/data/data";
+import { priorities, statuses } from "@/components/tables/data/data";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Cross2Icon } from "@radix-ui/react-icons";
@@ -17,28 +17,28 @@ export function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
-    <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown">
-      <div className="flex flex-1 items-center space-x-3 p-5 py-4">
+    <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between">
+      <div className="flex flex-1 items-center space-x-3 bg-brown p-5 py-4">
         <Input
           placeholder="Search names..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("names")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("names")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[280px]"
         />
-        {table.getColumn("preliminary") && (
+        {table.getColumn("category") && (
           <DataTableFacetedFilter
-            column={table.getColumn("preliminary")}
-            title="Preliminary"
-            options={roomStatus}
+            column={table.getColumn("category")}
+            title="Category"
+            options={priorities}
           />
         )}
-        {table.getColumn("elimination") && (
+        {table.getColumn("status") && (
           <DataTableFacetedFilter
-            column={table.getColumn("elimination")}
-            title="Elimination"
-            options={roomStatus}
+            column={table.getColumn("status")}
+            title="Status"
+            options={statuses}
           />
         )}
         {isFiltered && (

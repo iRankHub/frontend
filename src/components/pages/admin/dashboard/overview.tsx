@@ -27,26 +27,58 @@ function Overview({
   approvedUsersPercentageChange,
 }: OverviewProps) {
   const changeColorBasedOnPercentage = (percentage: string) => {
-    if (percentage.includes("+")) {
-      return {
-        color: "text-success-foreground",
-        textWithNoSign: percentage.replace("+", ""),
-        background: "bg-accent",
-      };
-    } else if (percentage.includes("-")) {
-      return {
-        color: "text-destructive",
-        textWithNoSign: percentage.replace("-", ""),
-        background: "bg-destructive",
-      };
-    } else {
+    // Remove the % sign if it exists in the input
+    const cleanPercentage = percentage.replace('%', '');
+    
+    // Handle infinity cases
+    if (cleanPercentage.includes("∞")) {
       return {
         color: "text-muted-text",
-        textWithNoSign: percentage,
+        textWithNoSign: "0.00%",
         background: "bg-accent",
+        isZero: true,
+      };
+    }
+
+    if (cleanPercentage.includes("+")) {
+      const value = cleanPercentage.replace("+", "");
+      const isZero = parseFloat(value) === 0;
+      return {
+        color: "text-success-foreground",
+        textWithNoSign: `${value}%`,
+        background: "bg-accent",
+        isZero,
+      };
+    } else if (cleanPercentage.includes("-")) {
+      const value = cleanPercentage.replace("-", "");
+      const isZero = parseFloat(value) === 0;
+      return {
+        color: "text-destructive",
+        textWithNoSign: `${value}%`,
+        background: "bg-destructive",
+        isZero,
+      };
+    } else {
+      const isZero = parseFloat(cleanPercentage) === 0;
+      return {
+        color: "text-muted-text",
+        textWithNoSign: `${cleanPercentage}%`,
+        background: "bg-accent",
+        isZero,
       };
     }
   };
+  
+  const renderChevron = (percentage: string) => {
+    const { isZero, color } = changeColorBasedOnPercentage(percentage);
+    if (isZero) {
+      return <Icons.chevronDown size={14} className={cn(color)} />;
+    }
+    return percentage.includes("-") ? 
+      <Icons.chevronDown size={14} className={cn(color)} /> :
+      <Icons.chevronUp size={14} className={cn(color)} />;
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-x gap-4 px-4 py-6 bg-background rounded-lg border-2 border-muted mt-5">
       <Link href={"/admin/users"}>
@@ -62,13 +94,7 @@ function Overview({
                   .background
               )}
             >
-              <Icons.chevronUp
-                size={14}
-                className={cn(
-                  changeColorBasedOnPercentage(approvedUsersPercentageChange)
-                    .color
-                )}
-              />
+              {renderChevron(approvedUsersPercentageChange)}
               <small
                 className={cn(
                   "text-xs",
@@ -105,13 +131,7 @@ function Overview({
                   .background
               )}
             >
-              <Icons.chevronDown
-                size={14}
-                className={cn(
-                  changeColorBasedOnPercentage(newRegistrationsPercentageChange)
-                    .color
-                )}
-              />
+              {renderChevron(newRegistrationsPercentageChange)}
               <small
                 className={cn(
                   "text-xs",
@@ -142,13 +162,7 @@ function Overview({
               Number of Tournaments
             </h3>
             <div className="flex items-center bg-destructive-foreground px-0.5 rounded-full">
-              <Icons.chevronUp
-                size={14}
-                className={cn(
-                  changeColorBasedOnPercentage(totalTournamentsPercentageChange)
-                    .color
-                )}
-              />
+              {renderChevron(totalTournamentsPercentageChange)}
               <small
                 className={cn(
                   `text-xs`,
@@ -179,14 +193,7 @@ function Overview({
               Upcoming Tournaments
             </h3>
             <div className="flex items-center bg-destructive-foreground px-0.5 rounded-full">
-              <Icons.chevronUp
-                size={14}
-                className={cn(
-                  changeColorBasedOnPercentage(
-                    upcomingTournamentsPercentageChange
-                  ).color
-                )}
-              />
+              {renderChevron(upcomingTournamentsPercentageChange)}
               <small
                 className={cn(
                   "text-xs",

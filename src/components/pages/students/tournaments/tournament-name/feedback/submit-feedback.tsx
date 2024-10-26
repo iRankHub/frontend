@@ -18,7 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { useFeedbacksStore } from "@/stores/admin/debate/feedbacks.store";
 import { StudentFeedbackEntry } from "@/lib/grpc/proto/debate_management/debate_pb";
-import { submitFeedback } from "@/core/debates/feedback";
+import { markStudentFeedbackAsRead, submitFeedback } from "@/core/debates/feedback";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useUserStore } from "@/stores/auth/auth.store";
@@ -93,15 +93,11 @@ const RatingCombobox = ({ label, value, onChange }: RatingComboboxProps) => {
 };
 
 interface ProvideFeedbackProps {
-  debateId: number;
-  judgeId: number;
   onClose?: () => void;
   feedbackData: StudentFeedbackEntry.AsObject;
 }
 
 const ProvideFeedback = ({
-  debateId,
-  judgeId,
   onClose,
   feedbackData,
 }: ProvideFeedbackProps) => {
@@ -114,16 +110,27 @@ const ProvideFeedback = ({
     constructiveness_rating: "",
     text_feedback: "",
   });
-  const { updateFeedbackReadStatus } = useFeedbacksStore((state) => state);
+  // const { updateFeedbackReadStatus } = useFeedbacksStore((state) => state);
+  const { toast } = useToast();
+  const { user } = useUserStore((state) => state);
 
-  useEffect(() => {
-    const updateReadStatus = async () => {
-      if (!isRead) {
-      }
-    };
+  // useEffect(() => {
+  //   if (!user) return;
 
-    updateReadStatus();
-  }, [isRead]);
+  //   const updateReadStatus = async () => {
+  //     if (!isRead) {
+  //       await markStudentFeedbackAsRead({
+  //         feedback_id: feedbackData.ballotId,
+  //         token: user.token
+  //       })
+  //       .then(() => {
+  //         updateFeedbackReadStatus(feedbackData.ballotId);
+  //       })
+  //     }
+  //   };
+
+  //   updateReadStatus();
+  // }, [isRead, user, feedbackData, updateFeedbackReadStatus]);
 
   const handleRatingChange = (field: string) => (value: string) => {
     setFormData((prev) => ({
@@ -132,8 +139,6 @@ const ProvideFeedback = ({
     }));
   };
 
-  const { toast } = useToast();
-  const { user } = useUserStore((state) => state);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -144,10 +149,10 @@ const ProvideFeedback = ({
     const submissionData = {
       clarity_rating: parseInt(formData.clarity_rating),
       constructiveness_rating: parseInt(formData.constructiveness_rating),
-      debate_id: debateId,
+      debate_id: feedbackData.debateId,
       engagement_rating: parseInt(formData.engagement_rating),
       fairness_rating: parseInt(formData.fairness_rating),
-      judge_id: judgeId,
+      judge_id: feedbackData.ballotId,
       text_feedback: formData.text_feedback,
       timeliness_rating: parseInt(formData.timeliness_rating),
       token: user.token,
@@ -155,7 +160,7 @@ const ProvideFeedback = ({
 
     submitFeedback(submissionData)
       .then((res) => {
-        console.log(res)
+        console.log(res);
         toast({
           variant: "success",
           title: "Success",

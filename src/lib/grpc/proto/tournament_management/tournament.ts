@@ -6204,6 +6204,2742 @@ export namespace tournament_management {
             return BulkResendInvitationsResponse.deserialize(bytes);
         }
     }
+    export class CreateExpensesRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tournament_id?: number;
+            food_expense?: number;
+            transport_expense?: number;
+            per_diem_expense?: number;
+            awarding_expense?: number;
+            stationary_expense?: number;
+            other_expenses?: number;
+            notes?: string;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
+                }
+                if ("food_expense" in data && data.food_expense != undefined) {
+                    this.food_expense = data.food_expense;
+                }
+                if ("transport_expense" in data && data.transport_expense != undefined) {
+                    this.transport_expense = data.transport_expense;
+                }
+                if ("per_diem_expense" in data && data.per_diem_expense != undefined) {
+                    this.per_diem_expense = data.per_diem_expense;
+                }
+                if ("awarding_expense" in data && data.awarding_expense != undefined) {
+                    this.awarding_expense = data.awarding_expense;
+                }
+                if ("stationary_expense" in data && data.stationary_expense != undefined) {
+                    this.stationary_expense = data.stationary_expense;
+                }
+                if ("other_expenses" in data && data.other_expenses != undefined) {
+                    this.other_expenses = data.other_expenses;
+                }
+                if ("notes" in data && data.notes != undefined) {
+                    this.notes = data.notes;
+                }
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get tournament_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set tournament_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get food_expense() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set food_expense(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get transport_expense() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set transport_expense(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get per_diem_expense() {
+            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+        }
+        set per_diem_expense(value: number) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get awarding_expense() {
+            return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
+        }
+        set awarding_expense(value: number) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        get stationary_expense() {
+            return pb_1.Message.getFieldWithDefault(this, 6, 0) as number;
+        }
+        set stationary_expense(value: number) {
+            pb_1.Message.setField(this, 6, value);
+        }
+        get other_expenses() {
+            return pb_1.Message.getFieldWithDefault(this, 7, 0) as number;
+        }
+        set other_expenses(value: number) {
+            pb_1.Message.setField(this, 7, value);
+        }
+        get notes() {
+            return pb_1.Message.getFieldWithDefault(this, 8, "") as string;
+        }
+        set notes(value: string) {
+            pb_1.Message.setField(this, 8, value);
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 9, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 9, value);
+        }
+        static fromObject(data: {
+            tournament_id?: number;
+            food_expense?: number;
+            transport_expense?: number;
+            per_diem_expense?: number;
+            awarding_expense?: number;
+            stationary_expense?: number;
+            other_expenses?: number;
+            notes?: string;
+            token?: string;
+        }): CreateExpensesRequest {
+            const message = new CreateExpensesRequest({});
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
+            }
+            if (data.food_expense != null) {
+                message.food_expense = data.food_expense;
+            }
+            if (data.transport_expense != null) {
+                message.transport_expense = data.transport_expense;
+            }
+            if (data.per_diem_expense != null) {
+                message.per_diem_expense = data.per_diem_expense;
+            }
+            if (data.awarding_expense != null) {
+                message.awarding_expense = data.awarding_expense;
+            }
+            if (data.stationary_expense != null) {
+                message.stationary_expense = data.stationary_expense;
+            }
+            if (data.other_expenses != null) {
+                message.other_expenses = data.other_expenses;
+            }
+            if (data.notes != null) {
+                message.notes = data.notes;
+            }
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tournament_id?: number;
+                food_expense?: number;
+                transport_expense?: number;
+                per_diem_expense?: number;
+                awarding_expense?: number;
+                stationary_expense?: number;
+                other_expenses?: number;
+                notes?: string;
+                token?: string;
+            } = {};
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
+            }
+            if (this.food_expense != null) {
+                data.food_expense = this.food_expense;
+            }
+            if (this.transport_expense != null) {
+                data.transport_expense = this.transport_expense;
+            }
+            if (this.per_diem_expense != null) {
+                data.per_diem_expense = this.per_diem_expense;
+            }
+            if (this.awarding_expense != null) {
+                data.awarding_expense = this.awarding_expense;
+            }
+            if (this.stationary_expense != null) {
+                data.stationary_expense = this.stationary_expense;
+            }
+            if (this.other_expenses != null) {
+                data.other_expenses = this.other_expenses;
+            }
+            if (this.notes != null) {
+                data.notes = this.notes;
+            }
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.tournament_id != 0)
+                writer.writeInt32(1, this.tournament_id);
+            if (this.food_expense != 0)
+                writer.writeDouble(2, this.food_expense);
+            if (this.transport_expense != 0)
+                writer.writeDouble(3, this.transport_expense);
+            if (this.per_diem_expense != 0)
+                writer.writeDouble(4, this.per_diem_expense);
+            if (this.awarding_expense != 0)
+                writer.writeDouble(5, this.awarding_expense);
+            if (this.stationary_expense != 0)
+                writer.writeDouble(6, this.stationary_expense);
+            if (this.other_expenses != 0)
+                writer.writeDouble(7, this.other_expenses);
+            if (this.notes.length)
+                writer.writeString(8, this.notes);
+            if (this.token.length)
+                writer.writeString(9, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): CreateExpensesRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new CreateExpensesRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.tournament_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.food_expense = reader.readDouble();
+                        break;
+                    case 3:
+                        message.transport_expense = reader.readDouble();
+                        break;
+                    case 4:
+                        message.per_diem_expense = reader.readDouble();
+                        break;
+                    case 5:
+                        message.awarding_expense = reader.readDouble();
+                        break;
+                    case 6:
+                        message.stationary_expense = reader.readDouble();
+                        break;
+                    case 7:
+                        message.other_expenses = reader.readDouble();
+                        break;
+                    case 8:
+                        message.notes = reader.readString();
+                        break;
+                    case 9:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): CreateExpensesRequest {
+            return CreateExpensesRequest.deserialize(bytes);
+        }
+    }
+    export class UpdateExpensesRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tournament_id?: number;
+            food_expense?: number;
+            transport_expense?: number;
+            per_diem_expense?: number;
+            awarding_expense?: number;
+            stationary_expense?: number;
+            other_expenses?: number;
+            currency?: string;
+            notes?: string;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
+                }
+                if ("food_expense" in data && data.food_expense != undefined) {
+                    this.food_expense = data.food_expense;
+                }
+                if ("transport_expense" in data && data.transport_expense != undefined) {
+                    this.transport_expense = data.transport_expense;
+                }
+                if ("per_diem_expense" in data && data.per_diem_expense != undefined) {
+                    this.per_diem_expense = data.per_diem_expense;
+                }
+                if ("awarding_expense" in data && data.awarding_expense != undefined) {
+                    this.awarding_expense = data.awarding_expense;
+                }
+                if ("stationary_expense" in data && data.stationary_expense != undefined) {
+                    this.stationary_expense = data.stationary_expense;
+                }
+                if ("other_expenses" in data && data.other_expenses != undefined) {
+                    this.other_expenses = data.other_expenses;
+                }
+                if ("currency" in data && data.currency != undefined) {
+                    this.currency = data.currency;
+                }
+                if ("notes" in data && data.notes != undefined) {
+                    this.notes = data.notes;
+                }
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get tournament_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set tournament_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get food_expense() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set food_expense(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get transport_expense() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set transport_expense(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get per_diem_expense() {
+            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+        }
+        set per_diem_expense(value: number) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get awarding_expense() {
+            return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
+        }
+        set awarding_expense(value: number) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        get stationary_expense() {
+            return pb_1.Message.getFieldWithDefault(this, 6, 0) as number;
+        }
+        set stationary_expense(value: number) {
+            pb_1.Message.setField(this, 6, value);
+        }
+        get other_expenses() {
+            return pb_1.Message.getFieldWithDefault(this, 7, 0) as number;
+        }
+        set other_expenses(value: number) {
+            pb_1.Message.setField(this, 7, value);
+        }
+        get currency() {
+            return pb_1.Message.getFieldWithDefault(this, 8, "") as string;
+        }
+        set currency(value: string) {
+            pb_1.Message.setField(this, 8, value);
+        }
+        get notes() {
+            return pb_1.Message.getFieldWithDefault(this, 9, "") as string;
+        }
+        set notes(value: string) {
+            pb_1.Message.setField(this, 9, value);
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 10, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 10, value);
+        }
+        static fromObject(data: {
+            tournament_id?: number;
+            food_expense?: number;
+            transport_expense?: number;
+            per_diem_expense?: number;
+            awarding_expense?: number;
+            stationary_expense?: number;
+            other_expenses?: number;
+            currency?: string;
+            notes?: string;
+            token?: string;
+        }): UpdateExpensesRequest {
+            const message = new UpdateExpensesRequest({});
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
+            }
+            if (data.food_expense != null) {
+                message.food_expense = data.food_expense;
+            }
+            if (data.transport_expense != null) {
+                message.transport_expense = data.transport_expense;
+            }
+            if (data.per_diem_expense != null) {
+                message.per_diem_expense = data.per_diem_expense;
+            }
+            if (data.awarding_expense != null) {
+                message.awarding_expense = data.awarding_expense;
+            }
+            if (data.stationary_expense != null) {
+                message.stationary_expense = data.stationary_expense;
+            }
+            if (data.other_expenses != null) {
+                message.other_expenses = data.other_expenses;
+            }
+            if (data.currency != null) {
+                message.currency = data.currency;
+            }
+            if (data.notes != null) {
+                message.notes = data.notes;
+            }
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tournament_id?: number;
+                food_expense?: number;
+                transport_expense?: number;
+                per_diem_expense?: number;
+                awarding_expense?: number;
+                stationary_expense?: number;
+                other_expenses?: number;
+                currency?: string;
+                notes?: string;
+                token?: string;
+            } = {};
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
+            }
+            if (this.food_expense != null) {
+                data.food_expense = this.food_expense;
+            }
+            if (this.transport_expense != null) {
+                data.transport_expense = this.transport_expense;
+            }
+            if (this.per_diem_expense != null) {
+                data.per_diem_expense = this.per_diem_expense;
+            }
+            if (this.awarding_expense != null) {
+                data.awarding_expense = this.awarding_expense;
+            }
+            if (this.stationary_expense != null) {
+                data.stationary_expense = this.stationary_expense;
+            }
+            if (this.other_expenses != null) {
+                data.other_expenses = this.other_expenses;
+            }
+            if (this.currency != null) {
+                data.currency = this.currency;
+            }
+            if (this.notes != null) {
+                data.notes = this.notes;
+            }
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.tournament_id != 0)
+                writer.writeInt32(1, this.tournament_id);
+            if (this.food_expense != 0)
+                writer.writeDouble(2, this.food_expense);
+            if (this.transport_expense != 0)
+                writer.writeDouble(3, this.transport_expense);
+            if (this.per_diem_expense != 0)
+                writer.writeDouble(4, this.per_diem_expense);
+            if (this.awarding_expense != 0)
+                writer.writeDouble(5, this.awarding_expense);
+            if (this.stationary_expense != 0)
+                writer.writeDouble(6, this.stationary_expense);
+            if (this.other_expenses != 0)
+                writer.writeDouble(7, this.other_expenses);
+            if (this.currency.length)
+                writer.writeString(8, this.currency);
+            if (this.notes.length)
+                writer.writeString(9, this.notes);
+            if (this.token.length)
+                writer.writeString(10, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateExpensesRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateExpensesRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.tournament_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.food_expense = reader.readDouble();
+                        break;
+                    case 3:
+                        message.transport_expense = reader.readDouble();
+                        break;
+                    case 4:
+                        message.per_diem_expense = reader.readDouble();
+                        break;
+                    case 5:
+                        message.awarding_expense = reader.readDouble();
+                        break;
+                    case 6:
+                        message.stationary_expense = reader.readDouble();
+                        break;
+                    case 7:
+                        message.other_expenses = reader.readDouble();
+                        break;
+                    case 8:
+                        message.currency = reader.readString();
+                        break;
+                    case 9:
+                        message.notes = reader.readString();
+                        break;
+                    case 10:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): UpdateExpensesRequest {
+            return UpdateExpensesRequest.deserialize(bytes);
+        }
+    }
+    export class GetExpensesRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tournament_id?: number;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
+                }
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get tournament_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set tournament_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            tournament_id?: number;
+            token?: string;
+        }): GetExpensesRequest {
+            const message = new GetExpensesRequest({});
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
+            }
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tournament_id?: number;
+                token?: string;
+            } = {};
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
+            }
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.tournament_id != 0)
+                writer.writeInt32(1, this.tournament_id);
+            if (this.token.length)
+                writer.writeString(2, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetExpensesRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetExpensesRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.tournament_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetExpensesRequest {
+            return GetExpensesRequest.deserialize(bytes);
+        }
+    }
+    export class ExpensesResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            expense_id?: number;
+            tournament_id?: number;
+            food_expense?: number;
+            transport_expense?: number;
+            per_diem_expense?: number;
+            awarding_expense?: number;
+            stationary_expense?: number;
+            other_expenses?: number;
+            total_expense?: number;
+            currency?: string;
+            notes?: string;
+            created_at?: string;
+            updated_at?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("expense_id" in data && data.expense_id != undefined) {
+                    this.expense_id = data.expense_id;
+                }
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
+                }
+                if ("food_expense" in data && data.food_expense != undefined) {
+                    this.food_expense = data.food_expense;
+                }
+                if ("transport_expense" in data && data.transport_expense != undefined) {
+                    this.transport_expense = data.transport_expense;
+                }
+                if ("per_diem_expense" in data && data.per_diem_expense != undefined) {
+                    this.per_diem_expense = data.per_diem_expense;
+                }
+                if ("awarding_expense" in data && data.awarding_expense != undefined) {
+                    this.awarding_expense = data.awarding_expense;
+                }
+                if ("stationary_expense" in data && data.stationary_expense != undefined) {
+                    this.stationary_expense = data.stationary_expense;
+                }
+                if ("other_expenses" in data && data.other_expenses != undefined) {
+                    this.other_expenses = data.other_expenses;
+                }
+                if ("total_expense" in data && data.total_expense != undefined) {
+                    this.total_expense = data.total_expense;
+                }
+                if ("currency" in data && data.currency != undefined) {
+                    this.currency = data.currency;
+                }
+                if ("notes" in data && data.notes != undefined) {
+                    this.notes = data.notes;
+                }
+                if ("created_at" in data && data.created_at != undefined) {
+                    this.created_at = data.created_at;
+                }
+                if ("updated_at" in data && data.updated_at != undefined) {
+                    this.updated_at = data.updated_at;
+                }
+            }
+        }
+        get expense_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set expense_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get tournament_id() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set tournament_id(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get food_expense() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set food_expense(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get transport_expense() {
+            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+        }
+        set transport_expense(value: number) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get per_diem_expense() {
+            return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
+        }
+        set per_diem_expense(value: number) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        get awarding_expense() {
+            return pb_1.Message.getFieldWithDefault(this, 6, 0) as number;
+        }
+        set awarding_expense(value: number) {
+            pb_1.Message.setField(this, 6, value);
+        }
+        get stationary_expense() {
+            return pb_1.Message.getFieldWithDefault(this, 7, 0) as number;
+        }
+        set stationary_expense(value: number) {
+            pb_1.Message.setField(this, 7, value);
+        }
+        get other_expenses() {
+            return pb_1.Message.getFieldWithDefault(this, 8, 0) as number;
+        }
+        set other_expenses(value: number) {
+            pb_1.Message.setField(this, 8, value);
+        }
+        get total_expense() {
+            return pb_1.Message.getFieldWithDefault(this, 9, 0) as number;
+        }
+        set total_expense(value: number) {
+            pb_1.Message.setField(this, 9, value);
+        }
+        get currency() {
+            return pb_1.Message.getFieldWithDefault(this, 10, "") as string;
+        }
+        set currency(value: string) {
+            pb_1.Message.setField(this, 10, value);
+        }
+        get notes() {
+            return pb_1.Message.getFieldWithDefault(this, 11, "") as string;
+        }
+        set notes(value: string) {
+            pb_1.Message.setField(this, 11, value);
+        }
+        get created_at() {
+            return pb_1.Message.getFieldWithDefault(this, 12, "") as string;
+        }
+        set created_at(value: string) {
+            pb_1.Message.setField(this, 12, value);
+        }
+        get updated_at() {
+            return pb_1.Message.getFieldWithDefault(this, 13, "") as string;
+        }
+        set updated_at(value: string) {
+            pb_1.Message.setField(this, 13, value);
+        }
+        static fromObject(data: {
+            expense_id?: number;
+            tournament_id?: number;
+            food_expense?: number;
+            transport_expense?: number;
+            per_diem_expense?: number;
+            awarding_expense?: number;
+            stationary_expense?: number;
+            other_expenses?: number;
+            total_expense?: number;
+            currency?: string;
+            notes?: string;
+            created_at?: string;
+            updated_at?: string;
+        }): ExpensesResponse {
+            const message = new ExpensesResponse({});
+            if (data.expense_id != null) {
+                message.expense_id = data.expense_id;
+            }
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
+            }
+            if (data.food_expense != null) {
+                message.food_expense = data.food_expense;
+            }
+            if (data.transport_expense != null) {
+                message.transport_expense = data.transport_expense;
+            }
+            if (data.per_diem_expense != null) {
+                message.per_diem_expense = data.per_diem_expense;
+            }
+            if (data.awarding_expense != null) {
+                message.awarding_expense = data.awarding_expense;
+            }
+            if (data.stationary_expense != null) {
+                message.stationary_expense = data.stationary_expense;
+            }
+            if (data.other_expenses != null) {
+                message.other_expenses = data.other_expenses;
+            }
+            if (data.total_expense != null) {
+                message.total_expense = data.total_expense;
+            }
+            if (data.currency != null) {
+                message.currency = data.currency;
+            }
+            if (data.notes != null) {
+                message.notes = data.notes;
+            }
+            if (data.created_at != null) {
+                message.created_at = data.created_at;
+            }
+            if (data.updated_at != null) {
+                message.updated_at = data.updated_at;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                expense_id?: number;
+                tournament_id?: number;
+                food_expense?: number;
+                transport_expense?: number;
+                per_diem_expense?: number;
+                awarding_expense?: number;
+                stationary_expense?: number;
+                other_expenses?: number;
+                total_expense?: number;
+                currency?: string;
+                notes?: string;
+                created_at?: string;
+                updated_at?: string;
+            } = {};
+            if (this.expense_id != null) {
+                data.expense_id = this.expense_id;
+            }
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
+            }
+            if (this.food_expense != null) {
+                data.food_expense = this.food_expense;
+            }
+            if (this.transport_expense != null) {
+                data.transport_expense = this.transport_expense;
+            }
+            if (this.per_diem_expense != null) {
+                data.per_diem_expense = this.per_diem_expense;
+            }
+            if (this.awarding_expense != null) {
+                data.awarding_expense = this.awarding_expense;
+            }
+            if (this.stationary_expense != null) {
+                data.stationary_expense = this.stationary_expense;
+            }
+            if (this.other_expenses != null) {
+                data.other_expenses = this.other_expenses;
+            }
+            if (this.total_expense != null) {
+                data.total_expense = this.total_expense;
+            }
+            if (this.currency != null) {
+                data.currency = this.currency;
+            }
+            if (this.notes != null) {
+                data.notes = this.notes;
+            }
+            if (this.created_at != null) {
+                data.created_at = this.created_at;
+            }
+            if (this.updated_at != null) {
+                data.updated_at = this.updated_at;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.expense_id != 0)
+                writer.writeInt32(1, this.expense_id);
+            if (this.tournament_id != 0)
+                writer.writeInt32(2, this.tournament_id);
+            if (this.food_expense != 0)
+                writer.writeDouble(3, this.food_expense);
+            if (this.transport_expense != 0)
+                writer.writeDouble(4, this.transport_expense);
+            if (this.per_diem_expense != 0)
+                writer.writeDouble(5, this.per_diem_expense);
+            if (this.awarding_expense != 0)
+                writer.writeDouble(6, this.awarding_expense);
+            if (this.stationary_expense != 0)
+                writer.writeDouble(7, this.stationary_expense);
+            if (this.other_expenses != 0)
+                writer.writeDouble(8, this.other_expenses);
+            if (this.total_expense != 0)
+                writer.writeDouble(9, this.total_expense);
+            if (this.currency.length)
+                writer.writeString(10, this.currency);
+            if (this.notes.length)
+                writer.writeString(11, this.notes);
+            if (this.created_at.length)
+                writer.writeString(12, this.created_at);
+            if (this.updated_at.length)
+                writer.writeString(13, this.updated_at);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ExpensesResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ExpensesResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.expense_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.tournament_id = reader.readInt32();
+                        break;
+                    case 3:
+                        message.food_expense = reader.readDouble();
+                        break;
+                    case 4:
+                        message.transport_expense = reader.readDouble();
+                        break;
+                    case 5:
+                        message.per_diem_expense = reader.readDouble();
+                        break;
+                    case 6:
+                        message.awarding_expense = reader.readDouble();
+                        break;
+                    case 7:
+                        message.stationary_expense = reader.readDouble();
+                        break;
+                    case 8:
+                        message.other_expenses = reader.readDouble();
+                        break;
+                    case 9:
+                        message.total_expense = reader.readDouble();
+                        break;
+                    case 10:
+                        message.currency = reader.readString();
+                        break;
+                    case 11:
+                        message.notes = reader.readString();
+                        break;
+                    case 12:
+                        message.created_at = reader.readString();
+                        break;
+                    case 13:
+                        message.updated_at = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ExpensesResponse {
+            return ExpensesResponse.deserialize(bytes);
+        }
+    }
+    export class CreateRegistrationRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            school_id?: number;
+            tournament_id?: number;
+            planned_teams_count?: number;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("school_id" in data && data.school_id != undefined) {
+                    this.school_id = data.school_id;
+                }
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
+                }
+                if ("planned_teams_count" in data && data.planned_teams_count != undefined) {
+                    this.planned_teams_count = data.planned_teams_count;
+                }
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get school_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set school_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get tournament_id() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set tournament_id(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get planned_teams_count() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set planned_teams_count(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        static fromObject(data: {
+            school_id?: number;
+            tournament_id?: number;
+            planned_teams_count?: number;
+            token?: string;
+        }): CreateRegistrationRequest {
+            const message = new CreateRegistrationRequest({});
+            if (data.school_id != null) {
+                message.school_id = data.school_id;
+            }
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
+            }
+            if (data.planned_teams_count != null) {
+                message.planned_teams_count = data.planned_teams_count;
+            }
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                school_id?: number;
+                tournament_id?: number;
+                planned_teams_count?: number;
+                token?: string;
+            } = {};
+            if (this.school_id != null) {
+                data.school_id = this.school_id;
+            }
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
+            }
+            if (this.planned_teams_count != null) {
+                data.planned_teams_count = this.planned_teams_count;
+            }
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.school_id != 0)
+                writer.writeInt32(1, this.school_id);
+            if (this.tournament_id != 0)
+                writer.writeInt32(2, this.tournament_id);
+            if (this.planned_teams_count != 0)
+                writer.writeInt32(3, this.planned_teams_count);
+            if (this.token.length)
+                writer.writeString(4, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): CreateRegistrationRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new CreateRegistrationRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.school_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.tournament_id = reader.readInt32();
+                        break;
+                    case 3:
+                        message.planned_teams_count = reader.readInt32();
+                        break;
+                    case 4:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): CreateRegistrationRequest {
+            return CreateRegistrationRequest.deserialize(bytes);
+        }
+    }
+    export class UpdateRegistrationRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            school_id?: number;
+            tournament_id?: number;
+            actual_teams_count?: number;
+            discount_amount?: number;
+            actual_paid_amount?: number;
+            payment_status?: string;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("school_id" in data && data.school_id != undefined) {
+                    this.school_id = data.school_id;
+                }
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
+                }
+                if ("actual_teams_count" in data && data.actual_teams_count != undefined) {
+                    this.actual_teams_count = data.actual_teams_count;
+                }
+                if ("discount_amount" in data && data.discount_amount != undefined) {
+                    this.discount_amount = data.discount_amount;
+                }
+                if ("actual_paid_amount" in data && data.actual_paid_amount != undefined) {
+                    this.actual_paid_amount = data.actual_paid_amount;
+                }
+                if ("payment_status" in data && data.payment_status != undefined) {
+                    this.payment_status = data.payment_status;
+                }
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get school_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set school_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get tournament_id() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set tournament_id(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get actual_teams_count() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set actual_teams_count(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get discount_amount() {
+            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+        }
+        set discount_amount(value: number) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get actual_paid_amount() {
+            return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
+        }
+        set actual_paid_amount(value: number) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        get payment_status() {
+            return pb_1.Message.getFieldWithDefault(this, 6, "") as string;
+        }
+        set payment_status(value: string) {
+            pb_1.Message.setField(this, 6, value);
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 7, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 7, value);
+        }
+        static fromObject(data: {
+            school_id?: number;
+            tournament_id?: number;
+            actual_teams_count?: number;
+            discount_amount?: number;
+            actual_paid_amount?: number;
+            payment_status?: string;
+            token?: string;
+        }): UpdateRegistrationRequest {
+            const message = new UpdateRegistrationRequest({});
+            if (data.school_id != null) {
+                message.school_id = data.school_id;
+            }
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
+            }
+            if (data.actual_teams_count != null) {
+                message.actual_teams_count = data.actual_teams_count;
+            }
+            if (data.discount_amount != null) {
+                message.discount_amount = data.discount_amount;
+            }
+            if (data.actual_paid_amount != null) {
+                message.actual_paid_amount = data.actual_paid_amount;
+            }
+            if (data.payment_status != null) {
+                message.payment_status = data.payment_status;
+            }
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                school_id?: number;
+                tournament_id?: number;
+                actual_teams_count?: number;
+                discount_amount?: number;
+                actual_paid_amount?: number;
+                payment_status?: string;
+                token?: string;
+            } = {};
+            if (this.school_id != null) {
+                data.school_id = this.school_id;
+            }
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
+            }
+            if (this.actual_teams_count != null) {
+                data.actual_teams_count = this.actual_teams_count;
+            }
+            if (this.discount_amount != null) {
+                data.discount_amount = this.discount_amount;
+            }
+            if (this.actual_paid_amount != null) {
+                data.actual_paid_amount = this.actual_paid_amount;
+            }
+            if (this.payment_status != null) {
+                data.payment_status = this.payment_status;
+            }
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.school_id != 0)
+                writer.writeInt32(1, this.school_id);
+            if (this.tournament_id != 0)
+                writer.writeInt32(2, this.tournament_id);
+            if (this.actual_teams_count != 0)
+                writer.writeInt32(3, this.actual_teams_count);
+            if (this.discount_amount != 0)
+                writer.writeDouble(4, this.discount_amount);
+            if (this.actual_paid_amount != 0)
+                writer.writeDouble(5, this.actual_paid_amount);
+            if (this.payment_status.length)
+                writer.writeString(6, this.payment_status);
+            if (this.token.length)
+                writer.writeString(7, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateRegistrationRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateRegistrationRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.school_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.tournament_id = reader.readInt32();
+                        break;
+                    case 3:
+                        message.actual_teams_count = reader.readInt32();
+                        break;
+                    case 4:
+                        message.discount_amount = reader.readDouble();
+                        break;
+                    case 5:
+                        message.actual_paid_amount = reader.readDouble();
+                        break;
+                    case 6:
+                        message.payment_status = reader.readString();
+                        break;
+                    case 7:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): UpdateRegistrationRequest {
+            return UpdateRegistrationRequest.deserialize(bytes);
+        }
+    }
+    export class GetRegistrationRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            school_id?: number;
+            tournament_id?: number;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("school_id" in data && data.school_id != undefined) {
+                    this.school_id = data.school_id;
+                }
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
+                }
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get school_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set school_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get tournament_id() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set tournament_id(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        static fromObject(data: {
+            school_id?: number;
+            tournament_id?: number;
+            token?: string;
+        }): GetRegistrationRequest {
+            const message = new GetRegistrationRequest({});
+            if (data.school_id != null) {
+                message.school_id = data.school_id;
+            }
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
+            }
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                school_id?: number;
+                tournament_id?: number;
+                token?: string;
+            } = {};
+            if (this.school_id != null) {
+                data.school_id = this.school_id;
+            }
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
+            }
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.school_id != 0)
+                writer.writeInt32(1, this.school_id);
+            if (this.tournament_id != 0)
+                writer.writeInt32(2, this.tournament_id);
+            if (this.token.length)
+                writer.writeString(3, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetRegistrationRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetRegistrationRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.school_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.tournament_id = reader.readInt32();
+                        break;
+                    case 3:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetRegistrationRequest {
+            return GetRegistrationRequest.deserialize(bytes);
+        }
+    }
+    export class ListRegistrationsRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tournament_id?: number;
+            page_size?: number;
+            page_token?: number;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
+                }
+                if ("page_size" in data && data.page_size != undefined) {
+                    this.page_size = data.page_size;
+                }
+                if ("page_token" in data && data.page_token != undefined) {
+                    this.page_token = data.page_token;
+                }
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get tournament_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set tournament_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get page_size() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set page_size(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get page_token() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set page_token(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        static fromObject(data: {
+            tournament_id?: number;
+            page_size?: number;
+            page_token?: number;
+            token?: string;
+        }): ListRegistrationsRequest {
+            const message = new ListRegistrationsRequest({});
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
+            }
+            if (data.page_size != null) {
+                message.page_size = data.page_size;
+            }
+            if (data.page_token != null) {
+                message.page_token = data.page_token;
+            }
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tournament_id?: number;
+                page_size?: number;
+                page_token?: number;
+                token?: string;
+            } = {};
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
+            }
+            if (this.page_size != null) {
+                data.page_size = this.page_size;
+            }
+            if (this.page_token != null) {
+                data.page_token = this.page_token;
+            }
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.tournament_id != 0)
+                writer.writeInt32(1, this.tournament_id);
+            if (this.page_size != 0)
+                writer.writeInt32(2, this.page_size);
+            if (this.page_token != 0)
+                writer.writeInt32(3, this.page_token);
+            if (this.token.length)
+                writer.writeString(4, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ListRegistrationsRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ListRegistrationsRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.tournament_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.page_size = reader.readInt32();
+                        break;
+                    case 3:
+                        message.page_token = reader.readInt32();
+                        break;
+                    case 4:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ListRegistrationsRequest {
+            return ListRegistrationsRequest.deserialize(bytes);
+        }
+    }
+    export class RegistrationResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            registration_id?: number;
+            school_id?: number;
+            tournament_id?: number;
+            planned_teams_count?: number;
+            actual_teams_count?: number;
+            amount_per_team?: number;
+            total_amount?: number;
+            discount_amount?: number;
+            actual_paid_amount?: number;
+            payment_status?: string;
+            currency?: string;
+            created_at?: string;
+            updated_at?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("registration_id" in data && data.registration_id != undefined) {
+                    this.registration_id = data.registration_id;
+                }
+                if ("school_id" in data && data.school_id != undefined) {
+                    this.school_id = data.school_id;
+                }
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
+                }
+                if ("planned_teams_count" in data && data.planned_teams_count != undefined) {
+                    this.planned_teams_count = data.planned_teams_count;
+                }
+                if ("actual_teams_count" in data && data.actual_teams_count != undefined) {
+                    this.actual_teams_count = data.actual_teams_count;
+                }
+                if ("amount_per_team" in data && data.amount_per_team != undefined) {
+                    this.amount_per_team = data.amount_per_team;
+                }
+                if ("total_amount" in data && data.total_amount != undefined) {
+                    this.total_amount = data.total_amount;
+                }
+                if ("discount_amount" in data && data.discount_amount != undefined) {
+                    this.discount_amount = data.discount_amount;
+                }
+                if ("actual_paid_amount" in data && data.actual_paid_amount != undefined) {
+                    this.actual_paid_amount = data.actual_paid_amount;
+                }
+                if ("payment_status" in data && data.payment_status != undefined) {
+                    this.payment_status = data.payment_status;
+                }
+                if ("currency" in data && data.currency != undefined) {
+                    this.currency = data.currency;
+                }
+                if ("created_at" in data && data.created_at != undefined) {
+                    this.created_at = data.created_at;
+                }
+                if ("updated_at" in data && data.updated_at != undefined) {
+                    this.updated_at = data.updated_at;
+                }
+            }
+        }
+        get registration_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set registration_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get school_id() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set school_id(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get tournament_id() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set tournament_id(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get planned_teams_count() {
+            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+        }
+        set planned_teams_count(value: number) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get actual_teams_count() {
+            return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
+        }
+        set actual_teams_count(value: number) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        get amount_per_team() {
+            return pb_1.Message.getFieldWithDefault(this, 6, 0) as number;
+        }
+        set amount_per_team(value: number) {
+            pb_1.Message.setField(this, 6, value);
+        }
+        get total_amount() {
+            return pb_1.Message.getFieldWithDefault(this, 7, 0) as number;
+        }
+        set total_amount(value: number) {
+            pb_1.Message.setField(this, 7, value);
+        }
+        get discount_amount() {
+            return pb_1.Message.getFieldWithDefault(this, 8, 0) as number;
+        }
+        set discount_amount(value: number) {
+            pb_1.Message.setField(this, 8, value);
+        }
+        get actual_paid_amount() {
+            return pb_1.Message.getFieldWithDefault(this, 9, 0) as number;
+        }
+        set actual_paid_amount(value: number) {
+            pb_1.Message.setField(this, 9, value);
+        }
+        get payment_status() {
+            return pb_1.Message.getFieldWithDefault(this, 10, "") as string;
+        }
+        set payment_status(value: string) {
+            pb_1.Message.setField(this, 10, value);
+        }
+        get currency() {
+            return pb_1.Message.getFieldWithDefault(this, 11, "") as string;
+        }
+        set currency(value: string) {
+            pb_1.Message.setField(this, 11, value);
+        }
+        get created_at() {
+            return pb_1.Message.getFieldWithDefault(this, 12, "") as string;
+        }
+        set created_at(value: string) {
+            pb_1.Message.setField(this, 12, value);
+        }
+        get updated_at() {
+            return pb_1.Message.getFieldWithDefault(this, 13, "") as string;
+        }
+        set updated_at(value: string) {
+            pb_1.Message.setField(this, 13, value);
+        }
+        static fromObject(data: {
+            registration_id?: number;
+            school_id?: number;
+            tournament_id?: number;
+            planned_teams_count?: number;
+            actual_teams_count?: number;
+            amount_per_team?: number;
+            total_amount?: number;
+            discount_amount?: number;
+            actual_paid_amount?: number;
+            payment_status?: string;
+            currency?: string;
+            created_at?: string;
+            updated_at?: string;
+        }): RegistrationResponse {
+            const message = new RegistrationResponse({});
+            if (data.registration_id != null) {
+                message.registration_id = data.registration_id;
+            }
+            if (data.school_id != null) {
+                message.school_id = data.school_id;
+            }
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
+            }
+            if (data.planned_teams_count != null) {
+                message.planned_teams_count = data.planned_teams_count;
+            }
+            if (data.actual_teams_count != null) {
+                message.actual_teams_count = data.actual_teams_count;
+            }
+            if (data.amount_per_team != null) {
+                message.amount_per_team = data.amount_per_team;
+            }
+            if (data.total_amount != null) {
+                message.total_amount = data.total_amount;
+            }
+            if (data.discount_amount != null) {
+                message.discount_amount = data.discount_amount;
+            }
+            if (data.actual_paid_amount != null) {
+                message.actual_paid_amount = data.actual_paid_amount;
+            }
+            if (data.payment_status != null) {
+                message.payment_status = data.payment_status;
+            }
+            if (data.currency != null) {
+                message.currency = data.currency;
+            }
+            if (data.created_at != null) {
+                message.created_at = data.created_at;
+            }
+            if (data.updated_at != null) {
+                message.updated_at = data.updated_at;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                registration_id?: number;
+                school_id?: number;
+                tournament_id?: number;
+                planned_teams_count?: number;
+                actual_teams_count?: number;
+                amount_per_team?: number;
+                total_amount?: number;
+                discount_amount?: number;
+                actual_paid_amount?: number;
+                payment_status?: string;
+                currency?: string;
+                created_at?: string;
+                updated_at?: string;
+            } = {};
+            if (this.registration_id != null) {
+                data.registration_id = this.registration_id;
+            }
+            if (this.school_id != null) {
+                data.school_id = this.school_id;
+            }
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
+            }
+            if (this.planned_teams_count != null) {
+                data.planned_teams_count = this.planned_teams_count;
+            }
+            if (this.actual_teams_count != null) {
+                data.actual_teams_count = this.actual_teams_count;
+            }
+            if (this.amount_per_team != null) {
+                data.amount_per_team = this.amount_per_team;
+            }
+            if (this.total_amount != null) {
+                data.total_amount = this.total_amount;
+            }
+            if (this.discount_amount != null) {
+                data.discount_amount = this.discount_amount;
+            }
+            if (this.actual_paid_amount != null) {
+                data.actual_paid_amount = this.actual_paid_amount;
+            }
+            if (this.payment_status != null) {
+                data.payment_status = this.payment_status;
+            }
+            if (this.currency != null) {
+                data.currency = this.currency;
+            }
+            if (this.created_at != null) {
+                data.created_at = this.created_at;
+            }
+            if (this.updated_at != null) {
+                data.updated_at = this.updated_at;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.registration_id != 0)
+                writer.writeInt32(1, this.registration_id);
+            if (this.school_id != 0)
+                writer.writeInt32(2, this.school_id);
+            if (this.tournament_id != 0)
+                writer.writeInt32(3, this.tournament_id);
+            if (this.planned_teams_count != 0)
+                writer.writeInt32(4, this.planned_teams_count);
+            if (this.actual_teams_count != 0)
+                writer.writeInt32(5, this.actual_teams_count);
+            if (this.amount_per_team != 0)
+                writer.writeDouble(6, this.amount_per_team);
+            if (this.total_amount != 0)
+                writer.writeDouble(7, this.total_amount);
+            if (this.discount_amount != 0)
+                writer.writeDouble(8, this.discount_amount);
+            if (this.actual_paid_amount != 0)
+                writer.writeDouble(9, this.actual_paid_amount);
+            if (this.payment_status.length)
+                writer.writeString(10, this.payment_status);
+            if (this.currency.length)
+                writer.writeString(11, this.currency);
+            if (this.created_at.length)
+                writer.writeString(12, this.created_at);
+            if (this.updated_at.length)
+                writer.writeString(13, this.updated_at);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): RegistrationResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new RegistrationResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.registration_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.school_id = reader.readInt32();
+                        break;
+                    case 3:
+                        message.tournament_id = reader.readInt32();
+                        break;
+                    case 4:
+                        message.planned_teams_count = reader.readInt32();
+                        break;
+                    case 5:
+                        message.actual_teams_count = reader.readInt32();
+                        break;
+                    case 6:
+                        message.amount_per_team = reader.readDouble();
+                        break;
+                    case 7:
+                        message.total_amount = reader.readDouble();
+                        break;
+                    case 8:
+                        message.discount_amount = reader.readDouble();
+                        break;
+                    case 9:
+                        message.actual_paid_amount = reader.readDouble();
+                        break;
+                    case 10:
+                        message.payment_status = reader.readString();
+                        break;
+                    case 11:
+                        message.currency = reader.readString();
+                        break;
+                    case 12:
+                        message.created_at = reader.readString();
+                        break;
+                    case 13:
+                        message.updated_at = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): RegistrationResponse {
+            return RegistrationResponse.deserialize(bytes);
+        }
+    }
+    export class DetailedRegistrationResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            registration_id?: number;
+            school_id?: number;
+            tournament_id?: number;
+            school_name?: string;
+            school_email?: string;
+            school_type?: string;
+            contact_email?: string;
+            contact_person_name?: string;
+            country?: string;
+            province?: string;
+            district?: string;
+            address?: string;
+            planned_teams_count?: number;
+            actual_teams_count?: number;
+            amount_per_team?: number;
+            total_amount?: number;
+            discount_amount?: number;
+            actual_paid_amount?: number;
+            payment_status?: string;
+            currency?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("registration_id" in data && data.registration_id != undefined) {
+                    this.registration_id = data.registration_id;
+                }
+                if ("school_id" in data && data.school_id != undefined) {
+                    this.school_id = data.school_id;
+                }
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
+                }
+                if ("school_name" in data && data.school_name != undefined) {
+                    this.school_name = data.school_name;
+                }
+                if ("school_email" in data && data.school_email != undefined) {
+                    this.school_email = data.school_email;
+                }
+                if ("school_type" in data && data.school_type != undefined) {
+                    this.school_type = data.school_type;
+                }
+                if ("contact_email" in data && data.contact_email != undefined) {
+                    this.contact_email = data.contact_email;
+                }
+                if ("contact_person_name" in data && data.contact_person_name != undefined) {
+                    this.contact_person_name = data.contact_person_name;
+                }
+                if ("country" in data && data.country != undefined) {
+                    this.country = data.country;
+                }
+                if ("province" in data && data.province != undefined) {
+                    this.province = data.province;
+                }
+                if ("district" in data && data.district != undefined) {
+                    this.district = data.district;
+                }
+                if ("address" in data && data.address != undefined) {
+                    this.address = data.address;
+                }
+                if ("planned_teams_count" in data && data.planned_teams_count != undefined) {
+                    this.planned_teams_count = data.planned_teams_count;
+                }
+                if ("actual_teams_count" in data && data.actual_teams_count != undefined) {
+                    this.actual_teams_count = data.actual_teams_count;
+                }
+                if ("amount_per_team" in data && data.amount_per_team != undefined) {
+                    this.amount_per_team = data.amount_per_team;
+                }
+                if ("total_amount" in data && data.total_amount != undefined) {
+                    this.total_amount = data.total_amount;
+                }
+                if ("discount_amount" in data && data.discount_amount != undefined) {
+                    this.discount_amount = data.discount_amount;
+                }
+                if ("actual_paid_amount" in data && data.actual_paid_amount != undefined) {
+                    this.actual_paid_amount = data.actual_paid_amount;
+                }
+                if ("payment_status" in data && data.payment_status != undefined) {
+                    this.payment_status = data.payment_status;
+                }
+                if ("currency" in data && data.currency != undefined) {
+                    this.currency = data.currency;
+                }
+            }
+        }
+        get registration_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set registration_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get school_id() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set school_id(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get tournament_id() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set tournament_id(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get school_name() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set school_name(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get school_email() {
+            return pb_1.Message.getFieldWithDefault(this, 5, "") as string;
+        }
+        set school_email(value: string) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        get school_type() {
+            return pb_1.Message.getFieldWithDefault(this, 6, "") as string;
+        }
+        set school_type(value: string) {
+            pb_1.Message.setField(this, 6, value);
+        }
+        get contact_email() {
+            return pb_1.Message.getFieldWithDefault(this, 7, "") as string;
+        }
+        set contact_email(value: string) {
+            pb_1.Message.setField(this, 7, value);
+        }
+        get contact_person_name() {
+            return pb_1.Message.getFieldWithDefault(this, 8, "") as string;
+        }
+        set contact_person_name(value: string) {
+            pb_1.Message.setField(this, 8, value);
+        }
+        get country() {
+            return pb_1.Message.getFieldWithDefault(this, 9, "") as string;
+        }
+        set country(value: string) {
+            pb_1.Message.setField(this, 9, value);
+        }
+        get province() {
+            return pb_1.Message.getFieldWithDefault(this, 10, "") as string;
+        }
+        set province(value: string) {
+            pb_1.Message.setField(this, 10, value);
+        }
+        get district() {
+            return pb_1.Message.getFieldWithDefault(this, 11, "") as string;
+        }
+        set district(value: string) {
+            pb_1.Message.setField(this, 11, value);
+        }
+        get address() {
+            return pb_1.Message.getFieldWithDefault(this, 12, "") as string;
+        }
+        set address(value: string) {
+            pb_1.Message.setField(this, 12, value);
+        }
+        get planned_teams_count() {
+            return pb_1.Message.getFieldWithDefault(this, 13, 0) as number;
+        }
+        set planned_teams_count(value: number) {
+            pb_1.Message.setField(this, 13, value);
+        }
+        get actual_teams_count() {
+            return pb_1.Message.getFieldWithDefault(this, 14, 0) as number;
+        }
+        set actual_teams_count(value: number) {
+            pb_1.Message.setField(this, 14, value);
+        }
+        get amount_per_team() {
+            return pb_1.Message.getFieldWithDefault(this, 15, 0) as number;
+        }
+        set amount_per_team(value: number) {
+            pb_1.Message.setField(this, 15, value);
+        }
+        get total_amount() {
+            return pb_1.Message.getFieldWithDefault(this, 16, 0) as number;
+        }
+        set total_amount(value: number) {
+            pb_1.Message.setField(this, 16, value);
+        }
+        get discount_amount() {
+            return pb_1.Message.getFieldWithDefault(this, 17, 0) as number;
+        }
+        set discount_amount(value: number) {
+            pb_1.Message.setField(this, 17, value);
+        }
+        get actual_paid_amount() {
+            return pb_1.Message.getFieldWithDefault(this, 18, 0) as number;
+        }
+        set actual_paid_amount(value: number) {
+            pb_1.Message.setField(this, 18, value);
+        }
+        get payment_status() {
+            return pb_1.Message.getFieldWithDefault(this, 19, "") as string;
+        }
+        set payment_status(value: string) {
+            pb_1.Message.setField(this, 19, value);
+        }
+        get currency() {
+            return pb_1.Message.getFieldWithDefault(this, 20, "") as string;
+        }
+        set currency(value: string) {
+            pb_1.Message.setField(this, 20, value);
+        }
+        static fromObject(data: {
+            registration_id?: number;
+            school_id?: number;
+            tournament_id?: number;
+            school_name?: string;
+            school_email?: string;
+            school_type?: string;
+            contact_email?: string;
+            contact_person_name?: string;
+            country?: string;
+            province?: string;
+            district?: string;
+            address?: string;
+            planned_teams_count?: number;
+            actual_teams_count?: number;
+            amount_per_team?: number;
+            total_amount?: number;
+            discount_amount?: number;
+            actual_paid_amount?: number;
+            payment_status?: string;
+            currency?: string;
+        }): DetailedRegistrationResponse {
+            const message = new DetailedRegistrationResponse({});
+            if (data.registration_id != null) {
+                message.registration_id = data.registration_id;
+            }
+            if (data.school_id != null) {
+                message.school_id = data.school_id;
+            }
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
+            }
+            if (data.school_name != null) {
+                message.school_name = data.school_name;
+            }
+            if (data.school_email != null) {
+                message.school_email = data.school_email;
+            }
+            if (data.school_type != null) {
+                message.school_type = data.school_type;
+            }
+            if (data.contact_email != null) {
+                message.contact_email = data.contact_email;
+            }
+            if (data.contact_person_name != null) {
+                message.contact_person_name = data.contact_person_name;
+            }
+            if (data.country != null) {
+                message.country = data.country;
+            }
+            if (data.province != null) {
+                message.province = data.province;
+            }
+            if (data.district != null) {
+                message.district = data.district;
+            }
+            if (data.address != null) {
+                message.address = data.address;
+            }
+            if (data.planned_teams_count != null) {
+                message.planned_teams_count = data.planned_teams_count;
+            }
+            if (data.actual_teams_count != null) {
+                message.actual_teams_count = data.actual_teams_count;
+            }
+            if (data.amount_per_team != null) {
+                message.amount_per_team = data.amount_per_team;
+            }
+            if (data.total_amount != null) {
+                message.total_amount = data.total_amount;
+            }
+            if (data.discount_amount != null) {
+                message.discount_amount = data.discount_amount;
+            }
+            if (data.actual_paid_amount != null) {
+                message.actual_paid_amount = data.actual_paid_amount;
+            }
+            if (data.payment_status != null) {
+                message.payment_status = data.payment_status;
+            }
+            if (data.currency != null) {
+                message.currency = data.currency;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                registration_id?: number;
+                school_id?: number;
+                tournament_id?: number;
+                school_name?: string;
+                school_email?: string;
+                school_type?: string;
+                contact_email?: string;
+                contact_person_name?: string;
+                country?: string;
+                province?: string;
+                district?: string;
+                address?: string;
+                planned_teams_count?: number;
+                actual_teams_count?: number;
+                amount_per_team?: number;
+                total_amount?: number;
+                discount_amount?: number;
+                actual_paid_amount?: number;
+                payment_status?: string;
+                currency?: string;
+            } = {};
+            if (this.registration_id != null) {
+                data.registration_id = this.registration_id;
+            }
+            if (this.school_id != null) {
+                data.school_id = this.school_id;
+            }
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
+            }
+            if (this.school_name != null) {
+                data.school_name = this.school_name;
+            }
+            if (this.school_email != null) {
+                data.school_email = this.school_email;
+            }
+            if (this.school_type != null) {
+                data.school_type = this.school_type;
+            }
+            if (this.contact_email != null) {
+                data.contact_email = this.contact_email;
+            }
+            if (this.contact_person_name != null) {
+                data.contact_person_name = this.contact_person_name;
+            }
+            if (this.country != null) {
+                data.country = this.country;
+            }
+            if (this.province != null) {
+                data.province = this.province;
+            }
+            if (this.district != null) {
+                data.district = this.district;
+            }
+            if (this.address != null) {
+                data.address = this.address;
+            }
+            if (this.planned_teams_count != null) {
+                data.planned_teams_count = this.planned_teams_count;
+            }
+            if (this.actual_teams_count != null) {
+                data.actual_teams_count = this.actual_teams_count;
+            }
+            if (this.amount_per_team != null) {
+                data.amount_per_team = this.amount_per_team;
+            }
+            if (this.total_amount != null) {
+                data.total_amount = this.total_amount;
+            }
+            if (this.discount_amount != null) {
+                data.discount_amount = this.discount_amount;
+            }
+            if (this.actual_paid_amount != null) {
+                data.actual_paid_amount = this.actual_paid_amount;
+            }
+            if (this.payment_status != null) {
+                data.payment_status = this.payment_status;
+            }
+            if (this.currency != null) {
+                data.currency = this.currency;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.registration_id != 0)
+                writer.writeInt32(1, this.registration_id);
+            if (this.school_id != 0)
+                writer.writeInt32(2, this.school_id);
+            if (this.tournament_id != 0)
+                writer.writeInt32(3, this.tournament_id);
+            if (this.school_name.length)
+                writer.writeString(4, this.school_name);
+            if (this.school_email.length)
+                writer.writeString(5, this.school_email);
+            if (this.school_type.length)
+                writer.writeString(6, this.school_type);
+            if (this.contact_email.length)
+                writer.writeString(7, this.contact_email);
+            if (this.contact_person_name.length)
+                writer.writeString(8, this.contact_person_name);
+            if (this.country.length)
+                writer.writeString(9, this.country);
+            if (this.province.length)
+                writer.writeString(10, this.province);
+            if (this.district.length)
+                writer.writeString(11, this.district);
+            if (this.address.length)
+                writer.writeString(12, this.address);
+            if (this.planned_teams_count != 0)
+                writer.writeInt32(13, this.planned_teams_count);
+            if (this.actual_teams_count != 0)
+                writer.writeInt32(14, this.actual_teams_count);
+            if (this.amount_per_team != 0)
+                writer.writeDouble(15, this.amount_per_team);
+            if (this.total_amount != 0)
+                writer.writeDouble(16, this.total_amount);
+            if (this.discount_amount != 0)
+                writer.writeDouble(17, this.discount_amount);
+            if (this.actual_paid_amount != 0)
+                writer.writeDouble(18, this.actual_paid_amount);
+            if (this.payment_status.length)
+                writer.writeString(19, this.payment_status);
+            if (this.currency.length)
+                writer.writeString(20, this.currency);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): DetailedRegistrationResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new DetailedRegistrationResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.registration_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.school_id = reader.readInt32();
+                        break;
+                    case 3:
+                        message.tournament_id = reader.readInt32();
+                        break;
+                    case 4:
+                        message.school_name = reader.readString();
+                        break;
+                    case 5:
+                        message.school_email = reader.readString();
+                        break;
+                    case 6:
+                        message.school_type = reader.readString();
+                        break;
+                    case 7:
+                        message.contact_email = reader.readString();
+                        break;
+                    case 8:
+                        message.contact_person_name = reader.readString();
+                        break;
+                    case 9:
+                        message.country = reader.readString();
+                        break;
+                    case 10:
+                        message.province = reader.readString();
+                        break;
+                    case 11:
+                        message.district = reader.readString();
+                        break;
+                    case 12:
+                        message.address = reader.readString();
+                        break;
+                    case 13:
+                        message.planned_teams_count = reader.readInt32();
+                        break;
+                    case 14:
+                        message.actual_teams_count = reader.readInt32();
+                        break;
+                    case 15:
+                        message.amount_per_team = reader.readDouble();
+                        break;
+                    case 16:
+                        message.total_amount = reader.readDouble();
+                        break;
+                    case 17:
+                        message.discount_amount = reader.readDouble();
+                        break;
+                    case 18:
+                        message.actual_paid_amount = reader.readDouble();
+                        break;
+                    case 19:
+                        message.payment_status = reader.readString();
+                        break;
+                    case 20:
+                        message.currency = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): DetailedRegistrationResponse {
+            return DetailedRegistrationResponse.deserialize(bytes);
+        }
+    }
+    export class ListRegistrationItem extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            registration_id?: number;
+            i_debate_school_id?: string;
+            school_name?: string;
+            school_email?: string;
+            planned_teams_count?: number;
+            actual_teams_count?: number;
+            total_amount?: number;
+            payment_status?: string;
+            currency?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("registration_id" in data && data.registration_id != undefined) {
+                    this.registration_id = data.registration_id;
+                }
+                if ("i_debate_school_id" in data && data.i_debate_school_id != undefined) {
+                    this.i_debate_school_id = data.i_debate_school_id;
+                }
+                if ("school_name" in data && data.school_name != undefined) {
+                    this.school_name = data.school_name;
+                }
+                if ("school_email" in data && data.school_email != undefined) {
+                    this.school_email = data.school_email;
+                }
+                if ("planned_teams_count" in data && data.planned_teams_count != undefined) {
+                    this.planned_teams_count = data.planned_teams_count;
+                }
+                if ("actual_teams_count" in data && data.actual_teams_count != undefined) {
+                    this.actual_teams_count = data.actual_teams_count;
+                }
+                if ("total_amount" in data && data.total_amount != undefined) {
+                    this.total_amount = data.total_amount;
+                }
+                if ("payment_status" in data && data.payment_status != undefined) {
+                    this.payment_status = data.payment_status;
+                }
+                if ("currency" in data && data.currency != undefined) {
+                    this.currency = data.currency;
+                }
+            }
+        }
+        get registration_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set registration_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get i_debate_school_id() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set i_debate_school_id(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get school_name() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set school_name(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get school_email() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set school_email(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get planned_teams_count() {
+            return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
+        }
+        set planned_teams_count(value: number) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        get actual_teams_count() {
+            return pb_1.Message.getFieldWithDefault(this, 6, 0) as number;
+        }
+        set actual_teams_count(value: number) {
+            pb_1.Message.setField(this, 6, value);
+        }
+        get total_amount() {
+            return pb_1.Message.getFieldWithDefault(this, 7, 0) as number;
+        }
+        set total_amount(value: number) {
+            pb_1.Message.setField(this, 7, value);
+        }
+        get payment_status() {
+            return pb_1.Message.getFieldWithDefault(this, 8, "") as string;
+        }
+        set payment_status(value: string) {
+            pb_1.Message.setField(this, 8, value);
+        }
+        get currency() {
+            return pb_1.Message.getFieldWithDefault(this, 9, "") as string;
+        }
+        set currency(value: string) {
+            pb_1.Message.setField(this, 9, value);
+        }
+        static fromObject(data: {
+            registration_id?: number;
+            i_debate_school_id?: string;
+            school_name?: string;
+            school_email?: string;
+            planned_teams_count?: number;
+            actual_teams_count?: number;
+            total_amount?: number;
+            payment_status?: string;
+            currency?: string;
+        }): ListRegistrationItem {
+            const message = new ListRegistrationItem({});
+            if (data.registration_id != null) {
+                message.registration_id = data.registration_id;
+            }
+            if (data.i_debate_school_id != null) {
+                message.i_debate_school_id = data.i_debate_school_id;
+            }
+            if (data.school_name != null) {
+                message.school_name = data.school_name;
+            }
+            if (data.school_email != null) {
+                message.school_email = data.school_email;
+            }
+            if (data.planned_teams_count != null) {
+                message.planned_teams_count = data.planned_teams_count;
+            }
+            if (data.actual_teams_count != null) {
+                message.actual_teams_count = data.actual_teams_count;
+            }
+            if (data.total_amount != null) {
+                message.total_amount = data.total_amount;
+            }
+            if (data.payment_status != null) {
+                message.payment_status = data.payment_status;
+            }
+            if (data.currency != null) {
+                message.currency = data.currency;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                registration_id?: number;
+                i_debate_school_id?: string;
+                school_name?: string;
+                school_email?: string;
+                planned_teams_count?: number;
+                actual_teams_count?: number;
+                total_amount?: number;
+                payment_status?: string;
+                currency?: string;
+            } = {};
+            if (this.registration_id != null) {
+                data.registration_id = this.registration_id;
+            }
+            if (this.i_debate_school_id != null) {
+                data.i_debate_school_id = this.i_debate_school_id;
+            }
+            if (this.school_name != null) {
+                data.school_name = this.school_name;
+            }
+            if (this.school_email != null) {
+                data.school_email = this.school_email;
+            }
+            if (this.planned_teams_count != null) {
+                data.planned_teams_count = this.planned_teams_count;
+            }
+            if (this.actual_teams_count != null) {
+                data.actual_teams_count = this.actual_teams_count;
+            }
+            if (this.total_amount != null) {
+                data.total_amount = this.total_amount;
+            }
+            if (this.payment_status != null) {
+                data.payment_status = this.payment_status;
+            }
+            if (this.currency != null) {
+                data.currency = this.currency;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.registration_id != 0)
+                writer.writeInt32(1, this.registration_id);
+            if (this.i_debate_school_id.length)
+                writer.writeString(2, this.i_debate_school_id);
+            if (this.school_name.length)
+                writer.writeString(3, this.school_name);
+            if (this.school_email.length)
+                writer.writeString(4, this.school_email);
+            if (this.planned_teams_count != 0)
+                writer.writeInt32(5, this.planned_teams_count);
+            if (this.actual_teams_count != 0)
+                writer.writeInt32(6, this.actual_teams_count);
+            if (this.total_amount != 0)
+                writer.writeDouble(7, this.total_amount);
+            if (this.payment_status.length)
+                writer.writeString(8, this.payment_status);
+            if (this.currency.length)
+                writer.writeString(9, this.currency);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ListRegistrationItem {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ListRegistrationItem();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.registration_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.i_debate_school_id = reader.readString();
+                        break;
+                    case 3:
+                        message.school_name = reader.readString();
+                        break;
+                    case 4:
+                        message.school_email = reader.readString();
+                        break;
+                    case 5:
+                        message.planned_teams_count = reader.readInt32();
+                        break;
+                    case 6:
+                        message.actual_teams_count = reader.readInt32();
+                        break;
+                    case 7:
+                        message.total_amount = reader.readDouble();
+                        break;
+                    case 8:
+                        message.payment_status = reader.readString();
+                        break;
+                    case 9:
+                        message.currency = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ListRegistrationItem {
+            return ListRegistrationItem.deserialize(bytes);
+        }
+    }
+    export class ListRegistrationsResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            registrations?: ListRegistrationItem[];
+            next_page_token?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("registrations" in data && data.registrations != undefined) {
+                    this.registrations = data.registrations;
+                }
+                if ("next_page_token" in data && data.next_page_token != undefined) {
+                    this.next_page_token = data.next_page_token;
+                }
+            }
+        }
+        get registrations() {
+            return pb_1.Message.getRepeatedWrapperField(this, ListRegistrationItem, 1) as ListRegistrationItem[];
+        }
+        set registrations(value: ListRegistrationItem[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        get next_page_token() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set next_page_token(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            registrations?: ReturnType<typeof ListRegistrationItem.prototype.toObject>[];
+            next_page_token?: number;
+        }): ListRegistrationsResponse {
+            const message = new ListRegistrationsResponse({});
+            if (data.registrations != null) {
+                message.registrations = data.registrations.map(item => ListRegistrationItem.fromObject(item));
+            }
+            if (data.next_page_token != null) {
+                message.next_page_token = data.next_page_token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                registrations?: ReturnType<typeof ListRegistrationItem.prototype.toObject>[];
+                next_page_token?: number;
+            } = {};
+            if (this.registrations != null) {
+                data.registrations = this.registrations.map((item: ListRegistrationItem) => item.toObject());
+            }
+            if (this.next_page_token != null) {
+                data.next_page_token = this.next_page_token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.registrations.length)
+                writer.writeRepeatedMessage(1, this.registrations, (item: ListRegistrationItem) => item.serialize(writer));
+            if (this.next_page_token != 0)
+                writer.writeInt32(2, this.next_page_token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ListRegistrationsResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ListRegistrationsResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.registrations, () => pb_1.Message.addToRepeatedWrapperField(message, 1, ListRegistrationItem.deserialize(reader), ListRegistrationItem));
+                        break;
+                    case 2:
+                        message.next_page_token = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ListRegistrationsResponse {
+            return ListRegistrationsResponse.deserialize(bytes);
+        }
+    }
     interface GrpcUnaryServiceInterface<P, R> {
         (message: P, metadata: grpc_1.Metadata, options: grpc_1.CallOptions, callback: grpc_1.requestCallback<R>): grpc_1.ClientUnaryCall;
         (message: P, metadata: grpc_1.Metadata, callback: grpc_1.requestCallback<R>): grpc_1.ClientUnaryCall;
@@ -6436,6 +9172,69 @@ export namespace tournament_management {
                 requestDeserialize: (bytes: Buffer) => BulkResendInvitationsRequest.deserialize(new Uint8Array(bytes)),
                 responseSerialize: (message: BulkResendInvitationsResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => BulkResendInvitationsResponse.deserialize(new Uint8Array(bytes))
+            },
+            CreateTournamentExpenses: {
+                path: "/tournament_management.TournamentService/CreateTournamentExpenses",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: CreateExpensesRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => CreateExpensesRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: ExpensesResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => ExpensesResponse.deserialize(new Uint8Array(bytes))
+            },
+            UpdateTournamentExpenses: {
+                path: "/tournament_management.TournamentService/UpdateTournamentExpenses",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: UpdateExpensesRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => UpdateExpensesRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: ExpensesResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => ExpensesResponse.deserialize(new Uint8Array(bytes))
+            },
+            GetTournamentExpenses: {
+                path: "/tournament_management.TournamentService/GetTournamentExpenses",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GetExpensesRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetExpensesRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: ExpensesResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => ExpensesResponse.deserialize(new Uint8Array(bytes))
+            },
+            CreateSchoolRegistration: {
+                path: "/tournament_management.TournamentService/CreateSchoolRegistration",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: CreateRegistrationRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => CreateRegistrationRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: RegistrationResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => RegistrationResponse.deserialize(new Uint8Array(bytes))
+            },
+            UpdateSchoolRegistration: {
+                path: "/tournament_management.TournamentService/UpdateSchoolRegistration",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: UpdateRegistrationRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => UpdateRegistrationRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: RegistrationResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => RegistrationResponse.deserialize(new Uint8Array(bytes))
+            },
+            GetSchoolRegistration: {
+                path: "/tournament_management.TournamentService/GetSchoolRegistration",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GetRegistrationRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetRegistrationRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: DetailedRegistrationResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => DetailedRegistrationResponse.deserialize(new Uint8Array(bytes))
+            },
+            ListTournamentRegistrations: {
+                path: "/tournament_management.TournamentService/ListTournamentRegistrations",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: ListRegistrationsRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => ListRegistrationsRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: ListRegistrationsResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => ListRegistrationsResponse.deserialize(new Uint8Array(bytes))
             }
         };
         [method: string]: grpc_1.UntypedHandleCall;
@@ -6462,6 +9261,13 @@ export namespace tournament_management {
         abstract BulkUpdateInvitationStatus(call: grpc_1.ServerUnaryCall<BulkUpdateInvitationStatusRequest, BulkUpdateInvitationStatusResponse>, callback: grpc_1.sendUnaryData<BulkUpdateInvitationStatusResponse>): void;
         abstract ResendInvitation(call: grpc_1.ServerUnaryCall<ResendInvitationRequest, ResendInvitationResponse>, callback: grpc_1.sendUnaryData<ResendInvitationResponse>): void;
         abstract BulkResendInvitations(call: grpc_1.ServerUnaryCall<BulkResendInvitationsRequest, BulkResendInvitationsResponse>, callback: grpc_1.sendUnaryData<BulkResendInvitationsResponse>): void;
+        abstract CreateTournamentExpenses(call: grpc_1.ServerUnaryCall<CreateExpensesRequest, ExpensesResponse>, callback: grpc_1.sendUnaryData<ExpensesResponse>): void;
+        abstract UpdateTournamentExpenses(call: grpc_1.ServerUnaryCall<UpdateExpensesRequest, ExpensesResponse>, callback: grpc_1.sendUnaryData<ExpensesResponse>): void;
+        abstract GetTournamentExpenses(call: grpc_1.ServerUnaryCall<GetExpensesRequest, ExpensesResponse>, callback: grpc_1.sendUnaryData<ExpensesResponse>): void;
+        abstract CreateSchoolRegistration(call: grpc_1.ServerUnaryCall<CreateRegistrationRequest, RegistrationResponse>, callback: grpc_1.sendUnaryData<RegistrationResponse>): void;
+        abstract UpdateSchoolRegistration(call: grpc_1.ServerUnaryCall<UpdateRegistrationRequest, RegistrationResponse>, callback: grpc_1.sendUnaryData<RegistrationResponse>): void;
+        abstract GetSchoolRegistration(call: grpc_1.ServerUnaryCall<GetRegistrationRequest, DetailedRegistrationResponse>, callback: grpc_1.sendUnaryData<DetailedRegistrationResponse>): void;
+        abstract ListTournamentRegistrations(call: grpc_1.ServerUnaryCall<ListRegistrationsRequest, ListRegistrationsResponse>, callback: grpc_1.sendUnaryData<ListRegistrationsResponse>): void;
     }
     export class TournamentServiceClient extends grpc_1.makeGenericClientConstructor(UnimplementedTournamentServiceService.definition, "TournamentService", {}) {
         constructor(address: string, credentials: grpc_1.ChannelCredentials, options?: Partial<grpc_1.ChannelOptions>) {
@@ -6535,6 +9341,27 @@ export namespace tournament_management {
         };
         BulkResendInvitations: GrpcUnaryServiceInterface<BulkResendInvitationsRequest, BulkResendInvitationsResponse> = (message: BulkResendInvitationsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<BulkResendInvitationsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<BulkResendInvitationsResponse>, callback?: grpc_1.requestCallback<BulkResendInvitationsResponse>): grpc_1.ClientUnaryCall => {
             return super.BulkResendInvitations(message, metadata, options, callback);
+        };
+        CreateTournamentExpenses: GrpcUnaryServiceInterface<CreateExpensesRequest, ExpensesResponse> = (message: CreateExpensesRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<ExpensesResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<ExpensesResponse>, callback?: grpc_1.requestCallback<ExpensesResponse>): grpc_1.ClientUnaryCall => {
+            return super.CreateTournamentExpenses(message, metadata, options, callback);
+        };
+        UpdateTournamentExpenses: GrpcUnaryServiceInterface<UpdateExpensesRequest, ExpensesResponse> = (message: UpdateExpensesRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<ExpensesResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<ExpensesResponse>, callback?: grpc_1.requestCallback<ExpensesResponse>): grpc_1.ClientUnaryCall => {
+            return super.UpdateTournamentExpenses(message, metadata, options, callback);
+        };
+        GetTournamentExpenses: GrpcUnaryServiceInterface<GetExpensesRequest, ExpensesResponse> = (message: GetExpensesRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<ExpensesResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<ExpensesResponse>, callback?: grpc_1.requestCallback<ExpensesResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetTournamentExpenses(message, metadata, options, callback);
+        };
+        CreateSchoolRegistration: GrpcUnaryServiceInterface<CreateRegistrationRequest, RegistrationResponse> = (message: CreateRegistrationRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<RegistrationResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<RegistrationResponse>, callback?: grpc_1.requestCallback<RegistrationResponse>): grpc_1.ClientUnaryCall => {
+            return super.CreateSchoolRegistration(message, metadata, options, callback);
+        };
+        UpdateSchoolRegistration: GrpcUnaryServiceInterface<UpdateRegistrationRequest, RegistrationResponse> = (message: UpdateRegistrationRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<RegistrationResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<RegistrationResponse>, callback?: grpc_1.requestCallback<RegistrationResponse>): grpc_1.ClientUnaryCall => {
+            return super.UpdateSchoolRegistration(message, metadata, options, callback);
+        };
+        GetSchoolRegistration: GrpcUnaryServiceInterface<GetRegistrationRequest, DetailedRegistrationResponse> = (message: GetRegistrationRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<DetailedRegistrationResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<DetailedRegistrationResponse>, callback?: grpc_1.requestCallback<DetailedRegistrationResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetSchoolRegistration(message, metadata, options, callback);
+        };
+        ListTournamentRegistrations: GrpcUnaryServiceInterface<ListRegistrationsRequest, ListRegistrationsResponse> = (message: ListRegistrationsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<ListRegistrationsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<ListRegistrationsResponse>, callback?: grpc_1.requestCallback<ListRegistrationsResponse>): grpc_1.ClientUnaryCall => {
+            return super.ListTournamentRegistrations(message, metadata, options, callback);
         };
     }
 }

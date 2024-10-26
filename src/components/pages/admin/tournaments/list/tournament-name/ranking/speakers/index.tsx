@@ -8,6 +8,7 @@ import { rankings } from "@/components/tables/data/tasks";
 import { StudentRanking } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { getTournamentStudentRanking } from "@/core/debates/rankings";
+import { cn } from "@/lib/utils";
 
 type Props = {
   tournamentId: number;
@@ -105,7 +106,7 @@ const WinnerCard = ({ speaker, count }: WinnerCardProps) => {
                 src={`/static/images/medal-${count}.png`}
                 alt="medal first"
                 fill
-                className="w-full h-full"
+                className={cn("w-full h-full", count === 1 && "scale-125")}
               />
             </div>
           </div>

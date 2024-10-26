@@ -1474,6 +1474,560 @@ export namespace BulkResendInvitationsResponse {
   }
 }
 
+export class CreateExpensesRequest extends jspb.Message {
+  getTournamentId(): number;
+  setTournamentId(value: number): CreateExpensesRequest;
+
+  getFoodExpense(): number;
+  setFoodExpense(value: number): CreateExpensesRequest;
+
+  getTransportExpense(): number;
+  setTransportExpense(value: number): CreateExpensesRequest;
+
+  getPerDiemExpense(): number;
+  setPerDiemExpense(value: number): CreateExpensesRequest;
+
+  getAwardingExpense(): number;
+  setAwardingExpense(value: number): CreateExpensesRequest;
+
+  getStationaryExpense(): number;
+  setStationaryExpense(value: number): CreateExpensesRequest;
+
+  getOtherExpenses(): number;
+  setOtherExpenses(value: number): CreateExpensesRequest;
+
+  getNotes(): string;
+  setNotes(value: string): CreateExpensesRequest;
+
+  getToken(): string;
+  setToken(value: string): CreateExpensesRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CreateExpensesRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateExpensesRequest): CreateExpensesRequest.AsObject;
+  static serializeBinaryToWriter(message: CreateExpensesRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateExpensesRequest;
+  static deserializeBinaryFromReader(message: CreateExpensesRequest, reader: jspb.BinaryReader): CreateExpensesRequest;
+}
+
+export namespace CreateExpensesRequest {
+  export type AsObject = {
+    tournamentId: number,
+    foodExpense: number,
+    transportExpense: number,
+    perDiemExpense: number,
+    awardingExpense: number,
+    stationaryExpense: number,
+    otherExpenses: number,
+    notes: string,
+    token: string,
+  }
+}
+
+export class UpdateExpensesRequest extends jspb.Message {
+  getTournamentId(): number;
+  setTournamentId(value: number): UpdateExpensesRequest;
+
+  getFoodExpense(): number;
+  setFoodExpense(value: number): UpdateExpensesRequest;
+
+  getTransportExpense(): number;
+  setTransportExpense(value: number): UpdateExpensesRequest;
+
+  getPerDiemExpense(): number;
+  setPerDiemExpense(value: number): UpdateExpensesRequest;
+
+  getAwardingExpense(): number;
+  setAwardingExpense(value: number): UpdateExpensesRequest;
+
+  getStationaryExpense(): number;
+  setStationaryExpense(value: number): UpdateExpensesRequest;
+
+  getOtherExpenses(): number;
+  setOtherExpenses(value: number): UpdateExpensesRequest;
+
+  getCurrency(): string;
+  setCurrency(value: string): UpdateExpensesRequest;
+
+  getNotes(): string;
+  setNotes(value: string): UpdateExpensesRequest;
+
+  getToken(): string;
+  setToken(value: string): UpdateExpensesRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateExpensesRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateExpensesRequest): UpdateExpensesRequest.AsObject;
+  static serializeBinaryToWriter(message: UpdateExpensesRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateExpensesRequest;
+  static deserializeBinaryFromReader(message: UpdateExpensesRequest, reader: jspb.BinaryReader): UpdateExpensesRequest;
+}
+
+export namespace UpdateExpensesRequest {
+  export type AsObject = {
+    tournamentId: number,
+    foodExpense: number,
+    transportExpense: number,
+    perDiemExpense: number,
+    awardingExpense: number,
+    stationaryExpense: number,
+    otherExpenses: number,
+    currency: string,
+    notes: string,
+    token: string,
+  }
+}
+
+export class GetExpensesRequest extends jspb.Message {
+  getTournamentId(): number;
+  setTournamentId(value: number): GetExpensesRequest;
+
+  getToken(): string;
+  setToken(value: string): GetExpensesRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetExpensesRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetExpensesRequest): GetExpensesRequest.AsObject;
+  static serializeBinaryToWriter(message: GetExpensesRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetExpensesRequest;
+  static deserializeBinaryFromReader(message: GetExpensesRequest, reader: jspb.BinaryReader): GetExpensesRequest;
+}
+
+export namespace GetExpensesRequest {
+  export type AsObject = {
+    tournamentId: number,
+    token: string,
+  }
+}
+
+export class ExpensesResponse extends jspb.Message {
+  getExpenseId(): number;
+  setExpenseId(value: number): ExpensesResponse;
+
+  getTournamentId(): number;
+  setTournamentId(value: number): ExpensesResponse;
+
+  getFoodExpense(): number;
+  setFoodExpense(value: number): ExpensesResponse;
+
+  getTransportExpense(): number;
+  setTransportExpense(value: number): ExpensesResponse;
+
+  getPerDiemExpense(): number;
+  setPerDiemExpense(value: number): ExpensesResponse;
+
+  getAwardingExpense(): number;
+  setAwardingExpense(value: number): ExpensesResponse;
+
+  getStationaryExpense(): number;
+  setStationaryExpense(value: number): ExpensesResponse;
+
+  getOtherExpenses(): number;
+  setOtherExpenses(value: number): ExpensesResponse;
+
+  getTotalExpense(): number;
+  setTotalExpense(value: number): ExpensesResponse;
+
+  getCurrency(): string;
+  setCurrency(value: string): ExpensesResponse;
+
+  getNotes(): string;
+  setNotes(value: string): ExpensesResponse;
+
+  getCreatedAt(): string;
+  setCreatedAt(value: string): ExpensesResponse;
+
+  getUpdatedAt(): string;
+  setUpdatedAt(value: string): ExpensesResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ExpensesResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: ExpensesResponse): ExpensesResponse.AsObject;
+  static serializeBinaryToWriter(message: ExpensesResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ExpensesResponse;
+  static deserializeBinaryFromReader(message: ExpensesResponse, reader: jspb.BinaryReader): ExpensesResponse;
+}
+
+export namespace ExpensesResponse {
+  export type AsObject = {
+    expenseId: number,
+    tournamentId: number,
+    foodExpense: number,
+    transportExpense: number,
+    perDiemExpense: number,
+    awardingExpense: number,
+    stationaryExpense: number,
+    otherExpenses: number,
+    totalExpense: number,
+    currency: string,
+    notes: string,
+    createdAt: string,
+    updatedAt: string,
+  }
+}
+
+export class CreateRegistrationRequest extends jspb.Message {
+  getSchoolId(): number;
+  setSchoolId(value: number): CreateRegistrationRequest;
+
+  getTournamentId(): number;
+  setTournamentId(value: number): CreateRegistrationRequest;
+
+  getPlannedTeamsCount(): number;
+  setPlannedTeamsCount(value: number): CreateRegistrationRequest;
+
+  getToken(): string;
+  setToken(value: string): CreateRegistrationRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CreateRegistrationRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateRegistrationRequest): CreateRegistrationRequest.AsObject;
+  static serializeBinaryToWriter(message: CreateRegistrationRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateRegistrationRequest;
+  static deserializeBinaryFromReader(message: CreateRegistrationRequest, reader: jspb.BinaryReader): CreateRegistrationRequest;
+}
+
+export namespace CreateRegistrationRequest {
+  export type AsObject = {
+    schoolId: number,
+    tournamentId: number,
+    plannedTeamsCount: number,
+    token: string,
+  }
+}
+
+export class UpdateRegistrationRequest extends jspb.Message {
+  getSchoolId(): number;
+  setSchoolId(value: number): UpdateRegistrationRequest;
+
+  getTournamentId(): number;
+  setTournamentId(value: number): UpdateRegistrationRequest;
+
+  getActualTeamsCount(): number;
+  setActualTeamsCount(value: number): UpdateRegistrationRequest;
+
+  getDiscountAmount(): number;
+  setDiscountAmount(value: number): UpdateRegistrationRequest;
+
+  getActualPaidAmount(): number;
+  setActualPaidAmount(value: number): UpdateRegistrationRequest;
+
+  getPaymentStatus(): string;
+  setPaymentStatus(value: string): UpdateRegistrationRequest;
+
+  getToken(): string;
+  setToken(value: string): UpdateRegistrationRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateRegistrationRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateRegistrationRequest): UpdateRegistrationRequest.AsObject;
+  static serializeBinaryToWriter(message: UpdateRegistrationRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateRegistrationRequest;
+  static deserializeBinaryFromReader(message: UpdateRegistrationRequest, reader: jspb.BinaryReader): UpdateRegistrationRequest;
+}
+
+export namespace UpdateRegistrationRequest {
+  export type AsObject = {
+    schoolId: number,
+    tournamentId: number,
+    actualTeamsCount: number,
+    discountAmount: number,
+    actualPaidAmount: number,
+    paymentStatus: string,
+    token: string,
+  }
+}
+
+export class GetRegistrationRequest extends jspb.Message {
+  getSchoolId(): number;
+  setSchoolId(value: number): GetRegistrationRequest;
+
+  getTournamentId(): number;
+  setTournamentId(value: number): GetRegistrationRequest;
+
+  getToken(): string;
+  setToken(value: string): GetRegistrationRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetRegistrationRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetRegistrationRequest): GetRegistrationRequest.AsObject;
+  static serializeBinaryToWriter(message: GetRegistrationRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetRegistrationRequest;
+  static deserializeBinaryFromReader(message: GetRegistrationRequest, reader: jspb.BinaryReader): GetRegistrationRequest;
+}
+
+export namespace GetRegistrationRequest {
+  export type AsObject = {
+    schoolId: number,
+    tournamentId: number,
+    token: string,
+  }
+}
+
+export class ListRegistrationsRequest extends jspb.Message {
+  getTournamentId(): number;
+  setTournamentId(value: number): ListRegistrationsRequest;
+
+  getPageSize(): number;
+  setPageSize(value: number): ListRegistrationsRequest;
+
+  getPageToken(): number;
+  setPageToken(value: number): ListRegistrationsRequest;
+
+  getToken(): string;
+  setToken(value: string): ListRegistrationsRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ListRegistrationsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ListRegistrationsRequest): ListRegistrationsRequest.AsObject;
+  static serializeBinaryToWriter(message: ListRegistrationsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ListRegistrationsRequest;
+  static deserializeBinaryFromReader(message: ListRegistrationsRequest, reader: jspb.BinaryReader): ListRegistrationsRequest;
+}
+
+export namespace ListRegistrationsRequest {
+  export type AsObject = {
+    tournamentId: number,
+    pageSize: number,
+    pageToken: number,
+    token: string,
+  }
+}
+
+export class RegistrationResponse extends jspb.Message {
+  getRegistrationId(): number;
+  setRegistrationId(value: number): RegistrationResponse;
+
+  getSchoolId(): number;
+  setSchoolId(value: number): RegistrationResponse;
+
+  getTournamentId(): number;
+  setTournamentId(value: number): RegistrationResponse;
+
+  getPlannedTeamsCount(): number;
+  setPlannedTeamsCount(value: number): RegistrationResponse;
+
+  getActualTeamsCount(): number;
+  setActualTeamsCount(value: number): RegistrationResponse;
+
+  getAmountPerTeam(): number;
+  setAmountPerTeam(value: number): RegistrationResponse;
+
+  getTotalAmount(): number;
+  setTotalAmount(value: number): RegistrationResponse;
+
+  getDiscountAmount(): number;
+  setDiscountAmount(value: number): RegistrationResponse;
+
+  getActualPaidAmount(): number;
+  setActualPaidAmount(value: number): RegistrationResponse;
+
+  getPaymentStatus(): string;
+  setPaymentStatus(value: string): RegistrationResponse;
+
+  getCurrency(): string;
+  setCurrency(value: string): RegistrationResponse;
+
+  getCreatedAt(): string;
+  setCreatedAt(value: string): RegistrationResponse;
+
+  getUpdatedAt(): string;
+  setUpdatedAt(value: string): RegistrationResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RegistrationResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: RegistrationResponse): RegistrationResponse.AsObject;
+  static serializeBinaryToWriter(message: RegistrationResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RegistrationResponse;
+  static deserializeBinaryFromReader(message: RegistrationResponse, reader: jspb.BinaryReader): RegistrationResponse;
+}
+
+export namespace RegistrationResponse {
+  export type AsObject = {
+    registrationId: number,
+    schoolId: number,
+    tournamentId: number,
+    plannedTeamsCount: number,
+    actualTeamsCount: number,
+    amountPerTeam: number,
+    totalAmount: number,
+    discountAmount: number,
+    actualPaidAmount: number,
+    paymentStatus: string,
+    currency: string,
+    createdAt: string,
+    updatedAt: string,
+  }
+}
+
+export class DetailedRegistrationResponse extends jspb.Message {
+  getRegistrationId(): number;
+  setRegistrationId(value: number): DetailedRegistrationResponse;
+
+  getSchoolId(): number;
+  setSchoolId(value: number): DetailedRegistrationResponse;
+
+  getTournamentId(): number;
+  setTournamentId(value: number): DetailedRegistrationResponse;
+
+  getSchoolName(): string;
+  setSchoolName(value: string): DetailedRegistrationResponse;
+
+  getSchoolEmail(): string;
+  setSchoolEmail(value: string): DetailedRegistrationResponse;
+
+  getSchoolType(): string;
+  setSchoolType(value: string): DetailedRegistrationResponse;
+
+  getContactEmail(): string;
+  setContactEmail(value: string): DetailedRegistrationResponse;
+
+  getContactPersonName(): string;
+  setContactPersonName(value: string): DetailedRegistrationResponse;
+
+  getCountry(): string;
+  setCountry(value: string): DetailedRegistrationResponse;
+
+  getProvince(): string;
+  setProvince(value: string): DetailedRegistrationResponse;
+
+  getDistrict(): string;
+  setDistrict(value: string): DetailedRegistrationResponse;
+
+  getAddress(): string;
+  setAddress(value: string): DetailedRegistrationResponse;
+
+  getPlannedTeamsCount(): number;
+  setPlannedTeamsCount(value: number): DetailedRegistrationResponse;
+
+  getActualTeamsCount(): number;
+  setActualTeamsCount(value: number): DetailedRegistrationResponse;
+
+  getAmountPerTeam(): number;
+  setAmountPerTeam(value: number): DetailedRegistrationResponse;
+
+  getTotalAmount(): number;
+  setTotalAmount(value: number): DetailedRegistrationResponse;
+
+  getDiscountAmount(): number;
+  setDiscountAmount(value: number): DetailedRegistrationResponse;
+
+  getActualPaidAmount(): number;
+  setActualPaidAmount(value: number): DetailedRegistrationResponse;
+
+  getPaymentStatus(): string;
+  setPaymentStatus(value: string): DetailedRegistrationResponse;
+
+  getCurrency(): string;
+  setCurrency(value: string): DetailedRegistrationResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DetailedRegistrationResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: DetailedRegistrationResponse): DetailedRegistrationResponse.AsObject;
+  static serializeBinaryToWriter(message: DetailedRegistrationResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DetailedRegistrationResponse;
+  static deserializeBinaryFromReader(message: DetailedRegistrationResponse, reader: jspb.BinaryReader): DetailedRegistrationResponse;
+}
+
+export namespace DetailedRegistrationResponse {
+  export type AsObject = {
+    registrationId: number,
+    schoolId: number,
+    tournamentId: number,
+    schoolName: string,
+    schoolEmail: string,
+    schoolType: string,
+    contactEmail: string,
+    contactPersonName: string,
+    country: string,
+    province: string,
+    district: string,
+    address: string,
+    plannedTeamsCount: number,
+    actualTeamsCount: number,
+    amountPerTeam: number,
+    totalAmount: number,
+    discountAmount: number,
+    actualPaidAmount: number,
+    paymentStatus: string,
+    currency: string,
+  }
+}
+
+export class ListRegistrationItem extends jspb.Message {
+  getRegistrationId(): number;
+  setRegistrationId(value: number): ListRegistrationItem;
+
+  getIDebateSchoolId(): string;
+  setIDebateSchoolId(value: string): ListRegistrationItem;
+
+  getSchoolName(): string;
+  setSchoolName(value: string): ListRegistrationItem;
+
+  getSchoolEmail(): string;
+  setSchoolEmail(value: string): ListRegistrationItem;
+
+  getPlannedTeamsCount(): number;
+  setPlannedTeamsCount(value: number): ListRegistrationItem;
+
+  getActualTeamsCount(): number;
+  setActualTeamsCount(value: number): ListRegistrationItem;
+
+  getTotalAmount(): number;
+  setTotalAmount(value: number): ListRegistrationItem;
+
+  getPaymentStatus(): string;
+  setPaymentStatus(value: string): ListRegistrationItem;
+
+  getCurrency(): string;
+  setCurrency(value: string): ListRegistrationItem;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ListRegistrationItem.AsObject;
+  static toObject(includeInstance: boolean, msg: ListRegistrationItem): ListRegistrationItem.AsObject;
+  static serializeBinaryToWriter(message: ListRegistrationItem, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ListRegistrationItem;
+  static deserializeBinaryFromReader(message: ListRegistrationItem, reader: jspb.BinaryReader): ListRegistrationItem;
+}
+
+export namespace ListRegistrationItem {
+  export type AsObject = {
+    registrationId: number,
+    iDebateSchoolId: string,
+    schoolName: string,
+    schoolEmail: string,
+    plannedTeamsCount: number,
+    actualTeamsCount: number,
+    totalAmount: number,
+    paymentStatus: string,
+    currency: string,
+  }
+}
+
+export class ListRegistrationsResponse extends jspb.Message {
+  getRegistrationsList(): Array<ListRegistrationItem>;
+  setRegistrationsList(value: Array<ListRegistrationItem>): ListRegistrationsResponse;
+  clearRegistrationsList(): ListRegistrationsResponse;
+  addRegistrations(value?: ListRegistrationItem, index?: number): ListRegistrationItem;
+
+  getNextPageToken(): number;
+  setNextPageToken(value: number): ListRegistrationsResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ListRegistrationsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: ListRegistrationsResponse): ListRegistrationsResponse.AsObject;
+  static serializeBinaryToWriter(message: ListRegistrationsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ListRegistrationsResponse;
+  static deserializeBinaryFromReader(message: ListRegistrationsResponse, reader: jspb.BinaryReader): ListRegistrationsResponse;
+}
+
+export namespace ListRegistrationsResponse {
+  export type AsObject = {
+    registrationsList: Array<ListRegistrationItem.AsObject>,
+    nextPageToken: number,
+  }
+}
+
 export enum LeagueType { 
   LOCAL = 0,
   INTERNATIONAL = 1,

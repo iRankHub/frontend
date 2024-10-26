@@ -313,6 +313,9 @@ export class RoomInfo extends jspb.Message {
   getRoomName(): string;
   setRoomName(value: string): RoomInfo;
 
+  getIsHeadJudge(): boolean;
+  setIsHeadJudge(value: boolean): RoomInfo;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): RoomInfo.AsObject;
   static toObject(includeInstance: boolean, msg: RoomInfo): RoomInfo.AsObject;
@@ -325,6 +328,7 @@ export namespace RoomInfo {
   export type AsObject = {
     roomId: number,
     roomName: string,
+    isHeadJudge: boolean,
   }
 }
 
@@ -2018,6 +2022,17 @@ export class StudentFeedbackEntry extends jspb.Message {
   getStudentTeamName(): string;
   setStudentTeamName(value: string): StudentFeedbackEntry;
 
+  getDebateId(): number;
+  setDebateId(value: number): StudentFeedbackEntry;
+
+  getJudgesList(): Array<JudgeInfo>;
+  setJudgesList(value: Array<JudgeInfo>): StudentFeedbackEntry;
+  clearJudgesList(): StudentFeedbackEntry;
+  addJudges(value?: JudgeInfo, index?: number): JudgeInfo;
+
+  getBallotId(): number;
+  setBallotId(value: number): StudentFeedbackEntry;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): StudentFeedbackEntry.AsObject;
   static toObject(includeInstance: boolean, msg: StudentFeedbackEntry): StudentFeedbackEntry.AsObject;
@@ -2037,6 +2052,35 @@ export namespace StudentFeedbackEntry {
     roomName: string,
     opponentTeamName: string,
     studentTeamName: string,
+    debateId: number,
+    judgesList: Array<JudgeInfo.AsObject>,
+    ballotId: number,
+  }
+}
+
+export class JudgeInfo extends jspb.Message {
+  getJudgeId(): number;
+  setJudgeId(value: number): JudgeInfo;
+
+  getJudgeName(): string;
+  setJudgeName(value: string): JudgeInfo;
+
+  getIsHeadJudge(): boolean;
+  setIsHeadJudge(value: boolean): JudgeInfo;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): JudgeInfo.AsObject;
+  static toObject(includeInstance: boolean, msg: JudgeInfo): JudgeInfo.AsObject;
+  static serializeBinaryToWriter(message: JudgeInfo, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): JudgeInfo;
+  static deserializeBinaryFromReader(message: JudgeInfo, reader: jspb.BinaryReader): JudgeInfo;
+}
+
+export namespace JudgeInfo {
+  export type AsObject = {
+    judgeId: number,
+    judgeName: string,
+    isHeadJudge: boolean,
   }
 }
 
@@ -2196,6 +2240,9 @@ export class JudgeFeedbackEntry extends jspb.Message {
   getIsEliminationRound(): boolean;
   setIsEliminationRound(value: boolean): JudgeFeedbackEntry;
 
+  getFeedbackId(): number;
+  setFeedbackId(value: number): JudgeFeedbackEntry;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): JudgeFeedbackEntry.AsObject;
   static toObject(includeInstance: boolean, msg: JudgeFeedbackEntry): JudgeFeedbackEntry.AsObject;
@@ -2217,6 +2264,7 @@ export namespace JudgeFeedbackEntry {
     textFeedback: string,
     roundNumber: number,
     isEliminationRound: boolean,
+    feedbackId: number,
   }
 }
 
@@ -2469,6 +2517,98 @@ export namespace MarkFeedbackAsReadResponse {
   export type AsObject = {
     success: boolean,
     message: string,
+  }
+}
+
+export class TournamentVolunteerRankingRequest extends jspb.Message {
+  getTournamentId(): number;
+  setTournamentId(value: number): TournamentVolunteerRankingRequest;
+
+  getToken(): string;
+  setToken(value: string): TournamentVolunteerRankingRequest;
+
+  getPage(): number;
+  setPage(value: number): TournamentVolunteerRankingRequest;
+
+  getPageSize(): number;
+  setPageSize(value: number): TournamentVolunteerRankingRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): TournamentVolunteerRankingRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: TournamentVolunteerRankingRequest): TournamentVolunteerRankingRequest.AsObject;
+  static serializeBinaryToWriter(message: TournamentVolunteerRankingRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): TournamentVolunteerRankingRequest;
+  static deserializeBinaryFromReader(message: TournamentVolunteerRankingRequest, reader: jspb.BinaryReader): TournamentVolunteerRankingRequest;
+}
+
+export namespace TournamentVolunteerRankingRequest {
+  export type AsObject = {
+    tournamentId: number,
+    token: string,
+    page: number,
+    pageSize: number,
+  }
+}
+
+export class VolunteerTournamentRank extends jspb.Message {
+  getVolunteerId(): number;
+  setVolunteerId(value: number): VolunteerTournamentRank;
+
+  getVolunteerName(): string;
+  setVolunteerName(value: string): VolunteerTournamentRank;
+
+  getAverageRating(): number;
+  setAverageRating(value: number): VolunteerTournamentRank;
+
+  getPreliminaryRounds(): number;
+  setPreliminaryRounds(value: number): VolunteerTournamentRank;
+
+  getEliminationRounds(): number;
+  setEliminationRounds(value: number): VolunteerTournamentRank;
+
+  getRank(): number;
+  setRank(value: number): VolunteerTournamentRank;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): VolunteerTournamentRank.AsObject;
+  static toObject(includeInstance: boolean, msg: VolunteerTournamentRank): VolunteerTournamentRank.AsObject;
+  static serializeBinaryToWriter(message: VolunteerTournamentRank, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): VolunteerTournamentRank;
+  static deserializeBinaryFromReader(message: VolunteerTournamentRank, reader: jspb.BinaryReader): VolunteerTournamentRank;
+}
+
+export namespace VolunteerTournamentRank {
+  export type AsObject = {
+    volunteerId: number,
+    volunteerName: string,
+    averageRating: number,
+    preliminaryRounds: number,
+    eliminationRounds: number,
+    rank: number,
+  }
+}
+
+export class TournamentVolunteerRankingResponse extends jspb.Message {
+  getRankingsList(): Array<VolunteerTournamentRank>;
+  setRankingsList(value: Array<VolunteerTournamentRank>): TournamentVolunteerRankingResponse;
+  clearRankingsList(): TournamentVolunteerRankingResponse;
+  addRankings(value?: VolunteerTournamentRank, index?: number): VolunteerTournamentRank;
+
+  getTotalCount(): number;
+  setTotalCount(value: number): TournamentVolunteerRankingResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): TournamentVolunteerRankingResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: TournamentVolunteerRankingResponse): TournamentVolunteerRankingResponse.AsObject;
+  static serializeBinaryToWriter(message: TournamentVolunteerRankingResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): TournamentVolunteerRankingResponse;
+  static deserializeBinaryFromReader(message: TournamentVolunteerRankingResponse, reader: jspb.BinaryReader): TournamentVolunteerRankingResponse;
+}
+
+export namespace TournamentVolunteerRankingResponse {
+  export type AsObject = {
+    rankingsList: Array<VolunteerTournamentRank.AsObject>,
+    totalCount: number,
   }
 }
 

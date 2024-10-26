@@ -57,7 +57,7 @@ export const updateTournamentJudge = async ({
 
         const eliminationMap = request.getEliminationMap();
         Object.entries(elimination).forEach(([round, assignment]) => {
-            console.log(round, assignment)
+            // console.log(round, assignment)
             const room = new RoomInfo();
             room.setRoomId(assignment.roomId);
             room.setRoomName(assignment.roomName || "");
@@ -66,7 +66,7 @@ export const updateTournamentJudge = async ({
 
         const preliminaryMap = request.getPreliminaryMap();
         Object.entries(preliminary).forEach(([round, assignment]) => {
-            console.log(round, assignment)
+            // console.log("round:", round, assignment)
             const room = new RoomInfo();
             room.setRoomId(assignment.roomId);
             room.setRoomName(assignment.roomName || "");

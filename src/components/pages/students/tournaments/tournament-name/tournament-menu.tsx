@@ -19,15 +19,45 @@ export function TournamentMenu() {
   const [isOpen] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Filter menu based on the search term
+  // Filter menu based on the search term, including submenus
   const filteredMenuList = menuList
     .map((group) => ({
       ...group,
-      menus: group.menus.filter(({ label }) =>
-        label.toLowerCase().includes(searchTerm.toLowerCase())
+      menus: group.menus.filter(
+        ({ label, submenus }) =>
+          label.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          submenus.some((submenu) =>
+            submenu.label.toLowerCase().includes(searchTerm.toLowerCase())
+          )
       ),
     }))
     .filter((group) => group.menus.length > 0);
+
+  // Count total matches including submenus
+  const totalMatches = filteredMenuList.reduce((acc, group) => {
+    return (
+      acc +
+      group.menus.reduce((menuAcc, menu) => {
+        const submenuMatches = menu.submenus.filter((submenu) =>
+          submenu.label.toLowerCase().includes(searchTerm.toLowerCase())
+        ).length;
+        const menuMatches = menu.label
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+          ? 1
+          : 0;
+        return menuAcc + menuMatches + submenuMatches;
+      }, 0)
+    );
+  }, 0);
+
+  // Function to determine if a menu item should be expanded
+  const shouldExpandMenu = (menu: { label: string; submenus: any[] }) => {
+    if (!searchTerm) return false;
+    return menu.submenus.some((submenu) =>
+      submenu.label.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  };
   return (
     <div className="hidden xl:inline w-full max-w-xs">
       <div className="flex items-center gap-3 mt-2 h-auto">
@@ -41,7 +71,7 @@ export function TournamentMenu() {
         </Command>
       </div>
       <p className="text-muted-foreground text-xs italic font-medium mt-1">
-        {filteredMenuList.reduce((acc, group) => acc + group.menus.length, 0)}{" "}
+        {totalMatches}{" "}
         records found
       </p>
       <ScrollArea className="[&>div>div[style]]:!block">
@@ -90,8 +120,16 @@ export function TournamentMenu() {
                           icon={Icon}
                           label={label}
                           active={active}
-                          submenus={submenus}
+                          submenus={submenus.filter(
+                            (submenu) =>
+                              !searchTerm ||
+                              submenu.label
+                                .toLowerCase()
+                                .includes(searchTerm.toLowerCase()) ||
+                              label.toLowerCase().includes(searchTerm.toLowerCase())
+                          )}
                           isOpen={isOpen}
+                          defaultOpen={shouldExpandMenu({ label, submenus })}
                         />
                       </div>
                     )

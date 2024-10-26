@@ -1243,6 +1243,49 @@ export class DebateServiceClient {
     this.methodDescriptorGetVolunteerTournamentStats);
   }
 
+  methodDescriptorGetTournamentVolunteerRanking = new grpcWeb.MethodDescriptor(
+    '/debate_management.DebateService/GetTournamentVolunteerRanking',
+    grpcWeb.MethodType.UNARY,
+    debate_management_debate_pb.TournamentVolunteerRankingRequest,
+    debate_management_debate_pb.TournamentVolunteerRankingResponse,
+    (request: debate_management_debate_pb.TournamentVolunteerRankingRequest) => {
+      return request.serializeBinary();
+    },
+    debate_management_debate_pb.TournamentVolunteerRankingResponse.deserializeBinary
+  );
+
+  getTournamentVolunteerRanking(
+    request: debate_management_debate_pb.TournamentVolunteerRankingRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<debate_management_debate_pb.TournamentVolunteerRankingResponse>;
+
+  getTournamentVolunteerRanking(
+    request: debate_management_debate_pb.TournamentVolunteerRankingRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.TournamentVolunteerRankingResponse) => void): grpcWeb.ClientReadableStream<debate_management_debate_pb.TournamentVolunteerRankingResponse>;
+
+  getTournamentVolunteerRanking(
+    request: debate_management_debate_pb.TournamentVolunteerRankingRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: debate_management_debate_pb.TournamentVolunteerRankingResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/debate_management.DebateService/GetTournamentVolunteerRanking',
+        request,
+        metadata || {},
+        this.methodDescriptorGetTournamentVolunteerRanking,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/debate_management.DebateService/GetTournamentVolunteerRanking',
+    request,
+    metadata || {},
+    this.methodDescriptorGetTournamentVolunteerRanking);
+  }
+
   methodDescriptorGetStudentFeedback = new grpcWeb.MethodDescriptor(
     '/debate_management.DebateService/GetStudentFeedback',
     grpcWeb.MethodType.UNARY,

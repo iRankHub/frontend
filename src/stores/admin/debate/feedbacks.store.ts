@@ -4,19 +4,19 @@ import { create } from "zustand";
 interface FeedbacksStore {
     feedbacks: StudentFeedbackEntry.AsObject[];
     setFeedbacks: (feedbacks: StudentFeedbackEntry.AsObject[]) => void;
-    updateFeedbackReadStatus: (feedbackId: number, isRead: boolean) => void;
+    updateFeedbackReadStatus: (feedbackId: number) => void;
 }
 
 export const useFeedbacksStore = create<FeedbacksStore>((set) => ({
     feedbacks: [],
     setFeedbacks: (feedbacks: StudentFeedbackEntry.AsObject[]) => set({ feedbacks }),
-    updateFeedbackReadStatus: (feedbackId: number, isRead: boolean) => {
+    updateFeedbackReadStatus: (feedbackId: number) => {
         set((state: FeedbacksStore) => {
             const newFeedbacks = state.feedbacks.map((feedback) => {
-                if (feedback.roundNumber === feedbackId) {
+                if (feedback.ballotId === feedbackId) {
                     return {
                         ...feedback,
-                        isRead,
+                        isRead: true,
                     }
                 }
                 return feedback;

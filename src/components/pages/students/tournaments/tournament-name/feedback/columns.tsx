@@ -51,7 +51,7 @@ const ActionCell = ({ row }: { row: any }) => {
             size={"icon"}
             className="bg-transparent w-6 h-6 p-1 m-0"
           >
-            <Icons.pencilLine className="w-4 h-4 text-primary" />
+            <Icons.messageSquareReply className="w-4 h-4 text-primary" />
           </Button>
         </SheetTrigger>
         <SidePanel>
@@ -61,8 +61,6 @@ const ActionCell = ({ row }: { row: any }) => {
             </div>
           </Panelheader>
           <ProvideFeedback
-            debateId={1}
-            judgeId={3}
             onClose={() => setFeedbackOpen(false)}
             feedbackData={data}
           />
@@ -80,11 +78,27 @@ export const columns: ColumnDef<StudentFeedbackEntry.AsObject>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "roundNumber",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Round"
+        className="justify-start"
+      />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="w-full text-center pr-12">{row.getValue("roundNumber")}</div>
+      );
+    },
+    enableHiding: false,
+  },
+  {
     accessorKey: "roomName",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Rounds"
+        title="Room"
         className="justify-start"
       />
     ),
@@ -143,9 +157,7 @@ export const columns: ColumnDef<StudentFeedbackEntry.AsObject>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="w-full text-start">
-          {row.getValue("headJudgeName")}
-        </div>
+        <div className="w-full text-start">{row.getValue("headJudgeName")}</div>
       );
     },
     enableHiding: false,

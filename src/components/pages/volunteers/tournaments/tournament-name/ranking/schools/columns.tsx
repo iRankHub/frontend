@@ -1,18 +1,18 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Rankings } from "@/components/tables/data/schema";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
+import { SchoolRanking } from "@/lib/grpc/proto/debate_management/debate_pb";
 
-export const columns: ColumnDef<Rankings>[] = [
+export const columns: ColumnDef<SchoolRanking.AsObject>[] = [
   {
-    accessorKey: "place",
+    accessorKey: "schoolName",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Place" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2">
+        <div className="w-full pr-5 text-start">
           <span className="max-w-[200px] truncate font-medium">
-            {row.getValue("place")}
+            {row.index + 4}
           </span>
         </div>
       );
@@ -20,15 +20,15 @@ export const columns: ColumnDef<Rankings>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "names",
+    accessorKey: "schoolName",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Names" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2">
+        <div className="w-full pr-5 text-end">
           <span className="max-w-[200px] truncate font-medium">
-            {row.getValue("names")}
+            {row.getValue("schoolName")}
           </span>
         </div>
       );
@@ -36,18 +36,18 @@ export const columns: ColumnDef<Rankings>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "schools",
+    accessorKey: "teamCount",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Schools"
+        title="Teams"
         className="justify-center"
       />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex w-[100px] items-center justify-center">
-          <span className="text-sm">{row.getValue("schools")}</span>
+          <span className="text-sm">{row.getValue("teamCount")}</span>
         </div>
       );
     },
@@ -57,7 +57,7 @@ export const columns: ColumnDef<Rankings>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "points",
+    accessorKey: "totalPoints",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -68,7 +68,7 @@ export const columns: ColumnDef<Rankings>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex w-[50px] items-center justify-center">
-          <span className="text-sm">{row.getValue("points")}</span>
+          <span className="text-sm">{row.getValue("totalPoints")}</span>
         </div>
       );
     },
@@ -77,7 +77,7 @@ export const columns: ColumnDef<Rankings>[] = [
     },
   },
   {
-    accessorKey: "wins",
+    accessorKey: "totalWins",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -88,7 +88,7 @@ export const columns: ColumnDef<Rankings>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex w-[50px] items-center justify-center">
-          <span className="text-sm">{row.getValue("wins")}</span>
+          <span className="text-sm">{row.getValue("totalWins")}</span>
         </div>
       );
     },
@@ -97,7 +97,7 @@ export const columns: ColumnDef<Rankings>[] = [
     },
   },
   {
-    accessorKey: "rank",
+    accessorKey: "averageRank",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -108,7 +108,7 @@ export const columns: ColumnDef<Rankings>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex w-[50px] items-center justify-center">
-          <span className="text-sm">{row.getValue("rank")}</span>
+          <span className="text-sm">{row.getValue("averageRank")}</span>
         </div>
       );
     },

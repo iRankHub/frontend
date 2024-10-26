@@ -100,8 +100,8 @@ function Page({ params }: Iparms) {
   }
   return (
     <ContentLayout title="list">
-      <div className="w-full flex items-center justify-between gap-5">
-        <h3 className="text-lg text-primary font-semibold">All Tournaments</h3>
+      <div className="w-full flex items-center justify-between gap-5 mb-4">
+        <h3 className="text-lg text-primary font-semibold">All Feedbacks</h3>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>

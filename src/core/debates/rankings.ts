@@ -16,7 +16,9 @@ import {
     TournamentRankingRequest,
     TournamentSchoolRankingRequest,
     TournamentTeamsRankingRequest,
+    TournamentVolunteerRankingRequest,
     VolunteerPerformanceData,
+    VolunteerTournamentRank,
     VolunteerTournamentStatsRequest,
     VolunteerTournamentStatsResponse
 } from "@/lib/grpc/proto/debate_management/debate_pb";
@@ -322,5 +324,33 @@ export const getVolunteerTournamentStats = async ({
                 resolve(response.toObject());
             }
         })
+    });
+}
+
+export const getTournamentVolunteerRanking = async ({
+    token,
+    tournament_id,
+    page,
+    page_size,
+}: {
+    token: string;
+    tournament_id: number;
+    page: number;
+    page_size: number;
+}): Promise<VolunteerTournamentRank.AsObject[]> => {
+    return new Promise((resolve, reject) => {
+        const request = new TournamentVolunteerRankingRequest();
+        request.setToken(token);
+        request.setTournamentId(tournament_id);
+        request.setPage(page);
+        request.setPageSize(page_size);
+
+        debateClient.getTournamentVolunteerRanking(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject().rankingsList);
+            }
+        });
     });
 }

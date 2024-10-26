@@ -127,7 +127,7 @@ export const columns: ColumnDef<JudgeFeedbackEntry.AsObject>[] = [
             {(row.getValue("isRead") as boolean) === true ? "Read" : "Not Read"}
           </Badge>
         </div>
-      );
+      )
     },
     enableHiding: false,
   },

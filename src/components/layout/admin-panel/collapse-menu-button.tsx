@@ -25,6 +25,7 @@ import {
   DropdownMenuContent,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { useEffect, useState } from "react";
 
 type Submenu = {
   href: string;
@@ -38,8 +39,7 @@ interface CollapseMenuButtonProps {
   active: boolean;
   submenus: Submenu[];
   isOpen: boolean | undefined;
-  isExpanded: boolean;
-  onToggle: () => void;
+  defaultOpen?: boolean;
 }
 
 export function CollapseMenuButton({
@@ -48,15 +48,20 @@ export function CollapseMenuButton({
   active,
   submenus,
   isOpen,
-  isExpanded,
-  onToggle,
+  defaultOpen = false,
 }: CollapseMenuButtonProps) {
   const isSubmenuActive = submenus.some((submenu) => submenu.active);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(isSubmenuActive || defaultOpen);
+
+  // Update collapsed state when defaultOpen changes
+  useEffect(() => {
+    setIsCollapsed(defaultOpen || isSubmenuActive);
+  }, [defaultOpen, isSubmenuActive]);
 
   return isOpen ? (
     <Collapsible
-      open={isExpanded}
-      onOpenChange={onToggle}
+      open={isCollapsed}
+      onOpenChange={setIsCollapsed}
       className="w-full"
     >
       <CollapsibleTrigger
@@ -180,7 +185,7 @@ export function CollapseMenuButton({
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <DropdownMenuContent side="right" sideOffset={25} align="start" onCloseAutoFocus={onToggle}>
+      <DropdownMenuContent side="right" sideOffset={25} align="start">
         <DropdownMenuLabel className="max-w-[190px] truncate">
           {label}
         </DropdownMenuLabel>

@@ -25,9 +25,11 @@ goog.exportSymbol('proto.tournament_management.BulkResendInvitationsRequest', nu
 goog.exportSymbol('proto.tournament_management.BulkResendInvitationsResponse', null, global);
 goog.exportSymbol('proto.tournament_management.BulkUpdateInvitationStatusRequest', null, global);
 goog.exportSymbol('proto.tournament_management.BulkUpdateInvitationStatusResponse', null, global);
+goog.exportSymbol('proto.tournament_management.CreateExpensesRequest', null, global);
 goog.exportSymbol('proto.tournament_management.CreateLeagueRequest', null, global);
 goog.exportSymbol('proto.tournament_management.CreateLeagueRequest.LeagueDetailsCase', null, global);
 goog.exportSymbol('proto.tournament_management.CreateLeagueResponse', null, global);
+goog.exportSymbol('proto.tournament_management.CreateRegistrationRequest', null, global);
 goog.exportSymbol('proto.tournament_management.CreateTournamentFormatRequest', null, global);
 goog.exportSymbol('proto.tournament_management.CreateTournamentFormatResponse', null, global);
 goog.exportSymbol('proto.tournament_management.CreateTournamentRequest', null, global);
@@ -39,12 +41,16 @@ goog.exportSymbol('proto.tournament_management.DeleteTournamentFormatRequest', n
 goog.exportSymbol('proto.tournament_management.DeleteTournamentFormatResponse', null, global);
 goog.exportSymbol('proto.tournament_management.DeleteTournamentRequest', null, global);
 goog.exportSymbol('proto.tournament_management.DeleteTournamentResponse', null, global);
+goog.exportSymbol('proto.tournament_management.DetailedRegistrationResponse', null, global);
+goog.exportSymbol('proto.tournament_management.ExpensesResponse', null, global);
+goog.exportSymbol('proto.tournament_management.GetExpensesRequest', null, global);
 goog.exportSymbol('proto.tournament_management.GetInvitationsByTournamentRequest', null, global);
 goog.exportSymbol('proto.tournament_management.GetInvitationsByTournamentResponse', null, global);
 goog.exportSymbol('proto.tournament_management.GetInvitationsByUserRequest', null, global);
 goog.exportSymbol('proto.tournament_management.GetInvitationsByUserResponse', null, global);
 goog.exportSymbol('proto.tournament_management.GetLeagueRequest', null, global);
 goog.exportSymbol('proto.tournament_management.GetLeagueResponse', null, global);
+goog.exportSymbol('proto.tournament_management.GetRegistrationRequest', null, global);
 goog.exportSymbol('proto.tournament_management.GetTournamentFormatRequest', null, global);
 goog.exportSymbol('proto.tournament_management.GetTournamentFormatResponse', null, global);
 goog.exportSymbol('proto.tournament_management.GetTournamentRegistrationsRequest', null, global);
@@ -59,20 +65,26 @@ goog.exportSymbol('proto.tournament_management.League', null, global);
 goog.exportSymbol('proto.tournament_management.LeagueType', null, global);
 goog.exportSymbol('proto.tournament_management.ListLeaguesRequest', null, global);
 goog.exportSymbol('proto.tournament_management.ListLeaguesResponse', null, global);
+goog.exportSymbol('proto.tournament_management.ListRegistrationItem', null, global);
+goog.exportSymbol('proto.tournament_management.ListRegistrationsRequest', null, global);
+goog.exportSymbol('proto.tournament_management.ListRegistrationsResponse', null, global);
 goog.exportSymbol('proto.tournament_management.ListTournamentFormatsRequest', null, global);
 goog.exportSymbol('proto.tournament_management.ListTournamentFormatsResponse', null, global);
 goog.exportSymbol('proto.tournament_management.ListTournamentsRequest', null, global);
 goog.exportSymbol('proto.tournament_management.ListTournamentsResponse', null, global);
 goog.exportSymbol('proto.tournament_management.LocalDetails', null, global);
+goog.exportSymbol('proto.tournament_management.RegistrationResponse', null, global);
 goog.exportSymbol('proto.tournament_management.ResendInvitationRequest', null, global);
 goog.exportSymbol('proto.tournament_management.ResendInvitationResponse', null, global);
 goog.exportSymbol('proto.tournament_management.Tournament', null, global);
 goog.exportSymbol('proto.tournament_management.TournamentFormat', null, global);
+goog.exportSymbol('proto.tournament_management.UpdateExpensesRequest', null, global);
 goog.exportSymbol('proto.tournament_management.UpdateInvitationStatusRequest', null, global);
 goog.exportSymbol('proto.tournament_management.UpdateInvitationStatusResponse', null, global);
 goog.exportSymbol('proto.tournament_management.UpdateLeagueRequest', null, global);
 goog.exportSymbol('proto.tournament_management.UpdateLeagueRequest.LeagueDetailsCase', null, global);
 goog.exportSymbol('proto.tournament_management.UpdateLeagueResponse', null, global);
+goog.exportSymbol('proto.tournament_management.UpdateRegistrationRequest', null, global);
 goog.exportSymbol('proto.tournament_management.UpdateTournamentFormatRequest', null, global);
 goog.exportSymbol('proto.tournament_management.UpdateTournamentFormatResponse', null, global);
 goog.exportSymbol('proto.tournament_management.UpdateTournamentRequest', null, global);
@@ -1189,6 +1201,258 @@ if (goog.DEBUG && !COMPILED) {
    * @override
    */
   proto.tournament_management.BulkResendInvitationsResponse.displayName = 'proto.tournament_management.BulkResendInvitationsResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.tournament_management.CreateExpensesRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.tournament_management.CreateExpensesRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.tournament_management.CreateExpensesRequest.displayName = 'proto.tournament_management.CreateExpensesRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.tournament_management.UpdateExpensesRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.tournament_management.UpdateExpensesRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.tournament_management.UpdateExpensesRequest.displayName = 'proto.tournament_management.UpdateExpensesRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.tournament_management.GetExpensesRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.tournament_management.GetExpensesRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.tournament_management.GetExpensesRequest.displayName = 'proto.tournament_management.GetExpensesRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.tournament_management.ExpensesResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.tournament_management.ExpensesResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.tournament_management.ExpensesResponse.displayName = 'proto.tournament_management.ExpensesResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.tournament_management.CreateRegistrationRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.tournament_management.CreateRegistrationRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.tournament_management.CreateRegistrationRequest.displayName = 'proto.tournament_management.CreateRegistrationRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.tournament_management.UpdateRegistrationRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.tournament_management.UpdateRegistrationRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.tournament_management.UpdateRegistrationRequest.displayName = 'proto.tournament_management.UpdateRegistrationRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.tournament_management.GetRegistrationRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.tournament_management.GetRegistrationRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.tournament_management.GetRegistrationRequest.displayName = 'proto.tournament_management.GetRegistrationRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.tournament_management.ListRegistrationsRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.tournament_management.ListRegistrationsRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.tournament_management.ListRegistrationsRequest.displayName = 'proto.tournament_management.ListRegistrationsRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.tournament_management.RegistrationResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.tournament_management.RegistrationResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.tournament_management.RegistrationResponse.displayName = 'proto.tournament_management.RegistrationResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.tournament_management.DetailedRegistrationResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.tournament_management.DetailedRegistrationResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.tournament_management.DetailedRegistrationResponse.displayName = 'proto.tournament_management.DetailedRegistrationResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.tournament_management.ListRegistrationItem = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.tournament_management.ListRegistrationItem, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.tournament_management.ListRegistrationItem.displayName = 'proto.tournament_management.ListRegistrationItem';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.tournament_management.ListRegistrationsResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.tournament_management.ListRegistrationsResponse.repeatedFields_, null);
+};
+goog.inherits(proto.tournament_management.ListRegistrationsResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.tournament_management.ListRegistrationsResponse.displayName = 'proto.tournament_management.ListRegistrationsResponse';
 }
 
 /**
@@ -12144,6 +12408,4116 @@ proto.tournament_management.BulkResendInvitationsResponse.prototype.getMessage =
  */
 proto.tournament_management.BulkResendInvitationsResponse.prototype.setMessage = function(value) {
   return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.CreateExpensesRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.CreateExpensesRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.CreateExpensesRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    tournamentId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    foodExpense: jspb.Message.getFloatingPointFieldWithDefault(msg, 2, 0.0),
+    transportExpense: jspb.Message.getFloatingPointFieldWithDefault(msg, 3, 0.0),
+    perDiemExpense: jspb.Message.getFloatingPointFieldWithDefault(msg, 4, 0.0),
+    awardingExpense: jspb.Message.getFloatingPointFieldWithDefault(msg, 5, 0.0),
+    stationaryExpense: jspb.Message.getFloatingPointFieldWithDefault(msg, 6, 0.0),
+    otherExpenses: jspb.Message.getFloatingPointFieldWithDefault(msg, 7, 0.0),
+    notes: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    token: jspb.Message.getFieldWithDefault(msg, 9, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.CreateExpensesRequest}
+ */
+proto.tournament_management.CreateExpensesRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.CreateExpensesRequest;
+  return proto.tournament_management.CreateExpensesRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.CreateExpensesRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.CreateExpensesRequest}
+ */
+proto.tournament_management.CreateExpensesRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentId(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setFoodExpense(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setTransportExpense(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setPerDiemExpense(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setAwardingExpense(value);
+      break;
+    case 6:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setStationaryExpense(value);
+      break;
+    case 7:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setOtherExpenses(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNotes(value);
+      break;
+    case 9:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.CreateExpensesRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.CreateExpensesRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.CreateExpensesRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTournamentId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getFoodExpense();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      2,
+      f
+    );
+  }
+  f = message.getTransportExpense();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      3,
+      f
+    );
+  }
+  f = message.getPerDiemExpense();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      4,
+      f
+    );
+  }
+  f = message.getAwardingExpense();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      5,
+      f
+    );
+  }
+  f = message.getStationaryExpense();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      6,
+      f
+    );
+  }
+  f = message.getOtherExpenses();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      7,
+      f
+    );
+  }
+  f = message.getNotes();
+  if (f.length > 0) {
+    writer.writeString(
+      8,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      9,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 tournament_id = 1;
+ * @return {number}
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.getTournamentId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.CreateExpensesRequest} returns this
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.setTournamentId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional double food_expense = 2;
+ * @return {number}
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.getFoodExpense = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 2, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.CreateExpensesRequest} returns this
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.setFoodExpense = function(value) {
+  return jspb.Message.setProto3FloatField(this, 2, value);
+};
+
+
+/**
+ * optional double transport_expense = 3;
+ * @return {number}
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.getTransportExpense = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 3, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.CreateExpensesRequest} returns this
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.setTransportExpense = function(value) {
+  return jspb.Message.setProto3FloatField(this, 3, value);
+};
+
+
+/**
+ * optional double per_diem_expense = 4;
+ * @return {number}
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.getPerDiemExpense = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 4, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.CreateExpensesRequest} returns this
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.setPerDiemExpense = function(value) {
+  return jspb.Message.setProto3FloatField(this, 4, value);
+};
+
+
+/**
+ * optional double awarding_expense = 5;
+ * @return {number}
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.getAwardingExpense = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 5, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.CreateExpensesRequest} returns this
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.setAwardingExpense = function(value) {
+  return jspb.Message.setProto3FloatField(this, 5, value);
+};
+
+
+/**
+ * optional double stationary_expense = 6;
+ * @return {number}
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.getStationaryExpense = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 6, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.CreateExpensesRequest} returns this
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.setStationaryExpense = function(value) {
+  return jspb.Message.setProto3FloatField(this, 6, value);
+};
+
+
+/**
+ * optional double other_expenses = 7;
+ * @return {number}
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.getOtherExpenses = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 7, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.CreateExpensesRequest} returns this
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.setOtherExpenses = function(value) {
+  return jspb.Message.setProto3FloatField(this, 7, value);
+};
+
+
+/**
+ * optional string notes = 8;
+ * @return {string}
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.getNotes = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.CreateExpensesRequest} returns this
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.setNotes = function(value) {
+  return jspb.Message.setProto3StringField(this, 8, value);
+};
+
+
+/**
+ * optional string token = 9;
+ * @return {string}
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.CreateExpensesRequest} returns this
+ */
+proto.tournament_management.CreateExpensesRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 9, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.UpdateExpensesRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.UpdateExpensesRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.UpdateExpensesRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    tournamentId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    foodExpense: jspb.Message.getFloatingPointFieldWithDefault(msg, 2, 0.0),
+    transportExpense: jspb.Message.getFloatingPointFieldWithDefault(msg, 3, 0.0),
+    perDiemExpense: jspb.Message.getFloatingPointFieldWithDefault(msg, 4, 0.0),
+    awardingExpense: jspb.Message.getFloatingPointFieldWithDefault(msg, 5, 0.0),
+    stationaryExpense: jspb.Message.getFloatingPointFieldWithDefault(msg, 6, 0.0),
+    otherExpenses: jspb.Message.getFloatingPointFieldWithDefault(msg, 7, 0.0),
+    currency: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    notes: jspb.Message.getFieldWithDefault(msg, 9, ""),
+    token: jspb.Message.getFieldWithDefault(msg, 10, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.UpdateExpensesRequest}
+ */
+proto.tournament_management.UpdateExpensesRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.UpdateExpensesRequest;
+  return proto.tournament_management.UpdateExpensesRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.UpdateExpensesRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.UpdateExpensesRequest}
+ */
+proto.tournament_management.UpdateExpensesRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentId(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setFoodExpense(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setTransportExpense(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setPerDiemExpense(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setAwardingExpense(value);
+      break;
+    case 6:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setStationaryExpense(value);
+      break;
+    case 7:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setOtherExpenses(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCurrency(value);
+      break;
+    case 9:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNotes(value);
+      break;
+    case 10:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.UpdateExpensesRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.UpdateExpensesRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.UpdateExpensesRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTournamentId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getFoodExpense();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      2,
+      f
+    );
+  }
+  f = message.getTransportExpense();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      3,
+      f
+    );
+  }
+  f = message.getPerDiemExpense();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      4,
+      f
+    );
+  }
+  f = message.getAwardingExpense();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      5,
+      f
+    );
+  }
+  f = message.getStationaryExpense();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      6,
+      f
+    );
+  }
+  f = message.getOtherExpenses();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      7,
+      f
+    );
+  }
+  f = message.getCurrency();
+  if (f.length > 0) {
+    writer.writeString(
+      8,
+      f
+    );
+  }
+  f = message.getNotes();
+  if (f.length > 0) {
+    writer.writeString(
+      9,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      10,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 tournament_id = 1;
+ * @return {number}
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.getTournamentId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.UpdateExpensesRequest} returns this
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.setTournamentId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional double food_expense = 2;
+ * @return {number}
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.getFoodExpense = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 2, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.UpdateExpensesRequest} returns this
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.setFoodExpense = function(value) {
+  return jspb.Message.setProto3FloatField(this, 2, value);
+};
+
+
+/**
+ * optional double transport_expense = 3;
+ * @return {number}
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.getTransportExpense = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 3, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.UpdateExpensesRequest} returns this
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.setTransportExpense = function(value) {
+  return jspb.Message.setProto3FloatField(this, 3, value);
+};
+
+
+/**
+ * optional double per_diem_expense = 4;
+ * @return {number}
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.getPerDiemExpense = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 4, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.UpdateExpensesRequest} returns this
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.setPerDiemExpense = function(value) {
+  return jspb.Message.setProto3FloatField(this, 4, value);
+};
+
+
+/**
+ * optional double awarding_expense = 5;
+ * @return {number}
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.getAwardingExpense = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 5, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.UpdateExpensesRequest} returns this
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.setAwardingExpense = function(value) {
+  return jspb.Message.setProto3FloatField(this, 5, value);
+};
+
+
+/**
+ * optional double stationary_expense = 6;
+ * @return {number}
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.getStationaryExpense = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 6, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.UpdateExpensesRequest} returns this
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.setStationaryExpense = function(value) {
+  return jspb.Message.setProto3FloatField(this, 6, value);
+};
+
+
+/**
+ * optional double other_expenses = 7;
+ * @return {number}
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.getOtherExpenses = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 7, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.UpdateExpensesRequest} returns this
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.setOtherExpenses = function(value) {
+  return jspb.Message.setProto3FloatField(this, 7, value);
+};
+
+
+/**
+ * optional string currency = 8;
+ * @return {string}
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.getCurrency = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.UpdateExpensesRequest} returns this
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.setCurrency = function(value) {
+  return jspb.Message.setProto3StringField(this, 8, value);
+};
+
+
+/**
+ * optional string notes = 9;
+ * @return {string}
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.getNotes = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.UpdateExpensesRequest} returns this
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.setNotes = function(value) {
+  return jspb.Message.setProto3StringField(this, 9, value);
+};
+
+
+/**
+ * optional string token = 10;
+ * @return {string}
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 10, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.UpdateExpensesRequest} returns this
+ */
+proto.tournament_management.UpdateExpensesRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 10, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.GetExpensesRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.GetExpensesRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.GetExpensesRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.GetExpensesRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    tournamentId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    token: jspb.Message.getFieldWithDefault(msg, 2, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.GetExpensesRequest}
+ */
+proto.tournament_management.GetExpensesRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.GetExpensesRequest;
+  return proto.tournament_management.GetExpensesRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.GetExpensesRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.GetExpensesRequest}
+ */
+proto.tournament_management.GetExpensesRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.GetExpensesRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.GetExpensesRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.GetExpensesRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.GetExpensesRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTournamentId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 tournament_id = 1;
+ * @return {number}
+ */
+proto.tournament_management.GetExpensesRequest.prototype.getTournamentId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.GetExpensesRequest} returns this
+ */
+proto.tournament_management.GetExpensesRequest.prototype.setTournamentId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string token = 2;
+ * @return {string}
+ */
+proto.tournament_management.GetExpensesRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.GetExpensesRequest} returns this
+ */
+proto.tournament_management.GetExpensesRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.ExpensesResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.ExpensesResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.ExpensesResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.ExpensesResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    expenseId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    tournamentId: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    foodExpense: jspb.Message.getFloatingPointFieldWithDefault(msg, 3, 0.0),
+    transportExpense: jspb.Message.getFloatingPointFieldWithDefault(msg, 4, 0.0),
+    perDiemExpense: jspb.Message.getFloatingPointFieldWithDefault(msg, 5, 0.0),
+    awardingExpense: jspb.Message.getFloatingPointFieldWithDefault(msg, 6, 0.0),
+    stationaryExpense: jspb.Message.getFloatingPointFieldWithDefault(msg, 7, 0.0),
+    otherExpenses: jspb.Message.getFloatingPointFieldWithDefault(msg, 8, 0.0),
+    totalExpense: jspb.Message.getFloatingPointFieldWithDefault(msg, 9, 0.0),
+    currency: jspb.Message.getFieldWithDefault(msg, 10, ""),
+    notes: jspb.Message.getFieldWithDefault(msg, 11, ""),
+    createdAt: jspb.Message.getFieldWithDefault(msg, 12, ""),
+    updatedAt: jspb.Message.getFieldWithDefault(msg, 13, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.ExpensesResponse}
+ */
+proto.tournament_management.ExpensesResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.ExpensesResponse;
+  return proto.tournament_management.ExpensesResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.ExpensesResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.ExpensesResponse}
+ */
+proto.tournament_management.ExpensesResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setExpenseId(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentId(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setFoodExpense(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setTransportExpense(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setPerDiemExpense(value);
+      break;
+    case 6:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setAwardingExpense(value);
+      break;
+    case 7:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setStationaryExpense(value);
+      break;
+    case 8:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setOtherExpenses(value);
+      break;
+    case 9:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setTotalExpense(value);
+      break;
+    case 10:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCurrency(value);
+      break;
+    case 11:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNotes(value);
+      break;
+    case 12:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCreatedAt(value);
+      break;
+    case 13:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUpdatedAt(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.ExpensesResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.ExpensesResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.ExpensesResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.ExpensesResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getExpenseId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getTournamentId();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+  f = message.getFoodExpense();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      3,
+      f
+    );
+  }
+  f = message.getTransportExpense();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      4,
+      f
+    );
+  }
+  f = message.getPerDiemExpense();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      5,
+      f
+    );
+  }
+  f = message.getAwardingExpense();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      6,
+      f
+    );
+  }
+  f = message.getStationaryExpense();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      7,
+      f
+    );
+  }
+  f = message.getOtherExpenses();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      8,
+      f
+    );
+  }
+  f = message.getTotalExpense();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      9,
+      f
+    );
+  }
+  f = message.getCurrency();
+  if (f.length > 0) {
+    writer.writeString(
+      10,
+      f
+    );
+  }
+  f = message.getNotes();
+  if (f.length > 0) {
+    writer.writeString(
+      11,
+      f
+    );
+  }
+  f = message.getCreatedAt();
+  if (f.length > 0) {
+    writer.writeString(
+      12,
+      f
+    );
+  }
+  f = message.getUpdatedAt();
+  if (f.length > 0) {
+    writer.writeString(
+      13,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 expense_id = 1;
+ * @return {number}
+ */
+proto.tournament_management.ExpensesResponse.prototype.getExpenseId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ExpensesResponse} returns this
+ */
+proto.tournament_management.ExpensesResponse.prototype.setExpenseId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional int32 tournament_id = 2;
+ * @return {number}
+ */
+proto.tournament_management.ExpensesResponse.prototype.getTournamentId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ExpensesResponse} returns this
+ */
+proto.tournament_management.ExpensesResponse.prototype.setTournamentId = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional double food_expense = 3;
+ * @return {number}
+ */
+proto.tournament_management.ExpensesResponse.prototype.getFoodExpense = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 3, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ExpensesResponse} returns this
+ */
+proto.tournament_management.ExpensesResponse.prototype.setFoodExpense = function(value) {
+  return jspb.Message.setProto3FloatField(this, 3, value);
+};
+
+
+/**
+ * optional double transport_expense = 4;
+ * @return {number}
+ */
+proto.tournament_management.ExpensesResponse.prototype.getTransportExpense = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 4, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ExpensesResponse} returns this
+ */
+proto.tournament_management.ExpensesResponse.prototype.setTransportExpense = function(value) {
+  return jspb.Message.setProto3FloatField(this, 4, value);
+};
+
+
+/**
+ * optional double per_diem_expense = 5;
+ * @return {number}
+ */
+proto.tournament_management.ExpensesResponse.prototype.getPerDiemExpense = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 5, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ExpensesResponse} returns this
+ */
+proto.tournament_management.ExpensesResponse.prototype.setPerDiemExpense = function(value) {
+  return jspb.Message.setProto3FloatField(this, 5, value);
+};
+
+
+/**
+ * optional double awarding_expense = 6;
+ * @return {number}
+ */
+proto.tournament_management.ExpensesResponse.prototype.getAwardingExpense = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 6, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ExpensesResponse} returns this
+ */
+proto.tournament_management.ExpensesResponse.prototype.setAwardingExpense = function(value) {
+  return jspb.Message.setProto3FloatField(this, 6, value);
+};
+
+
+/**
+ * optional double stationary_expense = 7;
+ * @return {number}
+ */
+proto.tournament_management.ExpensesResponse.prototype.getStationaryExpense = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 7, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ExpensesResponse} returns this
+ */
+proto.tournament_management.ExpensesResponse.prototype.setStationaryExpense = function(value) {
+  return jspb.Message.setProto3FloatField(this, 7, value);
+};
+
+
+/**
+ * optional double other_expenses = 8;
+ * @return {number}
+ */
+proto.tournament_management.ExpensesResponse.prototype.getOtherExpenses = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 8, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ExpensesResponse} returns this
+ */
+proto.tournament_management.ExpensesResponse.prototype.setOtherExpenses = function(value) {
+  return jspb.Message.setProto3FloatField(this, 8, value);
+};
+
+
+/**
+ * optional double total_expense = 9;
+ * @return {number}
+ */
+proto.tournament_management.ExpensesResponse.prototype.getTotalExpense = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 9, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ExpensesResponse} returns this
+ */
+proto.tournament_management.ExpensesResponse.prototype.setTotalExpense = function(value) {
+  return jspb.Message.setProto3FloatField(this, 9, value);
+};
+
+
+/**
+ * optional string currency = 10;
+ * @return {string}
+ */
+proto.tournament_management.ExpensesResponse.prototype.getCurrency = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 10, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.ExpensesResponse} returns this
+ */
+proto.tournament_management.ExpensesResponse.prototype.setCurrency = function(value) {
+  return jspb.Message.setProto3StringField(this, 10, value);
+};
+
+
+/**
+ * optional string notes = 11;
+ * @return {string}
+ */
+proto.tournament_management.ExpensesResponse.prototype.getNotes = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 11, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.ExpensesResponse} returns this
+ */
+proto.tournament_management.ExpensesResponse.prototype.setNotes = function(value) {
+  return jspb.Message.setProto3StringField(this, 11, value);
+};
+
+
+/**
+ * optional string created_at = 12;
+ * @return {string}
+ */
+proto.tournament_management.ExpensesResponse.prototype.getCreatedAt = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 12, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.ExpensesResponse} returns this
+ */
+proto.tournament_management.ExpensesResponse.prototype.setCreatedAt = function(value) {
+  return jspb.Message.setProto3StringField(this, 12, value);
+};
+
+
+/**
+ * optional string updated_at = 13;
+ * @return {string}
+ */
+proto.tournament_management.ExpensesResponse.prototype.getUpdatedAt = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 13, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.ExpensesResponse} returns this
+ */
+proto.tournament_management.ExpensesResponse.prototype.setUpdatedAt = function(value) {
+  return jspb.Message.setProto3StringField(this, 13, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.CreateRegistrationRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.CreateRegistrationRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.CreateRegistrationRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.CreateRegistrationRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    schoolId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    tournamentId: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    plannedTeamsCount: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    token: jspb.Message.getFieldWithDefault(msg, 4, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.CreateRegistrationRequest}
+ */
+proto.tournament_management.CreateRegistrationRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.CreateRegistrationRequest;
+  return proto.tournament_management.CreateRegistrationRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.CreateRegistrationRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.CreateRegistrationRequest}
+ */
+proto.tournament_management.CreateRegistrationRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setSchoolId(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentId(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPlannedTeamsCount(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.CreateRegistrationRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.CreateRegistrationRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.CreateRegistrationRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.CreateRegistrationRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSchoolId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getTournamentId();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+  f = message.getPlannedTeamsCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      3,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 school_id = 1;
+ * @return {number}
+ */
+proto.tournament_management.CreateRegistrationRequest.prototype.getSchoolId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.CreateRegistrationRequest} returns this
+ */
+proto.tournament_management.CreateRegistrationRequest.prototype.setSchoolId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional int32 tournament_id = 2;
+ * @return {number}
+ */
+proto.tournament_management.CreateRegistrationRequest.prototype.getTournamentId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.CreateRegistrationRequest} returns this
+ */
+proto.tournament_management.CreateRegistrationRequest.prototype.setTournamentId = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional int32 planned_teams_count = 3;
+ * @return {number}
+ */
+proto.tournament_management.CreateRegistrationRequest.prototype.getPlannedTeamsCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.CreateRegistrationRequest} returns this
+ */
+proto.tournament_management.CreateRegistrationRequest.prototype.setPlannedTeamsCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional string token = 4;
+ * @return {string}
+ */
+proto.tournament_management.CreateRegistrationRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.CreateRegistrationRequest} returns this
+ */
+proto.tournament_management.CreateRegistrationRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.UpdateRegistrationRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.UpdateRegistrationRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.UpdateRegistrationRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.UpdateRegistrationRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    schoolId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    tournamentId: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    actualTeamsCount: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    discountAmount: jspb.Message.getFloatingPointFieldWithDefault(msg, 4, 0.0),
+    actualPaidAmount: jspb.Message.getFloatingPointFieldWithDefault(msg, 5, 0.0),
+    paymentStatus: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    token: jspb.Message.getFieldWithDefault(msg, 7, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.UpdateRegistrationRequest}
+ */
+proto.tournament_management.UpdateRegistrationRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.UpdateRegistrationRequest;
+  return proto.tournament_management.UpdateRegistrationRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.UpdateRegistrationRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.UpdateRegistrationRequest}
+ */
+proto.tournament_management.UpdateRegistrationRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setSchoolId(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentId(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setActualTeamsCount(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setDiscountAmount(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setActualPaidAmount(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPaymentStatus(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.UpdateRegistrationRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.UpdateRegistrationRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.UpdateRegistrationRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.UpdateRegistrationRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSchoolId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getTournamentId();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+  f = message.getActualTeamsCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      3,
+      f
+    );
+  }
+  f = message.getDiscountAmount();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      4,
+      f
+    );
+  }
+  f = message.getActualPaidAmount();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      5,
+      f
+    );
+  }
+  f = message.getPaymentStatus();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 school_id = 1;
+ * @return {number}
+ */
+proto.tournament_management.UpdateRegistrationRequest.prototype.getSchoolId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.UpdateRegistrationRequest} returns this
+ */
+proto.tournament_management.UpdateRegistrationRequest.prototype.setSchoolId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional int32 tournament_id = 2;
+ * @return {number}
+ */
+proto.tournament_management.UpdateRegistrationRequest.prototype.getTournamentId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.UpdateRegistrationRequest} returns this
+ */
+proto.tournament_management.UpdateRegistrationRequest.prototype.setTournamentId = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional int32 actual_teams_count = 3;
+ * @return {number}
+ */
+proto.tournament_management.UpdateRegistrationRequest.prototype.getActualTeamsCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.UpdateRegistrationRequest} returns this
+ */
+proto.tournament_management.UpdateRegistrationRequest.prototype.setActualTeamsCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional double discount_amount = 4;
+ * @return {number}
+ */
+proto.tournament_management.UpdateRegistrationRequest.prototype.getDiscountAmount = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 4, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.UpdateRegistrationRequest} returns this
+ */
+proto.tournament_management.UpdateRegistrationRequest.prototype.setDiscountAmount = function(value) {
+  return jspb.Message.setProto3FloatField(this, 4, value);
+};
+
+
+/**
+ * optional double actual_paid_amount = 5;
+ * @return {number}
+ */
+proto.tournament_management.UpdateRegistrationRequest.prototype.getActualPaidAmount = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 5, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.UpdateRegistrationRequest} returns this
+ */
+proto.tournament_management.UpdateRegistrationRequest.prototype.setActualPaidAmount = function(value) {
+  return jspb.Message.setProto3FloatField(this, 5, value);
+};
+
+
+/**
+ * optional string payment_status = 6;
+ * @return {string}
+ */
+proto.tournament_management.UpdateRegistrationRequest.prototype.getPaymentStatus = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.UpdateRegistrationRequest} returns this
+ */
+proto.tournament_management.UpdateRegistrationRequest.prototype.setPaymentStatus = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional string token = 7;
+ * @return {string}
+ */
+proto.tournament_management.UpdateRegistrationRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.UpdateRegistrationRequest} returns this
+ */
+proto.tournament_management.UpdateRegistrationRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.GetRegistrationRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.GetRegistrationRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.GetRegistrationRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.GetRegistrationRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    schoolId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    tournamentId: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    token: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.GetRegistrationRequest}
+ */
+proto.tournament_management.GetRegistrationRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.GetRegistrationRequest;
+  return proto.tournament_management.GetRegistrationRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.GetRegistrationRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.GetRegistrationRequest}
+ */
+proto.tournament_management.GetRegistrationRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setSchoolId(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentId(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.GetRegistrationRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.GetRegistrationRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.GetRegistrationRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.GetRegistrationRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSchoolId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getTournamentId();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 school_id = 1;
+ * @return {number}
+ */
+proto.tournament_management.GetRegistrationRequest.prototype.getSchoolId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.GetRegistrationRequest} returns this
+ */
+proto.tournament_management.GetRegistrationRequest.prototype.setSchoolId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional int32 tournament_id = 2;
+ * @return {number}
+ */
+proto.tournament_management.GetRegistrationRequest.prototype.getTournamentId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.GetRegistrationRequest} returns this
+ */
+proto.tournament_management.GetRegistrationRequest.prototype.setTournamentId = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional string token = 3;
+ * @return {string}
+ */
+proto.tournament_management.GetRegistrationRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.GetRegistrationRequest} returns this
+ */
+proto.tournament_management.GetRegistrationRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.ListRegistrationsRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.ListRegistrationsRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.ListRegistrationsRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.ListRegistrationsRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    tournamentId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    pageSize: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    pageToken: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    token: jspb.Message.getFieldWithDefault(msg, 4, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.ListRegistrationsRequest}
+ */
+proto.tournament_management.ListRegistrationsRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.ListRegistrationsRequest;
+  return proto.tournament_management.ListRegistrationsRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.ListRegistrationsRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.ListRegistrationsRequest}
+ */
+proto.tournament_management.ListRegistrationsRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentId(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPageSize(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPageToken(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.ListRegistrationsRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.ListRegistrationsRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.ListRegistrationsRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.ListRegistrationsRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTournamentId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getPageSize();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+  f = message.getPageToken();
+  if (f !== 0) {
+    writer.writeInt32(
+      3,
+      f
+    );
+  }
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 tournament_id = 1;
+ * @return {number}
+ */
+proto.tournament_management.ListRegistrationsRequest.prototype.getTournamentId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ListRegistrationsRequest} returns this
+ */
+proto.tournament_management.ListRegistrationsRequest.prototype.setTournamentId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional int32 page_size = 2;
+ * @return {number}
+ */
+proto.tournament_management.ListRegistrationsRequest.prototype.getPageSize = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ListRegistrationsRequest} returns this
+ */
+proto.tournament_management.ListRegistrationsRequest.prototype.setPageSize = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional int32 page_token = 3;
+ * @return {number}
+ */
+proto.tournament_management.ListRegistrationsRequest.prototype.getPageToken = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ListRegistrationsRequest} returns this
+ */
+proto.tournament_management.ListRegistrationsRequest.prototype.setPageToken = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional string token = 4;
+ * @return {string}
+ */
+proto.tournament_management.ListRegistrationsRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.ListRegistrationsRequest} returns this
+ */
+proto.tournament_management.ListRegistrationsRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.RegistrationResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.RegistrationResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.RegistrationResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.RegistrationResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    registrationId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    schoolId: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    tournamentId: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    plannedTeamsCount: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    actualTeamsCount: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    amountPerTeam: jspb.Message.getFloatingPointFieldWithDefault(msg, 6, 0.0),
+    totalAmount: jspb.Message.getFloatingPointFieldWithDefault(msg, 7, 0.0),
+    discountAmount: jspb.Message.getFloatingPointFieldWithDefault(msg, 8, 0.0),
+    actualPaidAmount: jspb.Message.getFloatingPointFieldWithDefault(msg, 9, 0.0),
+    paymentStatus: jspb.Message.getFieldWithDefault(msg, 10, ""),
+    currency: jspb.Message.getFieldWithDefault(msg, 11, ""),
+    createdAt: jspb.Message.getFieldWithDefault(msg, 12, ""),
+    updatedAt: jspb.Message.getFieldWithDefault(msg, 13, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.RegistrationResponse}
+ */
+proto.tournament_management.RegistrationResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.RegistrationResponse;
+  return proto.tournament_management.RegistrationResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.RegistrationResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.RegistrationResponse}
+ */
+proto.tournament_management.RegistrationResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setRegistrationId(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setSchoolId(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentId(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPlannedTeamsCount(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setActualTeamsCount(value);
+      break;
+    case 6:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setAmountPerTeam(value);
+      break;
+    case 7:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setTotalAmount(value);
+      break;
+    case 8:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setDiscountAmount(value);
+      break;
+    case 9:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setActualPaidAmount(value);
+      break;
+    case 10:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPaymentStatus(value);
+      break;
+    case 11:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCurrency(value);
+      break;
+    case 12:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCreatedAt(value);
+      break;
+    case 13:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUpdatedAt(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.RegistrationResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.RegistrationResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.RegistrationResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.RegistrationResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getRegistrationId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getSchoolId();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+  f = message.getTournamentId();
+  if (f !== 0) {
+    writer.writeInt32(
+      3,
+      f
+    );
+  }
+  f = message.getPlannedTeamsCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      4,
+      f
+    );
+  }
+  f = message.getActualTeamsCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      5,
+      f
+    );
+  }
+  f = message.getAmountPerTeam();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      6,
+      f
+    );
+  }
+  f = message.getTotalAmount();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      7,
+      f
+    );
+  }
+  f = message.getDiscountAmount();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      8,
+      f
+    );
+  }
+  f = message.getActualPaidAmount();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      9,
+      f
+    );
+  }
+  f = message.getPaymentStatus();
+  if (f.length > 0) {
+    writer.writeString(
+      10,
+      f
+    );
+  }
+  f = message.getCurrency();
+  if (f.length > 0) {
+    writer.writeString(
+      11,
+      f
+    );
+  }
+  f = message.getCreatedAt();
+  if (f.length > 0) {
+    writer.writeString(
+      12,
+      f
+    );
+  }
+  f = message.getUpdatedAt();
+  if (f.length > 0) {
+    writer.writeString(
+      13,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 registration_id = 1;
+ * @return {number}
+ */
+proto.tournament_management.RegistrationResponse.prototype.getRegistrationId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.RegistrationResponse} returns this
+ */
+proto.tournament_management.RegistrationResponse.prototype.setRegistrationId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional int32 school_id = 2;
+ * @return {number}
+ */
+proto.tournament_management.RegistrationResponse.prototype.getSchoolId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.RegistrationResponse} returns this
+ */
+proto.tournament_management.RegistrationResponse.prototype.setSchoolId = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional int32 tournament_id = 3;
+ * @return {number}
+ */
+proto.tournament_management.RegistrationResponse.prototype.getTournamentId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.RegistrationResponse} returns this
+ */
+proto.tournament_management.RegistrationResponse.prototype.setTournamentId = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional int32 planned_teams_count = 4;
+ * @return {number}
+ */
+proto.tournament_management.RegistrationResponse.prototype.getPlannedTeamsCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.RegistrationResponse} returns this
+ */
+proto.tournament_management.RegistrationResponse.prototype.setPlannedTeamsCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+/**
+ * optional int32 actual_teams_count = 5;
+ * @return {number}
+ */
+proto.tournament_management.RegistrationResponse.prototype.getActualTeamsCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.RegistrationResponse} returns this
+ */
+proto.tournament_management.RegistrationResponse.prototype.setActualTeamsCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 5, value);
+};
+
+
+/**
+ * optional double amount_per_team = 6;
+ * @return {number}
+ */
+proto.tournament_management.RegistrationResponse.prototype.getAmountPerTeam = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 6, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.RegistrationResponse} returns this
+ */
+proto.tournament_management.RegistrationResponse.prototype.setAmountPerTeam = function(value) {
+  return jspb.Message.setProto3FloatField(this, 6, value);
+};
+
+
+/**
+ * optional double total_amount = 7;
+ * @return {number}
+ */
+proto.tournament_management.RegistrationResponse.prototype.getTotalAmount = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 7, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.RegistrationResponse} returns this
+ */
+proto.tournament_management.RegistrationResponse.prototype.setTotalAmount = function(value) {
+  return jspb.Message.setProto3FloatField(this, 7, value);
+};
+
+
+/**
+ * optional double discount_amount = 8;
+ * @return {number}
+ */
+proto.tournament_management.RegistrationResponse.prototype.getDiscountAmount = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 8, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.RegistrationResponse} returns this
+ */
+proto.tournament_management.RegistrationResponse.prototype.setDiscountAmount = function(value) {
+  return jspb.Message.setProto3FloatField(this, 8, value);
+};
+
+
+/**
+ * optional double actual_paid_amount = 9;
+ * @return {number}
+ */
+proto.tournament_management.RegistrationResponse.prototype.getActualPaidAmount = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 9, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.RegistrationResponse} returns this
+ */
+proto.tournament_management.RegistrationResponse.prototype.setActualPaidAmount = function(value) {
+  return jspb.Message.setProto3FloatField(this, 9, value);
+};
+
+
+/**
+ * optional string payment_status = 10;
+ * @return {string}
+ */
+proto.tournament_management.RegistrationResponse.prototype.getPaymentStatus = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 10, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.RegistrationResponse} returns this
+ */
+proto.tournament_management.RegistrationResponse.prototype.setPaymentStatus = function(value) {
+  return jspb.Message.setProto3StringField(this, 10, value);
+};
+
+
+/**
+ * optional string currency = 11;
+ * @return {string}
+ */
+proto.tournament_management.RegistrationResponse.prototype.getCurrency = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 11, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.RegistrationResponse} returns this
+ */
+proto.tournament_management.RegistrationResponse.prototype.setCurrency = function(value) {
+  return jspb.Message.setProto3StringField(this, 11, value);
+};
+
+
+/**
+ * optional string created_at = 12;
+ * @return {string}
+ */
+proto.tournament_management.RegistrationResponse.prototype.getCreatedAt = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 12, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.RegistrationResponse} returns this
+ */
+proto.tournament_management.RegistrationResponse.prototype.setCreatedAt = function(value) {
+  return jspb.Message.setProto3StringField(this, 12, value);
+};
+
+
+/**
+ * optional string updated_at = 13;
+ * @return {string}
+ */
+proto.tournament_management.RegistrationResponse.prototype.getUpdatedAt = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 13, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.RegistrationResponse} returns this
+ */
+proto.tournament_management.RegistrationResponse.prototype.setUpdatedAt = function(value) {
+  return jspb.Message.setProto3StringField(this, 13, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.DetailedRegistrationResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.DetailedRegistrationResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.DetailedRegistrationResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    registrationId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    schoolId: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    tournamentId: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    schoolName: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    schoolEmail: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    schoolType: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    contactEmail: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    contactPersonName: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    country: jspb.Message.getFieldWithDefault(msg, 9, ""),
+    province: jspb.Message.getFieldWithDefault(msg, 10, ""),
+    district: jspb.Message.getFieldWithDefault(msg, 11, ""),
+    address: jspb.Message.getFieldWithDefault(msg, 12, ""),
+    plannedTeamsCount: jspb.Message.getFieldWithDefault(msg, 13, 0),
+    actualTeamsCount: jspb.Message.getFieldWithDefault(msg, 14, 0),
+    amountPerTeam: jspb.Message.getFloatingPointFieldWithDefault(msg, 15, 0.0),
+    totalAmount: jspb.Message.getFloatingPointFieldWithDefault(msg, 16, 0.0),
+    discountAmount: jspb.Message.getFloatingPointFieldWithDefault(msg, 17, 0.0),
+    actualPaidAmount: jspb.Message.getFloatingPointFieldWithDefault(msg, 18, 0.0),
+    paymentStatus: jspb.Message.getFieldWithDefault(msg, 19, ""),
+    currency: jspb.Message.getFieldWithDefault(msg, 20, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.DetailedRegistrationResponse}
+ */
+proto.tournament_management.DetailedRegistrationResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.DetailedRegistrationResponse;
+  return proto.tournament_management.DetailedRegistrationResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.DetailedRegistrationResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.DetailedRegistrationResponse}
+ */
+proto.tournament_management.DetailedRegistrationResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setRegistrationId(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setSchoolId(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTournamentId(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSchoolName(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSchoolEmail(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSchoolType(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setContactEmail(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setContactPersonName(value);
+      break;
+    case 9:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCountry(value);
+      break;
+    case 10:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setProvince(value);
+      break;
+    case 11:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDistrict(value);
+      break;
+    case 12:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAddress(value);
+      break;
+    case 13:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPlannedTeamsCount(value);
+      break;
+    case 14:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setActualTeamsCount(value);
+      break;
+    case 15:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setAmountPerTeam(value);
+      break;
+    case 16:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setTotalAmount(value);
+      break;
+    case 17:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setDiscountAmount(value);
+      break;
+    case 18:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setActualPaidAmount(value);
+      break;
+    case 19:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPaymentStatus(value);
+      break;
+    case 20:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCurrency(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.DetailedRegistrationResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.DetailedRegistrationResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.DetailedRegistrationResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getRegistrationId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getSchoolId();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+  f = message.getTournamentId();
+  if (f !== 0) {
+    writer.writeInt32(
+      3,
+      f
+    );
+  }
+  f = message.getSchoolName();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getSchoolEmail();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getSchoolType();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getContactEmail();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
+      f
+    );
+  }
+  f = message.getContactPersonName();
+  if (f.length > 0) {
+    writer.writeString(
+      8,
+      f
+    );
+  }
+  f = message.getCountry();
+  if (f.length > 0) {
+    writer.writeString(
+      9,
+      f
+    );
+  }
+  f = message.getProvince();
+  if (f.length > 0) {
+    writer.writeString(
+      10,
+      f
+    );
+  }
+  f = message.getDistrict();
+  if (f.length > 0) {
+    writer.writeString(
+      11,
+      f
+    );
+  }
+  f = message.getAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      12,
+      f
+    );
+  }
+  f = message.getPlannedTeamsCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      13,
+      f
+    );
+  }
+  f = message.getActualTeamsCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      14,
+      f
+    );
+  }
+  f = message.getAmountPerTeam();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      15,
+      f
+    );
+  }
+  f = message.getTotalAmount();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      16,
+      f
+    );
+  }
+  f = message.getDiscountAmount();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      17,
+      f
+    );
+  }
+  f = message.getActualPaidAmount();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      18,
+      f
+    );
+  }
+  f = message.getPaymentStatus();
+  if (f.length > 0) {
+    writer.writeString(
+      19,
+      f
+    );
+  }
+  f = message.getCurrency();
+  if (f.length > 0) {
+    writer.writeString(
+      20,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 registration_id = 1;
+ * @return {number}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getRegistrationId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setRegistrationId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional int32 school_id = 2;
+ * @return {number}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getSchoolId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setSchoolId = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional int32 tournament_id = 3;
+ * @return {number}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getTournamentId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setTournamentId = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional string school_name = 4;
+ * @return {string}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getSchoolName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setSchoolName = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string school_email = 5;
+ * @return {string}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getSchoolEmail = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setSchoolEmail = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional string school_type = 6;
+ * @return {string}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getSchoolType = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setSchoolType = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional string contact_email = 7;
+ * @return {string}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getContactEmail = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setContactEmail = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
+};
+
+
+/**
+ * optional string contact_person_name = 8;
+ * @return {string}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getContactPersonName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setContactPersonName = function(value) {
+  return jspb.Message.setProto3StringField(this, 8, value);
+};
+
+
+/**
+ * optional string country = 9;
+ * @return {string}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getCountry = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setCountry = function(value) {
+  return jspb.Message.setProto3StringField(this, 9, value);
+};
+
+
+/**
+ * optional string province = 10;
+ * @return {string}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getProvince = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 10, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setProvince = function(value) {
+  return jspb.Message.setProto3StringField(this, 10, value);
+};
+
+
+/**
+ * optional string district = 11;
+ * @return {string}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getDistrict = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 11, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setDistrict = function(value) {
+  return jspb.Message.setProto3StringField(this, 11, value);
+};
+
+
+/**
+ * optional string address = 12;
+ * @return {string}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 12, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 12, value);
+};
+
+
+/**
+ * optional int32 planned_teams_count = 13;
+ * @return {number}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getPlannedTeamsCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 13, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setPlannedTeamsCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 13, value);
+};
+
+
+/**
+ * optional int32 actual_teams_count = 14;
+ * @return {number}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getActualTeamsCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 14, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setActualTeamsCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 14, value);
+};
+
+
+/**
+ * optional double amount_per_team = 15;
+ * @return {number}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getAmountPerTeam = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 15, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setAmountPerTeam = function(value) {
+  return jspb.Message.setProto3FloatField(this, 15, value);
+};
+
+
+/**
+ * optional double total_amount = 16;
+ * @return {number}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getTotalAmount = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 16, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setTotalAmount = function(value) {
+  return jspb.Message.setProto3FloatField(this, 16, value);
+};
+
+
+/**
+ * optional double discount_amount = 17;
+ * @return {number}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getDiscountAmount = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 17, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setDiscountAmount = function(value) {
+  return jspb.Message.setProto3FloatField(this, 17, value);
+};
+
+
+/**
+ * optional double actual_paid_amount = 18;
+ * @return {number}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getActualPaidAmount = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 18, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setActualPaidAmount = function(value) {
+  return jspb.Message.setProto3FloatField(this, 18, value);
+};
+
+
+/**
+ * optional string payment_status = 19;
+ * @return {string}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getPaymentStatus = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 19, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setPaymentStatus = function(value) {
+  return jspb.Message.setProto3StringField(this, 19, value);
+};
+
+
+/**
+ * optional string currency = 20;
+ * @return {string}
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.getCurrency = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 20, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.DetailedRegistrationResponse} returns this
+ */
+proto.tournament_management.DetailedRegistrationResponse.prototype.setCurrency = function(value) {
+  return jspb.Message.setProto3StringField(this, 20, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.ListRegistrationItem.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.ListRegistrationItem.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.ListRegistrationItem} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.ListRegistrationItem.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    registrationId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    iDebateSchoolId: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    schoolName: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    schoolEmail: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    plannedTeamsCount: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    actualTeamsCount: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    totalAmount: jspb.Message.getFloatingPointFieldWithDefault(msg, 7, 0.0),
+    paymentStatus: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    currency: jspb.Message.getFieldWithDefault(msg, 9, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.ListRegistrationItem}
+ */
+proto.tournament_management.ListRegistrationItem.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.ListRegistrationItem;
+  return proto.tournament_management.ListRegistrationItem.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.ListRegistrationItem} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.ListRegistrationItem}
+ */
+proto.tournament_management.ListRegistrationItem.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setRegistrationId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setIDebateSchoolId(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSchoolName(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSchoolEmail(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPlannedTeamsCount(value);
+      break;
+    case 6:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setActualTeamsCount(value);
+      break;
+    case 7:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setTotalAmount(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPaymentStatus(value);
+      break;
+    case 9:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCurrency(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.ListRegistrationItem.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.ListRegistrationItem.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.ListRegistrationItem} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.ListRegistrationItem.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getRegistrationId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getIDebateSchoolId();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getSchoolName();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getSchoolEmail();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getPlannedTeamsCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      5,
+      f
+    );
+  }
+  f = message.getActualTeamsCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      6,
+      f
+    );
+  }
+  f = message.getTotalAmount();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      7,
+      f
+    );
+  }
+  f = message.getPaymentStatus();
+  if (f.length > 0) {
+    writer.writeString(
+      8,
+      f
+    );
+  }
+  f = message.getCurrency();
+  if (f.length > 0) {
+    writer.writeString(
+      9,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 registration_id = 1;
+ * @return {number}
+ */
+proto.tournament_management.ListRegistrationItem.prototype.getRegistrationId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ListRegistrationItem} returns this
+ */
+proto.tournament_management.ListRegistrationItem.prototype.setRegistrationId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string i_debate_school_id = 2;
+ * @return {string}
+ */
+proto.tournament_management.ListRegistrationItem.prototype.getIDebateSchoolId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.ListRegistrationItem} returns this
+ */
+proto.tournament_management.ListRegistrationItem.prototype.setIDebateSchoolId = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string school_name = 3;
+ * @return {string}
+ */
+proto.tournament_management.ListRegistrationItem.prototype.getSchoolName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.ListRegistrationItem} returns this
+ */
+proto.tournament_management.ListRegistrationItem.prototype.setSchoolName = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string school_email = 4;
+ * @return {string}
+ */
+proto.tournament_management.ListRegistrationItem.prototype.getSchoolEmail = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.ListRegistrationItem} returns this
+ */
+proto.tournament_management.ListRegistrationItem.prototype.setSchoolEmail = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional int32 planned_teams_count = 5;
+ * @return {number}
+ */
+proto.tournament_management.ListRegistrationItem.prototype.getPlannedTeamsCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ListRegistrationItem} returns this
+ */
+proto.tournament_management.ListRegistrationItem.prototype.setPlannedTeamsCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 5, value);
+};
+
+
+/**
+ * optional int32 actual_teams_count = 6;
+ * @return {number}
+ */
+proto.tournament_management.ListRegistrationItem.prototype.getActualTeamsCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ListRegistrationItem} returns this
+ */
+proto.tournament_management.ListRegistrationItem.prototype.setActualTeamsCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 6, value);
+};
+
+
+/**
+ * optional double total_amount = 7;
+ * @return {number}
+ */
+proto.tournament_management.ListRegistrationItem.prototype.getTotalAmount = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 7, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ListRegistrationItem} returns this
+ */
+proto.tournament_management.ListRegistrationItem.prototype.setTotalAmount = function(value) {
+  return jspb.Message.setProto3FloatField(this, 7, value);
+};
+
+
+/**
+ * optional string payment_status = 8;
+ * @return {string}
+ */
+proto.tournament_management.ListRegistrationItem.prototype.getPaymentStatus = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.ListRegistrationItem} returns this
+ */
+proto.tournament_management.ListRegistrationItem.prototype.setPaymentStatus = function(value) {
+  return jspb.Message.setProto3StringField(this, 8, value);
+};
+
+
+/**
+ * optional string currency = 9;
+ * @return {string}
+ */
+proto.tournament_management.ListRegistrationItem.prototype.getCurrency = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.ListRegistrationItem} returns this
+ */
+proto.tournament_management.ListRegistrationItem.prototype.setCurrency = function(value) {
+  return jspb.Message.setProto3StringField(this, 9, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.tournament_management.ListRegistrationsResponse.repeatedFields_ = [1];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.tournament_management.ListRegistrationsResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.tournament_management.ListRegistrationsResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.tournament_management.ListRegistrationsResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.ListRegistrationsResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    registrationsList: jspb.Message.toObjectList(msg.getRegistrationsList(),
+    proto.tournament_management.ListRegistrationItem.toObject, includeInstance),
+    nextPageToken: jspb.Message.getFieldWithDefault(msg, 2, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.tournament_management.ListRegistrationsResponse}
+ */
+proto.tournament_management.ListRegistrationsResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.tournament_management.ListRegistrationsResponse;
+  return proto.tournament_management.ListRegistrationsResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.tournament_management.ListRegistrationsResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.tournament_management.ListRegistrationsResponse}
+ */
+proto.tournament_management.ListRegistrationsResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = new proto.tournament_management.ListRegistrationItem;
+      reader.readMessage(value,proto.tournament_management.ListRegistrationItem.deserializeBinaryFromReader);
+      msg.addRegistrations(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setNextPageToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.tournament_management.ListRegistrationsResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.tournament_management.ListRegistrationsResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.tournament_management.ListRegistrationsResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.tournament_management.ListRegistrationsResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getRegistrationsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      1,
+      f,
+      proto.tournament_management.ListRegistrationItem.serializeBinaryToWriter
+    );
+  }
+  f = message.getNextPageToken();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * repeated ListRegistrationItem registrations = 1;
+ * @return {!Array<!proto.tournament_management.ListRegistrationItem>}
+ */
+proto.tournament_management.ListRegistrationsResponse.prototype.getRegistrationsList = function() {
+  return /** @type{!Array<!proto.tournament_management.ListRegistrationItem>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.tournament_management.ListRegistrationItem, 1));
+};
+
+
+/**
+ * @param {!Array<!proto.tournament_management.ListRegistrationItem>} value
+ * @return {!proto.tournament_management.ListRegistrationsResponse} returns this
+*/
+proto.tournament_management.ListRegistrationsResponse.prototype.setRegistrationsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.tournament_management.ListRegistrationItem=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.tournament_management.ListRegistrationItem}
+ */
+proto.tournament_management.ListRegistrationsResponse.prototype.addRegistrations = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.tournament_management.ListRegistrationItem, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.tournament_management.ListRegistrationsResponse} returns this
+ */
+proto.tournament_management.ListRegistrationsResponse.prototype.clearRegistrationsList = function() {
+  return this.setRegistrationsList([]);
+};
+
+
+/**
+ * optional int32 next_page_token = 2;
+ * @return {number}
+ */
+proto.tournament_management.ListRegistrationsResponse.prototype.getNextPageToken = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ListRegistrationsResponse} returns this
+ */
+proto.tournament_management.ListRegistrationsResponse.prototype.setNextPageToken = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
 };
 
 

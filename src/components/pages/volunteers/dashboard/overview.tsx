@@ -1,4 +1,5 @@
 import { Icons } from "@/components/icons";
+import { cn } from "@/lib/utils";
 import React from "react";
 
 interface OverviewProps {
@@ -16,6 +17,59 @@ function Overview({
   totalTournamentsAttended,
   totalTournamentsJudged,
 }: OverviewProps) {
+  const changeColorBasedOnPercentage = (percentage: string) => {
+    // Remove the % sign if it exists in the input
+    const cleanPercentage = percentage.replace('%', '');
+    
+    // Handle infinity cases
+    if (cleanPercentage.includes("∞")) {
+      return {
+        color: "text-muted-text",
+        textWithNoSign: "0.00%",
+        background: "bg-accent",
+        isZero: true,
+      };
+    }
+
+    if (cleanPercentage.includes("+")) {
+      const value = cleanPercentage.replace("+", "");
+      const isZero = parseFloat(value) === 0;
+      return {
+        color: "text-success-foreground",
+        textWithNoSign: `${value}%`,
+        background: "bg-accent",
+        isZero,
+      };
+    } else if (cleanPercentage.includes("-")) {
+      const value = cleanPercentage.replace("-", "");
+      const isZero = parseFloat(value) === 0;
+      return {
+        color: "text-destructive",
+        textWithNoSign: `${value}%`,
+        background: "bg-destructive/10",
+        isZero,
+      };
+    } else {
+      const isZero = parseFloat(cleanPercentage) === 0;
+      return {
+        color: "text-muted-text",
+        textWithNoSign: `${cleanPercentage}%`,
+        background: "bg-accent",
+        isZero,
+      };
+    }
+  };
+
+  const renderChevron = (percentage: string) => {
+    const { isZero, color } = changeColorBasedOnPercentage(percentage);
+    if (isZero) {
+      return <Icons.chevronDown size={14} className={cn(color)} />;
+    }
+    return percentage.includes("-") ? 
+      <Icons.chevronDown size={14} className={cn(color)} /> :
+      <Icons.chevronUp size={14} className={cn(color)} />;
+  };
+
   return (
     <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-x gap-4 px-4 py-6 bg-background rounded-lg border-2 border-muted">
       <div className="flex flex-col gap-2 cursor-pointer">
@@ -23,10 +77,25 @@ function Overview({
           <h3 className="font-semibold text-sm capitalize text-foreground">
             Total Tournaments
           </h3>
-          <div className="flex items-center bg-destructive-foreground px-0.5 rounded-full">
-            <Icons.chevronUp size={14} className="text-success-foreground" />
-            <small className="text-xs text-success-foreground">
-              {totalTournamentsPercentageChange}
+          <div
+            className={cn(
+              "flex items-center px-0.5 rounded-full",
+              changeColorBasedOnPercentage(totalTournamentsPercentageChange)
+                .background
+            )}
+          >
+            {renderChevron(totalTournamentsPercentageChange)}
+            <small
+              className={cn(
+                "text-xs",
+                changeColorBasedOnPercentage(totalTournamentsPercentageChange)
+                  .color
+              )}
+            >
+              {
+                changeColorBasedOnPercentage(totalTournamentsPercentageChange)
+                  .textWithNoSign
+              }
             </small>
           </div>
         </div>
@@ -41,10 +110,25 @@ function Overview({
             <h3 className="font-semibold text-sm capitalize text-foreground">
               Tournaments Attended
             </h3>
-            <div className="flex items-center bg-destructive/10 rounded-full px-0.5">
-              <Icons.chevronDown size={14} className="text-destructive" />
-              <small className="text-xs text-destructive">
-                {totalTournamentsPercentageChange}
+            <div
+              className={cn(
+                "flex items-center rounded-full px-0.5",
+                changeColorBasedOnPercentage(totalTournamentsPercentageChange)
+                  .background
+              )}
+            >
+              {renderChevron(totalTournamentsPercentageChange)}
+              <small
+                className={cn(
+                  "text-xs",
+                  changeColorBasedOnPercentage(totalTournamentsPercentageChange)
+                    .color
+                )}
+              >
+                {
+                  changeColorBasedOnPercentage(totalTournamentsPercentageChange)
+                    .textWithNoSign
+                }
               </small>
             </div>
           </div>
@@ -60,10 +144,25 @@ function Overview({
             <h3 className="font-semibold text-sm capitalize text-foreground">
               Upcoming Tournaments
             </h3>
-            <div className="flex items-center bg-destructive-foreground px-0.5 rounded-full">
-              <Icons.chevronUp size={14} className="text-success-foreground" />
-              <small className="text-xs text-success-foreground">
-                {upcomingTournamentsPercentageChange}
+            <div
+              className={cn(
+                "flex items-center rounded-full px-0.5",
+                changeColorBasedOnPercentage(upcomingTournamentsPercentageChange)
+                  .background
+              )}
+            >
+              {renderChevron(upcomingTournamentsPercentageChange)}
+              <small
+                className={cn(
+                  "text-xs",
+                  changeColorBasedOnPercentage(upcomingTournamentsPercentageChange)
+                    .color
+                )}
+              >
+                {
+                  changeColorBasedOnPercentage(upcomingTournamentsPercentageChange)
+                    .textWithNoSign
+                }
               </small>
             </div>
           </div>

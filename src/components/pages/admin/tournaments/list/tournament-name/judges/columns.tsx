@@ -31,6 +31,7 @@ import {
   GetJudgeResponse,
   Judge,
   RoomInfo,
+  RoomStatus,
 } from "@/lib/grpc/proto/debate_management/debate_pb";
 import {
   GetTournamentJudgeProps,
@@ -43,6 +44,8 @@ import {
 } from "@/core/debates/judges";
 import { useParams } from "next/navigation";
 import { getTournamentRooms } from "@/core/debates/rooms";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 export const columns: ColumnDef<Judge.AsObject>[] = [
   {
@@ -159,23 +162,25 @@ interface RoundRoomsProps {
   currentRoom: string;
   onRoomSelect: (roomId: string) => void;
   isEditing: boolean;
-  rooms: RoomInfo.AsObject[];
+  rooms: RoomStatus.AsObject[];
 }
 
 const RoomAssignmentPanel = ({ row }: { row: Judge.AsObject }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [judge, setJudge] = useState<GetJudgeResponse.AsObject | null>(null);
   const [isGettingJudge, setIsGettingJudge] = useState(false);
-  const [rooms, setRooms] = useState<RoomInfo.AsObject[]>([]);
+  const [rooms, setRooms] = useState<RoomStatus.AsObject[]>([]);
+  // const [, ] = useState<RoomStatus.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
   const param = useParams();
   const tournament_id = param.name;
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!user) return;
     fetchJudgeData();
     fetchRoomsData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [row.judgeId, user, tournament_id]);
 
   const fetchJudgeData = () => {
@@ -354,14 +359,16 @@ const RoomAssignmentPanel = ({ row }: { row: Judge.AsObject }) => {
   const updateJudge = async () => {
     if (!user || !judge) return;
 
-    const preliminary: Record<string, { room_id: number, roomName: string }> = {};
-    const elimination: Record<string, { room_id: number, roomName: string }> = {};
+    const preliminary: Record<string, { roomId: number; roomName: string }> =
+      {};
+    const elimination: Record<string, { roomId: number; roomName: string }> =
+      {};
 
     const updateRounds = (roundType: "preliminaryMap" | "eliminationMap") => {
       if (Array.isArray(judge[roundType])) {
         judge[roundType].forEach((round, index) => {
           if (Array.isArray(round) && round.length >= 2 && round[1]) {
-             const roomId = rooms.find(
+            const roomId = rooms.find(
               (room) => room.roomName === round[1].roomName
             )?.roomId;
             const roomName = rooms.find(
@@ -370,7 +377,7 @@ const RoomAssignmentPanel = ({ row }: { row: Judge.AsObject }) => {
             if (roomId) {
               (roundType === "preliminaryMap" ? preliminary : elimination)[
                 String(index + 1)
-              ] = { room_id: roomId, roomName: roomName ?? ""};
+              ] = { roomId: roomId, roomName: roomName ?? "" };
             }
           }
         });
@@ -389,13 +396,35 @@ const RoomAssignmentPanel = ({ row }: { row: Judge.AsObject }) => {
     };
 
     // console.log("updateData", updateData);
-    try {
-      await updateTournamentJudge(updateData as any);
-      fetchJudgeData();
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Error updating judge:", error);
-    }
+    await updateTournamentJudge(updateData as any)
+      .then((res) => {
+        fetchJudgeData();
+        toast({
+          variant: "success",
+          title: "Success",
+          description:
+            "Your account is pending approval. You will be notified once your account is approved.",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+        setIsEditing(false);
+      })
+      .catch((err) => {
+        console.error("Error updating judge:", err);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: err.message,
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
+      });
   };
 
   if (isGettingJudge) {

@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { ChevronDown, Dot, LucideIcon } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ChevronDown, ChevronRight, Dot, LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -39,6 +39,7 @@ interface CollapseMenuButtonProps {
   active: boolean;
   submenus: Submenu[];
   isOpen: boolean | undefined;
+  defaultOpen?: boolean;
 }
 
 export function CollapseMenuButton({
@@ -47,9 +48,16 @@ export function CollapseMenuButton({
   active,
   submenus,
   isOpen,
+  defaultOpen = false,
 }: CollapseMenuButtonProps) {
   const isSubmenuActive = submenus.some((submenu) => submenu.active);
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(isSubmenuActive);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(isSubmenuActive || defaultOpen);
+
+  // Update collapsed state when defaultOpen changes
+  useEffect(() => {
+    setIsCollapsed(defaultOpen || isSubmenuActive);
+  }, [defaultOpen, isSubmenuActive]);
+
   return isOpen ? (
     <Collapsible
       open={isCollapsed}
@@ -57,13 +65,13 @@ export function CollapseMenuButton({
       className="w-full"
     >
       <CollapsibleTrigger
-        className="[&[data-state=open]>div>div>svg]:rotate-180 mb-1"
+        className="[&[data-state=open]>div>div>svg]:rotate-90 mb-1"
         asChild
       >
         <Button
-          variant={active ? "secondary" : "ghost"}
+          variant={active ? "default" : "outline"}
           className={cn(
-            "w-full justify-start h-10 mb-1 text-foreground font-medium hover:bg-input border-none ring-0 hover:text-foreground p-0",
+            "w-full justify-start h-10 mb-1 text-foreground font-medium bg-transparent hover:bg-input border-none ring-0 hover:text-foreground p-0 pr-2",
             !active ? "bg-transparent" : "bg-input"
           )}
         >
@@ -77,8 +85,7 @@ export function CollapseMenuButton({
                   "max-w-[150px] truncate",
                   isOpen
                     ? "translate-x-0 opacity-100"
-                    : "-translate-x-96 opacity-0",
-                  !active && "group-hover:text-primary"
+                    : "-translate-x-96 opacity-0"
                 )}
               >
                 {label}
@@ -86,18 +93,15 @@ export function CollapseMenuButton({
             </div>
             <div
               className={cn(
-                "whitespace-nowrap mr-2",
+                "whitespace-nowrap",
                 isOpen
                   ? "translate-x-0 opacity-100"
                   : "-translate-x-96 opacity-0"
               )}
             >
-              <ChevronDown
+              <ChevronRight
                 size={18}
-                className={cn(
-                  "transition-transform duration-200",
-                  !active && "group-hover:text-primary"
-                )}
+                className="transition-transform duration-200"
               />
             </div>
           </div>
@@ -107,19 +111,15 @@ export function CollapseMenuButton({
         {submenus.map(({ href, label, active }, index) => (
           <Button
             key={index}
-            variant={active ? "secondary" : "ghost"}
+            variant={active ? "ghost" : "outline"}
             className={cn(
-              "w-full justify-start h-10 mb-1 text-foreground group hover:bg-input",
-              active && "bg-input hover:bg-input"
+              "w-full justify-start h-10 mb-1 text-foreground font-medium bg-transparent hover:bg-input border-none ring-0 hover:text-foreground p-0 pr-2",
+              !active ? "bg-transparent" : "bg-input"
             )}
             asChild
           >
             <Link href={href}>
-              <span className="mr-4 ml-2">
-                <Dot
-                  size={18}
-                />
-              </span>
+              <span className="mr-4 ml-2" />
               <p
                 className={cn(
                   "max-w-[170px] truncate",
@@ -142,10 +142,9 @@ export function CollapseMenuButton({
           <TooltipTrigger asChild>
             <DropdownMenuTrigger asChild>
               <Button
-                variant={active ? "secondary" : "ghost"}
+                variant={active ? "ghost" : "outline"}
                 className={cn(
-                  "w-full justify-start h-10 mb-1 text-background font-bold group",
-                  active && "bg-input"
+                  "w-full justify-start h-10 mb-1 text-foreground font-medium bg-transparent hover:bg-input border-none ring-0 hover:text-foreground p-0 pr-2"
                 )}
               >
                 <div className="w-full items-center flex justify-between">
@@ -156,8 +155,7 @@ export function CollapseMenuButton({
                     <p
                       className={cn(
                         "max-w-[200px] truncate",
-                        isOpen === false ? "opacity-0" : "opacity-100",
-                        !active && "group-hover:text-primary"
+                        isOpen === false ? "opacity-0" : "opacity-100"
                       )}
                     >
                       {label}
