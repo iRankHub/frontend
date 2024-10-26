@@ -40,7 +40,6 @@ function Tournaments() {
         const uniqueTournaments = Array.from(
           new Map(tournamentsRes.tournamentsList.map(item => [item.tournamentId, item])).values()
         );
-        console.log(uniqueTournaments)
         setTournaments(uniqueTournaments);
 
         if (uniqueTournaments.length < PAGE_SIZE_COUNT) {
@@ -111,7 +110,7 @@ function Tournaments() {
         </div>
       )}
 
-      <div className="p-5">
+      <div className="p-5 grid place-content-center">
         {tournaments.length >= PAGE_SIZE_COUNT && hasMoreData && (
           <Button
             type="button"

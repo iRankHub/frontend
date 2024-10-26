@@ -10,6 +10,7 @@ import {
 } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { getTournamentSchoolRanking } from "@/core/debates/rankings";
+import { cn } from "@/lib/utils";
 
 type Props = {
   tournamentId: number;
@@ -55,7 +56,15 @@ function Schools({ tournamentId }: Props) {
       <div className="w-full bg-background p-8 px-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-3">
           {schoolsRankings.slice(0, 3).map((school, index) => (
-            <WinnerCard key={index} school={school} />
+            <>
+              {index < 2 ? (
+                <WinnerCard key={index} school={school} count={index + 1} />
+              ) : (
+                <div className="w-full sm:w-auto sm:col-span-2 md:col-span-1 mx-auto">
+                  <WinnerCard key={index} school={school} count={index + 1} />
+                </div>
+              )}
+            </>
           ))}
         </div>
         <DataTable data={schoolsRankings.slice(3)} columns={columns} />
@@ -66,18 +75,22 @@ function Schools({ tournamentId }: Props) {
 
 interface WinnerCardProps {
   school: SchoolRanking.AsObject;
+  count: number;
 }
 
-const WinnerCard = ({ school }: WinnerCardProps) => {
+const WinnerCard = ({ school, count }: WinnerCardProps) => {
   return (
     <Card>
       <CardContent className="flex gap-3 p-2">
         <div className="relative w-[73px] h-20 rounded-md overflow-hidden">
           <Image
-            src="https://res.cloudinary.com/dmgv5azym/image/upload/v1701766208/samples/smile.jpg"
+            src={`/static/images/medal-${count}.png`}
             alt="user image"
             fill
-            className="w-full h-full object-cover"
+            className={cn(
+              "w-full h-full object-cover",
+              count === 1 && "scale-125"
+            )}
           />
         </div>
         <div className="flex-1">
@@ -86,14 +99,6 @@ const WinnerCard = ({ school }: WinnerCardProps) => {
               <h3 className="text-foreground font-semibold">
                 {school.schoolName}
               </h3>
-            </div>
-            <div className="w-8 h-8 relative">
-              <Image
-                src="/static/images/medal-1.png"
-                alt="medal first"
-                fill
-                className="w-full h-full"
-              />
             </div>
           </div>
           <div className="grid grid-cols-3 gap-2 mt-2">
@@ -122,5 +127,4 @@ const WinnerCard = ({ school }: WinnerCardProps) => {
     </Card>
   );
 };
-
 export default Schools;

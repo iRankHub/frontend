@@ -61,22 +61,24 @@ const Page = () => {
               School
             </h3>
           </div>
-          <div
-            className={cn(
-              "group flex flex-col justify-center items-center gap-4 shadow-lg border-2 rounded-2xl hover:border-primary cursor-pointer border-[#D9D9D9] w-64 h-64",
-              selected === "volunteer" && "border-primary"
-            )}
-            onClick={() => setSelected("volunteer")}
-          >
-            <Image
-              src="/static/images/Education-Student.png"
-              alt="Student"
-              width={142}
-              height={127}
-            />
-            <h3 className="text-foreground dark:text-background group-hover:text-primary text-lg font-medium">
-              Volunteer
-            </h3>
+          <div className="sm:col-span-2 xl:col-span-1 mx-auto">
+            <div
+              className={cn(
+                "group flex flex-col justify-center items-center gap-4 shadow-lg border-2 rounded-2xl hover:border-primary cursor-pointer border-[#D9D9D9] w-64 h-64",
+                selected === "volunteer" && "border-primary"
+              )}
+              onClick={() => setSelected("volunteer")}
+            >
+              <Image
+                src="/static/images/Education-Student.png"
+                alt="Student"
+                width={142}
+                height={127}
+              />
+              <h3 className="text-foreground dark:text-background group-hover:text-primary text-lg font-medium">
+                Volunteer
+              </h3>
+            </div>
           </div>
         </div>
         <Button

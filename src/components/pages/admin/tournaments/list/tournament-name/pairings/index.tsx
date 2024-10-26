@@ -136,7 +136,7 @@ const PairingsTable: FC<PairingsTableProps> = ({
         toast({
           variant: "destructive",
           title: "Error",
-          description: err.message,
+          description: "Something went wrong. This can happen when a student is in more than 1 team!",
           action: (
             <ToastAction
               altText="Close"
@@ -222,7 +222,7 @@ const PairingsTable: FC<PairingsTableProps> = ({
             <TabsList className="mx-5 mt-3 absolute top-16">
               {Array.from({ length: totalRounds }, (_, i) => i + 1).map(
                 (round) => (
-                  <TabsTrigger key={round} value={`round ${round}`}>
+                  <TabsTrigger key={round} value={`round ${round}`} className="data-[state=active]:text-white">
                     Round {round}
                   </TabsTrigger>
                 )

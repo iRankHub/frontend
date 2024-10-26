@@ -77,7 +77,7 @@ function CreateTournament() {
             size={"icon"}
             className="flex xl:hidden fixed right-5 bottom-5 bg-primary rounded-full cursor-pointer z-50 hover:bg-primary"
           >
-            <Icons.add className="text-white w-5 h-5 md:w-8 md:h-8" />
+            <Icons.menuRight className="text-white w-5 h-5 rotate-180" />
           </Button>
         </SheetTrigger>
         <LeaguesMobile

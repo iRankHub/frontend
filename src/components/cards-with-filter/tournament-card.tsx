@@ -129,9 +129,9 @@ const TournamentCard = ({
   return (
     <Card key={row.id} className="p-3">
       <div className="flex justify-between items-start">
-        <div className="flex-1 flex gap-2">
+        <div className="flex-1 flex flex-col md:flex-row gap-2">
           {tournament.imageUrl ? (
-            <div className="relative w-20 h-16 rounded overflow-hidden">
+            <div className="relative w-full md:w-20 h-24 md:h-16 rounded overflow-hidden">
               <Image
                 src={tournament.imageUrl}
                 alt={tournament.name}
@@ -140,7 +140,7 @@ const TournamentCard = ({
               />
             </div>
           ) : (
-            <div className="relative w-20 h-16 rounded overflow-hidden">
+            <div className="relative md:w-20 h-24 md:h-16 rounded overflow-hidden">
               <Image
                 src="/static/images/mic-speech.jpg"
                 alt="placeholder image"
@@ -149,32 +149,125 @@ const TournamentCard = ({
               />
             </div>
           )}
-          <div className="flex flex-col">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger className="line-clamp-1 text-sm font-medium mb-1 text-start">
-                  {getColumnValue(row, "name")}
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{getColumnValue(row, "name")}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <div className="text-xs">
-              <div className="text-muted-foreground">Venue</div>
+          <div className="flex justify-between items-start">
+            <div className="flex flex-col">
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger className="line-clamp-1 text-secondary-foreground text-xs font-medium">
-                    {getColumnValue(row, "location")}
+                  <TooltipTrigger className="line-clamp-1 text-sm font-medium mb-1 text-start">
+                    {getColumnValue(row, "name")}
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>{getColumnValue(row, "location")}</p>
+                    <p>{getColumnValue(row, "name")}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-              <div className="md:hidden mt-1">
-                <div className="text-muted-foreground">Date</div>
-                <div className="text-secondary-foreground font-medium">
+              <div className="text-xs">
+                <div className="text-muted-foreground">Venue</div>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger className="line-clamp-1 text-secondary-foreground text-xs font-medium text-start">
+                      {getColumnValue(row, "location")}
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{getColumnValue(row, "location")}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <div className="hidden mt-1">
+                  <div className="text-muted-foreground">Date</div>
+                  <div className="text-secondary-foreground font-medium">
+                    {formatDate(getColumnValue(row, "startDate"))} -{" "}
+                    {formatDate(getColumnValue(row, "endDate"))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col items-end">
+              <DropdownMenu>
+                <DropdownMenuTrigger className="md:hidden">
+                  <Button
+                    type="button"
+                    size="sm"
+                    className="gap-2 text-sm font-semibold p-0 w-6 h-6 bg-transparent hover:bg-transparent hover:text-foreground group"
+                  >
+                    <Icons.ellipsisVertical className="text-muted-foreground w-4 h-4 group-hover:text-foreground" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem className="p-0">
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="link"
+                      className="w-full justify-start text-foreground hover:no-underline"
+                    >
+                      <Link
+                        className="no-underline"
+                        href={`${linkRole()}/${getColumnValue(
+                          row,
+                          "tournamentId"
+                        )}`}
+                      >
+                        Go To Tournament
+                      </Link>
+                    </Button>
+                  </DropdownMenuItem>
+                  {userRole === "admin" && (
+                    <DropdownMenuItem className="p-0">
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="link"
+                        className="w-full justify-start text-foreground hover:no-underline"
+                      >
+                        <Link
+                          className="no-underline"
+                          href={`${linkRole()}/${getColumnValue(
+                            row,
+                            "tournamentId"
+                          )}/logistics/billings`}
+                        >
+                          Billings
+                        </Link>
+                      </Button>
+                    </DropdownMenuItem>
+                  )}
+                  {(userRole === "student" || userRole === "volunteer") && (
+                    <DropdownMenuItem className="p-0">
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="link"
+                        className="w-full justify-start text-foreground hover:no-underline"
+                      >
+                        <Link
+                          className="no-underline"
+                          href={`${linkRole()}/${getColumnValue(
+                            row,
+                            "tournamentId"
+                          )}/feedback`}
+                        >
+                          Feedback
+                        </Link>
+                      </Button>
+                    </DropdownMenuItem>
+                  )}
+                  {userRole === "admin" && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onSelect={() => setDialogOpen(true)}
+                        className="text-destructive focus:text-destructive"
+                      >
+                        Delete
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <div className="md:hidden">
+                <div className="text-muted-foreground text-end text-xs">Date</div>
+                <div className="text-secondary-foreground font-medium text-xs">
                   {formatDate(getColumnValue(row, "startDate"))} -{" "}
                   {formatDate(getColumnValue(row, "endDate"))}
                 </div>
@@ -184,7 +277,7 @@ const TournamentCard = ({
         </div>
         <div className="flex flex-col items-end">
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger className="hidden md:block">
               <Button
                 type="button"
                 size="sm"

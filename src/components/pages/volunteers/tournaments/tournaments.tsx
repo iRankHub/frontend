@@ -84,7 +84,7 @@ function Tournaments({}) {
         </div>
       )}
 
-      <div className="p-5">
+      <div className="p-5 grid place-content-center">
         {tournaments.length > 20 && (
           <Button
             type="button"

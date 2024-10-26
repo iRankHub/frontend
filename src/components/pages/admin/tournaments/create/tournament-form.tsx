@@ -47,6 +47,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { getSchools } from "@/core/users/schools";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type Props = {
   selectedLeague: League.AsObject | null;
@@ -69,6 +70,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
     null
   );
   const { toast } = useToast();
+  const router = useRouter();
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -174,7 +176,8 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
 
     setLoading(true);
     await createTournament({ ...options })
-      .then(() => {
+      .then((res) => {
+        res.tournament?.tournamentId
         setLoading(false);
         form.reset({
           fees_currency: "rwf",
@@ -206,6 +209,10 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
             </ToastAction>
           ),
         });
+
+        if (res.tournament) {
+          router.push(`/admin/tournaments/list/${res.tournament.tournamentId}`)
+        }
       })
       .catch((err) => {
         console.error(err.message);
@@ -255,6 +262,9 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
       });
   }, [user]);
 
+  const handleBack = () => {
+    router.push("/admin/tournaments/list")
+  }
   return (
     <div className="p-5">
       <Form {...form}>
@@ -819,7 +829,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
               </div>
 
               <div className="flex items-center justify-between mt-5 gap-3">
-                <Button type="button" variant={"outline"} className="w-full">
+                <Button type="button" variant={"outline"} className="w-full" onClick={handleBack}>
                   Cancel
                   <span className="sr-only">Cancel</span>
                 </Button>

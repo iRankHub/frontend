@@ -26,7 +26,7 @@ function Speakers({ tournamentId }: Props) {
       token: user.token,
       tournament_id: tournamentId,
       page: 1,
-      page_size: 10,
+      page_size: 500,
     };
 
     getTournamentStudentRanking(options)
@@ -41,7 +41,9 @@ function Speakers({ tournamentId }: Props) {
   return (
     <div className="w-full rounded-md overflow-hidden">
       <div className="flex items-center justify-between gap-5 p-5 py-4 bg-brown">
-        <h3 className="text-lg text-background font-medium text-white">Speaker Ranking</h3>
+        <h3 className="text-lg text-background font-medium text-white">
+          Speaker Ranking
+        </h3>
         {/* <Button
           type="button"
           className="border border-dashed border-white text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground group"
@@ -53,7 +55,15 @@ function Speakers({ tournamentId }: Props) {
       <div className="w-full bg-background p-8 px-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-3">
           {studentRankings.slice(0, 3).map((speaker, index) => (
-            <WinnerCard key={index} speaker={speaker} count={index + 1} />
+            <>
+              {index < 2 ? (
+                <WinnerCard key={index} speaker={speaker} count={index + 1} />
+              ) : (
+                <div className="w-full sm:w-auto sm:col-span-2 md:col-span-1 mx-auto">
+                  <WinnerCard key={index} speaker={speaker} count={index + 1} />
+                </div>
+              )}
+            </>
           ))}
         </div>
 
@@ -99,7 +109,7 @@ const WinnerCard = ({ speaker, count }: WinnerCardProps) => {
               />
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-2 mt-2">
+          <div className="grid grid-cols-3 gap-2">
             <div className="flex flex-col">
               <span className="text-xs text-muted-foreground">Points</span>
               <span className="text-foreground">{speaker.totalPoints}</span>

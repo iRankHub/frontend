@@ -35,13 +35,12 @@ import {
   TournamentFormat,
 } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
-import {
-  getTournamentFormat,
-} from "@/core/tournament/formats";
+import { getTournamentFormat } from "@/core/tournament/formats";
 import { School, UserSummary } from "@/lib/grpc/proto/user_management/users_pb";
 import { TimePicker } from "@/components/ui/time-picker";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 type Props = {
   tournament: Tournament.AsObject;
@@ -122,47 +121,62 @@ function TournamentUpdateForm({ tournament }: Props) {
       });
   }, [user, tournament.formatId, form]);
 
+  const tournImage = tournament.imageUrl;
   return (
     <div className="p-5">
       <Form {...form}>
         <form>
-          <div className="w-full bg-brown rounded-md h-60 p-5 flex flex-col md:flex-row justify-end md:items-end">
-            <div className="md:flex-1">
-              <div className="flex flex-col items-start md:flex-row md:items-center md:gap-5">
-                <div className="flex items-center gap-1 text-sm text-white font-medium">
-                  <Icons.calendar className="w-3.5 h-3.5 text-white" />
-                  {form.watch("startDate") && form.watch("endDate") ? (
-                    <span>
-                      {format(form.watch("startDate"), "PPP")} -{" "}
-                      {format(form.watch("endDate"), "PPP")}
-                    </span>
-                  ) : (
-                    "Pick a Date"
-                  )}
-                </div>
-                <div className="flex items-center gap-1 text-sm text-white font-medium">
-                  <Icons.mapPin className="w-3.5 h-3.5 text-white" />
-                  {form.watch("location") ? form.watch("location") : "Location"}
-                </div>
+          <div className="w-full bg-brown rounded-md h-60 relative overflow-hidden">
+            {tournImage && (
+              <div className="w-full h-full">
+                <Image
+                  src={tournImage}
+                  alt="Tournament Image"
+                  fill
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem className="col-span-2">
-                    <FormControl>
-                      <Input
-                        placeholder="Your Tournament Name"
-                        className="text-white placeholder:text-white text-xl font-bold w-72 mt-1 bg-transparent outline-none border-none focus-visible:outline-none focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 p-0 disabled:opacity-100"
-                        value={field.value}
-                        onChange={field.onChange}
-                        disabled={!isEditing}
-                      />
-                    </FormControl>
-                    <FormMessage className="font-bold" />
-                  </FormItem>
-                )}
-              />
+            )}
+            <div className="w-full px-5 absolute h-full bg-black/30 top-0 bottom-0 right-0 flex items-end">
+              <div className="flex-1">
+                <div className="flex items-center gap-5">
+                  <div className="flex items-center gap-1 text-sm text-white font-medium">
+                    <Icons.calendar className="w-3.5 h-3.5 text-white" />
+                    {form.watch("startDate") && form.watch("endDate") ? (
+                      <span>
+                        {format(form.watch("startDate"), "PPP")} -{" "}
+                        {format(form.watch("endDate"), "PPP")}
+                      </span>
+                    ) : (
+                      "Pick a Date"
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1 text-sm text-white font-medium">
+                    <Icons.mapPin className="w-3.5 h-3.5 text-white" />
+                    {form.watch("location")
+                      ? form.watch("location")
+                      : "Location"}
+                  </div>
+                </div>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem className="col-span-2">
+                      <FormControl>
+                        <Input
+                          placeholder="Your Tournament Name"
+                          className="text-white placeholder:text-white text-xl font-bold w-72 mt-1 bg-transparent outline-none border-none focus-visible:outline-none focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 p-0 disabled:opacity-100"
+                          value={field.value}
+                          onChange={field.onChange}
+                          disabled={!isEditing}
+                        />
+                      </FormControl>
+                      <FormMessage className="font-bold" />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
           </div>
           <div className="mt-10 w-full">

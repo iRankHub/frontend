@@ -29,6 +29,7 @@ import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
+  PopoverContentWithNoPrimitivePortal,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
@@ -53,6 +54,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useState } from "react";
 import { useTeamsStore } from "@/stores/admin/debate/teams.store";
 import DeleteTeam from "./delete-team";
+import { ToastAction } from "@/components/ui/toast";
 
 export const columns: ColumnDef<Team.AsObject>[] = [
   {
@@ -139,12 +141,21 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const { updateTeam: updateTeamStore } = useTeamsStore((state) => state);
+  const [openPopover, setOpenPopover] = useState<{
+    speaker_1: boolean;
+    speaker_2: boolean;
+    speaker_3: boolean;
+  }>({
+    speaker_1: false,
+    speaker_2: false,
+    speaker_3: false,
+  });
 
   const form = useForm<TeamInput>({
     resolver: zodResolver(createTeamSchema),
     defaultValues: {
       name: team.name,
-      speaker_1: String(team.speakersList[0].speakerId || 0),
+      speaker_1: String(team.speakersList[0].speakerId || ""),
       speaker_2: String(team.speakersList[1].speakerId || ""),
       speaker_3: String(team.speakersList[2].speakerId || ""),
     },
@@ -163,6 +174,15 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
   const updateTeam = async (data: TeamInput) => {
     if (!user) return;
 
+    // check if team name is not only numbers
+    if (!/[^0-9]/.test(data.name)) {
+      form.setError("name", {
+        type: "manual",
+        message: "Team name should contain at least one letter.",
+      });
+      return;
+    }
+
     const options: UpdateTeamType = {
       name: data.name,
       speakers: [
@@ -177,22 +197,31 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
     setLoading(true);
     await updateTournamentTeam(options)
       .then((res) => {
-        form.reset();
-        setSelectedUsers({
-          speaker_1: null,
-          speaker_2: null,
-          speaker_3: null,
-        });
         updateTeamStore(team.teamId, res);
         toast({
           title: "Team updated successfully",
           description: "Team has been updated successfully.",
           variant: "success",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
         });
         setOpen(false);
       })
       .catch((err) => {
         console.error(err.message);
+        toast({
+          title: "Error",
+          description: err.message,
+          variant: "destructive",
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
       })
       .finally(() => {
         setLoading(false);
@@ -212,34 +241,36 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
       })
       .catch((err) => {
         console.error(err.message);
+        toast({
+          title: "Error",
+          description: "Failed to fetch students list",
+          variant: "destructive",
+        });
       });
-  }, [user]);
+  }, [user, toast]);
 
   const handleUserSelect = (
     userId: string,
     fieldName: "speaker_1" | "speaker_2" | "speaker_3"
   ) => {
-    const currentSelectedUser = form.getValues(fieldName);
-
-    if (selectedUsers[fieldName] === userId) {
-      setSelectedUsers((prev) => ({
-        ...prev,
-        [fieldName]: null,
-      }));
-      form.setValue(fieldName, "");
-    } else {
-      if (currentSelectedUser) {
-        setSelectedUsers((prev) => ({
-          ...prev,
-          [fieldName]: null,
-        }));
+    setSelectedUsers((prev) => {
+      const newSelectedUsers = { ...prev };
+      if (prev[fieldName] === userId) {
+        newSelectedUsers[fieldName] = null;
+        form.setValue(fieldName, "");
+      } else {
+        // Remove the user from any other field they might be selected in
+        Object.keys(newSelectedUsers).forEach((key) => {
+          if (newSelectedUsers[key as keyof typeof newSelectedUsers] === userId) {
+            newSelectedUsers[key as keyof typeof newSelectedUsers] = null;
+          }
+        });
+        newSelectedUsers[fieldName] = userId;
+        form.setValue(fieldName, userId);
       }
-      setSelectedUsers((prev) => ({
-        ...prev,
-        [fieldName]: userId,
-      }));
-      form.setValue(fieldName, userId);
-    }
+      return newSelectedUsers;
+    });
+    setOpenPopover((prev) => ({ ...prev, [fieldName]: false }));
   };
 
   const renderSpeakerField = (
@@ -252,47 +283,51 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
       render={({ field }) => (
         <FormItem className="flex flex-col">
           <FormLabel className="font-medium text-foreground">{label}</FormLabel>
-          <Popover modal>
-            <PopoverTrigger asChild disabled={!isUpdating}>
+          <Popover
+            open={openPopover[fieldName]}
+            onOpenChange={(open) =>
+              setOpenPopover((prev) => ({ ...prev, [fieldName]: open }))
+            }
+          >
+            <PopoverTrigger asChild>
               <FormControl>
                 <Button
                   variant="outline"
                   role="combobox"
+                  disabled={!isUpdating}
                   className={cn(
                     "w-full justify-between",
                     !field.value && "text-muted-foreground"
                   )}
                 >
                   {field.value
-                    ? users.find(
-                        (user) => String(user.studentid) === field.value
-                      )?.firstname +
+                    ? users.find((user) => String(user.studentid) === field.value)
+                        ?.firstname +
                       " " +
-                      users.find(
-                        (user) => String(user.studentid) === field.value
-                      )?.lastname
+                      users.find((user) => String(user.studentid) === field.value)
+                        ?.lastname
                     : "Select user"}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-full p-0">
+            <PopoverContentWithNoPrimitivePortal className="w-full p-0">
               <Command>
-                {/* <CommandInput placeholder="Search user..." /> */}
+                <CommandInput placeholder="Search user..." />
                 <CommandList>
                   <CommandEmpty>No speaker found.</CommandEmpty>
                   <CommandGroup>
                     {users.map((user) => (
                       <CommandItem
-                        value={String(user.studentid)}
+                        value={`${user.firstname} ${user.lastname}`}
                         key={String(user.studentid)}
-                        onSelect={() =>
-                          handleUserSelect(String(user.studentid), fieldName)
-                        }
+                        onSelect={() => {
+                          handleUserSelect(String(user.studentid), fieldName);
+                        }}
                         disabled={
                           Object.values(selectedUsers).includes(
                             String(user.studentid)
-                          ) && field.value !== String(user.studentid)
+                          ) && selectedUsers[fieldName] !== String(user.studentid)
                         }
                       >
                         <Check
@@ -311,13 +346,14 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
                   </CommandGroup>
                 </CommandList>
               </Command>
-            </PopoverContent>
+            </PopoverContentWithNoPrimitivePortal>
           </Popover>
           <FormMessage />
         </FormItem>
       )}
     />
   );
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger className="mr-3">
@@ -354,7 +390,7 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-darkBlue">
+                  <FormLabel className="text-sm text-darkBlue dark:text-foreground font-medium my-3">
                     Team Name
                     <b className="text-primary font-light"> *</b>
                   </FormLabel>
@@ -402,3 +438,5 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
     </Sheet>
   );
 };
+
+export default UpdateTeamForm;

@@ -162,6 +162,8 @@ export const getTournamentSchoolRanking = async ({
         const request = new TournamentSchoolRankingRequest();
         request.setToken(token);
         request.setTournamentId(tournament_id);
+        request.setPage(1);
+        request.setPageSize(200);
 
         debateClient.getTournamentSchoolRanking(request, {}, (err, response) => {
             if (err) {

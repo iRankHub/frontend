@@ -59,12 +59,18 @@ import { useToast } from "@/components/ui/use-toast";
 import { deleteTournament, updateTournament } from "@/core/tournament/list";
 import { useRouter } from "next/navigation";
 import { getVolunteersAndAdmins } from "@/core/users/users";
+import Image from "next/image";
 
 type Props = {
   tournament: Tournament.AsObject;
 };
 
 type Inputs = z.infer<typeof UpdateTournamentSchema>;
+
+interface ImageType {
+  previewUrl: string;
+  url: string;
+}
 
 function TournamentUpdateForm({ tournament }: Props) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -79,7 +85,10 @@ function TournamentUpdateForm({ tournament }: Props) {
   >([]);
   const router = useRouter();
   const { toast } = useToast();
-  
+  const [tournamentImage, setTournamentImage] = useState<ImageType | null>(
+    null
+  );
+
   useEffect(() => {
     if (!user) return;
 
@@ -97,8 +106,7 @@ function TournamentUpdateForm({ tournament }: Props) {
   }, [user, tournament]);
 
   // useEffect to force re-render when coordinatorId changes
-  useEffect(() => {
-  }, [user]);
+  useEffect(() => {}, [user]);
 
   const formatStartDate = (): string => {
     // format return from api: 2023-07-15 09:00
@@ -195,7 +203,7 @@ function TournamentUpdateForm({ tournament }: Props) {
       number_of_elimination_rounds: Number(data.preliminaries_end_at),
       number_of_preliminary_rounds: Number(data.preliminaries_start_from),
       tournament_fee: Number(data.fees),
-      image_url: null,
+      image_url: tournamentImage ? tournamentImage.url : null,
     };
 
     setLoading(true);
@@ -218,8 +226,7 @@ function TournamentUpdateForm({ tournament }: Props) {
         toast({
           variant: "destructive",
           title: "Error",
-          description:
-            err.message,
+          description: err.message,
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close
@@ -308,126 +315,143 @@ function TournamentUpdateForm({ tournament }: Props) {
         console.error(err.message);
       });
   }, [user]);
-  
+
+  const tournImage = tournament.imageUrl;
+
   return (
     <div className="p-5">
       <Form {...form}>
         <form onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}>
-          <div className="w-full bg-brown rounded-md h-60 p-5 flex flex-col md:flex-row justify-end md:items-end">
-            <div className="md:flex-1">
-              <div className="flex flex-col items-start md:flex-row md:items-center md:gap-5">
-                <div className="flex items-center gap-1 text-sm text-white font-medium">
-                  <Icons.calendar className="w-3.5 h-3.5 text-white" />
-                  {form.watch("startDate") && form.watch("endDate") ? (
-                    <span>
-                      {format(form.watch("startDate"), "PPP")} -{" "}
-                      {format(form.watch("endDate"), "PPP")}
-                    </span>
-                  ) : (
-                    "Pick a Date"
-                  )}
-                </div>
-                <div className="flex items-center gap-1 text-sm text-white font-medium">
-                  <Icons.mapPin className="w-3.5 h-3.5 text-white" />
-                  {form.watch("location") ? form.watch("location") : "Location"}
-                </div>
+          <div className="w-full bg-brown rounded-md h-60 relative overflow-hidden">
+            {(tournamentImage || tournImage) && (
+              <div className="w-full h-full">
+                <Image
+                  src={
+                    tournamentImage ? tournamentImage.previewUrl : tournImage
+                  }
+                  alt="Tournament Image"
+                  fill
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem className="col-span-2">
-                    <FormControl>
-                      <Input
-                        placeholder="Your Tournament Name"
-                        className="text-white placeholder:text-white text-xl font-bold w-72 mt-1 bg-transparent outline-none border-none focus-visible:outline-none focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 p-0 disabled:opacity-100"
-                        value={field.value}
-                        onChange={field.onChange}
-                        disabled={!isEditing}
-                      />
-                    </FormControl>
-                    <FormMessage className="font-bold" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex mt-2 md:mt-0 items-center gap-3">
-              <Dialog>
-                <DialogTrigger>
-                  <Button
-                    type="button"
-                    className="rounded-full w-8 h-8 bg-primary cursor-pointer hover:bg-background group"
-                    size="icon"
-                  >
-                    <Icons.imagePlus className="w-[1rem] h-[1rem] text-white m-1 group-hover:text-primary" />
-                    <span className="sr-only">Image</span>
-                  </Button>
-                </DialogTrigger>
-                <FileUpload />
-              </Dialog>
-              <Button
-                type="button"
-                className={cn(
-                  "rounded-full w-8 h-8 bg-primary cursor-pointer hover:bg-background group",
-                  isEditing && "hidden"
-                )}
-                size="icon"
-                onClick={() => setIsEditing(true)}
-              >
-                <Icons.pencilLine className="w-[1rem] h-[1rem] text-white m-1 group-hover:text-primary" />
-                <span className="sr-only">Edit</span>
-              </Button>
-              <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-                <DialogTrigger>
-                  <Button
-                    type="button"
-                    className="rounded-full w-8 h-8 bg-primary cursor-pointer hover:bg-background group"
-                    size="icon"
-                  >
-                    <Trash2 className="w-[1rem] h-[1rem] text-white m-1 group-hover:text-primary" />
-                    <span className="sr-only">Delete</span>
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle className="text-base">
-                      Are you absolutely sure?
-                    </DialogTitle>
-                    <DialogDescription className="text-sm text-muted-foreground">
-                      This action cannot be undone. This will permanently delete
-                      this tournament format and remove all related data from
-                      our servers.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <DialogFooter className="w-full flex-row gap-3 justify-center">
-                    <Button
-                      type="submit"
-                      size={"sm"}
-                      variant={"outline"}
-                      className="max-w-32"
-                      onClick={() => setDeleteOpen(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      type="submit"
-                      size={"sm"}
-                      variant={"destructive"}
-                      className="max-w-32"
-                      onClick={handleDeleteTournament}
-                    >
-                      Delete
-                      {deleteLoading && (
-                        <Icons.spinner
-                          className="mr-2 h-4 w-4 animate-spin"
-                          aria-hidden="true"
+            )}
+            <div className="w-full px-5 absolute h-full bg-black/30 top-0 bottom-0 right-0 flex items-end">
+              <div className="flex-1">
+                <div className="flex items-center gap-5">
+                  <div className="flex items-center gap-1 text-sm text-white font-medium">
+                    <Icons.calendar className="w-3.5 h-3.5 text-white" />
+                    {form.watch("startDate") && form.watch("endDate") ? (
+                      <span>
+                        {format(form.watch("startDate"), "PPP")} -{" "}
+                        {format(form.watch("endDate"), "PPP")}
+                      </span>
+                    ) : (
+                      "Pick a Date"
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1 text-sm text-white font-medium">
+                    <Icons.mapPin className="w-3.5 h-3.5 text-white" />
+                    {form.watch("location")
+                      ? form.watch("location")
+                      : "Location"}
+                  </div>
+                </div>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem className="col-span-2">
+                      <FormControl>
+                        <Input
+                          placeholder="Your Tournament Name"
+                          className="text-white placeholder:text-white text-xl font-bold w-72 mt-1 bg-transparent outline-none border-none focus-visible:outline-none focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 p-0 disabled:opacity-100"
+                          value={field.value}
+                          onChange={field.onChange}
+                          disabled={!isEditing}
                         />
-                      )}
+                      </FormControl>
+                      <FormMessage className="font-bold" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="p-5 flex items-center gap-3">
+                {isEditing && (
+                  <Dialog>
+                    <DialogTrigger className="rounded-full bg-primary cursor-pointer">
+                      <Icons.imagePlus className="w-[1rem] h-[1rem] text-white m-2" />
+                      <span className="sr-only">Image</span>
+                    </DialogTrigger>
+                    <FileUpload
+                      setTournamentImage={setTournamentImage}
+                      folderType="tournaments"
+                    />
+                  </Dialog>
+                )}
+                <Button
+                  type="button"
+                  className={cn(
+                    "rounded-full w-8 h-8 bg-primary cursor-pointer hover:bg-background group",
+                    isEditing && "hidden"
+                  )}
+                  size="icon"
+                  onClick={() => setIsEditing(true)}
+                >
+                  <Icons.pencilLine className="w-[1rem] h-[1rem] text-white m-1 group-hover:text-primary" />
+                  <span className="sr-only">Edit</span>
+                </Button>
+                <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+                  <DialogTrigger>
+                    <Button
+                      type="button"
+                      className="rounded-full w-8 h-8 bg-primary cursor-pointer hover:bg-background group"
+                      size="icon"
+                    >
+                      <Trash2 className="w-[1rem] h-[1rem] text-white m-1 group-hover:text-primary" />
                       <span className="sr-only">Delete</span>
                     </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle className="text-base">
+                        Are you absolutely sure?
+                      </DialogTitle>
+                      <DialogDescription className="text-sm text-muted-foreground">
+                        This action cannot be undone. This will permanently
+                        delete this tournament format and remove all related
+                        data from our servers.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter className="w-full flex-row gap-3 justify-center">
+                      <Button
+                        type="submit"
+                        size={"sm"}
+                        variant={"outline"}
+                        className="max-w-32"
+                        onClick={() => setDeleteOpen(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="submit"
+                        size={"sm"}
+                        variant={"destructive"}
+                        className="max-w-32"
+                        onClick={handleDeleteTournament}
+                      >
+                        Delete
+                        {deleteLoading && (
+                          <Icons.spinner
+                            className="mr-2 h-4 w-4 animate-spin"
+                            aria-hidden="true"
+                          />
+                        )}
+                        <span className="sr-only">Delete</span>
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </div>
           </div>
           <div className="mt-10 w-full">

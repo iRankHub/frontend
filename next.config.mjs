@@ -19,6 +19,10 @@ const nextConfig = {
         {
           protocol: "https",
           hostname: "it-mil-1.linodeobjects.com"
+        },
+        {
+          protocol: "https",
+          hostname: "irankhub-bucket.it-mil-1.linodeobjects.com"
         }
       ],
   },

@@ -118,7 +118,7 @@ const UserRegistrationsChart = () => {
         </Select>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={200}>
           <AreaChart
             data={chartData}
             margin={{

@@ -109,7 +109,7 @@ function Leagues() {
         </div>
       )}
       
-      <div className="p-5">
+      <div className="p-5 grid place-content-center">
         {leagues.length >= PAGE_SIZE_COUNT && hasMoreData && (
           <Button
             type="button"

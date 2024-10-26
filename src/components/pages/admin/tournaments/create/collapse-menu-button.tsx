@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown, ChevronRight, Dot, LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -39,6 +39,7 @@ interface CollapseMenuButtonProps {
   active: boolean;
   submenus: Submenu[];
   isOpen: boolean | undefined;
+  defaultOpen?: boolean;
 }
 
 export function CollapseMenuButton({
@@ -47,9 +48,15 @@ export function CollapseMenuButton({
   active,
   submenus,
   isOpen,
+  defaultOpen = false,
 }: CollapseMenuButtonProps) {
   const isSubmenuActive = submenus.some((submenu) => submenu.active);
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(isSubmenuActive);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(isSubmenuActive || defaultOpen);
+
+  // Update collapsed state when defaultOpen changes
+  useEffect(() => {
+    setIsCollapsed(defaultOpen || isSubmenuActive);
+  }, [defaultOpen, isSubmenuActive]);
 
   return isOpen ? (
     <Collapsible
@@ -66,7 +73,7 @@ export function CollapseMenuButton({
           className={cn(
             "w-full justify-start h-10 mb-1 text-foreground font-medium bg-transparent hover:bg-input border-none ring-0 hover:text-foreground p-0 pr-2",
             !active ? "bg-transparent" : "bg-input"
-        )}
+          )}
         >
           <div className="w-full items-center flex justify-between">
             <div className="flex items-center">
