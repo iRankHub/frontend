@@ -13,7 +13,7 @@ export const useJudgeFeedbacksStore = create<FeedbacksStore>((set) => ({
     updateFeedbackReadStatus: (feedbackId: number) => {
         set((state: FeedbacksStore) => {
             const newFeedbacks = state.feedbacks.map((feedback) => {
-                if (feedback.ballotId === feedbackId) {
+                if (feedback.feedbackId === feedbackId) {
                     return {
                         ...feedback,
                         isRead: true,

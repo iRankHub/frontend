@@ -63,13 +63,13 @@ export default function ViewFeedback({
 
       try {
         const res = await markVolunteerFeedbackAsRead({
-          feedback_id: feedbackData.ballotId,
+          feedback_id: feedbackData.feedbackId,
           token: user.token
         });
 
         // Only update state if component is still mounted and the request succeeded
         if (isMounted && res) {
-          updateFeedbackReadStatus(feedbackData.ballotId);
+          updateFeedbackReadStatus(feedbackData.feedbackId);
         }
       } catch (error) {
         // Silently fail - no error handling needed as per requirements
@@ -84,7 +84,7 @@ export default function ViewFeedback({
     return () => {
       isMounted = false;
     };
-  }, [user, isRead, feedbackData.ballotId, updateFeedbackReadStatus]);
+  }, [user, isRead, feedbackData.feedbackId, updateFeedbackReadStatus]);
 
   return (
     <ScrollArea className="w-full sm:max-w-md p-5 pb-24 h-full">
