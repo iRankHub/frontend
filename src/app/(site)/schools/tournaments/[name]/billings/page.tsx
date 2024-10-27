@@ -19,18 +19,21 @@ import { GetTournamentType } from "@/types/tournaments/tournament";
 import { Slash } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import AppLoader from "@/lib/loader";
+import TournamentBillingsRegistration from "@/components/pages/schools/tournaments/tournament-name/billings/billings";
 
 const Page = withAuth(
   ({ params }: Iparms) => {
-    return <SchoolTournamentRoomsPage params={params} />;
+    return <SchoolTournamentBillingsPage params={params} />;
   },
   [Roles.SCHOOL]
 );
 
-function SchoolTournamentRoomsPage({ params }: Iparms) {
+function SchoolTournamentBillingsPage({ params }: Iparms) {
   const { name: tourn_id } = params;
   const { user } = useUserStore((state) => state);
-  const [tournament, setTournament] = useState<Tournament.AsObject | undefined>(undefined);
+  const [tournament, setTournament] = useState<Tournament.AsObject | undefined>(
+    undefined
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -64,9 +67,16 @@ function SchoolTournamentRoomsPage({ params }: Iparms) {
       <ContentLayout title="format">
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
-            <h2 className="text-2xl font-semibold mb-4">Tournament Not Found</h2>
-            <p className="mb-2">We couldn&apos;t fetch the tournament details.</p>
-            <p>This could be because the tournament doesn&apos;t exist or due to a system error.</p>
+            <h2 className="text-2xl font-semibold mb-4">
+              Tournament Not Found
+            </h2>
+            <p className="mb-2">
+              We couldn&apos;t fetch the tournament details.
+            </p>
+            <p>
+              This could be because the tournament doesn&apos;t exist or due to
+              a system error.
+            </p>
           </div>
         </div>
       </ContentLayout>
@@ -76,11 +86,14 @@ function SchoolTournamentRoomsPage({ params }: Iparms) {
   return (
     <ContentLayout title="format">
       <div className="w-full flex items-center justify-between gap-5">
-        <h3 className="text-lg text-primary font-bold">{tournament.name}</h3>
+        <h3 className="text-lg text-primary font-bold">Billings</h3>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/schools/dashboard" className="text-muted-foreground text-base">
+              <BreadcrumbLink
+                href="/schools/dashboard"
+                className="text-muted-foreground text-base"
+              >
                 School
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -88,7 +101,10 @@ function SchoolTournamentRoomsPage({ params }: Iparms) {
               <Slash className="-rotate-12" />
             </BreadcrumbSeparator>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/schools/tournaments/list" className="text-muted-foreground text-base">
+              <BreadcrumbLink
+                href="/schools/tournaments/list"
+                className="text-muted-foreground text-base"
+              >
                 Tournament
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -103,9 +119,7 @@ function SchoolTournamentRoomsPage({ params }: Iparms) {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <TournamentMenuWrapper>
-        <Rooms tournament_id={tournament.tournamentId} />
-      </TournamentMenuWrapper>
+      <TournamentBillingsRegistration tournament={tournament} />
     </ContentLayout>
   );
 }
