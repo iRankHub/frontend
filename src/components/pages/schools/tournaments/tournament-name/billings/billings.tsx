@@ -155,16 +155,16 @@ const TournamentBillingsRegistration = ({
         // If error is "not found", we don't need to show an error toast
         if (!error.message.includes("not found")) {
           console.error("Error checking registration:", error);
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Failed to check existing registration",
-            action: (
-              <ToastAction altText="Close" className="bg-primary text-white">
-                Close
-              </ToastAction>
-            ),
-          });
+          // toast({
+          //   variant: "destructive",
+          //   title: "Error",
+          //   description: "Failed to check existing registration",
+          //   action: (
+          //     <ToastAction altText="Close" className="bg-primary text-white">
+          //       Close
+          //     </ToastAction>
+          //   ),
+          // });
         }
       } finally {
         setIsChecking(false);

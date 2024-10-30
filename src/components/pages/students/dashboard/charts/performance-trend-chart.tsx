@@ -26,48 +26,9 @@ import { getStudentPerformance } from "@/core/debates/rankings";
 import {
   PerformanceData,
 } from "@/lib/grpc/proto/debate_management/debate_pb";
+import { LoadingState, NoDataDisplay } from "@/components/no-data-display";
 
 type TimeRange = "7d" | "30d" | "90d";
-
-interface NoDataDisplayProps {
-  timeRange: TimeRange;
-}
-
-const getTimeRangeMessage = (timeRange: TimeRange): string => {
-  switch (timeRange) {
-    case "7d":
-      return "No debate performances recorded in the last 7 days.";
-    case "30d":
-      return "No debate performances recorded in the last 30 days.";
-    case "90d":
-      return "No debate performances recorded in the last 3 months.";
-  }
-};
-
-const NoDataDisplay: React.FC<NoDataDisplayProps> = ({ timeRange }) => (
-  <div className="flex flex-col items-center justify-center h-[300px] text-center p-6 space-y-4">
-    <div className="rounded-full bg-orange-100 p-3">
-      <AlertCircle className="w-6 h-6 text-orange-500" />
-    </div>
-    <div className="space-y-2">
-      <h3 className="font-semibold text-lg text-gray-900">No Performance Data Available</h3>
-      <p className="text-gray-500 text-sm max-w-[400px]">
-        {getTimeRangeMessage(timeRange)}
-        <br />
-        Participate in debates to start tracking your progress!
-      </p>
-    </div>
-  </div>
-);
-
-const LoadingState: React.FC = () => (
-  <div className="flex items-center justify-center h-[300px]">
-    <div className="animate-pulse flex flex-col items-center space-y-4">
-      <div className="w-12 h-12 bg-orange-100 rounded-full" />
-      <div className="h-4 w-48 bg-orange-100 rounded" />
-    </div>
-  </div>
-);
 
 const PerformanceTrendChart: React.FC = () => {
   const [chartData, setChartData] = useState<PerformanceData.AsObject[]>([]);

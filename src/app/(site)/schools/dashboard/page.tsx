@@ -85,6 +85,7 @@ function Dashboard() {
   }
 
   if (hasError || !overallSchoolRanking) {
+    console.log(hasError, overallSchoolRanking)
     return (
       <ContentLayout title="dashboard">
         <div className="flex items-center justify-center h-screen">

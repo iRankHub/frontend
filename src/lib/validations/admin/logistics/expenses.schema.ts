@@ -1,19 +1,27 @@
 import { z } from "zod";
 
 export const expensesSchema = z.object({
-    food: z.string().min(1, {
-        message: "Food is required",
+    awarding_expense: z.number().min(0, {
+        message: "Awarding expense must be a positive number",
     }),
-    transport: z.string().min(1, {
-        message: "transport is required",
+    food_expense: z.number().min(0, {
+        message: "Food expense must be a positive number",
     }),
-    per_diem: z.string().min(1, {
-        message: "per diem is required",
+    notes: z.string().optional(),
+    other_expenses: z.number().min(0, {
+        message: "Other expenses must be a positive number",
     }),
-    awarding_and_stationary: z.string().min(1, {
-        message: "Awarding and stationary is required",
+    per_diem_expense: z.number().min(0, {
+        message: "Per diem expense must be a positive number",
     }),
-    totalExpenses: z.string().min(1, {
-        message: "Total expenses is required",
+    stationary_expense: z.number().min(0, {
+        message: "Stationary expense must be a positive number",
+    }),
+    transport_expense: z.number().min(0, {
+        message: "Transport expense must be a positive number",
+    }),
+    currency: z.enum(["RWF", "USD"], {
+        required_error: "Please select a currency",
+        invalid_type_error: "Please select a valid currency",
     }),
 });

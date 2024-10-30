@@ -26,11 +26,6 @@ export function Menu({ isOpen }: MenuProps) {
   const pathname = usePathname();
   const menuList = getMenuList(pathname);
   const { logout } = useUserStore((state) => state);
-  const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null);
-
-  const handleDropdownToggle = (index: number) => {
-    setOpenDropdownIndex(openDropdownIndex === index ? null : index);
-  };
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
