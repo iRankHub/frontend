@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { v4 as uuidv4 } from "uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarIcon, Clock, Trash2 } from "lucide-react";
+import { CalendarIcon, Clock, Plus, Trash2, Undo2 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -69,6 +69,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
   const [tournamentImage, setTournamentImage] = useState<ImageType | null>(
     null
   );
+  const [isCustomLocation, setIsCustomLocation] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -177,7 +178,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
     setLoading(true);
     await createTournament({ ...options })
       .then((res) => {
-        res.tournament?.tournamentId
+        res.tournament?.tournamentId;
         setLoading(false);
         form.reset({
           fees_currency: "rwf",
@@ -211,7 +212,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
         });
 
         if (res.tournament) {
-          router.push(`/admin/tournaments/list/${res.tournament.tournamentId}`)
+          router.push(`/admin/tournaments/list/${res.tournament.tournamentId}`);
         }
       })
       .catch((err) => {
@@ -263,8 +264,8 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
   }, [user]);
 
   const handleBack = () => {
-    router.push("/admin/tournaments/list")
-  }
+    router.push("/admin/tournaments/list");
+  };
   return (
     <div className="p-5">
       <Form {...form}>
@@ -287,8 +288,22 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                     <Icons.calendar className="w-3.5 h-3.5 text-white" />
                     {form.watch("startDate") && form.watch("endDate") ? (
                       <span>
-                        {format(form.watch("startDate"), "PPP")} -{" "}
-                        {format(form.watch("endDate"), "PPP")}
+                        {format(form.watch("startDate"), "PPP")}
+                        {/* Check if dates are the same */}
+                        {format(form.watch("startDate"), "yyyy-MM-dd") ===
+                        format(form.watch("endDate"), "yyyy-MM-dd") ? (
+                          // If same day, show time difference
+                          form.watch("startTime") && form.watch("endTime") ? (
+                            <span>
+                              {" "}
+                              ({format(form.watch("startTime"), "HH:mm")} -{" "}
+                              {format(form.watch("endTime"), "HH:mm")})
+                            </span>
+                          ) : null
+                        ) : (
+                          // If different days, show full end date
+                          <span> - {format(form.watch("endDate"), "PPP")}</span>
+                        )}
                       </span>
                     ) : (
                       "Pick a Date"
@@ -511,32 +526,69 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                         Tournament Location
                         <b className="text-primary font-light"> *</b>
                       </FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
-                          <SelectTrigger
-                            className={cn(
-                              "w-full text-muted-foreground",
-                              field.value && "text-foreground"
-                            )}
-                            iconType={"location"}
-                          >
-                            <SelectValue placeholder="Choose a venue" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {venues.map((venue) => (
-                              <SelectItem
-                                key={uuidv4()}
-                                value={String(venue.name)}
+                      <div className="flex flex-col gap-2">
+                        {!isCustomLocation ? (
+                          <>
+                            <FormControl>
+                              <Select
+                                onValueChange={field.onChange}
+                                value={field.value}
                               >
-                                {venue.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
+                                <SelectTrigger
+                                  className={cn(
+                                    "w-full text-muted-foreground",
+                                    field.value && "text-foreground"
+                                  )}
+                                  iconType={"location"}
+                                >
+                                  <SelectValue placeholder="Choose a venue" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {venues.map((venue) => (
+                                    <SelectItem
+                                      key={uuidv4()}
+                                      value={String(venue.name)}
+                                    >
+                                      {venue.name}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </FormControl>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              className="text-xs text-muted-foreground hover:text-primary"
+                              onClick={() => setIsCustomLocation(true)}
+                            >
+                              <Plus className="w-3 h-3 mr-1" />
+                              Add custom location
+                            </Button>
+                          </>
+                        ) : (
+                          <>
+                            <FormControl>
+                              <Input
+                                placeholder="Enter location"
+                                value={field.value}
+                                onChange={(e) => field.onChange(e.target.value)}
+                              />
+                            </FormControl>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              className="text-xs text-muted-foreground hover:text-primary"
+                              onClick={() => {
+                                setIsCustomLocation(false);
+                                field.onChange(""); // Reset value when switching back
+                              }}
+                            >
+                              <Undo2 className="w-3 h-3 mr-1" />
+                              Use venue list
+                            </Button>
+                          </>
+                        )}
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -740,11 +792,12 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                             <SelectValue placeholder="choose..." />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="1">Round 1</SelectItem>
-                            <SelectItem value="2">Round 2</SelectItem>
-                            <SelectItem value="3">Round 3</SelectItem>
-                            <SelectItem value="4">Round 4</SelectItem>
-                            <SelectItem value="5">Round 5</SelectItem>
+                            <SelectItem value="1">Final</SelectItem>
+                            <SelectItem value="2">Semi Final</SelectItem>
+                            <SelectItem value="3">Quater Final</SelectItem>
+                            <SelectItem value="4">Octal Final</SelectItem>
+                            <SelectItem value="5">Round of 32</SelectItem>
+                            <SelectItem value="6">Round of 64</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -829,7 +882,12 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
               </div>
 
               <div className="flex items-center justify-between mt-5 gap-3">
-                <Button type="button" variant={"outline"} className="w-full" onClick={handleBack}>
+                <Button
+                  type="button"
+                  variant={"outline"}
+                  className="w-full"
+                  onClick={handleBack}
+                >
                   Cancel
                   <span className="sr-only">Cancel</span>
                 </Button>

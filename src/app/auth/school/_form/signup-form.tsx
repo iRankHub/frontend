@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -82,14 +83,14 @@ const SignupForm = () => {
       firstName: data.contact_person_firstname,
       lastName: data.contact_person_lastname,
       address: data.address,
-      email: data.email,
+      email: data.contact_person_email,
       password: data.password,
       userRole: UserRole.SCHOOL,
       schoolName: data.name,
       country: data.country,
       province: data.province_state,
       district: data.district_region,
-      contactEmail: data.contact_person_email,
+      contactEmail: data.email,
       schoolType: data.type,
     })
       .then((res) => {
@@ -615,12 +616,15 @@ const SignupForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="capitalize">
-                      Contact Person Email
+                      Email
                       <b className="text-primary font-light"> *</b>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="emma@gmail.com" {...field} />
+                      <Input placeholder="jane.smith@school.com" {...field} />
                     </FormControl>
+                    <FormDescription>
+                      This is email will be used to log into the system. 
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -679,12 +683,15 @@ const SignupForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="capitalize">
-                      School Email
+                      Contact Email
                       <b className="text-primary font-light"> *</b>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="emma@gmail.com" {...field} />
+                      <Input placeholder="contact@springfieldhigh.edu" {...field} />
                     </FormControl>
+                    <FormDescription>
+                      This is the email we{`'`}ll use to contact the school.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

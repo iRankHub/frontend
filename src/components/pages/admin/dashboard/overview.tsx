@@ -35,7 +35,7 @@ function Overview({
       return {
         color: "text-muted-text",
         textWithNoSign: "0.00%",
-        background: "bg-accent",
+        background: "bg-accent dark:bg-white",
         isZero: true,
       };
     }
@@ -46,7 +46,7 @@ function Overview({
       return {
         color: "text-success-foreground",
         textWithNoSign: `${value}%`,
-        background: "bg-accent",
+        background: "bg-accent dark:bg-white",
         isZero,
       };
     } else if (cleanPercentage.includes("-")) {
@@ -63,7 +63,7 @@ function Overview({
       return {
         color: "text-muted-text",
         textWithNoSign: `${cleanPercentage}%`,
-        background: "bg-accent",
+        background: "bg-accent dark:bg-white",
         isZero,
       };
     }
@@ -92,7 +92,8 @@ function Overview({
                 "flex items-center bg-destructive-foreground px-0.5 rounded-full",
                 changeColorBasedOnPercentage(approvedUsersPercentageChange)
                   .background
-              )}
+              )
+            }
             >
               {renderChevron(approvedUsersPercentageChange)}
               <small
@@ -126,7 +127,7 @@ function Overview({
             </h3>
             <div
               className={cn(
-                "flex items-center rounded-full px-0.5",
+                "flex items-center bg-destructive-foreground px-0.5 rounded-full",
                 changeColorBasedOnPercentage(newRegistrationsPercentageChange)
                   .background
               )}
@@ -154,7 +155,7 @@ function Overview({
       </Link>
       <Link
         href={"/admin/tournaments/list"}
-        className="border-transparent md:border-l border-dashed md:border-border lg:pl-3"
+        className="border-transparent lg:border-l border-dashed lg:border-border lg:pl-3"
       >
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between gap-3">

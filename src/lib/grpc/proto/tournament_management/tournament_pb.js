@@ -16001,7 +16001,8 @@ proto.tournament_management.ListRegistrationItem.toObject = function(includeInst
     actualTeamsCount: jspb.Message.getFieldWithDefault(msg, 6, 0),
     totalAmount: jspb.Message.getFloatingPointFieldWithDefault(msg, 7, 0.0),
     paymentStatus: jspb.Message.getFieldWithDefault(msg, 8, ""),
-    currency: jspb.Message.getFieldWithDefault(msg, 9, "")
+    currency: jspb.Message.getFieldWithDefault(msg, 9, ""),
+    schoolId: jspb.Message.getFieldWithDefault(msg, 10, 0)
   };
 
   if (includeInstance) {
@@ -16073,6 +16074,10 @@ proto.tournament_management.ListRegistrationItem.deserializeBinaryFromReader = f
     case 9:
       var value = /** @type {string} */ (reader.readString());
       msg.setCurrency(value);
+      break;
+    case 10:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setSchoolId(value);
       break;
     default:
       reader.skipField();
@@ -16163,6 +16168,13 @@ proto.tournament_management.ListRegistrationItem.serializeBinaryToWriter = funct
   if (f.length > 0) {
     writer.writeString(
       9,
+      f
+    );
+  }
+  f = message.getSchoolId();
+  if (f !== 0) {
+    writer.writeInt32(
+      10,
       f
     );
   }
@@ -16328,6 +16340,24 @@ proto.tournament_management.ListRegistrationItem.prototype.getCurrency = functio
  */
 proto.tournament_management.ListRegistrationItem.prototype.setCurrency = function(value) {
   return jspb.Message.setProto3StringField(this, 9, value);
+};
+
+
+/**
+ * optional int32 school_id = 10;
+ * @return {number}
+ */
+proto.tournament_management.ListRegistrationItem.prototype.getSchoolId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.tournament_management.ListRegistrationItem} returns this
+ */
+proto.tournament_management.ListRegistrationItem.prototype.setSchoolId = function(value) {
+  return jspb.Message.setProto3IntField(this, 10, value);
 };
 
 

@@ -78,6 +78,56 @@ export const columns: ColumnDef<Ballot.AsObject>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "team1",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Affirmative"
+        className="justify-center"
+      />
+    ),
+    cell: ({ row }) => {
+      const team1 = (row.getValue("team1") as { name: string }).name;
+      const verdict = row.original.verdict;
+      return (
+        <div className="w-full pr-5 text-center flex itemsc-center gap-2">
+          <span className="max-w-[200px] truncate font-medium">{team1}</span>
+          {verdict !== "pending" && verdict === team1 ? (
+            <Icons.medal className="text-success-border" size={18} />
+          ) : (
+            <Icons.circleX className="text-destructive" size={18} />
+          )}
+        </div>
+      );
+    },
+    enableHiding: false,
+  },
+  {
+    accessorKey: "team2",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Negative"
+        className="justify-center"
+      />
+    ),
+    cell: ({ row }) => {
+      const team2 = (row.getValue("team2") as { name: string }).name;
+      const verdict = row.original.verdict;
+      return (
+        <div className="w-full pr-5 text-center flex itemsc-center gap-2">
+          <span className="max-w-[200px] truncate font-medium">{team2}</span>
+          {verdict !== "pending" && verdict === team2 ? (
+            <Icons.medal className="text-success-border" size={18} />
+          ) : (
+            <Icons.circleX className="text-destructive" size={18} />
+          )}
+        </div>
+      );
+    },
+    enableHiding: false,
+  },
+  {
     accessorKey: "action",
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -112,27 +162,6 @@ const HandleBallotActions = ({ row }: { row: Row<Ballot.AsObject> }) => {
             <Icons.pencilLine className="w-5 h-5 text-primary" />
           </Button>
         </SheetTrigger>
-        {/* {isBallotRecord ? (
-          <Button
-            type="button"
-            variant={"secondary"}
-            size={"icon"}
-            className="w-full bg-transparent hover:bg-transparent m-0"
-          >
-            <Icons.circleCheck className="w-5 h-5 text-green-500" />
-          </Button>
-        ) : (
-          <SheetTrigger>
-            <Button
-              type="button"
-              variant={"secondary"}
-              size={"icon"}
-              className="w-full bg-transparent hover:bg-transparent m-0"
-            >
-              <Icons.pencilLine className="w-5 h-5 text-primary" />
-            </Button>
-          </SheetTrigger>
-        )} */}
         <SidePanel>
           <Panelheader>
             <div className="flex items-center gap-1">

@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 import { getBallot, updateBallot } from "@/core/debates/ballots";
 import {
   Ballot,
@@ -24,15 +25,12 @@ import {
   Team,
 } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { cn } from "@/lib/utils";
-import { ballotSchema } from "@/lib/validations/admin/tournaments/update-ballot.schema";
 import { useBallotsStore } from "@/stores/admin/debate/ballots";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { BallotUpdateFormProps } from "@/types/pairings/ballots";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Inter } from "next/font/google";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
 
 type Props = {
   ballotId: number;
@@ -44,6 +42,12 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+type WinnerType = string;
+type ValidationError = {
+  message: string;
+  speakers: string[];
+};
+
 function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
   const { name: tournament_id } = useParams();
   const { user } = useUserStore((state) => state);
@@ -52,6 +56,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
   const [ballot, setBallot] = useState<Ballot.AsObject | undefined>(undefined);
   const [isUpdatingBallot, setIsUpdatingBallot] = useState(false);
   const steps = [1, 2, 3];
+  const { toast } = useToast();
 
   const [team1Speakers, setTeam1Speakers] = useState([
     {} as Speaker.AsObject,
@@ -63,8 +68,10 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     {} as Speaker.AsObject,
     {} as Speaker.AsObject,
   ]);
-  const [verdict, setVerdict] = useState("");
+  const [verdict, setVerdict] = useState<string>("");
   const [winner, setWinner] = useState<string>("");
+  const [winnerError, setWinnerError] = useState<string>("");
+  const [scoreError, setScoreError] = useState<ValidationError | null>(null);
 
   const [team1Rankings, setTeam1Rankings] = useState<number[]>([]);
   const [team2Rankings, setTeam2Rankings] = useState<number[]>([]);
@@ -74,6 +81,55 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     useState(false);
   const [team1PointsChanged, setTeam1PointsChanged] = useState(false);
   const [team2PointsChanged, setTeam2PointsChanged] = useState(false);
+
+  // Add these functions for winner validation
+  const validateWinner = (selectedWinner: WinnerType): boolean => {
+    if (!selectedWinner || selectedWinner.trim() === "") {
+      setWinnerError("Please select a winning team");
+      return false;
+    }
+    setWinnerError("");
+    return true;
+  };
+
+  const handleWinnerChange = (value: WinnerType): void => {
+    setWinner(value);
+    validateWinner(value);
+  };
+
+  const validateScores = (): boolean => {
+    const team1Violations = team1Speakers
+      .map((speaker, index) => ({
+        name: speaker.name,
+        points: speaker.points || 0,
+        index,
+      }))
+      .filter((speaker) => speaker.points < 23);
+
+    const team2Violations = team2Speakers
+      .map((speaker, index) => ({
+        name: speaker.name,
+        points: speaker.points || 0,
+        index,
+      }))
+      .filter((speaker) => speaker.points < 23);
+
+    if (team1Violations.length > 0 || team2Violations.length > 0) {
+      const violationSpeakers = [
+        ...team1Violations.map((v) => `${ballot?.team1?.name}: ${v.name}`),
+        ...team2Violations.map((v) => `${ballot?.team2?.name}: ${v.name}`),
+      ];
+
+      setScoreError({
+        message: "All speakers must have a minimum score of 23 points",
+        speakers: violationSpeakers,
+      });
+      return false;
+    }
+
+    setScoreError(null);
+    return true;
+  };
 
   const calculateRankings = (teamIndex: number) => {
     const speakers = teamIndex === 1 ? team1Speakers : team2Speakers;
@@ -122,6 +178,22 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
   ) => {
     const updateSpeakers = (prevSpeakers: Speaker.AsObject[]) => {
       const newSpeakers = [...prevSpeakers];
+
+      let parsedValue =
+        field === "points" ? parseFloat(value as string) || 0 : value;
+
+      // Add immediate validation feedback for points
+      if (field === "points") {
+        const numValue = parseFloat(value as string) || 0;
+        if (numValue < 23) {
+          // toast({
+          //   title: "Warning",
+          //   description: "Speaker score should be at least 23 points",
+          //   variant: "secondary",
+          // });
+        }
+      }
+
       newSpeakers[speakerIndex] = {
         ...newSpeakers[speakerIndex],
         [field]: field === "points" ? parseFloat(value as string) || 0 : value,
@@ -185,6 +257,34 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
 
   const handleSubmitBallot = async () => {
     if (!user) return;
+    if (!validateWinner(winner) || winner === "pending") {
+      toast({
+        title: "Error",
+        description: "Please select a winning team before submitting",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!validateScores()) {
+      toast({
+        title: "Error",
+        description: (
+          <div>
+            <p>{scoreError?.message}</p>
+            <ul className="mt-2 list-disc pl-4">
+              {scoreError?.speakers.map((speaker, index) => (
+                <li key={index} className="text-sm">
+                  {speaker}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ),
+        variant: "destructive",
+      });
+      return;
+    }
 
     // Ensure rankings are calculated for both teams before submission
     if (!isTeam1RankingCalculated) {
@@ -241,11 +341,14 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     setIsUpdatingBallot(true);
     try {
       await updateBallot(options);
-      markBallotAsRecorded(ballotId);
+      markBallotAsRecorded(ballotId, winner);
       setSheetOpen(false);
     } catch (err) {
-      console.error(err);
-      // Handle error (e.g., show error message to user)
+      toast({
+        title: "Error",
+        description: "An error occurred while updating the ballot.",
+        variant: "destructive",
+      });
     } finally {
       setIsUpdatingBallot(false);
     }
@@ -322,28 +425,38 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
                 <span className="text-sm text-muted-foreground font-medium">
                   Points
                 </span>
-                <Input
-                  placeholder="points"
-                  className="text-sm text-foreground font-semibold placeholder:font-medium max-w-32 text-center"
-                  type="number"
-                  min="10"
-                  max="100"
-                  value={speaker.points || ""}
-                  onChange={(e) => {
-                    if (
-                      Number(e.target.value) < 0 ||
-                      Number(e.target.value) > 30
-                    ) {
-                      return;
-                    }
-                    handleSpeakerChange(
-                      teamIndex,
-                      index,
-                      "points",
-                      e.target.value
-                    );
-                  }}
-                />
+                <div className="flex flex-col items-center gap-1">
+                  <Input
+                    placeholder="points"
+                    className={cn(
+                      "text-sm text-foreground font-semibold placeholder:font-medium max-w-32 text-center",
+                      speaker.points !== undefined &&
+                        speaker.points < 23 &&
+                        "border-red-500"
+                    )}
+                    type="number"
+                    min="10"
+                    max="100"
+                    value={speaker.points}
+                    onChange={(e) => {
+                      if (
+                        Number(e.target.value) < 0 ||
+                        Number(e.target.value) > 30
+                      ) {
+                        return;
+                      }
+                      handleSpeakerChange(
+                        teamIndex,
+                        index,
+                        "points",
+                        e.target.value
+                      );
+                    }}
+                  />
+                  {speaker.points !== undefined && speaker.points < 23 && (
+                    <p className="text-xs text-red-500">Minimum score is 23</p>
+                  )}
+                </div>
               </div>
               <div className="flex flex-col items-center gap-3">
                 <span className="text-sm text-muted-foreground font-medium">
@@ -409,7 +522,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               <h3>This team is public speaking</h3>
             )}
           </div>
-          <p>The minimum score for speakers should be 23!</p>
+          {/* <p>The minimum score for speakers should be 23!</p> */}
           <div className="flex items-center gap-5">
             <Button
               variant="outline"
@@ -451,7 +564,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               <h3>This team is public speaking</h3>
             )}
           </div>
-          <p>The minimum score for speakers should be 23!</p>
+          {/* <p>The minimum score for speakers should be 23!</p> */}
           <div className="flex items-center gap-5">
             <Button
               variant="outline"
@@ -488,7 +601,9 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
         <div className="w-full flex-1">
           <div className="w-full leading-6 mb-3">
             <h3 className="text-lg font-bold text-foreground">Verdict</h3>
-            <span>winner</span>
+            <span className="text-sm text-muted-foreground mb-2">
+              Select Winner
+            </span>
 
             <Select value={winner} onValueChange={setWinner}>
               <SelectTrigger className="w-full">
@@ -503,6 +618,9 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
                 </SelectItem>
               </SelectContent>
             </Select>
+            {winnerError && (
+              <p className="text-sm text-red-500 mt-1">{winnerError}</p>
+            )}
           </div>
           <div>
             <Label
@@ -514,7 +632,9 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
             <Textarea
               placeholder="Add comment"
               value={verdict}
-              onChange={(e) => setVerdict(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                setVerdict(e.target.value)
+              }
               className="resize-none"
             />
           </div>

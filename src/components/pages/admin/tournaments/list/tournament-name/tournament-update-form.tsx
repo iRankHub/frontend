@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { v4 as uuidv4 } from "uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarIcon, Clock, Trash2 } from "lucide-react";
+import { CalendarIcon, Clock, Plus, Trash2, Undo2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -80,6 +80,7 @@ function TournamentUpdateForm({ tournament }: Props) {
   const [loading, setLoading] = useState<boolean>(false);
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [isCustomLocation, setIsCustomLocation] = useState(false);
   const [coordinators, setCoordinators] = React.useState<
     UserSummary.AsObject[]
   >([]);
@@ -316,6 +317,31 @@ function TournamentUpdateForm({ tournament }: Props) {
       });
   }, [user]);
 
+  useEffect(() => {
+    const startDate = form.watch("startDate");
+    const endDate = form.watch("endDate");
+
+    // Only reset if we have both dates and start date is after end date
+    if (startDate && endDate && startDate > endDate) {
+      // Reset end date to start date
+      form.setValue("endDate", startDate);
+      // Reset end time to start time
+      form.setValue("endTime", form.watch("startTime"));
+    }
+  }, [form.watch("startDate")]);
+
+  useEffect(() => {
+    const currentLocation = form.watch("location");
+    const locationExists = venues.some(
+      (venue) => venue.name === currentLocation
+    );
+
+    // If location doesn't exist and not empty, set to custom mode
+    if (currentLocation && !locationExists && !isCustomLocation) {
+      setIsCustomLocation(true);
+    }
+  }, [form.watch("location"), venues, isCustomLocation]);
+
   const tournImage = tournament.imageUrl;
 
   return (
@@ -342,8 +368,22 @@ function TournamentUpdateForm({ tournament }: Props) {
                     <Icons.calendar className="w-3.5 h-3.5 text-white" />
                     {form.watch("startDate") && form.watch("endDate") ? (
                       <span>
-                        {format(form.watch("startDate"), "PPP")} -{" "}
-                        {format(form.watch("endDate"), "PPP")}
+                        {format(form.watch("startDate"), "PPP")}
+                        {/* Check if dates are the same */}
+                        {format(form.watch("startDate"), "yyyy-MM-dd") ===
+                        format(form.watch("endDate"), "yyyy-MM-dd") ? (
+                          // If same day, show time difference
+                          form.watch("startTime") && form.watch("endTime") ? (
+                            <span>
+                              {" "}
+                              ({format(form.watch("startTime"), "HH:mm")} -{" "}
+                              {format(form.watch("endTime"), "HH:mm")})
+                            </span>
+                          ) : null
+                        ) : (
+                          // If different days, show full end date
+                          <span> - {format(form.watch("endDate"), "PPP")}</span>
+                        )}
                       </span>
                     ) : (
                       "Pick a Date"
@@ -494,7 +534,6 @@ function TournamentUpdateForm({ tournament }: Props) {
                               onSelect={field.onChange}
                               initialFocus
                               fromDate={new Date()}
-                              toDate={new Date(form.watch("endDate"))}
                               disabled={!isEditing}
                             />
                           </PopoverContent>
@@ -504,6 +543,7 @@ function TournamentUpdateForm({ tournament }: Props) {
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="endDate"
@@ -537,7 +577,7 @@ function TournamentUpdateForm({ tournament }: Props) {
                               selected={field.value}
                               onSelect={field.onChange}
                               initialFocus
-                              fromDate={new Date(form.watch("endDate"))}
+                              fromDate={form.watch("startDate") || new Date()}
                               disabled={!isEditing}
                             />
                           </PopoverContent>
@@ -639,33 +679,76 @@ function TournamentUpdateForm({ tournament }: Props) {
                         Tournament Location
                         <b className="text-primary font-light"> *</b>
                       </FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <SelectTrigger
-                            className={cn(
-                              "w-full text-muted-foreground disabled:opacity-100",
-                              field.value && "text-foreground"
-                            )}
-                            iconType={"location"}
-                            disabled={!isEditing}
-                          >
-                            <SelectValue placeholder="Choose a venue" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {venues.map((venue) => (
-                              <SelectItem
-                                key={uuidv4()}
-                                value={String(venue.name)}
+                      <div className="flex flex-col gap-2">
+                        {!isCustomLocation ? (
+                          <>
+                            <FormControl>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
                               >
-                                {venue.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
+                                <SelectTrigger
+                                  className={cn(
+                                    "w-full text-muted-foreground disabled:opacity-100",
+                                    field.value && "text-foreground"
+                                  )}
+                                  iconType={"location"}
+                                  disabled={!isEditing}
+                                >
+                                  <SelectValue placeholder="Choose a venue" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {venues.map((venue) => (
+                                    <SelectItem
+                                      key={uuidv4()}
+                                      value={String(venue.name)}
+                                    >
+                                      {venue.name}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </FormControl>
+                            {isEditing && (
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                className="text-xs text-muted-foreground hover:text-primary"
+                                onClick={() => setIsCustomLocation(true)}
+                              >
+                                <Plus className="w-3 h-3 mr-1" />
+                                Add custom location
+                              </Button>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            <FormControl>
+                              <Input
+                                placeholder="Enter location"
+                                value={field.value}
+                                onChange={(e) => field.onChange(e.target.value)}
+                                className="disabled:opacity-100"
+                                disabled={!isEditing}
+                              />
+                            </FormControl>
+                            {isEditing && (
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                className="text-xs text-muted-foreground hover:text-primary"
+                                onClick={() => {
+                                  setIsCustomLocation(false);
+                                  field.onChange(""); // Reset value when switching back
+                                }}
+                              >
+                                <Undo2 className="w-3 h-3 mr-1" />
+                                Use venue list
+                              </Button>
+                            )}
+                          </>
+                        )}
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -738,7 +821,6 @@ function TournamentUpdateForm({ tournament }: Props) {
                               <SelectContent>
                                 <SelectItem value="rwf">RWF</SelectItem>
                                 <SelectItem value="usd">USD</SelectItem>
-                                <SelectItem value="euro">EURO</SelectItem>
                               </SelectContent>
                             </Select>
                           </FormControl>
@@ -876,11 +958,12 @@ function TournamentUpdateForm({ tournament }: Props) {
                             <SelectValue placeholder="choose..." />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="1">Round 1</SelectItem>
-                            <SelectItem value="2">Round 2</SelectItem>
-                            <SelectItem value="3">Round 3</SelectItem>
-                            <SelectItem value="4">Round 4</SelectItem>
-                            <SelectItem value="5">Round 5</SelectItem>
+                            <SelectItem value="1">Final</SelectItem>
+                            <SelectItem value="2">Semi Final</SelectItem>
+                            <SelectItem value="3">Quater Final</SelectItem>
+                            <SelectItem value="4">Octal Final</SelectItem>
+                            <SelectItem value="5">Round of 32</SelectItem>
+                            <SelectItem value="6">Round of 64</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>

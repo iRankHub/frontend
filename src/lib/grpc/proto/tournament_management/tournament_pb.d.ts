@@ -1982,6 +1982,9 @@ export class ListRegistrationItem extends jspb.Message {
   getCurrency(): string;
   setCurrency(value: string): ListRegistrationItem;
 
+  getSchoolId(): number;
+  setSchoolId(value: number): ListRegistrationItem;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ListRegistrationItem.AsObject;
   static toObject(includeInstance: boolean, msg: ListRegistrationItem): ListRegistrationItem.AsObject;
@@ -2001,6 +2004,7 @@ export namespace ListRegistrationItem {
     totalAmount: number,
     paymentStatus: string,
     currency: string,
+    schoolId: number,
   }
 }
 

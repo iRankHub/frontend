@@ -8611,6 +8611,7 @@ export namespace tournament_management {
             total_amount?: number;
             payment_status?: string;
             currency?: string;
+            school_id?: number;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -8641,6 +8642,9 @@ export namespace tournament_management {
                 }
                 if ("currency" in data && data.currency != undefined) {
                     this.currency = data.currency;
+                }
+                if ("school_id" in data && data.school_id != undefined) {
+                    this.school_id = data.school_id;
                 }
             }
         }
@@ -8698,6 +8702,12 @@ export namespace tournament_management {
         set currency(value: string) {
             pb_1.Message.setField(this, 9, value);
         }
+        get school_id() {
+            return pb_1.Message.getFieldWithDefault(this, 10, 0) as number;
+        }
+        set school_id(value: number) {
+            pb_1.Message.setField(this, 10, value);
+        }
         static fromObject(data: {
             registration_id?: number;
             i_debate_school_id?: string;
@@ -8708,6 +8718,7 @@ export namespace tournament_management {
             total_amount?: number;
             payment_status?: string;
             currency?: string;
+            school_id?: number;
         }): ListRegistrationItem {
             const message = new ListRegistrationItem({});
             if (data.registration_id != null) {
@@ -8737,6 +8748,9 @@ export namespace tournament_management {
             if (data.currency != null) {
                 message.currency = data.currency;
             }
+            if (data.school_id != null) {
+                message.school_id = data.school_id;
+            }
             return message;
         }
         toObject() {
@@ -8750,6 +8764,7 @@ export namespace tournament_management {
                 total_amount?: number;
                 payment_status?: string;
                 currency?: string;
+                school_id?: number;
             } = {};
             if (this.registration_id != null) {
                 data.registration_id = this.registration_id;
@@ -8778,6 +8793,9 @@ export namespace tournament_management {
             if (this.currency != null) {
                 data.currency = this.currency;
             }
+            if (this.school_id != null) {
+                data.school_id = this.school_id;
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -8802,6 +8820,8 @@ export namespace tournament_management {
                 writer.writeString(8, this.payment_status);
             if (this.currency.length)
                 writer.writeString(9, this.currency);
+            if (this.school_id != 0)
+                writer.writeInt32(10, this.school_id);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -8837,6 +8857,9 @@ export namespace tournament_management {
                         break;
                     case 9:
                         message.currency = reader.readString();
+                        break;
+                    case 10:
+                        message.school_id = reader.readInt32();
                         break;
                     default: reader.skipField();
                 }

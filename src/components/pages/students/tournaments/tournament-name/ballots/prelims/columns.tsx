@@ -3,16 +3,9 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
-import SidePanel, {
-  Panelheader,
-} from "@/components/layout/admin-panel/side-panel";
-import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
 import { Ballot, Judge } from "@/lib/grpc/proto/debate_management/debate_pb";
-import BallotUpdateForm from "./ballot-update-form";
 
 export const columns: ColumnDef<Ballot.AsObject>[] = [
   {
