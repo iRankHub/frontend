@@ -1,6 +1,5 @@
 "use client"
 import * as React from "react";
-import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
 const loadingMessages = [
@@ -24,7 +23,6 @@ const loadingMessages = [
 ];
 
 export default function AppLoader() {
-  // const [darkMode, setDarkMode] = React.useState(false);
   const { theme } = useTheme();
   const [message, setMessage] = React.useState(loadingMessages[0]);
 
@@ -37,12 +35,12 @@ export default function AppLoader() {
     return () => clearInterval(interval);
   }, []);
 
-  const bgColor = theme === "dark" ? "bg-gray-900" : "bg-gray-100";
+  const bgColor = theme === "dark" ? "bg-background" : "bg-gray-100";
   const textColor = theme === "dark" ? "text-gray-200" : "text-gray-800";
 
   return (
     <div
-      className={`flex flex-col items-center justify-center h-screen ${bgColor}`}
+      className={`flex flex-col items-center justify-center h-screen ${bgColor} mt-4 rounded-md`}
     >
       <div className="w-48 h-48 relative">
         <svg

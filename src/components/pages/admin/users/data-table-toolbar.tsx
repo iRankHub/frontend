@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { Icons } from "@/components/icons";
+import CreateAdminAccount from "./create-admin-account";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -37,7 +38,7 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const [selected, setSelected] = useState<
-    "school" | "student" | "volunteer" | null
+    "school" | "student" | "volunteer" | "admin" | null
   >(null);
   const [dialogOpen, setDialogOpen] = useState<boolean>();
   const [sheetOpen, setSheetOpen] = useState<boolean>();
@@ -100,7 +101,7 @@ export function DataTableToolbar<TData>({
                   Which user do you want to add?
                 </DialogDescription>
               </DialogHeader>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                 <div
                   className={cn(
                     "group flex flex-col justify-center items-center border rounded-md hover:border-primary cursor-pointer border-border w-full h-24 gap-2",
@@ -152,6 +153,23 @@ export function DataTableToolbar<TData>({
                     Volunteer
                   </h3>
                 </div>
+                <div
+                  className={cn(
+                    "group flex flex-col justify-center items-center border rounded-md hover:border-primary cursor-pointer border-border w-full h-24 gap-2",
+                    selected === "admin" && "border-primary"
+                  )}
+                  onClick={() => setSelected("admin")}
+                >
+                  <Image
+                    src="/static/images/admin-svg.png"
+                    alt="Admin"
+                    width={50}
+                    height={50}
+                  />
+                  <h3 className="text-primary group-hover:text-primary text-sm font-medium">
+                    Admin
+                  </h3>
+                </div>
               </div>
               <DialogFooter className="w-full">
                 <Button
@@ -189,6 +207,9 @@ export function DataTableToolbar<TData>({
                 type={selected}
                 setSheetOpen={setSheetOpen}
               />
+            )}
+            {selected === "admin" && (
+              <CreateAdminAccount type={selected} setSheetOpen={setSheetOpen} />
             )}
           </SidePanel>
         </Sheet>

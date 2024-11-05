@@ -143,11 +143,18 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
     }
   }
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const formData = form.getValues();
+    await onSubmit(formData);
+  };
+
   return (
     <Form {...form}>
       <form
         className="max-w-md w-full grid gap-4"
-        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+        onSubmit={handleSubmit}
+        method="POST"
       >
         <FormField
           control={form.control}

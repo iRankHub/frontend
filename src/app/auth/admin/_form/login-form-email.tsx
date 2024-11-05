@@ -32,7 +32,6 @@ const LoginFormEmail = () => {
   const { toast } = useToast();
   const { login: authLogin } = useUserStore((state) => state);
 
-  // react-hook-form
   const form = useForm<Inputs>({
     resolver: zodResolver(emailLoginSchema),
     defaultValues: {
@@ -43,49 +42,18 @@ const LoginFormEmail = () => {
 
   async function onSubmit(data: Inputs) {
     setIsPending(true);
-    await adminLogin({ emailOrId: data.email.trim(), password: data.password })
-      .then((res) => {
-        if (res.success) {
-          form.reset();
-          if (res.userrole === "admin") {
-            toast({
-              variant: "success",
-              title: "Success",
-              description: res.message,
-              action: (
-                <ToastAction altText="Close" className="bg-primary text-white">
-                  Close
-                </ToastAction>
-              ),
-            });
-
-            const role = Roles.ADMIN;
-            const user: AuthStateUser = {
-              userId: res.userid,
-              name: res.username,
-              token: res.token,
-              status: "idle",
-              requiredPasswordReset: res.requirePasswordReset,
-              requireTwoFactor: res.requireTwoFactor,
-            };
-            authLogin(user, role);
-            router.push("/admin/dashboard");
-          } else {
-            toast({
-              variant: "destructive",
-              title: "Error",
-              description: "Access Denied. Please login as an admin",
-              action: (
-                <ToastAction altText="Close" className="bg-primary text-white">
-                  Close
-                </ToastAction>
-              ),
-            });
-          }
-        } else {
+    try {
+      const res = await adminLogin({ 
+        emailOrId: data.email.trim(), 
+        password: data.password 
+      });
+      
+      if (res.success) {
+        form.reset();
+        if (res.userrole === "admin") {
           toast({
-            variant: "destructive",
-            title: "Error",
+            variant: "success",
+            title: "Success",
             description: res.message,
             action: (
               <ToastAction altText="Close" className="bg-primary text-white">
@@ -93,32 +61,71 @@ const LoginFormEmail = () => {
               </ToastAction>
             ),
           });
+
+          const role = Roles.ADMIN;
+          const user: AuthStateUser = {
+            userId: res.userid,
+            name: res.username,
+            token: res.token,
+            status: "idle",
+            requiredPasswordReset: res.requirePasswordReset,
+            requireTwoFactor: res.requireTwoFactor,
+          };
+          authLogin(user, role);
+          router.push("/admin/dashboard");
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Access Denied. Please login as an admin",
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
         }
-      })
-      .catch((err) => {
-        console.error(err.message);
+      } else {
         toast({
           variant: "destructive",
           title: "Error",
-          description:
-            "Something went wrong. Please check your credentials and try again later",
+          description: res.message,
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close
             </ToastAction>
           ),
         });
-      })
-      .finally(() => {
-        setIsPending(false);
+      }
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description:
+          "Something went wrong. Please check your credentials and try again later",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
       });
+    } finally {
+      setIsPending(false);
+    }
   }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const formData = form.getValues();
+    await onSubmit(formData);
+  };
 
   return (
     <Form {...form}>
       <form
         className="max-w-md w-full grid gap-4"
-        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+        onSubmit={handleSubmit}
+        method="POST"
       >
         <FormField
           control={form.control}
@@ -129,7 +136,12 @@ const LoginFormEmail = () => {
                 Admin Email<b className="text-primary font-light"> *</b>
               </FormLabel>
               <FormControl>
-                <Input placeholder="ava.wright@gmail.com" {...field} />
+                <Input 
+                  type="email"
+                  autoComplete="email"
+                  placeholder="ava.wright@gmail.com" 
+                  {...field} 
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -144,13 +156,22 @@ const LoginFormEmail = () => {
                 Password<b className="text-primary font-light"> *</b>
               </FormLabel>
               <FormControl>
-                <PasswordInput placeholder="**********" {...field} />
+                <PasswordInput 
+                  autoComplete="current-password"
+                  placeholder="**********" 
+                  {...field} 
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button disabled={isPending} variant={"default"} size={"lg"}>
+        <Button 
+          type="submit"
+          disabled={isPending} 
+          variant={"default"} 
+          size={"lg"}
+        >
           {isPending && (
             <Icons.spinner
               className="mr-2 h-4 w-4 animate-spin"

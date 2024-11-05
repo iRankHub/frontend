@@ -89,14 +89,16 @@ export const columns: ColumnDef<Ballot.AsObject>[] = [
     cell: ({ row }) => {
       const team1 = (row.getValue("team1") as { name: string }).name;
       const verdict = row.original.verdict;
+      const isVerdictPending = verdict === "pending";
       return (
-        <div className="w-full pr-5 text-center flex itemsc-center gap-2">
+        <div className="w-full pr-5 text-center flex items-center justify-center gap-2">
           <span className="max-w-[200px] truncate font-medium">{team1}</span>
-          {verdict !== "pending" && verdict === team1 ? (
-            <Icons.medal className="text-success-border" size={18} />
-          ) : (
-            <Icons.circleX className="text-destructive" size={18} />
-          )}
+          {!isVerdictPending &&
+            (verdict === team1 ? (
+              <Icons.medal className="text-success-border" size={18} />
+            ) : (
+              <Icons.circleX className="text-destructive" size={18} />
+            ))}
         </div>
       );
     },
@@ -114,14 +116,16 @@ export const columns: ColumnDef<Ballot.AsObject>[] = [
     cell: ({ row }) => {
       const team2 = (row.getValue("team2") as { name: string }).name;
       const verdict = row.original.verdict;
+      const isVerdictPending = verdict === "pending";
       return (
-        <div className="w-full pr-5 text-center flex itemsc-center gap-2">
+        <div className="w-full pr-5 text-center flex items-center justify-center gap-2">
           <span className="max-w-[200px] truncate font-medium">{team2}</span>
-          {verdict !== "pending" && verdict === team2 ? (
-            <Icons.medal className="text-success-border" size={18} />
-          ) : (
-            <Icons.circleX className="text-destructive" size={18} />
-          )}
+          {!isVerdictPending &&
+            (verdict === team2 ? (
+              <Icons.medal className="text-success-border" size={18} />
+            ) : (
+              <Icons.circleX className="text-destructive" size={18} />
+            ))}
         </div>
       );
     },

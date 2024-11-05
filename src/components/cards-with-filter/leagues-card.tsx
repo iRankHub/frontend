@@ -1,12 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import Link from "next/link";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardFooter, CardTitle } from "@/components/ui/card";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { useToast } from "../ui/use-toast";
 import { ToastAction } from "../ui/toast";
@@ -22,7 +16,6 @@ import {
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createTournamentFormatSchema } from "@/lib/validations/admin/tournaments/create-tournament-format.schema";
 import { z } from "zod";
 import { Sheet, SheetTrigger } from "../ui/sheet";
 import SidePanel, { Panelheader } from "../layout/admin-panel/side-panel";
@@ -66,6 +59,12 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 // @ts-ignore
 import { Provinces, Districts } from "rwanda";
 import { countriesPerContinent } from "@/lib/data";
@@ -262,7 +261,7 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
           {leagueType()}
         </Badge>
       </CardTitle>
-      <CardFooter className="flex items-center gap-4 justify-between p-0 h-auto">
+      <CardFooter className="flex items-end gap-4 justify-between p-0 h-auto">
         <div className="flex items-center gap-3">
           <div className="flex flex-col gap-1 justify-end">
             <span className="text-muted-text text-sm dark:text-foreground">
@@ -294,7 +293,16 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
           open={sheetOpen}
         >
           <SheetTrigger>
-            <Icons.expand className="w-3.5 h-3.5 text-primary" />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Icons.info className="w-3.5 h-3.5 text-primary" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Info</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </SheetTrigger>
           <SidePanel>
             <Panelheader>

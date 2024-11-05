@@ -8,6 +8,8 @@ import {
   BookText,
   BarChart,
   KeyRound,
+  BookTextIcon,
+  CircleUser,
 } from "lucide-react";
 
 type Submenu = {
@@ -35,24 +37,24 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: "",
       menus: [
         {
-          href: `/admin/profile`,
-          label: "Profile",
-          active: pathname === `/admin/profile`,
-          icon: List,
+          href: `/admin/notification-settings/schools`,
+          label: "Schools",
+          active: pathname === `/admin/notification-settings/schools`,
+          icon: BookTextIcon,
           submenus: [],
         },
         {
-          href: `/admin/profile/passwords`,
-          label: "Passwords",
-          active: pathname === `/admin/profile/passwords`,
+          href: `/admin/notification-settings/students`,
+          label: "Students",
+          active: pathname === `/admin/notification-settings/students`,
+          icon: CircleUser,
+          submenus: [],
+        },
+        {
+          href: `/admin/notification-settings/volunteers`,
+          label: "Volunteers",
+          active: pathname === `/admin/notification-settings/volunteers`,
           icon: Users,
-          submenus: [],
-        },
-        {
-          href: `/admin/profile/two-factor`,
-          label: "2 Factor Authentication",
-          active: pathname === `/admin/profile/two-factor`,
-          icon: KeyRound,
           submenus: [],
         }
       ],

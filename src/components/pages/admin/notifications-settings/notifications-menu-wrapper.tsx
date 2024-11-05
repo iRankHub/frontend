@@ -1,8 +1,7 @@
-"use client"
 import React from "react";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
-import LeaguesMobile from "./leagues-mobile";
-import { TournamentMenu } from "./tournament-menu";
+import LeaguesMobile from "./menu-mobile";
+import { Menu } from "./menu";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
@@ -12,13 +11,13 @@ type Props = {
   className?: string;
 };
 
-function TournamentMenuWrapper({ children, className }: Props) {
+function NotificationsMenuWrapper({ children, className }: Props) {
   return (
     <div className={cn(
         "mt-7 flex gap-5 relative",
         className
     )}>
-      <TournamentMenu />
+      <Menu />
       <div className="bg-background w-full min-h-full rounded-md border border-gray-200 pb-4">
         {children}
       </div>
@@ -38,4 +37,4 @@ function TournamentMenuWrapper({ children, className }: Props) {
   );
 }
 
-export default TournamentMenuWrapper;
+export default NotificationsMenuWrapper;

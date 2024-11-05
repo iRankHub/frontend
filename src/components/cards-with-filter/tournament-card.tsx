@@ -125,7 +125,29 @@ const TournamentCard = ({
     return `${month}/${day}`;
   };
 
+  const getFormattedDateRange = (startDate: string, endDate: string) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Compare dates without time
+    const startString = start.toDateString();
+    const endString = end.toDateString();
+
+    if (startString === endString) {
+      return formatDate(startDate);
+    }
+
+    return `${formatDate(startDate)} - ${formatDate(endDate)}`;
+  };
+
   const tournament = row.original as Tournament.AsObject;
+
+  // Get formatted date range once to reuse
+  const dateDisplay = getFormattedDateRange(
+    getColumnValue(row, "startDate"),
+    getColumnValue(row, "endDate")
+  );
+
   return (
     <Card key={row.id} className="p-3">
       <div className="flex justify-between items-start">
@@ -176,8 +198,7 @@ const TournamentCard = ({
                 <div className="hidden mt-1">
                   <div className="text-muted-foreground">Date</div>
                   <div className="text-secondary-foreground font-medium">
-                    {formatDate(getColumnValue(row, "startDate"))} -{" "}
-                    {formatDate(getColumnValue(row, "endDate"))}
+                    {dateDisplay}
                   </div>
                 </div>
               </div>
@@ -290,8 +311,7 @@ const TournamentCard = ({
                   Date
                 </div>
                 <div className="text-secondary-foreground font-medium text-xs">
-                  {formatDate(getColumnValue(row, "startDate"))} -{" "}
-                  {formatDate(getColumnValue(row, "endDate"))}
+                  {dateDisplay}
                 </div>
               </div>
             </div>
@@ -403,8 +423,7 @@ const TournamentCard = ({
           <div className="hidden md:block text-xs w-full">
             <div className="text-muted-foreground">Date</div>
             <div className="text-secondary-foreground font-medium">
-              {formatDate(getColumnValue(row, "startDate"))} -{" "}
-              {formatDate(getColumnValue(row, "endDate"))}
+              {dateDisplay}
             </div>
           </div>
         </div>

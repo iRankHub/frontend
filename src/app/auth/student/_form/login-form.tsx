@@ -70,8 +70,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
               const role = Roles.STUDENT;
               const user: AuthStateUser = {
                 userId: res.userid,
-              name: res.username,
-                  token: res.token,
+                name: res.username,
+                token: res.token,
                 status: "idle",
                 requiredPasswordReset: res.requirePasswordReset,
                 requireTwoFactor: res.requireTwoFactor,
@@ -87,7 +87,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
               toast({
                 variant: "success",
                 title: "Success",
-                description: "Your account is pending approval. You will be notified once your account is approved.",
+                description:
+                  "Your account is pending approval. You will be notified once your account is approved.",
                 action: (
                   <ToastAction
                     altText="Close"
@@ -143,11 +144,18 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
     }
   }
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const formData = form.getValues();
+    await onSubmit(formData);
+  };
+
   return (
     <Form {...form}>
       <form
         className="max-w-md w-full grid gap-4"
-        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+        onSubmit={handleSubmit}
+        method="POST"
       >
         <FormField
           control={form.control}

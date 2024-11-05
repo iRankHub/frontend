@@ -49,7 +49,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 interface CreateUserProps {
-  type: "school" | "student" | "volunteer" | null;
+  type: "school" | "student" | "volunteer" | "admin" | null;
   setSheetOpen: React.Dispatch<React.SetStateAction<boolean | undefined>>;
 }
 

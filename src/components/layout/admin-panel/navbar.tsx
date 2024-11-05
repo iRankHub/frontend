@@ -14,10 +14,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import SidePanel, { Panelheader } from "./side-panel";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import Notifications from "./notifications";

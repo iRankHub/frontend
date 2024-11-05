@@ -1,16 +1,13 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
 import { UserSummary } from "@/lib/grpc/proto/user_management/users_pb";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
-import { priorities, statuses, userRoles } from "@/components/tables/data/data";
+import { statuses, userRoles } from "@/components/tables/data/data";
 import { ApproveUser } from "./approve-user";
 import { RejectUser } from "./reject-user";
 import ViewUser from "./view-user";
@@ -20,6 +17,14 @@ const inter = Inter({
   weight: "700",
   subsets: ["latin"],
 });
+
+// Define role-specific color mappings
+const roleColorMap: Record<string, { bg: string; text: string }> = {
+  admin: { bg: "bg-primary", text: "text-white" },
+  student: { bg: "bg-sky-200", text: "text-sky-800" },
+  school: { bg: "bg-rose-200", text: "text-rose-800" },
+  volunteer: { bg: "bg-amber-200", text: "text-amber-800" },
+};
 
 export const columns: ColumnDef<UserSummary.AsObject>[] = [
   {
@@ -174,9 +179,23 @@ export const columns: ColumnDef<UserSummary.AsObject>[] = [
         return null;
       }
 
+      // Get color mapping based on role value
+      const colorMapping = roleColorMap[role.value] || {
+        bg: "bg-gray-200",
+        text: "text-gray-800",
+      };
+
       return (
         <div className="w-full pr-5 text-center">
-          <Badge variant="default" className="hover:bg-${variant">
+          <Badge
+            variant="outline"
+            className={cn(
+              colorMapping.bg,
+              colorMapping.text,
+              `hover:${colorMapping.bg}`,
+              "border-0"
+            )}
+          >
             {role.label}
           </Badge>
         </div>

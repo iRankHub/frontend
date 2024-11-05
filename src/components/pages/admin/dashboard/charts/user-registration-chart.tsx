@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -21,21 +20,9 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { DailyRegistration } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { getTournamentRegistration } from "@/core/tournament/list";
-
-const initialData = [
-  { date: "2024-09-21", count: 26 },
-  { date: "2024-09-23", count: 38 },
-  { date: "2024-09-25", count: 11 },
-  { date: "2024-09-26", count: 15 },
-  { date: "2024-09-27", count: 21 },
-  { date: "2024-09-28", count: 26 },
-  { date: "2024-09-29", count: 6 },
-  { date: "2024-09-30", count: 16 },
-];
 
 const UserRegistrationsChart = () => {
   const [chartData, setChartData] = useState<DailyRegistration.AsObject[]>([]);
@@ -70,7 +57,12 @@ const UserRegistrationsChart = () => {
         filteredData = data;
     }
 
-    setChartData(filteredData);
+    // Sort the data chronologically (oldest to newest)
+    const sortedData = [...filteredData].sort((a, b) => 
+      new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+    
+    setChartData(sortedData);
   };
 
   useEffect(() => {

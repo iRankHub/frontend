@@ -41,6 +41,7 @@ import {
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { useFormatsStore } from "@/stores/admin/tournaments/formats.store";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
 interface FormatCardProps {
   row: any;
@@ -205,7 +206,16 @@ const FormatCard = ({ row, getColumnValue }: FormatCardProps) => {
           open={sheetOpen}
         >
           <SheetTrigger>
-            <Icons.expand className="w-3.5 h-3.5 text-primary" />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Icons.info className="w-3.5 h-3.5 text-primary" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Info</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </SheetTrigger>
           <SidePanel>
             <Panelheader>

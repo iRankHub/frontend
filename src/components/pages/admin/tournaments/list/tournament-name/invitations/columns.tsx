@@ -15,6 +15,12 @@ import RejectInvite from "./actions/reject-invite";
 
 type InvitationInfoAsObject = InvitationInfo.AsObject;
 
+const roleColorMap: Record<string, { bg: string; text: string }> = {
+  student: { bg: "bg-sky-200", text: "text-sky-800" },
+  school: { bg: "bg-rose-200", text: "text-rose-800" },
+  volunteer: { bg: "bg-amber-200", text: "text-amber-800" },
+};
+
 const isWithinDeadline = (
   tournamentEndDate: Date | null,
   action: 'accept' | 'reject' | 'resend'
@@ -47,7 +53,7 @@ const ActionsCellRenderer: React.FC<{ invitation: InvitationInfoAsObject }> = ({
   const { tournament } = useInvitationsStore((state) => state);
   const tournamentEndDate = tournament?.endDate ? new Date(tournament.endDate) : null;
 
-  const canTakeAction = isWithinDeadline(tournamentEndDate, 'accept'); // 'accept' is used as a generic action here
+  const canTakeAction = isWithinDeadline(tournamentEndDate, 'accept');
   const tournamentEnded = isTournamentEnded(tournamentEndDate);
 
   if (tournamentEnded) {
@@ -114,7 +120,10 @@ export const columns: ColumnDef<InvitationInfoAsObject>[] = [
       const { bgColor, textColor } = getStatusBadgeStyles(status);
       return (
         <div className="w-full pr-5 text-center">
-          <Badge variant="default" className={`${bgColor} ${textColor} hover:${bgColor}`}>
+          <Badge
+            variant="default"
+            className={`${bgColor} ${textColor} hover:${bgColor} capitalize`}
+          >
             {status}
           </Badge>
         </div>
@@ -127,11 +136,30 @@ export const columns: ColumnDef<InvitationInfoAsObject>[] = [
     accessorKey: "inviteeRole",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Category" className="justify-center" />,
     cell: ({ row }) => {
-      const category = userRoles.find((category) => category.value === row.getValue("inviteeRole"));
-      if (!category) return null;
+      const role = userRoles.find((category) => category.value === row.getValue("inviteeRole"));
+      
+      if (!role) return null;
+
+      // Get color mapping based on role value
+      const colorMapping = roleColorMap[role.value] || {
+        bg: "bg-gray-200",
+        text: "text-gray-800",
+      };
+
       return (
         <div className="w-full pr-5 text-center">
-          <Badge variant="default">{category.label}</Badge>
+          <Badge
+            variant="outline"
+            className={cn(
+              colorMapping.bg,
+              colorMapping.text,
+              `hover:${colorMapping.bg}`,
+              "border-0",
+              "capitalize"
+            )}
+          >
+            {role.label}
+          </Badge>
         </div>
       );
     },

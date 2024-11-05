@@ -6,21 +6,17 @@ import {
   SortingState,
   Table as TableType,
   VisibilityState,
-  flexRender,
   getCoreRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
 import { Card } from "@/components/ui/card";
 import {
-  League,
   Tournament,
-  TournamentFormat,
 } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import TournamentCard from "./tournament-card";
 import FormatCard from "./formats-card";

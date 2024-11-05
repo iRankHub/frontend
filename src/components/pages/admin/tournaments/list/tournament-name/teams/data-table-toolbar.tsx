@@ -17,6 +17,7 @@ import { useUserStore } from "@/stores/auth/auth.store";
 import { GetSchoolsType } from "@/types/user_management/schools";
 import { Team } from "@/lib/grpc/proto/debate_management/debate_pb";
 import * as XLSX from "xlsx";
+import { useToast } from "@/components/ui/use-toast";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -27,81 +28,122 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const [allStudents, setAllStudents] = useState<Student.AsObject[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const { user } = useUserStore((state) => state);
+  const { toast } = useToast();
+  const [studentPagination, setStudentPagination] = useState({
+    page: 1,
+    pageSize: 50, 
+    total: 0,
+  });
 
-  useEffect(() => {
-    if (!user) return;
+  const loadStudents = async (page: number) => {
+    if (!user || loading || (!hasMore && page > 1)) return;
+
+    setLoading(true);
     const options: GetSchoolsType = {
-      pageSize: 1000,
-      page: 1,
+      pageSize: studentPagination.pageSize,
+      page,
       token: user.token,
     };
-    getStudents({ ...options })
-      .then((res) => {
+
+    try {
+      const res = await getStudents({ ...options });
+      if (page === 1) {
         setAllStudents(res.studentsList);
-      })
-      .catch((err) => {
-        console.error(err.message);
+      } else {
+        setAllStudents((prev) => [...prev, ...res.studentsList]);
+      }
+
+      // Update pagination info
+      setStudentPagination((prev) => ({
+        ...prev,
+        page,
+        total: res.totalcount,
+      }));
+
+      // Check if we have more data to load
+      setHasMore(res.studentsList.length === studentPagination.pageSize);
+    } catch (err: any) {
+      toast({
+        title: "Error loading students",
+        description: err.message,
+        variant: "destructive",
       });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Initial load
+  useEffect(() => {
+    loadStudents(1);
   }, [user]);
 
-  // Step 1: Extract speakers from existing teams
+  // Extract speakers from existing teams
   const teams = table
     .getRowModel()
-    .rows.map((row) => row.original) as Team.AsObject[]; // Adjust based on your table structure
+    .rows.map((row) => row.original) as Team.AsObject[];
 
   const usedStudents = teams.flatMap((team) =>
     team.speakersList.map((speaker) => speaker.speakerId)
   );
 
-  // Step 2: Filter students to exclude already assigned ones
+  // Filter students to exclude already assigned ones
   const availableStudents = allStudents.filter(
     (student) => !usedStudents.includes(student.studentid)
   );
 
   return (
-    <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown">
-      <div className="flex flex-1 items-center space-x-3 p-5 py-4">
-        <Input
-          placeholder="Search team name..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="h-8 w-[150px] lg:w-[280px]"
-        />
-        {isFiltered && (
-          <Button
-            variant="ghost"
-            onClick={() => table.resetColumnFilters()}
-            className="h-8 px-2 lg:px-3"
-          >
-            Reset
-            <Cross2Icon className="ml-2 h-4 w-4" />
-          </Button>
-        )}
-      </div>
-      <div className="mx-5 flex items-center gap-5">
-        <Sheet modal>
-          <SheetTrigger>
+    <div className="flex flex-col w-full">
+      <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown">
+        <div className="flex flex-1 items-center space-x-3 p-5 py-4">
+          <Input
+            placeholder="Search team name..."
+            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("name")?.setFilterValue(event.target.value)
+            }
+            className="h-8 w-[150px] lg:w-[280px]"
+          />
+          {isFiltered && (
             <Button
-              type="button"
-              className="border border-dashed border-white text-background dark:text-foreground gap-2 text-sm font-bold h-8 hover:bg-background dark:hover:bg-foreground hover:text-foreground dark:hover:text-background group"
+              variant="ghost"
+              onClick={() => table.resetColumnFilters()}
+              className="h-8 px-2 lg:px-3"
             >
-              <Icons.fileUp className="text-white w-3.5 h-3.5 group-hover:text-foreground group-hover:dark:text-background" />
-              Add Team
-              <span className="sr-only">Add Team</span>
+              Reset
+              <Cross2Icon className="ml-2 h-4 w-4" />
             </Button>
-          </SheetTrigger>
-          <SidePanel>
-            <Panelheader>Add Team</Panelheader>
-            <AddTeamForm
-              availableStudents={availableStudents}
-              setAllStudents={setAllStudents}
-            />
-          </SidePanel>
-        </Sheet>
-        {exportToExcel({ table })}
+          )}
+        </div>
+        <div className="mx-5 flex items-center gap-5">
+          <Sheet modal>
+            <SheetTrigger>
+              <Button
+                type="button"
+                className="border border-dashed border-white text-background dark:text-foreground gap-2 text-sm font-bold h-8 hover:bg-background dark:hover:bg-foreground hover:text-foreground dark:hover:text-background group"
+              >
+                <Icons.fileUp className="text-white w-3.5 h-3.5 group-hover:text-foreground group-hover:dark:text-background" />
+                Add Team
+                <span className="sr-only">Add Team</span>
+              </Button>
+            </SheetTrigger>
+            <SidePanel>
+              <Panelheader>Add Team</Panelheader>
+              <AddTeamForm
+                availableStudents={availableStudents}
+                setAllStudents={setAllStudents}
+                pagination={studentPagination}
+                onLoadMore={() => loadStudents(studentPagination.page + 1)}
+                hasMore={hasMore}
+                loading={loading}
+              />
+            </SidePanel>
+          </Sheet>
+          {exportToExcel({ table })}
+        </div>
       </div>
     </div>
   );
@@ -115,31 +157,21 @@ const exportToExcel = ({
   filename?: string;
 }) => {
   const handleExport = () => {
-    // Get the rows from the table
     const rows = table.getRowModel().rows;
-
-    // Convert the rows to a format suitable for XLSX
-    const data = rows.map(row => {
+    const data = rows.map((row) => {
       return {
         "Team Name": row.getValue("name"),
-        "No. of Speakers": (row.getValue("speakersList") as any[]).length
+        "No. of Speakers": (row.getValue("speakersList") as any[]).length,
       };
     });
 
-    // Create a new workbook and add the data
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(data);
 
-    // Adjust column widths
-    const colWidths = [
-      { wch: 30 }, // Team Name
-      { wch: 15 }  // No. of Speakers
-    ];
-    ws['!cols'] = colWidths;
+    const colWidths = [{ wch: 30 }, { wch: 15 }];
+    ws["!cols"] = colWidths;
 
     XLSX.utils.book_append_sheet(wb, ws, "Teams");
-
-    // Save the file
     XLSX.writeFile(wb, filename);
   };
 

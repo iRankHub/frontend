@@ -32,38 +32,75 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { useUserStore } from "@/stores/auth/auth.store";
-import { Student } from "@/lib/grpc/proto/user_management/users_pb";
+import { School, Student } from "@/lib/grpc/proto/user_management/users_pb";
 import { CreateTeamType } from "@/types/tournaments/teams";
 import { createTournamentTeam } from "@/core/tournament/teams";
 import { useToast } from "@/components/ui/use-toast";
 import { useTeamsStore } from "@/stores/admin/debate/teams.store";
 import { ToastAction } from "@/components/ui/toast";
+import { getSchoolsNoAuth } from "@/core/users/schools";
 
-type TeamInput = z.infer<typeof createTeamSchema>;
+// Update schema to include optional school
+const createTeamSchemaWithSchool = createTeamSchema.extend({
+  school: z.string().optional(),
+});
+
+type TeamInput = z.infer<typeof createTeamSchemaWithSchool>;
+
+interface Pagination {
+  page: number;
+  pageSize: number;
+  total: number;
+}
 
 interface AddTeamFormProps {
   availableStudents: Student.AsObject[];
   setAllStudents: React.Dispatch<React.SetStateAction<Student.AsObject[]>>;
+  pagination: Pagination;
+  onLoadMore: () => void;
+  hasMore: boolean;
+  loading: boolean;
 }
 
-function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
+function AddTeamForm({
+  availableStudents,
+  setAllStudents,
+  pagination,
+  onLoadMore,
+  hasMore,
+  loading,
+}: AddTeamFormProps) {
   const params = useParams<{ name: string }>();
   const { user } = useUserStore((state) => state);
   const { addTeam } = useTeamsStore((state) => state);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { toast } = useToast();
+  const [schools, setSchools] = useState<School.AsObject[]>([]);
+  const [loadingSchools, setLoadingSchools] = useState(false);
+  const [selectedSchool, setSelectedSchool] = useState<string | null>(null);
+  const [filteredStudents, setFilteredStudents] =
+    useState<Student.AsObject[]>(availableStudents);
+  const [schoolPagination, setSchoolPagination] = useState({
+    page: 1,
+    pageSize: 50,
+    total: 0,
+  });
+  const [hasMoreSchools, setHasMoreSchools] = useState(true);
+
   const [openPopover, setOpenPopover] = useState<{
     speaker_1: boolean;
     speaker_2: boolean;
     speaker_3: boolean;
+    school: boolean;
   }>({
     speaker_1: false,
     speaker_2: false,
     speaker_3: false,
+    school: false,
   });
 
   const form = useForm<TeamInput>({
-    resolver: zodResolver(createTeamSchema),
+    resolver: zodResolver(createTeamSchemaWithSchool),
   });
 
   const [selectedUsers, setSelectedUsers] = useState<{
@@ -76,10 +113,67 @@ function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
     speaker_3: null,
   });
 
+  const loadSchools = async (page: number) => {
+    if (loadingSchools || (!hasMoreSchools && page > 1)) return;
+
+    setLoadingSchools(true);
+    try {
+      const res = await getSchoolsNoAuth({
+        page,
+        pageSize: schoolPagination.pageSize,
+      });
+
+      if (page === 1) {
+        setSchools(res.schoolsList);
+      } else {
+        setSchools((prev) => [...prev, ...res.schoolsList]);
+      }
+
+      setSchoolPagination((prev) => ({
+        ...prev,
+        page,
+        total: res.totalcount,
+      }));
+
+      setHasMoreSchools(res.schoolsList.length === schoolPagination.pageSize);
+    } catch (err) {
+      console.error("Error fetching schools:", err);
+      toast({
+        title: "Error loading schools",
+        description: "Failed to load schools. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoadingSchools(false);
+    }
+  };
+
+  // Initial load of schools
+  useEffect(() => {
+    loadSchools(1);
+  }, []);
+
+  // Filter students based on selected school
+  useEffect(() => {
+    if (selectedSchool) {
+      const filtered = availableStudents.filter(
+        (student) => student.schoolid === Number(selectedSchool)
+      );
+      setFilteredStudents(filtered);
+    } else {
+      setFilteredStudents(availableStudents);
+    }
+  }, [selectedSchool, availableStudents]);
+
+  const handleSchoolSelect = (schoolId: string) => {
+    setSelectedSchool(schoolId === selectedSchool ? null : schoolId);
+    form.setValue("school", schoolId === selectedSchool ? undefined : schoolId);
+    setOpenPopover((prev) => ({ ...prev, school: false }));
+  };
+
   const createTeam = async (data: TeamInput) => {
     if (!user) return;
 
-    // check if team name is not only numbers
     if (!/[^0-9]/.test(data.name)) {
       form.setError("name", {
         type: "manual",
@@ -99,24 +193,19 @@ function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
       token: user.token,
     };
 
-    setLoading(true);
+    setIsSubmitting(true);
     await createTournamentTeam(options)
       .then((res) => {
         form.reset();
-
-        // clear the name field
         form.setValue("name", "");
-
         setSelectedUsers({
           speaker_1: null,
           speaker_2: null,
           speaker_3: null,
         });
-
-        // Update the teams in the store
+        setSelectedSchool(null);
         addTeam(res);
 
-        // Remove the selected users from the availableStudents list
         const usedStudentIds = [
           Number(data.speaker_1),
           Number(data.speaker_2),
@@ -152,7 +241,7 @@ function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
         });
       })
       .finally(() => {
-        setLoading(false);
+        setIsSubmitting(false);
       });
   };
 
@@ -166,9 +255,10 @@ function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
         newSelectedUsers[fieldName] = null;
         form.setValue(fieldName, "");
       } else {
-        // Remove the user from any other field they might be selected in
         Object.keys(newSelectedUsers).forEach((key) => {
-          if (newSelectedUsers[key as keyof typeof newSelectedUsers] === userId) {
+          if (
+            newSelectedUsers[key as keyof typeof newSelectedUsers] === userId
+          ) {
             newSelectedUsers[key as keyof typeof newSelectedUsers] = null;
           }
         });
@@ -178,6 +268,95 @@ function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
       return newSelectedUsers;
     });
     setOpenPopover((prev) => ({ ...prev, [fieldName]: false }));
+  };
+
+  const RenderSchoolField = () => {
+    return (
+      <FormField
+        control={form.control}
+        name="school"
+        render={({ field }) => (
+          <FormItem className="flex flex-col my-5">
+            <FormLabel className="font-medium text-darkBlue dark:text-foreground">
+              Filter by School (Optional)
+            </FormLabel>
+            <Popover
+              open={openPopover.school}
+              onOpenChange={(open) =>
+                setOpenPopover((prev) => ({ ...prev, school: open }))
+              }
+            >
+              <PopoverTrigger asChild>
+                <FormControl>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    className={cn(
+                      "w-full justify-between",
+                      !field.value && "text-muted-foreground"
+                    )}
+                  >
+                    {field.value
+                      ? schools.find(
+                          (school) => String(school.schoolid) === field.value
+                        )?.name || "Select school"
+                      : "Select school"}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </FormControl>
+              </PopoverTrigger>
+              <PopoverContentWithNoPrimitivePortal className="w-full p-0">
+                <Command>
+                  <CommandInput placeholder="Search school..." />
+                  <CommandList>
+                    <CommandEmpty>No school found.</CommandEmpty>
+                    <CommandGroup>
+                      {schools.map((school) => (
+                        <CommandItem
+                          value={school.name}
+                          key={String(school.schoolid)}
+                          onSelect={() =>
+                            handleSchoolSelect(String(school.schoolid))
+                          }
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              selectedSchool === String(school.schoolid)
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
+                          />
+                          {school.name}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                    {hasMoreSchools && (
+                      <div className="py-2 px-2 text-center">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => loadSchools(schoolPagination.page + 1)}
+                          disabled={loadingSchools}
+                          className="w-full"
+                        >
+                          {loadingSchools ? (
+                            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                          ) : (
+                            "Load More Schools"
+                          )}
+                        </Button>
+                      </div>
+                    )}
+                  </CommandList>
+                </Command>
+              </PopoverContentWithNoPrimitivePortal>
+            </Popover>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    );
   };
 
   const RenderSpeakerField = (
@@ -210,11 +389,11 @@ function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
                     )}
                   >
                     {field.value
-                      ? availableStudents.find(
+                      ? filteredStudents.find(
                           (user) => String(user.studentid) === field.value
                         )?.firstname +
                         " " +
-                        availableStudents.find(
+                        filteredStudents.find(
                           (user) => String(user.studentid) === field.value
                         )?.lastname
                       : "Select user"}
@@ -228,7 +407,7 @@ function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
                   <CommandList>
                     <CommandEmpty>No speaker found.</CommandEmpty>
                     <CommandGroup>
-                      {availableStudents.map((user) => (
+                      {filteredStudents.map((user) => (
                         <CommandItem
                           value={`${user.firstname} ${user.lastname}`}
                           key={String(user.studentid)}
@@ -236,14 +415,18 @@ function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
                             handleUserSelect(String(user.studentid), fieldName);
                           }}
                           disabled={
-                            Object.values(selectedUsers).includes(String(user.studentid)) &&
+                            Object.values(selectedUsers).includes(
+                              String(user.studentid)
+                            ) &&
                             selectedUsers[fieldName] !== String(user.studentid)
                           }
                         >
                           <Check
                             className={cn(
                               "mr-2 h-4 w-4",
-                              Object.values(selectedUsers).includes(String(user.studentid))
+                              Object.values(selectedUsers).includes(
+                                String(user.studentid)
+                              )
                                 ? "opacity-100"
                                 : "opacity-0"
                             )}
@@ -252,6 +435,23 @@ function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
                         </CommandItem>
                       ))}
                     </CommandGroup>
+                    {hasMore && (
+                      <div className="py-2 px-2 text-center">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={onLoadMore}
+                          disabled={loading}
+                          className="w-full"
+                        >
+                          {loading ? (
+                            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                          ) : (
+                            "Load More Students"
+                          )}
+                        </Button>
+                      </div>
+                    )}
                   </CommandList>
                 </Command>
               </PopoverContentWithNoPrimitivePortal>
@@ -285,6 +485,10 @@ function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
             </FormItem>
           )}
         />
+
+        {/* School filter field */}
+        {RenderSchoolField()}
+
         <div className="w-full mb-5">
           <h3 className="text-sm text-darkBlue dark:text-foreground font-medium my-3">
             Team Members
@@ -295,15 +499,26 @@ function AddTeamForm({ availableStudents, setAllStudents }: AddTeamFormProps) {
             {RenderSpeakerField("speaker_3", "3rd Speaker")}
           </div>
         </div>
-        <Button type="submit" size={"sm"} className="w-full hover:bg-primary">
-          Create Team
-          {loading && (
-            <Icons.spinner
-              className="mr-2 h-4 w-4 animate-spin"
-              aria-hidden="true"
-            />
+        <Button
+          type="submit"
+          size="sm"
+          className="w-full hover:bg-primary"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <>
+              <Icons.spinner
+                className="mr-2 h-4 w-4 animate-spin"
+                aria-hidden="true"
+              />
+              Creating Team...
+            </>
+          ) : (
+            <>
+              Create Team
+              <span className="sr-only">Create Team</span>
+            </>
           )}
-          <div className="sr-only">Create Team</div>
         </Button>
       </form>
     </Form>

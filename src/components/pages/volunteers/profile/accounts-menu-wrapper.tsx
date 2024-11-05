@@ -13,10 +13,7 @@ type Props = {
 
 function AccountMenuWrapper({ children, className }: Props) {
   return (
-    <div className={cn(
-        "mt-7 flex gap-5 relative",
-        className
-    )}>
+    <div className={cn("mt-7 flex gap-5 relative", className)}>
       <Menu />
       <div className="bg-background w-full min-h-full rounded-md border border-gray-200 pb-4">
         {children}
@@ -28,7 +25,7 @@ function AccountMenuWrapper({ children, className }: Props) {
             size={"icon"}
             className="flex xl:hidden fixed right-5 bottom-5 bg-primary rounded-full cursor-pointer z-50 hover:bg-primary"
           >
-            <Icons.menuRight className="text-white w-5 h-5 md:w-8 md:h-8" />
+            <Icons.menuRight className="text-white w-5 h-5 scale-x-[-1] mr-1" />
           </Button>
         </SheetTrigger>
         <LeaguesMobile />
