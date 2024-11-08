@@ -16,14 +16,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/ui/password-Input";
 import {
   Popover,
   PopoverContent,
   PopoverContentWithNoPrimitivePortal,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-Input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
@@ -35,18 +35,18 @@ import {
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { signUp } from "@/core/authentication/auth";
-import { getCountries } from "@/core/users/users";
-import { Country } from "@/lib/grpc/proto/user_management/users_pb";
-import { cn } from "@/lib/utils";
-import { schoolSchema } from "@/lib/validations/admin/accounts";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { UserRole } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckIcon, ChevronsUpDown } from "lucide-react";
-import Link from "next/link";
-import React, { useEffect } from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+// @ts-ignore
+import { Provinces, Districts } from "rwanda";
+import { countriesPerContinent } from "@/lib/data";
+import { cn } from "@/lib/utils";
+import { schoolSchema } from "@/lib/validations/admin/accounts";
 
 interface CreateUserProps {
   type: "school" | "student" | "volunteer" | "admin" | null;
@@ -56,45 +56,64 @@ interface CreateUserProps {
 type Inputs = z.infer<typeof schoolSchema>;
 
 function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
-  const [isPending, setIsPending] = React.useState(false);
-  const [openCountries, setOpenCountries] = React.useState(false);
+  const [isPending, setIsPending] = useState(false);
+  const [activeStep, setActiveStep] = useState(1);
   const { toast } = useToast();
-  const [activeStep, setActiveStep] = React.useState(1);
-  const [countries, setCountries] = React.useState<Country.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
-  // react-hook-form
-  const form = useForm<Inputs>({
-    resolver: zodResolver(schoolSchema),
+
+  // Popover states
+  const [openPopover, setOpenPopover] = useState({
+    continent: false,
+    country: false,
+    province: false,
+    district: false,
   });
 
-  useEffect(() => {
-    if (!user) return;
-    const options = {
-      token: user.token,
-    };
-    getCountries(options)
-      .then((res) => {
-        setCountries(res);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
-  }, [user]);
+  const form = useForm<Inputs>({
+    resolver: zodResolver(schoolSchema),
+    defaultValues: {
+      locationType: "local",
+      country: "Rwanda",
+    },
+  });
+
+  const locationType = form.watch("locationType");
+  const selectedContinent = form.watch("continent");
+  const selectedProvince = form.watch("province_state");
+
+  const getCountriesForContinent = (continent: string): string[] => {
+    // @ts-ignore
+    const continentCountries = countriesPerContinent[continent] || [];
+    return continentCountries.map((country: any) =>
+      typeof country === "object" ? country.label : country
+    );
+  };
+
+  const getAvailableDistricts = () => {
+    return selectedProvince ? Districts(selectedProvince) : [];
+  };
 
   async function onSubmit(data: Inputs) {
     setIsPending(true);
 
+    const address =
+      data.locationType === "local"
+        ? `${data.district_region}, ${data.province_state}`
+        : `${data.continent}, ${data.country}`;
+
     await signUp({
-      firstName: "emma",
-      lastName: "watson",
-      address: "kk",
+      firstName: data.contact_person.split(" ")[0],
+      lastName: data.contact_person.split(" ")[1] || "",
+      address,
       email: data.email,
       password: data.password,
       userRole: UserRole.SCHOOL,
       schoolName: data.name,
       country: data.country,
-      province: data.province_state,
-      district: data.district_region,
+      province:
+        data.locationType === "local" ? data.province_state : data.continent,
+      district:
+        data.locationType === "local" ? data.district_region : data.country,
       contactEmail: data.contact_person_email,
       schoolType: data.type,
       nationalId: "1232434234",
@@ -145,6 +164,225 @@ function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
 
     return output;
   };
+
+  const ContinentSelect = ({ field }: { field: any }) => (
+    <Popover
+      open={openPopover.continent}
+      onOpenChange={(open) =>
+        setOpenPopover((prev) => ({ ...prev, continent: open }))
+      }
+    >
+      <PopoverTrigger asChild>
+        <FormControl>
+          <Button
+            variant="outline"
+            role="combobox"
+            className={cn(
+              "w-full justify-between",
+              !field.value && "text-muted-foreground"
+            )}
+          >
+            {field.value || "Select continent"}
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </FormControl>
+      </PopoverTrigger>
+      <PopoverContentWithNoPrimitivePortal className="w-full p-0">
+        <Command>
+          <CommandInput placeholder="Search continent..." />
+          <CommandList>
+            <CommandEmpty>No continent found.</CommandEmpty>
+            <CommandGroup>
+              {Object.keys(countriesPerContinent).map((continent) => (
+                <CommandItem
+                  key={continent}
+                  value={continent}
+                  onSelect={() => {
+                    form.setValue("continent", continent);
+                    // Reset country when continent changes
+                    form.setValue("country", "");
+                    setOpenPopover((prev) => ({ ...prev, continent: false }));
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      field.value === continent ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  {continent}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContentWithNoPrimitivePortal>
+    </Popover>
+  );
+
+  const CountrySelect = ({ field }: { field: any }) => (
+    <Popover
+      open={openPopover.country}
+      onOpenChange={(open) =>
+        setOpenPopover((prev) => ({ ...prev, country: open }))
+      }
+    >
+      <PopoverTrigger asChild>
+        <FormControl>
+          <Button
+            variant="outline"
+            role="combobox"
+            disabled={!selectedContinent}
+            className={cn(
+              "w-full justify-between",
+              !field.value && "text-muted-foreground"
+            )}
+          >
+            {field.value || "Select country"}
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </FormControl>
+      </PopoverTrigger>
+      <PopoverContentWithNoPrimitivePortal className="w-full p-0">
+        <Command>
+          <CommandInput placeholder="Search country..." />
+          <CommandList>
+            <CommandEmpty>No country found.</CommandEmpty>
+            <CommandGroup>
+              {selectedContinent &&
+                getCountriesForContinent(selectedContinent).map((country) => (
+                  <CommandItem
+                    key={country}
+                    value={country}
+                    onSelect={() => {
+                      form.setValue("country", country);
+                      setOpenPopover((prev) => ({ ...prev, country: false }));
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        field.value === country ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    {country}
+                  </CommandItem>
+                ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContentWithNoPrimitivePortal>
+    </Popover>
+  );
+
+  const ProvinceSelect = ({ field }: { field: any }) => (
+    <Popover
+      open={openPopover.province}
+      onOpenChange={(open) =>
+        setOpenPopover((prev) => ({ ...prev, province: open }))
+      }
+    >
+      <PopoverTrigger asChild>
+        <FormControl>
+          <Button
+            variant="outline"
+            role="combobox"
+            className={cn(
+              "w-full justify-between",
+              !field.value && "text-muted-foreground"
+            )}
+          >
+            {field.value || "Select province"}
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </FormControl>
+      </PopoverTrigger>
+      <PopoverContentWithNoPrimitivePortal className="w-full p-0">
+        <Command>
+          <CommandInput placeholder="Search province..." />
+          <CommandList>
+            <CommandEmpty>No province found.</CommandEmpty>
+            <CommandGroup>
+              {Provinces().map((province: string) => (
+                <CommandItem
+                  key={province}
+                  value={province}
+                  onSelect={() => {
+                    form.setValue("province_state", province);
+                    // Reset district when province changes
+                    form.setValue("district_region", "");
+                    setOpenPopover((prev) => ({ ...prev, province: false }));
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      field.value === province ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  {province}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContentWithNoPrimitivePortal>
+    </Popover>
+  );
+
+  const DistrictSelect = ({ field }: { field: any }) => (
+    <Popover
+      open={openPopover.district}
+      onOpenChange={(open) =>
+        setOpenPopover((prev) => ({ ...prev, district: open }))
+      }
+    >
+      <PopoverTrigger asChild>
+        <FormControl>
+          <Button
+            variant="outline"
+            role="combobox"
+            disabled={!selectedProvince}
+            className={cn(
+              "w-full justify-between",
+              !field.value && "text-muted-foreground"
+            )}
+          >
+            {field.value || "Select district"}
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </FormControl>
+      </PopoverTrigger>
+      <PopoverContentWithNoPrimitivePortal className="w-full p-0">
+        <Command>
+          <CommandInput placeholder="Search district..." />
+          <CommandList>
+            <CommandEmpty>No district found.</CommandEmpty>
+            <CommandGroup>
+              {getAvailableDistricts().map((district: string) => (
+                <CommandItem
+                  key={district}
+                  value={district}
+                  onSelect={() => {
+                    form.setValue("district_region", district);
+                    setOpenPopover((prev) => ({ ...prev, district: false }));
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      field.value === district ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  {district}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContentWithNoPrimitivePortal>
+    </Popover>
+  );
 
   return (
     <ScrollArea className="p-5 h-full pb-20">
@@ -208,107 +446,104 @@ function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
-                name="country"
+                name="locationType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
-                      Choose Country
-                      <b className="text-primary font-light"> *</b>
-                    </FormLabel>
-                    <br />
-                    <FormControl>
-                      <Popover
-                        open={openCountries}
-                        onOpenChange={setOpenCountries}
-                        modal
-                      >
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            className={cn(
-                              "w-full justify-between",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value
-                              ? countries.find(
-                                  (country) => country.name === field.value
-                                )?.name
-                              : "Select country..."}
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContentWithNoPrimitivePortal className="w-full p-0">
-                          <Command className="w-full">
-                            <CommandInput placeholder="Search country..." />
-                            <CommandEmpty>Country not Found.</CommandEmpty>
-                            <CommandList>
-                              <CommandGroup>
-                                {countries.map((country, index) => (
-                                  <CommandItem
-                                    key={index}
-                                    value={country.name}
-                                    onSelect={() => {
-                                      form.setValue("country", country.name);
-                                      setOpenCountries(false);
-                                    }}
-                                  >
-                                    {country.name}
-                                    <CheckIcon
-                                      className={cn(
-                                        "ml-auto h-4 w-4",
-                                        field.value === country.name
-                                          ? "opacity-100"
-                                          : "opacity-0"
-                                      )}
-                                    />
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            </CommandList>
-                          </Command>
-                        </PopoverContentWithNoPrimitivePortal>
-                      </Popover>
-                    </FormControl>
+                    <FormLabel>School Location Type</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        if (value === "local") {
+                          form.setValue("country", "Rwanda");
+                          form.setValue("continent", "");
+                        } else {
+                          form.setValue("province_state", "");
+                          form.setValue("district_region", "");
+                          form.setValue("country", "");
+                        }
+                      }}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select location type..." />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="local">Local</SelectItem>
+                        <SelectItem value="international">
+                          International
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="province_state"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="capitalize">
-                      Province/State
-                      <b className="text-primary font-light"> *</b>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder="your province/state" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="district_region"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="capitalize">
-                      District/Region
-                      <b className="text-primary font-light"> *</b>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder="your district" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+
+              {locationType === "international" ? (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="continent"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Continent<b className="text-primary font-light"> *</b>
+                        </FormLabel>
+                        <ContinentSelect field={field} />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="country"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Country<b className="text-primary font-light"> *</b>
+                        </FormLabel>
+                        <CountrySelect field={field} />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              ) : (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="province_state"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Province<b className="text-primary font-light"> *</b>
+                        </FormLabel>
+                        <ProvinceSelect field={field} />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="district_region"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          District<b className="text-primary font-light"> *</b>
+                        </FormLabel>
+                        <DistrictSelect field={field} />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
+
               <div className="flex items-center gap-5 mt-10">
                 <Button
                   type="button"
@@ -326,14 +561,24 @@ function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
                   size={"lg"}
                   className="w-full"
                   onClick={async () => {
-                    const formErrors = await validateFormData([
-                      "name",
-                      "type",
-                      // "country",
-                      "province_state",
-                      "district_region",
-                    ]);
-                    if (formErrors && activeStep < 2) {
+                    const basicFields = ["name", "type", "locationType"];
+
+                    // Add location fields based on selected type
+                    const locationType = form.watch("locationType");
+                    const fieldsToValidate = [...basicFields];
+
+                    if (locationType === "international") {
+                      fieldsToValidate.push("continent", "country");
+                    } else if (locationType === "local") {
+                      fieldsToValidate.push(
+                        "province_state",
+                        "district_region"
+                      );
+                    }
+
+                    const isValid = await validateFormData(fieldsToValidate);
+                    if (isValid) {
+                      // Changed this condition
                       setActiveStep(activeStep + 1);
                     }
                   }}

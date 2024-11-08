@@ -24,7 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
 import { PasswordInput } from "@/components/ui/password-Input";
@@ -61,9 +60,16 @@ const SignupForm = () => {
   const { toast } = useToast();
   const [activeStep, setActiveStep] = React.useState(1);
   const [provinces, setProvinces] = React.useState<string[]>(Provinces());
-  const [districts, setDisctricts] = React.useState<string[]>(Districts());
+  const [districts, setDistricts] = React.useState<string[]>(Districts());
   const steps = [1, 2, 3, 4];
   const [countries, setCountries] = React.useState<Country.AsObject[]>([]);
+
+  const [openPopover, setOpenPopover] = React.useState({
+    continent: false,
+    country: false,
+    province: false,
+    district: false,
+  });
 
   React.useEffect(() => {
     getCountriesNoAuth().then((res) => {
@@ -74,7 +80,15 @@ const SignupForm = () => {
   // react-hook-form
   const form = useForm<Inputs>({
     resolver: zodResolver(schoolSchema),
+    defaultValues: {
+      locationType: "local",
+      country: "Rwanda",
+    },
   });
+
+  const locationType = form.watch("locationType");
+  const selectedContinent = form.watch("continent");
+  const selectedProvince = form.watch("province_state");
 
   async function onSubmit(data: Inputs) {
     setIsPending(true);
@@ -171,7 +185,6 @@ const SignupForm = () => {
     const output = await form.trigger(fields as FieldName[], {
       shouldFocus: true,
     });
-
     return output;
   };
 
@@ -179,7 +192,7 @@ const SignupForm = () => {
     <div className="w-full">
       {/* tab section */}
       <div className="w-full mb-10">
-        <p className="text-sm  text-black/50 mb-4">
+        <p className="text-sm text-black/50 mb-4">
           step {activeStep} of {steps.length} completed
         </p>
         <div className="flex items-center justify-between space-x-4">
@@ -261,6 +274,7 @@ const SignupForm = () => {
                   </FormItem>
                 )}
               />
+
               <div className="flex items-center gap-5">
                 <Button
                   type="button"
@@ -292,225 +306,355 @@ const SignupForm = () => {
                   <span className="sr-only">Continue</span>
                 </Button>
               </div>
-              <div className="w-full flex flex-col justify-center gap-4 mt-4">
-                <div className="flex items-center gap-1 justify-center">
-                  <span className="text-lg text-darkBlue">
-                    Already have an account?
-                  </span>
-                  <Link
-                    href="/auth/school/login"
-                    className="text-lg text-blue hover:underline"
-                  >
-                    Login
-                  </Link>
-                </div>
-              </div>
             </>
           )}
           {activeStep === 2 && (
             <>
               <FormField
                 control={form.control}
-                name="country"
+                name="locationType"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Choose Country
+                      School Location Type
                       <b className="text-primary font-light"> *</b>
                     </FormLabel>
-                    <br />
-                    <FormControl>
-                      <Popover
-                        open={openCountries}
-                        onOpenChange={setOpenCountries}
-                      >
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            className={cn(
-                              "w-full justify-between",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value
-                              ? countries.find(
-                                  (country) => country.name === field.value
-                                )?.name
-                              : "Select country..."}
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-full p-0">
-                          <Command className="w-full">
-                            <CommandInput placeholder="Search country..." />
-                            <CommandEmpty>Country not Found.</CommandEmpty>
-                            <CommandList>
-                              <CommandGroup>
-                                {countries.map((country, index) => (
-                                  <CommandItem
-                                    key={index}
-                                    value={country.name}
-                                    onSelect={() => {
-                                      form.setValue("country", country.name);
-                                      setOpenCountries(false);
-                                    }}
-                                  >
-                                    {country.name}
-                                    <CheckIcon
-                                      className={cn(
-                                        "ml-auto h-4 w-4",
-                                        field.value === country.name
-                                          ? "opacity-100"
-                                          : "opacity-0"
-                                      )}
-                                    />
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            </CommandList>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
-                    </FormControl>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        if (value === "local") {
+                          form.setValue("country", "Rwanda");
+                          form.setValue("continent", "");
+                        } else {
+                          form.setValue("province_state", "");
+                          form.setValue("district_region", "");
+                          form.setValue("country", "");
+                        }
+                      }}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select location type..." />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="local">Local</SelectItem>
+                        <SelectItem value="international">
+                          International
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="province_state"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Province/State
-                      <b className="text-primary font-light"> *</b>
-                    </FormLabel>
-                    <br />
-                    <FormControl>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            className={cn(
-                              "w-full justify-between",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value
-                              ? provinces.find(
-                                  (province) => province === field.value
-                                )
-                              : "Select province/state..."}
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-full p-0">
-                          <Command className="w-full">
-                            <CommandInput placeholder="Search province..." />
-                            <CommandEmpty>Province not Found.</CommandEmpty>
-                            <CommandList>
-                              <CommandGroup>
-                                {provinces.map((province, index) => (
-                                  <CommandItem
-                                    key={index}
-                                    value={province}
-                                    onSelect={() => {
-                                      form.setValue("province_state", province);
-                                      setDisctricts(Districts(province));
-                                    }}
-                                  >
-                                    {province}
-                                    <CheckIcon
-                                      className={cn(
-                                        "ml-auto h-4 w-4",
-                                        field.value === province
-                                          ? "opacity-100"
-                                          : "opacity-0"
-                                      )}
-                                    />
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            </CommandList>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="district_region"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      District/Region
-                      <b className="text-primary font-light"> *</b>
-                    </FormLabel>
-                    <br />
-                    <FormControl>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            className={cn(
-                              "w-full justify-between",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value
-                              ? districts.find(
-                                  (district) => district === field.value
-                                )
-                              : "Select province/state..."}
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-full p-0">
-                          <Command className="w-full">
-                            <CommandInput placeholder="Search province..." />
-                            <CommandEmpty>
-                              District/Region not Found.
-                            </CommandEmpty>
-                            <CommandList>
-                              <CommandGroup>
-                                {districts.map((district, index) => (
-                                  <CommandItem
-                                    key={index}
-                                    value={district}
-                                    onSelect={() => {
-                                      form.setValue(
-                                        "district_region",
-                                        district
-                                      );
-                                    }}
-                                  >
-                                    {district}
-                                    <CheckIcon
-                                      className={cn(
-                                        "ml-auto h-4 w-4",
-                                        field.value === district
-                                          ? "opacity-100"
-                                          : "opacity-0"
-                                      )}
-                                    />
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            </CommandList>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+
+              {locationType === "international" ? (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="continent"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Continent<b className="text-primary font-light"> *</b>
+                        </FormLabel>
+                        <Popover
+                          open={openPopover.continent}
+                          onOpenChange={(open) =>
+                            setOpenPopover((prev) => ({
+                              ...prev,
+                              continent: open,
+                            }))
+                          }
+                        >
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                role="combobox"
+                                className={cn(
+                                  "w-full justify-between",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value || "Select continent"}
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-full p-0">
+                            <Command>
+                              <CommandInput placeholder="Search continent..." />
+                              <CommandList>
+                                <CommandEmpty>No continent found.</CommandEmpty>
+                                <CommandGroup>
+                                  {[
+                                    "Africa",
+                                    "Asia",
+                                    "Europe",
+                                    "North America",
+                                    "South America",
+                                    "Oceania",
+                                  ].map((continent) => (
+                                    <CommandItem
+                                      key={continent}
+                                      value={continent}
+                                      onSelect={() => {
+                                        form.setValue("continent", continent);
+                                        form.setValue("country", "");
+                                        setOpenPopover((prev) => ({
+                                          ...prev,
+                                          continent: false,
+                                        }));
+                                      }}
+                                    >
+                                      <CheckIcon
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          field.value === continent
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {continent}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="country"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Country<b className="text-primary font-light"> *</b>
+                        </FormLabel>
+                        <Popover
+                          open={openPopover.country}
+                          onOpenChange={(open) =>
+                            setOpenPopover((prev) => ({
+                              ...prev,
+                              country: open,
+                            }))
+                          }
+                        >
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                role="combobox"
+                                disabled={!selectedContinent}
+                                className={cn(
+                                  "w-full justify-between",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value || "Select country"}
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-full p-0">
+                            <Command>
+                              <CommandInput placeholder="Search country..." />
+                              <CommandList>
+                                <CommandEmpty>No country found.</CommandEmpty>
+                                <CommandGroup>
+                                  {countries.map((country) => (
+                                    <CommandItem
+                                      key={country.name}
+                                      value={country.name}
+                                      onSelect={() => {
+                                        form.setValue("country", country.name);
+                                        setOpenPopover((prev) => ({
+                                          ...prev,
+                                          country: false,
+                                        }));
+                                      }}
+                                    >
+                                      <CheckIcon
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          field.value === country.name
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {country.name}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              ) : (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="province_state"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Province<b className="text-primary font-light"> *</b>
+                        </FormLabel>
+                        <Popover
+                          open={openPopover.province}
+                          onOpenChange={(open) =>
+                            setOpenPopover((prev) => ({
+                              ...prev,
+                              province: open,
+                            }))
+                          }
+                        >
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                role="combobox"
+                                className={cn(
+                                  "w-full justify-between",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value || "Select province"}
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-full p-0">
+                            <Command>
+                              <CommandInput placeholder="Search province..." />
+                              <CommandList>
+                                <CommandEmpty>No province found.</CommandEmpty>
+                                <CommandGroup>
+                                  {provinces.map((province: string) => (
+                                    <CommandItem
+                                      key={province}
+                                      value={province}
+                                      onSelect={() => {
+                                        form.setValue(
+                                          "province_state",
+                                          province
+                                        );
+                                        setDistricts(Districts(province));
+                                        form.setValue("district_region", "");
+                                        setOpenPopover((prev) => ({
+                                          ...prev,
+                                          province: false,
+                                        }));
+                                      }}
+                                    >
+                                      <CheckIcon
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          field.value === province
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {province}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="district_region"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          District<b className="text-primary font-light"> *</b>
+                        </FormLabel>
+                        <Popover
+                          open={openPopover.district}
+                          onOpenChange={(open) =>
+                            setOpenPopover((prev) => ({
+                              ...prev,
+                              district: open,
+                            }))
+                          }
+                        >
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                role="combobox"
+                                disabled={!selectedProvince}
+                                className={cn(
+                                  "w-full justify-between",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value || "Select district"}
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-full p-0">
+                            <Command>
+                              <CommandInput placeholder="Search district..." />
+                              <CommandList>
+                                <CommandEmpty>No district found.</CommandEmpty>
+                                <CommandGroup>
+                                  {districts.map((district: string) => (
+                                    <CommandItem
+                                      key={district}
+                                      value={district}
+                                      onSelect={() => {
+                                        form.setValue(
+                                          "district_region",
+                                          district
+                                        );
+                                        setOpenPopover((prev) => ({
+                                          ...prev,
+                                          district: false,
+                                        }));
+                                      }}
+                                    >
+                                      <CheckIcon
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          field.value === district
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {district}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
 
               <div className="flex items-center gap-5">
                 <Button
@@ -520,7 +664,7 @@ const SignupForm = () => {
                   onClick={() => setActiveStep(activeStep - 1)}
                 >
                   Back
-                  <span className="sr-only">Cancel</span>
+                  <span className="sr-only">Back</span>
                 </Button>
                 <Button
                   type="button"
@@ -528,12 +672,19 @@ const SignupForm = () => {
                   size={"lg"}
                   className="w-full"
                   onClick={async () => {
-                    const formErrors = await validateFormData([
-                      "country",
-                      "province_state",
-                      "district_region",
-                    ]);
-                    if (formErrors && activeStep < 4) {
+                    const fieldsToValidate = ["locationType"];
+
+                    if (locationType === "international") {
+                      fieldsToValidate.push("continent", "country");
+                    } else {
+                      fieldsToValidate.push(
+                        "province_state",
+                        "district_region"
+                      );
+                    }
+
+                    const isValid = await validateFormData(fieldsToValidate);
+                    if (isValid) {
                       setActiveStep(activeStep + 1);
                     }
                   }}
@@ -541,19 +692,6 @@ const SignupForm = () => {
                   Continue
                   <span className="sr-only">Continue</span>
                 </Button>
-              </div>
-              <div className="w-full flex flex-col justify-center gap-4 mt-4">
-                <div className="flex items-center gap-1 justify-center">
-                  <span className="text-lg text-darkBlue">
-                    Already have an account?
-                  </span>
-                  <Link
-                    href="/auth/school/login"
-                    className="text-lg text-blue hover:underline"
-                  >
-                    Login
-                  </Link>
-                </div>
               </div>
             </>
           )}
@@ -586,7 +724,7 @@ const SignupForm = () => {
                         <b className="text-primary font-light"> *</b>
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="darsen" {...field} />
+                        <Input placeholder="Watson" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -623,7 +761,7 @@ const SignupForm = () => {
                       <Input placeholder="jane.smith@school.com" {...field} />
                     </FormControl>
                     <FormDescription>
-                      This is email will be used to log into the system. 
+                      This email will be used to log into the system.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -638,7 +776,7 @@ const SignupForm = () => {
                   onClick={() => setActiveStep(activeStep - 1)}
                 >
                   Back
-                  <span className="sr-only">Cancel</span>
+                  <span className="sr-only">Back</span>
                 </Button>
                 <Button
                   type="button"
@@ -646,12 +784,13 @@ const SignupForm = () => {
                   size={"lg"}
                   className="w-full"
                   onClick={async () => {
-                    const formErrors = await validateFormData([
-                      "contact_person",
+                    const isValid = await validateFormData([
+                      "contact_person_firstname",
+                      "contact_person_lastname",
                       "contact_person_number",
                       "contact_person_email",
                     ]);
-                    if (formErrors && activeStep < 4) {
+                    if (isValid) {
                       setActiveStep(activeStep + 1);
                     }
                   }}
@@ -659,19 +798,6 @@ const SignupForm = () => {
                   Continue
                   <span className="sr-only">Continue</span>
                 </Button>
-              </div>
-              <div className="w-full flex flex-col justify-center gap-4 mt-4">
-                <div className="flex items-center gap-1 justify-center">
-                  <span className="text-lg text-darkBlue">
-                    Already have an account?
-                  </span>
-                  <Link
-                    href="/auth/school/login"
-                    className="text-lg text-blue hover:underline"
-                  >
-                    Login
-                  </Link>
-                </div>
               </div>
             </>
           )}
@@ -687,7 +813,10 @@ const SignupForm = () => {
                       <b className="text-primary font-light"> *</b>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="contact@springfieldhigh.edu" {...field} />
+                      <Input
+                        placeholder="contact@springfieldhigh.edu"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
                       This is the email we{`'`}ll use to contact the school.
@@ -737,31 +866,39 @@ const SignupForm = () => {
                   onClick={() => setActiveStep(activeStep - 1)}
                 >
                   Back
-                  <span className="sr-only">Cancel</span>
+                  <span className="sr-only">Back</span>
                 </Button>
-                <Button variant={"default"} size={"lg"} className="w-full">
-                  Continue
+                <Button
+                  type="submit"
+                  variant={"default"}
+                  size={"lg"}
+                  className="w-full"
+                  disabled={isPending}
+                >
+                  Create Account
                   {isPending && (
                     <div className="ml-2 w-3.5 h-3.5 rounded-full border-2 border-background border-r-0 animate-spin" />
                   )}
-                  <span className="sr-only">Continue</span>
+                  <span className="sr-only">Create Account</span>
                 </Button>
-              </div>
-              <div className="w-full flex flex-col justify-center gap-4 mt-4">
-                <div className="flex items-center gap-1 justify-center">
-                  <span className="text-lg text-darkBlue">
-                    Already have an account?
-                  </span>
-                  <Link
-                    href="/auth/school/login"
-                    className="text-lg text-blue hover:underline"
-                  >
-                    Login
-                  </Link>
-                </div>
               </div>
             </>
           )}
+
+          {/* Login link shown on all steps */}
+          <div className="w-full flex flex-col justify-center gap-4 mt-4">
+            <div className="flex items-center gap-1 justify-center">
+              <span className="text-lg text-darkBlue">
+                Already have an account?
+              </span>
+              <Link
+                href="/auth/school/login"
+                className="text-lg text-blue hover:underline"
+              >
+                Login
+              </Link>
+            </div>
+          </div>
         </form>
       </Form>
     </div>

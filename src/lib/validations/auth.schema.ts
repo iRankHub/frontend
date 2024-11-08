@@ -74,6 +74,7 @@ export const StudentSchema = z.object({
 
 
 export const schoolSchema = z.object({
+    // Basic Information
     name: z.string().min(2, {
         message: "name too short"
     }).max(200, {
@@ -82,48 +83,100 @@ export const schoolSchema = z.object({
     type: z.string({
         required_error: "Please select a school type to display.",
     }),
-    country: z.string().min(2, {
+    address: z.string().min(1, {
+        message: "Address is required"
+    }),
+
+    // Location Fields
+    locationType: z.enum(["local", "international"], {
+        required_error: "Please select a location type.",
+    }),
+    // Fields for international schools
+    country: z.string({
+        required_error: "Please select a country",
+    }).min(2, {
         message: "country name can't be 2 characters"
     }),
-    address: z.string().min(1),
-    province_state: z.string().min(1),
-    district_region: z.string().min(1),
+    continent: z.string().optional(),
+    // Fields for local schools
+    province_state: z.string().optional(),
+    district_region: z.string().optional(),
+
+    // Contact Information
     contact_person_firstname: z.string().min(3, {
-        message: "Name too short!"
+        message: "First name too short!"
     }),
     contact_person_lastname: z.string().min(3, {
-        message: "Name too short!"
+        message: "Last name too short!"
     }),
-    contact_person_number: z.string().refine(validator.isMobilePhone),
-    contact_person_email: z.string().email(),
-    email: z.string().email(),
-    password: z.
-        string()
+    contact_person_number: z.string().refine(validator.isMobilePhone, {
+        message: "Please enter a valid phone number"
+    }),
+    contact_person_email: z.string().email({
+        message: "Please enter a valid email address"
+    }),
+    email: z.string().email({
+        message: "Please enter a valid email address"
+    }),
+
+    // Password fields
+    password: z.string()
         .min(8, {
-            message: "Password must be atleast 8 characters long"
+            message: "Password must be at least 8 characters long"
         })
         .max(100)
         .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/, {
-            message:
-                "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
+            message: "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
         }),
-    confirm_password: z.
-        string()
+    confirm_password: z.string()
         .min(8, {
-            message: "Password must be atleast 8 characters long"
+            message: "Password must be at least 8 characters long"
         })
         .max(100)
         .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/, {
-            message:
-                "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
+            message: "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
         }),
-}).superRefine(({ confirm_password, password }, ctx) => {
-    if (confirm_password !== password) {
+}).superRefine((data, ctx) => {
+    // Password matching validation
+    if (data.confirm_password !== data.password) {
         ctx.addIssue({
             code: "custom",
             message: "The passwords did not match",
-            path: ['confirm_password']
+            path: ["confirm_password"]
         });
+    }
+
+    // Location-specific field validation
+    if (data.locationType === "international") {
+        if (!data.continent) {
+            ctx.addIssue({
+                code: "custom",
+                message: "Continent is required for international schools",
+                path: ["continent"]
+            });
+        }
+        if (!data.country) {
+            ctx.addIssue({
+                code: "custom",
+                message: "Country is required for international schools",
+                path: ["country"]
+            });
+        }
+    } else if (data.locationType === "local") {
+        if (!data.province_state) {
+            ctx.addIssue({
+                code: "custom",
+                message: "Province is required for local schools",
+                path: ["province_state"]
+            });
+        }
+        if (!data.district_region) {
+            ctx.addIssue({
+                code: "custom",
+                message: "District is required for local schools",
+                path: ["district_region"]
+            });
+        }
     }
 });
 
