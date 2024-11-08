@@ -71,15 +71,15 @@ const data: ExpenseData[] = [
 
 export function Attendance() {
   return (
-    <Card className="flex flex-col">
-      <CardHeader className="items-center pb-10">
+    <Card className="flex flex-col border-0 w-full">
+      <CardHeader className="items-center">
         <CardTitle>Pie Chart</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-10">
+      <CardContent>
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square max-h-80"
         >
           <PieChart>
             <ChartTooltip

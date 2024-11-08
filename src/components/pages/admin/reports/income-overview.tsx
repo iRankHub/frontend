@@ -12,13 +12,13 @@ const archivo = Archivo({
 
 export default function IncomeOverview({}: Props) {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full p-3">
       <h3
-        className={cn("text-xl font-bold text-foreground", archivo.className)}
+        className={cn("text-lg font-bold text-foreground", archivo.className)}
       >
         Income Overview
       </h3>
-      <div className="flex flex-col mt-5 gap-4">
+      <div className="flex flex-col">
         <h3
           className={cn(
             "text-lg font-semibold text-muted-foreground",
@@ -28,7 +28,7 @@ export default function IncomeOverview({}: Props) {
           Total Revenue:
         </h3>
         <h3
-          className={cn("text-xl font-bold text-foreground", archivo.className)}
+          className={cn("text-lg font-bold text-foreground", archivo.className)}
         >
           RWF 9,542,000.00
         </h3>

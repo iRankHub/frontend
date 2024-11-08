@@ -72,7 +72,7 @@ export function SchoolsIncomeChart() {
   );
 
   return (
-    <Card className="border-0 w-full">
+    <Card className="border-0 w-full flex flex-col justify-between h-full">
       <CardHeader className="flex flex-col items-stretch space-y-0 p-0 sm:flex-row w-full">
         <div className="flex items-center justify-center gap-3 px-6 w-full">
           <div className="flex items-center gap-1">
@@ -89,10 +89,10 @@ export function SchoolsIncomeChart() {
           </div>
         </div>
       </CardHeader>
-      <CardContent className="px-2 sm:p-6">
+      <CardContent className="px-2 sm:p-6 mt-auto">
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
+          className="aspect-auto h-52 w-full"
         >
           <BarChart
             accessibilityLayer

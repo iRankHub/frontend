@@ -35,6 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Icons } from "@/components/icons";
 
 const data: Payment[] = [
   {
@@ -145,7 +146,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ];
 
-export function StudentPerformanceTable() {
+export function PerformanceTable({ type }: { type: "Volunteer" | "Student" | "School" }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -174,10 +175,26 @@ export function StudentPerformanceTable() {
   });
 
   return (
-    <div className="w-full mt-10">
-      <h3 className="capitalize text-lg text-foreground font-semibold mb-4">
-        Overall student Performance
-      </h3>
+    <div className="w-full">
+      <div className="flex items-center justify-between gap-5">
+        <h3 className="capitalize text-lg text-foreground font-semibold mb-4">
+          {type} Performance
+        </h3>
+        <div className="flex items-center gap-3 mb-5">
+          <Input
+            placeholder="Search school, student or volunteer..."
+            className="border-primary w-64"
+          />
+          <Button type="button" size={"sm"}>
+            <Icons.addCircle size={18} className="text-white" />
+            2024
+          </Button>
+          <Button type="button" size={"sm"}>
+            <Icons.downlaod size={18} className="text-white" />
+            Download
+          </Button>
+        </div>
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

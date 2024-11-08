@@ -42,7 +42,7 @@ const chartConfig = {
 
 export function ProvincialChart() {
   return (
-    <Card className="border-0 w-full">
+    <Card className="border-0 w-full flex flex-col justify-between h-full">
       <CardHeader className="flex flex-col items-stretch space-y-0 w-full">
         <CardTitle className="text-lg">Expenses and income</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
@@ -50,7 +50,7 @@ export function ProvincialChart() {
       <CardContent>
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[150px] w-full"
+          className="aspect-auto h-52 w-full"
         >
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
