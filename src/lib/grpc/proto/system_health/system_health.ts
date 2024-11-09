@@ -78,7 +78,11 @@ export namespace system_health {
         constructor(data?: any[] | {
             cpu_usage_percentage?: number;
             memory_usage_percentage?: number;
+            ephemeral_storage_used?: number;
+            ephemeral_storage_total?: number;
             ephemeral_storage_percentage?: number;
+            pvc_storage_used?: number;
+            pvc_storage_total?: number;
             pvc_storage_percentage?: number;
             node_count?: number;
             pod_count?: number;
@@ -93,8 +97,20 @@ export namespace system_health {
                 if ("memory_usage_percentage" in data && data.memory_usage_percentage != undefined) {
                     this.memory_usage_percentage = data.memory_usage_percentage;
                 }
+                if ("ephemeral_storage_used" in data && data.ephemeral_storage_used != undefined) {
+                    this.ephemeral_storage_used = data.ephemeral_storage_used;
+                }
+                if ("ephemeral_storage_total" in data && data.ephemeral_storage_total != undefined) {
+                    this.ephemeral_storage_total = data.ephemeral_storage_total;
+                }
                 if ("ephemeral_storage_percentage" in data && data.ephemeral_storage_percentage != undefined) {
                     this.ephemeral_storage_percentage = data.ephemeral_storage_percentage;
+                }
+                if ("pvc_storage_used" in data && data.pvc_storage_used != undefined) {
+                    this.pvc_storage_used = data.pvc_storage_used;
+                }
+                if ("pvc_storage_total" in data && data.pvc_storage_total != undefined) {
+                    this.pvc_storage_total = data.pvc_storage_total;
                 }
                 if ("pvc_storage_percentage" in data && data.pvc_storage_percentage != undefined) {
                     this.pvc_storage_percentage = data.pvc_storage_percentage;
@@ -122,40 +138,68 @@ export namespace system_health {
         set memory_usage_percentage(value: number) {
             pb_1.Message.setField(this, 2, value);
         }
-        get ephemeral_storage_percentage() {
+        get ephemeral_storage_used() {
             return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
         }
-        set ephemeral_storage_percentage(value: number) {
+        set ephemeral_storage_used(value: number) {
             pb_1.Message.setField(this, 3, value);
         }
-        get pvc_storage_percentage() {
+        get ephemeral_storage_total() {
             return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
         }
-        set pvc_storage_percentage(value: number) {
+        set ephemeral_storage_total(value: number) {
             pb_1.Message.setField(this, 4, value);
         }
-        get node_count() {
+        get ephemeral_storage_percentage() {
             return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
         }
-        set node_count(value: number) {
+        set ephemeral_storage_percentage(value: number) {
             pb_1.Message.setField(this, 5, value);
         }
-        get pod_count() {
+        get pvc_storage_used() {
             return pb_1.Message.getFieldWithDefault(this, 6, 0) as number;
         }
-        set pod_count(value: number) {
+        set pvc_storage_used(value: number) {
             pb_1.Message.setField(this, 6, value);
         }
-        get pvc_count() {
+        get pvc_storage_total() {
             return pb_1.Message.getFieldWithDefault(this, 7, 0) as number;
         }
-        set pvc_count(value: number) {
+        set pvc_storage_total(value: number) {
             pb_1.Message.setField(this, 7, value);
+        }
+        get pvc_storage_percentage() {
+            return pb_1.Message.getFieldWithDefault(this, 8, 0) as number;
+        }
+        set pvc_storage_percentage(value: number) {
+            pb_1.Message.setField(this, 8, value);
+        }
+        get node_count() {
+            return pb_1.Message.getFieldWithDefault(this, 9, 0) as number;
+        }
+        set node_count(value: number) {
+            pb_1.Message.setField(this, 9, value);
+        }
+        get pod_count() {
+            return pb_1.Message.getFieldWithDefault(this, 10, 0) as number;
+        }
+        set pod_count(value: number) {
+            pb_1.Message.setField(this, 10, value);
+        }
+        get pvc_count() {
+            return pb_1.Message.getFieldWithDefault(this, 11, 0) as number;
+        }
+        set pvc_count(value: number) {
+            pb_1.Message.setField(this, 11, value);
         }
         static fromObject(data: {
             cpu_usage_percentage?: number;
             memory_usage_percentage?: number;
+            ephemeral_storage_used?: number;
+            ephemeral_storage_total?: number;
             ephemeral_storage_percentage?: number;
+            pvc_storage_used?: number;
+            pvc_storage_total?: number;
             pvc_storage_percentage?: number;
             node_count?: number;
             pod_count?: number;
@@ -168,8 +212,20 @@ export namespace system_health {
             if (data.memory_usage_percentage != null) {
                 message.memory_usage_percentage = data.memory_usage_percentage;
             }
+            if (data.ephemeral_storage_used != null) {
+                message.ephemeral_storage_used = data.ephemeral_storage_used;
+            }
+            if (data.ephemeral_storage_total != null) {
+                message.ephemeral_storage_total = data.ephemeral_storage_total;
+            }
             if (data.ephemeral_storage_percentage != null) {
                 message.ephemeral_storage_percentage = data.ephemeral_storage_percentage;
+            }
+            if (data.pvc_storage_used != null) {
+                message.pvc_storage_used = data.pvc_storage_used;
+            }
+            if (data.pvc_storage_total != null) {
+                message.pvc_storage_total = data.pvc_storage_total;
             }
             if (data.pvc_storage_percentage != null) {
                 message.pvc_storage_percentage = data.pvc_storage_percentage;
@@ -189,7 +245,11 @@ export namespace system_health {
             const data: {
                 cpu_usage_percentage?: number;
                 memory_usage_percentage?: number;
+                ephemeral_storage_used?: number;
+                ephemeral_storage_total?: number;
                 ephemeral_storage_percentage?: number;
+                pvc_storage_used?: number;
+                pvc_storage_total?: number;
                 pvc_storage_percentage?: number;
                 node_count?: number;
                 pod_count?: number;
@@ -201,8 +261,20 @@ export namespace system_health {
             if (this.memory_usage_percentage != null) {
                 data.memory_usage_percentage = this.memory_usage_percentage;
             }
+            if (this.ephemeral_storage_used != null) {
+                data.ephemeral_storage_used = this.ephemeral_storage_used;
+            }
+            if (this.ephemeral_storage_total != null) {
+                data.ephemeral_storage_total = this.ephemeral_storage_total;
+            }
             if (this.ephemeral_storage_percentage != null) {
                 data.ephemeral_storage_percentage = this.ephemeral_storage_percentage;
+            }
+            if (this.pvc_storage_used != null) {
+                data.pvc_storage_used = this.pvc_storage_used;
+            }
+            if (this.pvc_storage_total != null) {
+                data.pvc_storage_total = this.pvc_storage_total;
             }
             if (this.pvc_storage_percentage != null) {
                 data.pvc_storage_percentage = this.pvc_storage_percentage;
@@ -226,16 +298,24 @@ export namespace system_health {
                 writer.writeDouble(1, this.cpu_usage_percentage);
             if (this.memory_usage_percentage != 0)
                 writer.writeDouble(2, this.memory_usage_percentage);
+            if (this.ephemeral_storage_used != 0)
+                writer.writeInt64(3, this.ephemeral_storage_used);
+            if (this.ephemeral_storage_total != 0)
+                writer.writeInt64(4, this.ephemeral_storage_total);
             if (this.ephemeral_storage_percentage != 0)
-                writer.writeDouble(3, this.ephemeral_storage_percentage);
+                writer.writeDouble(5, this.ephemeral_storage_percentage);
+            if (this.pvc_storage_used != 0)
+                writer.writeInt64(6, this.pvc_storage_used);
+            if (this.pvc_storage_total != 0)
+                writer.writeInt64(7, this.pvc_storage_total);
             if (this.pvc_storage_percentage != 0)
-                writer.writeDouble(4, this.pvc_storage_percentage);
+                writer.writeDouble(8, this.pvc_storage_percentage);
             if (this.node_count != 0)
-                writer.writeInt32(5, this.node_count);
+                writer.writeInt32(9, this.node_count);
             if (this.pod_count != 0)
-                writer.writeInt32(6, this.pod_count);
+                writer.writeInt32(10, this.pod_count);
             if (this.pvc_count != 0)
-                writer.writeInt32(7, this.pvc_count);
+                writer.writeInt32(11, this.pvc_count);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -252,18 +332,30 @@ export namespace system_health {
                         message.memory_usage_percentage = reader.readDouble();
                         break;
                     case 3:
-                        message.ephemeral_storage_percentage = reader.readDouble();
+                        message.ephemeral_storage_used = reader.readInt64();
                         break;
                     case 4:
-                        message.pvc_storage_percentage = reader.readDouble();
+                        message.ephemeral_storage_total = reader.readInt64();
                         break;
                     case 5:
-                        message.node_count = reader.readInt32();
+                        message.ephemeral_storage_percentage = reader.readDouble();
                         break;
                     case 6:
-                        message.pod_count = reader.readInt32();
+                        message.pvc_storage_used = reader.readInt64();
                         break;
                     case 7:
+                        message.pvc_storage_total = reader.readInt64();
+                        break;
+                    case 8:
+                        message.pvc_storage_percentage = reader.readDouble();
+                        break;
+                    case 9:
+                        message.node_count = reader.readInt32();
+                        break;
+                    case 10:
+                        message.pod_count = reader.readInt32();
+                        break;
+                    case 11:
                         message.pvc_count = reader.readInt32();
                         break;
                     default: reader.skipField();

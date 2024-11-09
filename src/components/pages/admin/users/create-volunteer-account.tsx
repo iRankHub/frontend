@@ -97,6 +97,22 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
       });
   }, [user]);
 
+  useEffect(() => {
+    const subscription = form.watch((value, { name, type }) => {
+      const errors = form.formState.errors;
+      if (Object.keys(errors).length > 0) {
+        console.log("Form Errors:", {
+          errors,
+          changedField: name,
+          type,
+          value,
+        });
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form]);
+
   async function onSubmit(data: Inputs) {
     await signUp({
       firstName: data.firstName,
@@ -445,23 +461,6 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="capitalize">
-                      Volunteer Email
-                      <b className="text-primary font-light"> *</b>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder="emma@gmail.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <div className="flex items-center gap-5">
                 <Button
                   variant={"secondary"}

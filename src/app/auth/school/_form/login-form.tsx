@@ -24,6 +24,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
 import { schoolLogin } from "@/core/authentication/auth";
+import { getUserProfile } from "@/core/users/users";
 
 type Inputs = z.infer<typeof loginSchema>;
 
@@ -50,7 +51,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
     setIsPending(true);
 
     await schoolLogin({ emailOrId: data.id, password: data.password })
-      .then((res) => {
+      .then(async (res) => {
         if (res.success) {
           form.reset();
           if (res.status !== "pending") {
@@ -65,12 +66,22 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
               ),
             });
 
+            let picture = undefined;
+
+            const userProfileResponse = await getUserProfile({
+              userID: res.userid,
+              token: res.token,
+            });
+
+            picture = userProfileResponse.profile?.profilePicturePresignedUrl;
+
             const role = Roles.SCHOOL;
             const user: AuthStateUser = {
               userId: res.userid,
               name: res.username,
               token: res.token,
               status: "idle",
+              picture,
               requiredPasswordReset: res.requirePasswordReset,
               requireTwoFactor: res.requireTwoFactor,
             };

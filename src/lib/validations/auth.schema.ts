@@ -201,14 +201,17 @@ export const volunteerSchema = z.object({
         message: "country name can't be less than 2 characters"
     }),
     national_id: z
-        .number().gt(0, { message: "National Id/passport number can't be less than 10 characters" }),
+      .number()
+      .refine((val) => {
+        const numStr = val.toString();
+        return numStr.length === 16;
+      }, {
+        message: "National Id/passport number must be exactly 16 digits"
+      })
+      .transform((val) => Number(val)),
     current_address: z.string().min(2, {
         message: "address invalid"
     }),
-    contact_person_email: z.string().email(),
-    // secondary_school: z.string().min(1, {
-    //     message: "School name too small"
-    // }),
     graduation_year: z.string(),
     enrolled: z.enum(["yes", "no"], {
         required_error: "You need to select if your are enrolled.",

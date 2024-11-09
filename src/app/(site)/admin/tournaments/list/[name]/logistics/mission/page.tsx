@@ -11,11 +11,11 @@ const page = withAuth(() => {
 
 function Page() {
   return (
-    <ContentLayout title="format">
+    <>
       <div className="min-h-[calc(100vh_-_150px)] flex items-center justify-center">
         <h3 className="text-2xl h-full text-primary font-bold">Coming soon!</h3>
       </div>
-    </ContentLayout>
+    </>
   );
 }
 

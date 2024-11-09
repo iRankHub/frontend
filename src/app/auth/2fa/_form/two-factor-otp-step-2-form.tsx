@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/input-otp";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
+import { getUserProfile } from "@/core/users/users";
 
 type Inputs = z.infer<typeof twoFactorSchema>;
 
@@ -61,7 +62,7 @@ const TwoFactorStep2 = () => {
     try {
       setIsPending(true);
       await verifyTwoFactor({ email, otp: data.code })
-        .then((res) => {
+        .then(async (res) => {
           if (res.success) {
             form.reset();
             toast({
@@ -95,11 +96,20 @@ const TwoFactorStep2 = () => {
                 return;
               }
 
+              let picture = undefined;
+              const userProfileResponse = await getUserProfile({
+                userID: res.userid,
+                token: res.token,
+              });
+
+              picture = userProfileResponse.profile?.profilePicturePresignedUrl;
+
               const user: AuthStateUser = {
                 userId: res.userid,
                 name: res.username,
                 token: res.token,
                 status: "idle",
+                picture,
                 requiredPasswordReset: res.requirePasswordReset,
                 requireTwoFactor: res.requireTwoFactor,
               };

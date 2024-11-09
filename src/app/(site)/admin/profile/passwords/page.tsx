@@ -68,7 +68,7 @@ function AccountSettingsPage() {
 
   if (!user) {
     return (
-      <ContentLayout title="format">
+      <>
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <h2 className="text-2xl font-semibold mb-4">No Information Available</h2>
@@ -76,12 +76,12 @@ function AccountSettingsPage() {
             <p>This could be because of a system error. Please try again later.</p>
           </div>
         </div>
-      </ContentLayout>
+      </>
     );
   }
 
   return (
-    <ContentLayout title="format">
+    <>
       <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-5">
         <h3 className="text-lg text-primary font-bold">Settings</h3>
         <Breadcrumb>
@@ -113,7 +113,7 @@ function AccountSettingsPage() {
       <AccountMenuWrapper>
         <PasswordsForm user={user} />
       </AccountMenuWrapper>
-    </ContentLayout>
+    </>
   );
 }
 

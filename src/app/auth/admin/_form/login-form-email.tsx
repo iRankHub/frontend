@@ -23,6 +23,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
 import { adminLogin } from "@/core/authentication/auth";
+import { getUserProfile } from "@/core/users/users";
 
 type Inputs = z.infer<typeof emailLoginSchema>;
 
@@ -43,11 +44,11 @@ const LoginFormEmail = () => {
   async function onSubmit(data: Inputs) {
     setIsPending(true);
     try {
-      const res = await adminLogin({ 
-        emailOrId: data.email.trim(), 
-        password: data.password 
+      const res = await adminLogin({
+        emailOrId: data.email.trim(),
+        password: data.password,
       });
-      
+
       if (res.success) {
         form.reset();
         if (res.userrole === "admin") {
@@ -62,15 +63,26 @@ const LoginFormEmail = () => {
             ),
           });
 
+          let picture = undefined;
+
+          const userProfileResponse = await getUserProfile({
+            userID: res.userid,
+            token: res.token,
+          });
+
+          picture = userProfileResponse.profile?.profilePicturePresignedUrl;
+
           const role = Roles.ADMIN;
           const user: AuthStateUser = {
             userId: res.userid,
             name: res.username,
             token: res.token,
+            picture,
             status: "idle",
             requiredPasswordReset: res.requirePasswordReset,
             requireTwoFactor: res.requireTwoFactor,
           };
+          console.log(user);
           authLogin(user, role);
           router.push("/admin/dashboard");
         } else {
@@ -136,11 +148,11 @@ const LoginFormEmail = () => {
                 Admin Email<b className="text-primary font-light"> *</b>
               </FormLabel>
               <FormControl>
-                <Input 
+                <Input
                   type="email"
                   autoComplete="email"
-                  placeholder="ava.wright@gmail.com" 
-                  {...field} 
+                  placeholder="ava.wright@gmail.com"
+                  {...field}
                 />
               </FormControl>
               <FormMessage />
@@ -156,20 +168,20 @@ const LoginFormEmail = () => {
                 Password<b className="text-primary font-light"> *</b>
               </FormLabel>
               <FormControl>
-                <PasswordInput 
+                <PasswordInput
                   autoComplete="current-password"
-                  placeholder="**********" 
-                  {...field} 
+                  placeholder="**********"
+                  {...field}
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button 
+        <Button
           type="submit"
-          disabled={isPending} 
-          variant={"default"} 
+          disabled={isPending}
+          variant={"default"}
           size={"lg"}
         >
           {isPending && (

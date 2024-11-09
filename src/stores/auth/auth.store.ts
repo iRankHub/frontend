@@ -12,6 +12,7 @@ export enum Roles {
 export interface AuthStateUser {
     userId: number;
     name: string;
+    picture: string | undefined;
     token: string;
     status: 'idle' | 'signOut' | 'signIn';
     requiredPasswordReset: boolean;
@@ -32,6 +33,7 @@ interface AuthState {
     logout: () => void;
     setIsLoading: (isLoading: boolean) => void;
     updateUser: (updatedUser: Partial<AuthStateUser>) => void; 
+    updateProfilePicture: (newPicture: string | undefined) => void; 
     updateUsername: (name: string) => void;
     deleteToken: () => void;
     isTokenValid: () => boolean;
@@ -69,6 +71,9 @@ export const useUserStore = create<AuthState>(
             })),
             updateUsername: (name) => set((state) => ({
                 user: state.user ? {...state.user, name} : null,
+            })),
+            updateProfilePicture: (newPicture) => set((state) => ({
+                user: state.user && state.user.picture !== null && newPicture ? {...state.user, picture: newPicture} : null,
             })),
             deleteToken: () => set((state) => ({
                 user: state.user ? { ...state.user, token: '', tokenExpiresAt: 0 } : null

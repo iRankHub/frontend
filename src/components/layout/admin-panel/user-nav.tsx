@@ -64,13 +64,11 @@ export function UserNav() {
                 <div className="flex items-center gap-2">
                   <Avatar className="w-8 h-8">
                     <AvatarImage
-                      src={
-                        currentUser && currentUser.profilePicturePresignedUrl
-                          ? currentUser.profilePicturePresignedUrl
-                          : "/static/images/mic-speech.jpg"
-                      }
+                      src={user?.picture ?? "/static/images/mic-speech.jpg"}
                     />
-                    <AvatarFallback>{currentUser ? formatName(currentUser?.name) : ""}</AvatarFallback>
+                    <AvatarFallback>
+                      {currentUser ? formatName(currentUser?.name) : ""}
+                    </AvatarFallback>
                   </Avatar>
                   <Icons.chevronDown size={16} className="text-[#637381]" />
                 </div>

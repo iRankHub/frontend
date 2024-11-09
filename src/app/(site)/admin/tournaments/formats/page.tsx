@@ -20,7 +20,7 @@ const page = withAuth(() => {
 
 function Page({}) {
   return (
-    <ContentLayout title="format">
+    <>
       <div className="w-full flex items-center justify-between gap-5">
         <h3 className="text-lg text-primary font-semibold">Tournament Formats</h3>
         <Breadcrumb>
@@ -55,7 +55,7 @@ function Page({}) {
         </Breadcrumb>
       </div>
       <Formats />
-    </ContentLayout>
+    </>
   );
 }
 

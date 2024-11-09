@@ -71,7 +71,7 @@ function TournamentInvitationsPage({ params }: Iparms) {
 
   if (!tournament) {
     return (
-      <ContentLayout title="format">
+      <>
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <h2 className="text-2xl font-semibold mb-4">Tournament Not Found</h2>
@@ -79,12 +79,12 @@ function TournamentInvitationsPage({ params }: Iparms) {
             <p>This could be because the tournament doesn&apos;t exist or due to a system error.</p>
           </div>
         </div>
-      </ContentLayout>
+      </>
     );
   }
 
   return (
-    <ContentLayout title="format">
+    <>
       <div className="w-full flex items-center justify-between gap-5">
         <h3 className="text-lg text-primary font-bold">{tournament.name}</h3>
         <Breadcrumb>
@@ -116,7 +116,7 @@ function TournamentInvitationsPage({ params }: Iparms) {
       <TournamentMenuWrapper>
         <Invitations />
       </TournamentMenuWrapper>
-    </ContentLayout>
+    </>
   );
 }
 

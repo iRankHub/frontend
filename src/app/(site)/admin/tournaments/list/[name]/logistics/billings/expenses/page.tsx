@@ -75,7 +75,7 @@ function ExpensesPage({ params }: Iparms) {
 
   if (!tournament) {
     return (
-      <ContentLayout title="format">
+      <>
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <h2 className="text-2xl font-semibold mb-4">
@@ -90,11 +90,11 @@ function ExpensesPage({ params }: Iparms) {
             </p>
           </div>
         </div>
-      </ContentLayout>
+      </>
     );
   }
   return (
-    <ContentLayout title="users">
+    <>
       <div className="w-full flex items-center justify-between gap-5">
         <h3 className="text-2xl text-primary font-bold">Billings</h3>
         <Breadcrumb>
@@ -121,7 +121,7 @@ function ExpensesPage({ params }: Iparms) {
       <MenuWrapper>
         <Expenses tournament_id={tourn_id} />
       </MenuWrapper>
-    </ContentLayout>
+    </>
   );
 }
 

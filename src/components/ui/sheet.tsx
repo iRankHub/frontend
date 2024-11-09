@@ -53,6 +53,7 @@ interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
     VariantProps<typeof sheetVariants> {
   isOverlayVisible?: boolean;
+  hideOnBreakpoint?: "sm" | "lg" | "xl";
 }
 
 const SheetContent = React.forwardRef<
@@ -60,15 +61,23 @@ const SheetContent = React.forwardRef<
   SheetContentProps
 >(
   (
-    { side = "right", className, children, isOverlayVisible, ...props },
+    {
+      side = "right",
+      className,
+      children,
+      isOverlayVisible,
+      hideOnBreakpoint,
+      ...props
+    },
     ref
   ) => (
     <SheetPortal>
       <SheetOverlay
         className={cn(
+          hideOnBreakpoint !== undefined && `${hideOnBreakpoint}:hidden`,
           isOverlayVisible !== undefined &&
             !isOverlayVisible &&
-            "bg-transparent"
+            "bg-transparent",
         )}
       />
       <SheetPrimitive.Content
@@ -92,15 +101,16 @@ const SheetContentSidebar = React.forwardRef<
   SheetContentProps
 >(
   (
-    { side = "right", className, children, isOverlayVisible, ...props },
+    { side = "right", className, children, isOverlayVisible, hideOnBreakpoint, ...props },
     ref
   ) => (
     <SheetPortal>
       <SheetOverlay
         className={cn(
+          hideOnBreakpoint !== undefined && `${hideOnBreakpoint}:hidden`,
           isOverlayVisible !== undefined &&
             !isOverlayVisible &&
-            "bg-transparent"
+            "bg-transparent",
         )}
       />
       <SheetPrimitive.Content

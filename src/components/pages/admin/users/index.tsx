@@ -33,7 +33,6 @@ function Users() {
       })
       .catch((err) => {
         console.error(err.message);
-        // You might want to add a toast notification here
       })
       .finally(() => {
         setIsLoading(false);

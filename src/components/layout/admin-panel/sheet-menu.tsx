@@ -1,11 +1,10 @@
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { MenuIcon } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetHeader,
-  SheetContent,
   SheetTrigger,
   SheetContentSidebar,
 } from "@/components/ui/sheet";
@@ -20,7 +19,11 @@ export function SheetMenu() {
           <MenuIcon size={20} />
         </Button>
       </SheetTrigger>
-      <SheetContentSidebar className="sm:w-72 px-3 h-full flex flex-col bg-primary border-r-transparent" side="left">
+      <SheetContentSidebar 
+        className="lg:hidden w-72 px-3 h-full flex flex-col bg-primary border-r-transparent" 
+        side="left" 
+        hideOnBreakpoint="lg"
+      >
         <SheetHeader>
           <Button
             className="flex justify-center items-center pb-2 pt-1"

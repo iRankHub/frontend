@@ -123,7 +123,7 @@ function Dashboard() {
   }
 
   return (
-    <ContentLayout title="dashboard">
+    <>
       <header>
         <div className="w-full flex items-center justify-between gap-5">
           <h3 className="text-lg text-primary font-semibold">Dashboard</h3>
@@ -181,7 +181,7 @@ function Dashboard() {
         </div>
       </div>
       <SystemMonitor />
-    </ContentLayout>
+    </>
   );
 }
 

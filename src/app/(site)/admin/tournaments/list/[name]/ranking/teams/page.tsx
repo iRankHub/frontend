@@ -52,7 +52,7 @@ function Page({ params }: Iparms) {
 
   if (!tournament) return <AppLoader />;
   return (
-    <ContentLayout title="format">
+    <>
       <div className="w-full flex items-center justify-between gap-5">
         <h3 className="text-lg text-primary font-bold">{tournament?.name}</h3>
         <Breadcrumb>
@@ -90,7 +90,7 @@ function Page({ params }: Iparms) {
       <TournamentMenuWrapper>
         <TeamsRanking tournamentId={Number(tournament?.tournamentId)} />
       </TournamentMenuWrapper>
-    </ContentLayout>
+    </>
   );
 }
 

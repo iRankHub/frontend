@@ -20,7 +20,7 @@ const page = withAuth(() => {
 
 function Page({}) {
   return (
-    <ContentLayout title="format">
+    <>
       <div className="w-full flex items-center justify-between gap-5">
         <h3 className="text-2xl text-primary font-bold">Create Tournament</h3>
         <Breadcrumb>
@@ -53,7 +53,7 @@ function Page({}) {
         </Breadcrumb>
       </div>
       <CreateTournament />
-    </ContentLayout>
+    </>
   );
 }
 

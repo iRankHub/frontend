@@ -1,11 +1,7 @@
 import {
-  Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
-  SheetOverlay,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import React from "react";
@@ -14,6 +10,7 @@ type Props = {
   children: React.ReactNode;
   className?: string;
   side?: "top" | "right" | "left" | "bottom";
+  panelHideOnbreakpoint?: "sm" | "lg" | "xl";
 };
 
 export const Panelheader = ({ children, className }: Props) => (
@@ -38,10 +35,10 @@ export const PanelBody = ({ children, className }: Props) => (
   </SheetHeader>
 );
 
-function SidePanel({ children, className, side }: Props) {
+function SidePanel({ children, className, side, panelHideOnbreakpoint }: Props) {
   return (
     <SheetContent
-      className={cn("h-[calc(100vh_-_56px)] top-[57px] p-0", className)}
+      className={cn("h-[calc(100vh_-_56px)] top-[57px] p-0", className, panelHideOnbreakpoint !== undefined && `${panelHideOnbreakpoint}:hidden`)}
       isOverlayVisible={false}
       side={side}
     >

@@ -27,8 +27,20 @@ export class GetSystemHealthResponse extends jspb.Message {
   getMemoryUsagePercentage(): number;
   setMemoryUsagePercentage(value: number): GetSystemHealthResponse;
 
+  getEphemeralStorageUsed(): number;
+  setEphemeralStorageUsed(value: number): GetSystemHealthResponse;
+
+  getEphemeralStorageTotal(): number;
+  setEphemeralStorageTotal(value: number): GetSystemHealthResponse;
+
   getEphemeralStoragePercentage(): number;
   setEphemeralStoragePercentage(value: number): GetSystemHealthResponse;
+
+  getPvcStorageUsed(): number;
+  setPvcStorageUsed(value: number): GetSystemHealthResponse;
+
+  getPvcStorageTotal(): number;
+  setPvcStorageTotal(value: number): GetSystemHealthResponse;
 
   getPvcStoragePercentage(): number;
   setPvcStoragePercentage(value: number): GetSystemHealthResponse;
@@ -54,7 +66,11 @@ export namespace GetSystemHealthResponse {
   export type AsObject = {
     cpuUsagePercentage: number,
     memoryUsagePercentage: number,
+    ephemeralStorageUsed: number,
+    ephemeralStorageTotal: number,
     ephemeralStoragePercentage: number,
+    pvcStorageUsed: number,
+    pvcStorageTotal: number,
     pvcStoragePercentage: number,
     nodeCount: number,
     podCount: number,

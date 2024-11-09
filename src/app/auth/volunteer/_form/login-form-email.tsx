@@ -24,6 +24,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { volunteerLogin } from "@/core/authentication/auth";
 import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
+import { getUserProfile } from "@/core/users/users";
 
 type Inputs = z.infer<typeof emailLoginSchema>;
 
@@ -50,9 +51,9 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
     try {
       setIsPending(true);
       await volunteerLogin({ emailOrId: data.email, password: data.password })
-        .then((res) => {
+        .then(async (res) => {
           if (res.success) {
-            // form.reset();
+            form.reset();
             if (res.status !== "pending") {
               toast({
                 variant: "success",
@@ -68,12 +69,22 @@ const LoginFormEmail: React.FC<LoginFormEmailProps> = ({ handleChange }) => {
                 ),
               });
 
+              let picture = undefined;
+
+              const userProfileResponse = await getUserProfile({
+                userID: res.userid,
+                token: res.token,
+              });
+
+              picture = userProfileResponse.profile?.profilePicturePresignedUrl;
+
               const role = Roles.VOLUNTEER;
               const user: AuthStateUser = {
                 userId: res.userid,
                 name: res.username,
                 token: res.token,
                 status: "idle",
+                picture,
                 requiredPasswordReset: res.requirePasswordReset,
                 requireTwoFactor: res.requireTwoFactor,
               };

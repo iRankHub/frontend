@@ -1,6 +1,5 @@
 "use client";
 
-import { ModeToggle } from "@/components/mode-toggle";
 import { SheetMenu } from "./sheet-menu";
 import { UserNav } from "./user-nav";
 import { useStore } from "zustand";
@@ -41,12 +40,12 @@ export function Navbar({ title }: NavbarProps) {
             isOpen={sidebar?.isOpen}
             setIsOpen={sidebar?.setIsOpen}
           />
-          <Command className="rounded-md w-10 lg:w-72 border">
+          {/* <Command className="rounded-md w-10 lg:w-72 border">
             <CommandInput
               placeholder="Type to search..."
               className="ring-0 h-8"
             />
-          </Command>
+          </Command> */}
         </div>
         <div className="flex flex-1 items-center space-x-3 justify-end">
           <ThemeToggler className="bg-muted dark:bg-[#272A2F]" />

@@ -92,13 +92,13 @@ export function getMenuList(pathname: string): Group[] {
           icon: ArchiveIcon,
           submenus: [],
         },
-        {
-          href: "/admin/notification-settings/schools",
-          label: "Notification Settings",
-          active: pathname.includes("/admin/notification-settings/schools"),
-          icon: ArchiveIcon,
-          submenus: [],
-        },
+        // {
+        //   href: "/admin/notification-settings/schools",
+        //   label: "Notification Settings",
+        //   active: pathname.includes("/admin/notification-settings/schools"),
+        //   icon: ArchiveIcon,
+        //   submenus: [],
+        // },
       ],
     },
   ];

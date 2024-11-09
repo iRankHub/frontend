@@ -229,11 +229,15 @@ proto.system_health.GetSystemHealthResponse.toObject = function(includeInstance,
   var f, obj = {
     cpuUsagePercentage: jspb.Message.getFloatingPointFieldWithDefault(msg, 1, 0.0),
     memoryUsagePercentage: jspb.Message.getFloatingPointFieldWithDefault(msg, 2, 0.0),
-    ephemeralStoragePercentage: jspb.Message.getFloatingPointFieldWithDefault(msg, 3, 0.0),
-    pvcStoragePercentage: jspb.Message.getFloatingPointFieldWithDefault(msg, 4, 0.0),
-    nodeCount: jspb.Message.getFieldWithDefault(msg, 5, 0),
-    podCount: jspb.Message.getFieldWithDefault(msg, 6, 0),
-    pvcCount: jspb.Message.getFieldWithDefault(msg, 7, 0)
+    ephemeralStorageUsed: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    ephemeralStorageTotal: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    ephemeralStoragePercentage: jspb.Message.getFloatingPointFieldWithDefault(msg, 5, 0.0),
+    pvcStorageUsed: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    pvcStorageTotal: jspb.Message.getFieldWithDefault(msg, 7, 0),
+    pvcStoragePercentage: jspb.Message.getFloatingPointFieldWithDefault(msg, 8, 0.0),
+    nodeCount: jspb.Message.getFieldWithDefault(msg, 9, 0),
+    podCount: jspb.Message.getFieldWithDefault(msg, 10, 0),
+    pvcCount: jspb.Message.getFieldWithDefault(msg, 11, 0)
   };
 
   if (includeInstance) {
@@ -279,22 +283,38 @@ proto.system_health.GetSystemHealthResponse.deserializeBinaryFromReader = functi
       msg.setMemoryUsagePercentage(value);
       break;
     case 3:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setEphemeralStorageUsed(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setEphemeralStorageTotal(value);
+      break;
+    case 5:
       var value = /** @type {number} */ (reader.readDouble());
       msg.setEphemeralStoragePercentage(value);
       break;
-    case 4:
+    case 6:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setPvcStorageUsed(value);
+      break;
+    case 7:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setPvcStorageTotal(value);
+      break;
+    case 8:
       var value = /** @type {number} */ (reader.readDouble());
       msg.setPvcStoragePercentage(value);
       break;
-    case 5:
+    case 9:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setNodeCount(value);
       break;
-    case 6:
+    case 10:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setPodCount(value);
       break;
-    case 7:
+    case 11:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setPvcCount(value);
       break;
@@ -341,38 +361,66 @@ proto.system_health.GetSystemHealthResponse.serializeBinaryToWriter = function(m
       f
     );
   }
+  f = message.getEphemeralStorageUsed();
+  if (f !== 0) {
+    writer.writeInt64(
+      3,
+      f
+    );
+  }
+  f = message.getEphemeralStorageTotal();
+  if (f !== 0) {
+    writer.writeInt64(
+      4,
+      f
+    );
+  }
   f = message.getEphemeralStoragePercentage();
   if (f !== 0.0) {
     writer.writeDouble(
-      3,
+      5,
+      f
+    );
+  }
+  f = message.getPvcStorageUsed();
+  if (f !== 0) {
+    writer.writeInt64(
+      6,
+      f
+    );
+  }
+  f = message.getPvcStorageTotal();
+  if (f !== 0) {
+    writer.writeInt64(
+      7,
       f
     );
   }
   f = message.getPvcStoragePercentage();
   if (f !== 0.0) {
     writer.writeDouble(
-      4,
+      8,
       f
     );
   }
   f = message.getNodeCount();
   if (f !== 0) {
     writer.writeInt32(
-      5,
+      9,
       f
     );
   }
   f = message.getPodCount();
   if (f !== 0) {
     writer.writeInt32(
-      6,
+      10,
       f
     );
   }
   f = message.getPvcCount();
   if (f !== 0) {
     writer.writeInt32(
-      7,
+      11,
       f
     );
   }
@@ -416,11 +464,47 @@ proto.system_health.GetSystemHealthResponse.prototype.setMemoryUsagePercentage =
 
 
 /**
- * optional double ephemeral_storage_percentage = 3;
+ * optional int64 ephemeral_storage_used = 3;
+ * @return {number}
+ */
+proto.system_health.GetSystemHealthResponse.prototype.getEphemeralStorageUsed = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.system_health.GetSystemHealthResponse} returns this
+ */
+proto.system_health.GetSystemHealthResponse.prototype.setEphemeralStorageUsed = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional int64 ephemeral_storage_total = 4;
+ * @return {number}
+ */
+proto.system_health.GetSystemHealthResponse.prototype.getEphemeralStorageTotal = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.system_health.GetSystemHealthResponse} returns this
+ */
+proto.system_health.GetSystemHealthResponse.prototype.setEphemeralStorageTotal = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+/**
+ * optional double ephemeral_storage_percentage = 5;
  * @return {number}
  */
 proto.system_health.GetSystemHealthResponse.prototype.getEphemeralStoragePercentage = function() {
-  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 3, 0.0));
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 5, 0.0));
 };
 
 
@@ -429,51 +513,15 @@ proto.system_health.GetSystemHealthResponse.prototype.getEphemeralStoragePercent
  * @return {!proto.system_health.GetSystemHealthResponse} returns this
  */
 proto.system_health.GetSystemHealthResponse.prototype.setEphemeralStoragePercentage = function(value) {
-  return jspb.Message.setProto3FloatField(this, 3, value);
+  return jspb.Message.setProto3FloatField(this, 5, value);
 };
 
 
 /**
- * optional double pvc_storage_percentage = 4;
+ * optional int64 pvc_storage_used = 6;
  * @return {number}
  */
-proto.system_health.GetSystemHealthResponse.prototype.getPvcStoragePercentage = function() {
-  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 4, 0.0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.system_health.GetSystemHealthResponse} returns this
- */
-proto.system_health.GetSystemHealthResponse.prototype.setPvcStoragePercentage = function(value) {
-  return jspb.Message.setProto3FloatField(this, 4, value);
-};
-
-
-/**
- * optional int32 node_count = 5;
- * @return {number}
- */
-proto.system_health.GetSystemHealthResponse.prototype.getNodeCount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.system_health.GetSystemHealthResponse} returns this
- */
-proto.system_health.GetSystemHealthResponse.prototype.setNodeCount = function(value) {
-  return jspb.Message.setProto3IntField(this, 5, value);
-};
-
-
-/**
- * optional int32 pod_count = 6;
- * @return {number}
- */
-proto.system_health.GetSystemHealthResponse.prototype.getPodCount = function() {
+proto.system_health.GetSystemHealthResponse.prototype.getPvcStorageUsed = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
@@ -482,16 +530,16 @@ proto.system_health.GetSystemHealthResponse.prototype.getPodCount = function() {
  * @param {number} value
  * @return {!proto.system_health.GetSystemHealthResponse} returns this
  */
-proto.system_health.GetSystemHealthResponse.prototype.setPodCount = function(value) {
+proto.system_health.GetSystemHealthResponse.prototype.setPvcStorageUsed = function(value) {
   return jspb.Message.setProto3IntField(this, 6, value);
 };
 
 
 /**
- * optional int32 pvc_count = 7;
+ * optional int64 pvc_storage_total = 7;
  * @return {number}
  */
-proto.system_health.GetSystemHealthResponse.prototype.getPvcCount = function() {
+proto.system_health.GetSystemHealthResponse.prototype.getPvcStorageTotal = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
 };
 
@@ -500,8 +548,80 @@ proto.system_health.GetSystemHealthResponse.prototype.getPvcCount = function() {
  * @param {number} value
  * @return {!proto.system_health.GetSystemHealthResponse} returns this
  */
-proto.system_health.GetSystemHealthResponse.prototype.setPvcCount = function(value) {
+proto.system_health.GetSystemHealthResponse.prototype.setPvcStorageTotal = function(value) {
   return jspb.Message.setProto3IntField(this, 7, value);
+};
+
+
+/**
+ * optional double pvc_storage_percentage = 8;
+ * @return {number}
+ */
+proto.system_health.GetSystemHealthResponse.prototype.getPvcStoragePercentage = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 8, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.system_health.GetSystemHealthResponse} returns this
+ */
+proto.system_health.GetSystemHealthResponse.prototype.setPvcStoragePercentage = function(value) {
+  return jspb.Message.setProto3FloatField(this, 8, value);
+};
+
+
+/**
+ * optional int32 node_count = 9;
+ * @return {number}
+ */
+proto.system_health.GetSystemHealthResponse.prototype.getNodeCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 9, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.system_health.GetSystemHealthResponse} returns this
+ */
+proto.system_health.GetSystemHealthResponse.prototype.setNodeCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 9, value);
+};
+
+
+/**
+ * optional int32 pod_count = 10;
+ * @return {number}
+ */
+proto.system_health.GetSystemHealthResponse.prototype.getPodCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.system_health.GetSystemHealthResponse} returns this
+ */
+proto.system_health.GetSystemHealthResponse.prototype.setPodCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 10, value);
+};
+
+
+/**
+ * optional int32 pvc_count = 11;
+ * @return {number}
+ */
+proto.system_health.GetSystemHealthResponse.prototype.getPvcCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 11, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.system_health.GetSystemHealthResponse} returns this
+ */
+proto.system_health.GetSystemHealthResponse.prototype.setPvcCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 11, value);
 };
 
 

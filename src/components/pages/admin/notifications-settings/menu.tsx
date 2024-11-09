@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
-import { getMenuList } from "@/lib/utils/admin/accounts-menu-list";
+import { getMenuList } from "./menu-list";
 
 export function Menu() {
   const pathname = usePathname();

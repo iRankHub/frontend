@@ -24,6 +24,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { studentLogin } from "@/core/authentication/auth";
 import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
+import { getUserProfile } from "@/core/users/users";
 
 type Inputs = z.infer<typeof loginSchema>;
 
@@ -49,13 +50,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
   async function onSubmit(data: Inputs) {
     try {
       await studentLogin({ emailOrId: data.id, password: data.password })
-        .then((res) => {
+        .then(async (res) => {
           if (res.success) {
+            form.reset();
             if (res.status !== "pending") {
               toast({
                 variant: "success",
                 title: "Success",
-                description: "Login successful",
+                description: res.message,
                 action: (
                   <ToastAction
                     altText="Close"
@@ -65,7 +67,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
                   </ToastAction>
                 ),
               });
-              form.reset();
+
+              let picture = undefined;
+
+              const userProfileResponse = await getUserProfile({
+                userID: res.userid,
+                token: res.token,
+              });
+
+              picture = userProfileResponse.profile?.profilePicturePresignedUrl;
 
               const role = Roles.STUDENT;
               const user: AuthStateUser = {
@@ -73,6 +83,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
                 name: res.username,
                 token: res.token,
                 status: "idle",
+                picture,
                 requiredPasswordReset: res.requirePasswordReset,
                 requireTwoFactor: res.requireTwoFactor,
               };

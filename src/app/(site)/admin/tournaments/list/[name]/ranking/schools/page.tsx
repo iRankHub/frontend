@@ -50,7 +50,7 @@ function Page({ params }: Iparms) {
       });
   }, [user, tourn_id]);
   return (
-    <ContentLayout title="format">
+    <>
       {tournament ? (
         <>
           <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-5">
@@ -96,7 +96,7 @@ function Page({ params }: Iparms) {
       ) : (
         <AppLoader />
       )}
-    </ContentLayout>
+    </>
   );
 }
 

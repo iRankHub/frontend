@@ -468,23 +468,6 @@ const SignupForm = ({ activeStep, setActiveStep }: SignupFormProps) => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="contact_person_email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="capitalize">
-                      Contact Person Email
-                      <b className="text-primary font-light"> *</b>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder="emma@gmail.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <div className="flex items-center gap-5">
                 <Button
                   variant={"secondary"}
