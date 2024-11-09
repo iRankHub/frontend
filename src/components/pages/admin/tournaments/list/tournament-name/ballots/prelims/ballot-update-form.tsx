@@ -29,7 +29,11 @@ import { useUserStore } from "@/stores/auth/auth.store";
 import { BallotUpdateFormProps } from "@/types/pairings/ballots";
 import { Inter } from "next/font/google";
 import { useParams } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import TextareaWithToxicityCheck, { ValidationStatus } from "./Comment";
+import { AlertDescription } from "@/components/ui/alert";
+import { Alert } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 type Props = {
   ballotId: number;
@@ -45,6 +49,11 @@ type WinnerType = string;
 type ValidationError = {
   message: string;
   speakers: string[];
+};
+
+type SpeakerValidation = {
+  isToxic: boolean;
+  isLoading: boolean;
 };
 
 function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
@@ -82,7 +91,73 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
   const [team2PointsChanged, setTeam2PointsChanged] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Add these functions for winner validation
+  const team1FeedbackToxicity = useRef<boolean[]>([false, false, false]);
+  const team2FeedbackToxicity = useRef<boolean[]>([false, false, false]);
+  const verdictToxicity = useRef<boolean>(false);
+
+  const [team1Validation, setTeam1Validation] = useState<SpeakerValidation[]>(
+    Array(3).fill({ isToxic: false, isLoading: false })
+  );
+  const [team2Validation, setTeam2Validation] = useState<SpeakerValidation[]>(
+    Array(3).fill({ isToxic: false, isLoading: false })
+  );
+  const [verdictValidation, setVerdictValidation] = useState<SpeakerValidation>(
+    {
+      isToxic: false,
+      isLoading: false,
+    }
+  );
+
+  // Function to update validation state
+  const updateValidationState = (
+    teamIndex: number,
+    speakerIndex: number,
+    validation: ValidationStatus
+  ) => {
+    if (teamIndex === 1) {
+      setTeam1Validation((prev) => {
+        const newValidation = [...prev];
+        newValidation[speakerIndex] = validation;
+        return newValidation;
+      });
+    } else {
+      setTeam2Validation((prev) => {
+        const newValidation = [...prev];
+        newValidation[speakerIndex] = validation;
+        return newValidation;
+      });
+    }
+  };
+
+  // Check if any feedback is toxic or loading
+  const isAnyFeedbackToxic = useCallback(() => {
+    const team1Toxic =
+      team1Speakers.length > 0 && team1Validation.some((v) => v.isToxic);
+    const team2Toxic =
+      team2Speakers.length > 0 && team2Validation.some((v) => v.isToxic);
+    return team1Toxic || team2Toxic || verdictValidation.isToxic;
+  }, [
+    team1Validation,
+    team2Validation,
+    verdictValidation,
+    team1Speakers.length,
+    team2Speakers.length,
+  ]);
+
+  const isAnyFeedbackLoading = useCallback(() => {
+    const team1Loading =
+      team1Speakers.length > 0 && team1Validation.some((v) => v.isLoading);
+    const team2Loading =
+      team2Speakers.length > 0 && team2Validation.some((v) => v.isLoading);
+    return team1Loading || team2Loading || verdictValidation.isLoading;
+  }, [
+    team1Validation,
+    team2Validation,
+    verdictValidation,
+    team1Speakers.length,
+    team2Speakers.length,
+  ]);
+
   const validateWinner = (selectedWinner: WinnerType): boolean => {
     if (!selectedWinner || selectedWinner.trim() === "") {
       setWinnerError("Please select a winning team");
@@ -143,17 +218,15 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
         if (b.score !== a.score) {
           return b.score - a.score;
         }
-        // If scores are tied, use the tiebreaker rules
         if (a.originalOrder === 2 && b.originalOrder === 3) {
-          return -1; // a comes before b
+          return -1;
         }
         if (a.originalOrder === 3 && b.originalOrder === 2) {
-          return 1; // b comes before a
+          return 1;
         }
         return a.originalOrder - b.originalOrder;
       });
 
-    // Calculate rankings based on the sorted order
     const rankings = new Array(speakers.length).fill(0);
     sortedSpeakers.forEach((speaker, index) => {
       rankings[speaker.originalOrder - 1] = index + 1;
@@ -192,7 +265,6 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
           // });
         }
       }
-
       newSpeakers[speakerIndex] = {
         ...newSpeakers[speakerIndex],
         [field]: parsedValue,
@@ -204,23 +276,19 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       setTeam1Speakers(updateSpeakers);
       if (field === "points") {
         setTeam1PointsChanged(true);
+        setIsTeam1RankingCalculated(false);
       }
     } else {
       setTeam2Speakers(updateSpeakers);
       if (field === "points") {
         setTeam2PointsChanged(true);
+        setIsTeam2RankingCalculated(false);
       }
     }
   };
 
   const handleCalculateRankings = () => {
     calculateRankings(activeStep);
-  };
-
-  const handleContinue = () => {
-    if (activeStep < 3) {
-      setActiveStep((prev) => prev + 1);
-    }
   };
 
   const fetchBallot = useCallback(async () => {
@@ -235,12 +303,10 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       };
 
       const res = await getBallot(options);
-      // console.log("Fetched ballot:", res);
 
       if (res.ballot) {
         setBallot(res.ballot);
 
-        // Process team 1 speakers
         const team1 = res.ballot.team1?.speakersList || [];
         setTeam1Speakers(
           team1.map((speaker) => ({
@@ -251,7 +317,6 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
         );
         setTeam1Rankings(team1.map((speaker) => speaker.rank || 0));
 
-        // Process team 2 speakers
         const team2 = res.ballot.team2?.speakersList || [];
         setTeam2Speakers(
           team2.map((speaker) => ({
@@ -262,12 +327,10 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
         );
         setTeam2Rankings(team2.map((speaker) => speaker.rank || 0));
 
-        // Set winner
         setWinner(res.ballot.verdict || "");
       }
     } catch (err) {
       console.error("Error fetching ballot:", err);
-      // Handle error (e.g., show error message to user)
     } finally {
       setIsLoading(false);
     }
@@ -277,16 +340,6 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     fetchBallot();
   }, [fetchBallot]);
 
-  // useEffect(() => {
-  //   console.log("State updated:", {
-  //     team1Speakers,
-  //     team2Speakers,
-  //     team1Rankings,
-  //     team2Rankings,
-  //     winner,
-  //   });
-  // }, [team1Speakers, team2Speakers, team1Rankings, team2Rankings, winner]);
-
   const sortSpeakersByPoints = (speakers: Speaker.AsObject[]) => {
     return speakers
       .map((speaker, index) => ({ ...speaker, originalIndex: index }))
@@ -294,14 +347,45 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
         if (b.points !== a.points) {
           return b.points - a.points;
         }
-        // If scores are tied, use the original index as a tiebreaker
         return a.originalIndex - b.originalIndex;
       })
-      .map(({ originalIndex, ...speaker }) => speaker); // Remove the temporary originalIndex
+      .map(({ originalIndex, ...speaker }) => speaker);
+  };
+
+  const updateToxicityStatus = (
+    teamIndex: number,
+    speakerIndex: number,
+    isToxic: boolean
+  ) => {
+    if (teamIndex === 1) {
+      team1FeedbackToxicity.current[speakerIndex] = isToxic;
+    } else {
+      team2FeedbackToxicity.current[speakerIndex] = isToxic;
+    }
   };
 
   const handleSubmitBallot = async () => {
     if (!user) return;
+
+    const hasTeam1ToxicContent = team1FeedbackToxicity.current.some(
+      (isToxic) => isToxic
+    );
+    const hasTeam2ToxicContent = team2FeedbackToxicity.current.some(
+      (isToxic) => isToxic
+    );
+    const hasAnyToxicContent =
+      hasTeam1ToxicContent || hasTeam2ToxicContent || verdictToxicity.current;
+
+    if (hasAnyToxicContent) {
+      toast({
+        title: "Error",
+        description:
+          "Please ensure all feedback is respectful before submitting.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (!validateWinner(winner) || winner === "pending") {
       toast({
         title: "Error",
@@ -331,7 +415,6 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       return;
     }
 
-    // Ensure rankings are calculated for both teams before submission
     if (!isTeam1RankingCalculated) {
       calculateRankings(1);
     }
@@ -399,10 +482,6 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     }
   };
 
-  if (isLoading) {
-    return <div>Loading ballot data...</div>;
-  }
-
   const Step = ({
     number,
     isActive,
@@ -454,19 +533,96 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     );
   };
 
+  const handleContinue = () => {
+    const currentTeamIndex = activeStep;
+    const isCurrentTeamRankingCalculated =
+      currentTeamIndex === 1
+        ? isTeam1RankingCalculated
+        : isTeam2RankingCalculated;
+
+    if (isAnyFeedbackToxic()) {
+      toast({
+        title: "Error",
+        description: "Please fix inappropriate content before proceeding",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (isAnyFeedbackLoading()) {
+      toast({
+        title: "Please wait",
+        description: "Still checking feedback content...",
+        variant: "default",
+      });
+      return;
+    }
+
+    if (!isCurrentTeamRankingCalculated) {
+      toast({
+        title: "Error",
+        description: "Please calculate rankings before proceeding",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (activeStep < 3) {
+      setActiveStep((prev) => prev + 1);
+    }
+  };
+
+  const handleFeedbackChange = useCallback(
+    (
+      teamIndex: number,
+      speakerIndex: number,
+      text: string,
+      validation: ValidationStatus
+    ) => {
+      handleSpeakerChange(teamIndex, speakerIndex, "feedback", text);
+      updateValidationState(teamIndex, speakerIndex, {
+        isToxic: validation.isToxic,
+        isLoading: validation.isLoading,
+      });
+    },
+    []
+  );
+
+  const handleVerdictChange = useCallback(
+    (value: string, validation: ValidationStatus) => {
+      setVerdict(value);
+      setVerdictValidation(validation);
+    },
+    []
+  );
+
   const renderSpeakerInputs = (
     teamIndex: number,
     speakers: Speaker.AsObject[],
     rankings: number[]
   ) => (
-    <>
+    <div className="space-y-4">
+      {isAnyFeedbackToxic() && (
+        <Alert variant="destructive">
+          <AlertDescription>
+            Please fix inappropriate content before proceeding
+          </AlertDescription>
+        </Alert>
+      )}
+
       {!isLoading &&
         speakers.map((speaker, index) => (
           <Collapsible key={index} className="w-full">
             <CollapsibleTrigger className="w-full bg-transparent border-b flex items-center justify-between px-3 py-2">
-              <span className="bg-transparent outline-none text-foreground font-semibold text-start">
-                {speaker.name}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="bg-transparent outline-none text-foreground font-semibold text-start">
+                  {speaker.name}
+                </span>
+                {(teamIndex === 1 ? team1Validation : team2Validation)[index]
+                  .isToxic && (
+                  <AlertCircle className="h-4 w-4 text-destructive" />
+                )}
+              </div>
               <Icons.chevronUpDown className="w-3 h-3 text-border" />
             </CollapsibleTrigger>
             <CollapsibleContent className="py-3 w-full px-10">
@@ -534,24 +690,70 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
                   </div>
                 </div>
               </div>
-              <Textarea
-                placeholder="Add comment"
-                className="resize-none"
-                value={speaker.feedback || ""}
-                onChange={(e) =>
-                  handleSpeakerChange(
-                    teamIndex,
-                    index,
-                    "feedback",
-                    e.target.value
-                  )
-                }
+
+              <TextareaWithToxicityCheck
+                key={`${teamIndex}-${index}-${speaker.feedback}`}
+                text={speaker.feedback || ""}
+                onFeedbackChange={(text, validation) => {
+                  handleSpeakerChange(teamIndex, index, "feedback", text);
+                  updateValidationState(teamIndex, index, {
+                    isToxic: validation.isToxic,
+                    isLoading: validation.isLoading,
+                  });
+                }}
               />
             </CollapsibleContent>
           </Collapsible>
         ))}
-    </>
+    </div>
   );
+
+  const renderVerdictSection = () => {
+    return (
+      <div className="w-full flex-1">
+        <div className="w-full leading-6 mb-3">
+          <h3 className="text-lg font-bold text-foreground">Verdict</h3>
+          <span className="text-sm text-muted-foreground mb-2">
+            Select Winner
+          </span>
+
+          <Select value={winner} onValueChange={handleWinnerChange}>
+            <SelectTrigger
+              className={cn("w-full", winnerError && "border-red-500")}
+            >
+              <SelectValue placeholder="Choose winning team" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={ballot?.team1?.name || "team1"}>
+                Affirmative ({ballot?.team1?.name})
+              </SelectItem>
+              <SelectItem value={ballot?.team2?.name || "team2"}>
+                Negative ({ballot?.team2?.name})
+              </SelectItem>
+            </SelectContent>
+          </Select>
+          {winnerError && (
+            <p className="text-sm text-red-500 mt-1">{winnerError}</p>
+          )}
+        </div>
+
+        <div>
+          <Label htmlFor="verdict" className="text-foreground font-medium mb-3">
+            Why are they the winners?
+          </Label>
+          <TextareaWithToxicityCheck
+            key={`verdict-${verdict}`}
+            text={verdict}
+            onFeedbackChange={handleVerdictChange}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  if (isLoading) {
+    return <div>Loading ballot data...</div>;
+  }
 
   return (
     <div className="overflow-auto">
@@ -574,33 +776,38 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               <h3>This team is public speaking</h3>
             )}
           </div>
-          {/* <p>The minimum score for speakers should be 23!</p> */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-5 mt-4">
             <Button
               variant="outline"
-              className="mt-5"
-              type="button"
-              onClick={() => {
-                activeStep > 1 && setActiveStep((prev) => prev - 1);
-              }}
+              disabled={activeStep === 1}
+              onClick={() => setActiveStep((prev) => prev - 1)}
             >
               Back
-              <span className="sr-only">Back</span>
             </Button>
             {!isTeam1RankingCalculated || team1PointsChanged ? (
               <Button
-                type="button"
-                className="mt-5"
-                onClick={handleCalculateRankings}
-                disabled={!areAllPointsFilled(1)}
+                onClick={() => calculateRankings(1)}
+                disabled={
+                  !areAllPointsFilled(1) ||
+                  isAnyFeedbackToxic() ||
+                  isAnyFeedbackLoading()
+                }
               >
                 Calculate Ranking
-                <span className="sr-only">Calculate Ranking</span>
               </Button>
             ) : (
-              <Button type="button" className="mt-5" onClick={handleContinue}>
-                Continue
-                <span className="sr-only">Continue</span>
+              <Button
+                onClick={handleContinue}
+                disabled={isAnyFeedbackToxic() || isAnyFeedbackLoading()}
+              >
+                {isAnyFeedbackLoading() ? (
+                  <>
+                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                    Checking feedback...
+                  </>
+                ) : (
+                  "Continue"
+                )}
               </Button>
             )}
           </div>
@@ -616,34 +823,37 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               <h3>This team is public speaking</h3>
             )}
           </div>
-          {/* <p>The minimum score for speakers should be 23!</p> */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-5 mt-4">
             <Button
               variant="outline"
-              className="mt-5"
-              type="button"
-              onClick={() => {
-                activeStep > 1 && setActiveStep((prev) => prev - 1);
-              }}
+              onClick={() => setActiveStep((prev) => prev - 1)}
             >
               Back
-              <span className="sr-only">Back</span>
             </Button>
-            {team2Speakers.length > 0 &&
-            (!isTeam2RankingCalculated || team2PointsChanged) ? (
+            {!isTeam2RankingCalculated || team2PointsChanged ? (
               <Button
-                type="button"
-                className="mt-5"
-                onClick={handleCalculateRankings}
-                disabled={!areAllPointsFilled(2)}
+                onClick={() => calculateRankings(2)}
+                disabled={
+                  !areAllPointsFilled(2) ||
+                  isAnyFeedbackToxic() ||
+                  isAnyFeedbackLoading()
+                }
               >
                 Calculate Ranking
-                <span className="sr-only">Calculate Ranking</span>
               </Button>
             ) : (
-              <Button type="button" className="mt-5" onClick={handleContinue}>
-                Continue
-                <span className="sr-only">Continue</span>
+              <Button
+                onClick={handleContinue}
+                disabled={isAnyFeedbackToxic() || isAnyFeedbackLoading()}
+              >
+                {isAnyFeedbackLoading() ? (
+                  <>
+                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                    Checking feedback...
+                  </>
+                ) : (
+                  "Continue"
+                )}
               </Button>
             )}
           </div>
@@ -652,49 +862,7 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
 
       {activeStep === 3 && (
         <div className="w-full flex-1">
-          <div className="w-full leading-6 mb-3">
-            <h3 className="text-lg font-bold text-foreground">Verdict</h3>
-            <span className="text-sm text-muted-foreground mb-2">
-              Select Winner
-            </span>
-
-            <Select value={winner} onValueChange={handleWinnerChange}>
-              <SelectTrigger
-                className={cn("w-full", winnerError && "border-red-500")}
-              >
-                <SelectValue placeholder="Choose winning team" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value={ballot?.team1?.name || "team1"}>
-                  Affirmative ({ballot?.team1?.name})
-                </SelectItem>
-                <SelectItem value={ballot?.team2?.name || "team2"}>
-                  Negative ({ballot?.team2?.name})
-                </SelectItem>
-              </SelectContent>
-            </Select>
-            {winnerError && (
-              <p className="text-sm text-red-500 mt-1">{winnerError}</p>
-            )}
-          </div>
-
-          <div>
-            <Label
-              htmlFor="verdict"
-              className="text-foreground font-medium mb-3"
-            >
-              Why are they the winners?
-            </Label>
-            <Textarea
-              placeholder="Add comment"
-              value={verdict}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                setVerdict(e.target.value)
-              }
-              className="resize-none"
-            />
-          </div>
-
+          {renderVerdictSection()}
           <div className="flex items-center gap-4">
             <Button
               variant="outline"
@@ -703,7 +871,6 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               onClick={() => setActiveStep((prev) => prev - 1)}
             >
               Back
-              <span className="sr-only">Back</span>
             </Button>
             <Button
               className="mt-5"
@@ -713,17 +880,19 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
                 (!isTeam1RankingCalculated && team1Speakers.length > 0) ||
                 (!isTeam2RankingCalculated && team2Speakers.length > 0) ||
                 !winner ||
-                isUpdatingBallot
+                isUpdatingBallot ||
+                isAnyFeedbackToxic() ||
+                isAnyFeedbackLoading()
               }
             >
-              Submit
-              {isUpdatingBallot && (
-                <Icons.spinner
-                  className="mx-2 h-4 w-4 animate-spin"
-                  aria-hidden="true"
-                />
+              {isUpdatingBallot ? (
+                <>
+                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                "Submit"
               )}
-              <span className="sr-only">Submit</span>
             </Button>
           </div>
         </div>
