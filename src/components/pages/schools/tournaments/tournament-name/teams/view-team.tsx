@@ -11,38 +11,11 @@ import { createTeamSchema } from "@/lib/validations/admin/tournaments/create-tea
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Check, ChevronsUpDown } from "lucide-react";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import { useUserStore } from "@/stores/auth/auth.store";
-import { GetSchoolsType } from "@/types/user_management/schools";
-import { getAllUsers, getStudents } from "@/core/users/users";
-import { Student } from "@/lib/grpc/proto/user_management/users_pb";
-import { CreateTeamType, UpdateTeamType } from "@/types/tournaments/teams";
-import {
-  createTournamentTeam,
-  updateTournamentTeam,
-} from "@/core/tournament/teams";
 import { useToast } from "@/components/ui/use-toast";
-import { useEffect, useState } from "react";
-import { useTeamsStore } from "@/stores/admin/debate/teams.store";
+import { useState } from "react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { cn } from "@/lib/utils";
-import { Inter } from "next/font/google";
 import SidePanel, {
   Panelheader,
 } from "@/components/layout/admin-panel/side-panel";
@@ -56,8 +29,6 @@ interface TeamUserProps {
 type TeamInput = z.infer<typeof createTeamSchema>;
 
 const ViewTeamForm = ({ team }: TeamUserProps) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const { toast } = useToast();
   const [open, setOpen] = useState<boolean>(false);
 
   const form = useForm<TeamInput>({
@@ -118,7 +89,7 @@ const ViewTeamForm = ({ team }: TeamUserProps) => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-darkBlue">
+                  <FormLabel className="text-sm text-darkBlue dark:text-foreground font-medium my-3">
                     Team Name
                     <b className="text-primary font-light"> *</b>
                   </FormLabel>

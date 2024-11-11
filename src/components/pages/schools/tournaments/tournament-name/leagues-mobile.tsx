@@ -1,18 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import SidePanel, {
-  Panelheader,
-} from "@/components/layout/schools-panel/side-panel";
 import { Command } from "@/components/ui/command";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { getTournamentMenuList } from "@/lib/utils/tournament-menu-list";
 import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { CollapseMenuButton } from "@/components/layout/schools-panel/collapse-menu-button";
+import { Panelheader } from "@/components/layout/schools-panel/side-panel";
+import SidePanel from "@/components/layout/schools-panel/side-panel";
+import { getTournamentMenuList } from "@/lib/utils/schools/tournament-menu-list";
 
 function LeaguesMobile() {
   const pathname = usePathname();
@@ -61,7 +60,7 @@ function LeaguesMobile() {
     );
   };
   return (
-    <SidePanel className="bg-background/95 shadow backdrop-blur supports-[backdrop-filter]:bg-background/90 dark:shadow-secondary">
+    <SidePanel panelHideOnbreakpoint="xl" className="overflow-auto">
       <Panelheader>
         <div className="w-full h-12 flex flex-row items-center justify-between px-3 pb-2">
           <h3 className="text-sm font-bold">Tournament Menu</h3>

@@ -25,6 +25,7 @@ import { useUserStore } from "@/stores/auth/auth.store";
 import { getUserProfile } from "@/core/users/users";
 import { useEffect, useState } from "react";
 import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
+import { formatName } from "@/utils/split-name";
 
 export function UserNav() {
   const { logout, user } = useUserStore((state) => state);
@@ -61,8 +62,12 @@ export function UserNav() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Avatar className="w-8 h-8">
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarImage
+                      src={user?.picture ?? "/static/images/mic-speech.jpg"}
+                    />
+                    <AvatarFallback>
+                      {currentUser ? formatName(currentUser?.name) : ""}
+                    </AvatarFallback>
                   </Avatar>
                   <Icons.chevronDown size={16} className="text-[#637381]" />
                 </div>

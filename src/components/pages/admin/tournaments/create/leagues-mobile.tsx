@@ -251,7 +251,7 @@ function LeaguesMobile({
   };
 
   return (
-    <SidePanel>
+    <SidePanel panelHideOnbreakpoint="xl" className="overflow-auto">
       <Panelheader>
         <div className="w-full h-12 flex flex-row items-center justify-between px-3 pb-2">
           <h3 className="text-sm font-bold">Leagues</h3>

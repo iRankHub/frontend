@@ -1,7 +1,5 @@
 "use client";
 
-import { DataTableFacetedFilter } from "@/components/tables/data-table-faceted-filter";
-import { priorities, statuses, teams } from "@/components/tables/data/data";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Cross2Icon } from "@radix-ui/react-icons";
@@ -27,18 +25,6 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[280px]"
         />
-        {table.getColumn("isHeadJudge") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("isHeadJudge")}
-            title="Head Judge"
-            options={[
-              // @ts-ignore
-              { value: true, label: "Yes" },
-              // @ts-ignore
-              { value: false, label: "No" },
-            ]}
-          />
-        )}
         {isFiltered && (
           <Button
             variant="ghost"

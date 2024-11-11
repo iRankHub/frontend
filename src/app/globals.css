@@ -21,6 +21,8 @@
     --accent-foreground: 24 9.8% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 60 9.1% 97.8%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 48 96% 89%;
     --border: 0 0% 79%;
     --info: 221 83% 53%;
     --input: 214 32% 91%;
@@ -46,7 +48,6 @@
     --chart-income-4: 137 55% 15%;
     --chart-income-5: 141 40% 9%;
   }
-
   .dark {
     --background: 20 14.3% 4.1%;
     --foreground: 60 9.1% 97.8%;
@@ -64,6 +65,8 @@
     --accent-foreground: 60 9.1% 97.8%;
     --destructive: 0 72.2% 50.6%;
     --destructive-foreground: 60 9.1% 97.8%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 48 96% 89%;
     --border: 12 6.5% 15.1%;
     --input: 12 6.5% 15.1%;
     --ring: 20.5 90.2% 48.2%;
@@ -91,7 +94,6 @@
     max-height: var(--radix-popover-content-available-height);
   }
 }
-
 
 body {
   background-color: hsl(var(--background));

@@ -9,7 +9,8 @@ import {
     InboxIcon,
     Sheet,
     File,
-    ArchiveIcon
+    ArchiveIcon,
+    Ribbon
   } from "lucide-react";
   
   type Submenu = {
@@ -48,6 +49,13 @@ import {
             label: "Tournaments",
             active: pathname.includes("/schools/tournaments"),
             icon: Sheet,
+            submenus: []
+          },
+          {
+            href: "/schools/performance",
+            label: "Performance",
+            active: pathname.includes("/schools/performance"),
+            icon: Ribbon,
             submenus: []
           },
           {

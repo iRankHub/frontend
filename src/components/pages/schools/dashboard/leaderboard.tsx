@@ -2,6 +2,7 @@ import { Icons } from "@/components/icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   StudentInfo,
+  TopSchool,
   TopStudent,
 } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { cn } from "@/lib/utils";
@@ -11,10 +12,7 @@ import Image from "next/image";
 import React from "react";
 
 interface LeaderboardProps {
-  studentRank: number;
-  rankChange: number;
-  studentInfo: StudentInfo.AsObject;
-  topStudents: TopStudent.AsObject[];
+  topSchools: TopSchool.AsObject[];
 }
 
 const inter = Inter({
@@ -23,10 +21,7 @@ const inter = Inter({
 });
 
 function Leaderboard({
-  rankChange,
-  studentInfo,
-  studentRank,
-  topStudents,
+  topSchools,
 }: LeaderboardProps) {
   return (
     <div className="w-full min-h-40 h-full py-5 flex flex-col items-center justify-center gap-4 bg-background rounded-lg border-2 border-muted">
@@ -40,29 +35,18 @@ function Leaderboard({
       </div>
       <div className="flex flex-col items-center justify-center gap-3 mb-2">
         <div className="relative w-24 h-24 rounded-full">
-          <Image
-            src={"/static/images/volunteer-placeholder-pic.png"}
-            alt="profile"
-            fill
+          <Image 
+            src={"/static/images/mic-speech.jpg"} 
+            alt="profile" 
+            fill 
+            className="rounded-full w-full h-full"
           />
           <div className="absolute -bottom-1 -right-1 bg-[#22C55E] rounded-full">
             <Crown size={24} className="text-background m-1.5" />
           </div>
         </div>
-        {/* <h2 className="text-xl font-medium text-foreground m-0 p-0">
-          Sarah Martins
-        </h2>
-        <span
-          className={cn(
-            "text-primary text-2xl p-0 m-0 leading-4 font-bold",
-            inter
-          )}
-        >
-          50,000
-        </span> */}
-
         <h2 className="text-xl font-medium text-foreground m-0 p-0">
-          {studentInfo.name}
+          {topSchools[0].name}
         </h2>
         <span
           className={cn(
@@ -70,49 +54,34 @@ function Leaderboard({
             inter.className
           )}
         >
-          {studentInfo.totalPoints}
+          {topSchools[0].totalPoints}
         </span>
       </div>
-      <div className="w-full px-3">
-        <div className="flex items-center justify-between p-3 bg-[#F1F5F9] rounded-lg">
-          <div className="flex items-center gap-3">
-            <span className="font-bold text-xl flex items-center">
-              <Icons.moveUpRight
-                size={14}
-                className="text-success-foreground w-5 h-5"
-              />
-              2
-            </span>
-            <Avatar className="w-8 h-8">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+      {topSchools.slice(1, 3).map((school, index) => (
+        <div className="w-full px-3" key={index}>
+          <div className="flex items-center justify-between gap-2 p-3 bg-[#F1F5F9] dark:bg-accent rounded-lg">
+            <div className="flex items-center gap-3">
+              <span className="font-bold text-xl flex items-center">
+                <Icons.moveUpRight
+                  size={14}
+                  className="text-success-foreground w-5 h-5"
+                />
+                {index + 2}
+              </span>
+              <Avatar className="w-8 h-8">
+                <AvatarImage src="/static/images/mic-speech.jpg" />
+                <AvatarFallback>{school.name.slice(0, 2)}</AvatarFallback>
+              </Avatar>
+            </div>
+            <p className="w-full text-base text-foreground font-medium m-0 p-0 leading-5">
+              {school.name}
+            </p>
+            <b className="text-primary text-xl font-bold">
+              {school.totalPoints}
+            </b>
           </div>
-          <p className="text-base text-foreground font-medium">
-            {studentInfo.name}
-          </p>
-          <b className="text-primary text-xl font-bold">{studentInfo.totalPoints}</b>
         </div>
-        <div className="flex items-center justify-between p-3 bg-[#F1F5F9] rounded-lg mt-3">
-          <div className="flex items-center gap-3">
-            <span className="font-bold text-xl flex items-center">
-              <Icons.moveUpRight
-                size={14}
-                className="text-destructive w-5 h-5 rotate-180"
-              />
-              3
-            </span>
-            <Avatar className="w-8 h-8">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-          </div>
-          <p className="text-base text-foreground font-medium">
-            Mark Koulibally
-          </p>
-          <b className="text-primary text-xl font-bold">2300</b>
-        </div>
-      </div>
+      ))}
     </div>
   );
 }

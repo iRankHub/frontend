@@ -118,7 +118,7 @@ const ViewTeamForm = ({ team }: TeamUserProps) => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-darkBlue">
+                  <FormLabel className="text-sm text-darkBlue dark:text-foreground font-medium my-3">
                     Team Name
                     <b className="text-primary font-light"> *</b>
                   </FormLabel>

@@ -28,6 +28,7 @@ import {
   StudentTournamentStatsResponse,
 } from "@/lib/grpc/proto/debate_management/debate_pb";
 import AppLoader from "@/lib/loader";
+import { NoRankingDisplay } from "@/utils/no-ranking-information";
 
 const Page = withAuth(() => {
   return <Dashboard />;
@@ -126,20 +127,7 @@ function Dashboard() {
     console.log(hasError, overallStudentRanking)
     return (
       <ContentLayout title="dashboard">
-        <div className="flex items-center justify-center h-screen">
-          <div className="text-center">
-            <h2 className="text-2xl font-semibold mb-4">
-              No Information Available
-            </h2>
-            <p className="mb-2">
-              We couldn{`'`}t find any ranking information for you.
-            </p>
-            <p>
-              This could be because your account is new or haven{`'`}t
-              participated in any debates yet.
-            </p>
-          </div>
-        </div>
+        <NoRankingDisplay />
       </ContentLayout>
     );
   }

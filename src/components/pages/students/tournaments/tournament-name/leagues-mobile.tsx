@@ -7,12 +7,12 @@ import SidePanel, {
 import { Command, CommandInput } from "@/components/ui/command";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { getTournamentMenuList } from "@/lib/utils/tournament-menu-list";
 import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { CollapseMenuButton } from "@/components/layout/students-panel/collapse-menu-button";
+import { getTournamentMenuList } from "@/lib/utils/students/tournament-menu-list";
 
 function LeaguesMobile() {
   const pathname = usePathname();
@@ -61,7 +61,7 @@ function LeaguesMobile() {
     );
   };
   return (
-    <SidePanel>
+    <SidePanel panelHideOnbreakpoint="xl" className="overflow-auto">
       <Panelheader>
         <div className="w-full h-12 flex flex-row items-center justify-between px-3 pb-2">
           <h3 className="text-sm font-bold">Tournament Menu</h3>

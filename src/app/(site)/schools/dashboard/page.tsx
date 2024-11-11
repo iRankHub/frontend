@@ -21,6 +21,8 @@ import { getUserProfile } from "@/core/users/users";
 import { getOverallSchoolRanking } from "@/core/debates/rankings";
 import { OverallSchoolRankingResponse } from "@/lib/grpc/proto/debate_management/debate_pb";
 import AppLoader from "@/lib/loader";
+import { NoRankingDisplay } from "@/utils/no-ranking-information";
+import { getTournamentStats } from "@/core/tournament/list";
 
 const Page = withAuth(() => {
   return <Dashboard />;
@@ -28,12 +30,23 @@ const Page = withAuth(() => {
 
 function Dashboard() {
   const { user } = useUserStore((state) => state);
-  const [currentUser, setCurrentUser] = useState<UserProfile.AsObject | undefined>(undefined);
-  const [overallSchoolRanking, setOverallSchoolRanking] = useState<OverallSchoolRankingResponse.AsObject>();
+  const [currentUser, setCurrentUser] = useState<
+    UserProfile.AsObject | undefined
+  >(undefined);
+  const [overallSchoolRanking, setOverallSchoolRanking] =
+    useState<OverallSchoolRankingResponse.AsObject>();
   const [totalTournaments, setTotalTournaments] = useState(0);
+  const [totalTournamentsUnattended, setTotalTournamentsUnattended] =
+    useState(0);
   const [upcomingTournaments, setUpcomingTournaments] = useState(0);
-  const [totalTournamentsPercentageChange, setTotalTournamentsPercentageChange] = useState("+∞%");
-  const [upcomingTournamentsPercentageChange, setUpcomingTournamentsPercentageChange] = useState("+∞%");
+  const [
+    totalTournamentsPercentageChange,
+    setTotalTournamentsPercentageChange,
+  ] = useState("+∞%");
+  const [
+    upcomingTournamentsPercentageChange,
+    setUpcomingTournamentsPercentageChange,
+  ] = useState("+∞%");
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
@@ -56,6 +69,15 @@ function Dashboard() {
     setIsLoading(true);
     setHasError(false);
 
+    const fetchTournamentStats = getTournamentStats({ token: user.token }).then(
+      (res) => {
+        setTotalTournaments(res.totalTournaments);
+        setUpcomingTournaments(res.upcomingTournaments);
+        setTotalTournamentsPercentageChange(res.totalPercentageChange);
+        setUpcomingTournamentsPercentageChange(res.upcomingPercentageChange);
+      }
+    );
+
     Promise.all([
       getUserProfile({
         userID: user.userId,
@@ -64,9 +86,10 @@ function Dashboard() {
       getOverallSchoolRanking({
         token: user.token,
         user_id: user.userId,
-      })
+      }),
+      fetchTournamentStats,
     ])
-      .then(([userProfileRes, schoolRankingRes]) => {
+      .then(([userProfileRes, schoolRankingRes, tournamentStats]) => {
         setCurrentUser(userProfileRes.profile);
         setOverallSchoolRanking(schoolRankingRes);
         setIsLoading(false);
@@ -79,22 +102,14 @@ function Dashboard() {
   }, [user]);
 
   if (isLoading) {
-    return (
-      <AppLoader />
-    );
+    return <AppLoader />;
   }
 
   if (hasError || !overallSchoolRanking) {
-    console.log(hasError, overallSchoolRanking)
+    console.log(hasError, overallSchoolRanking);
     return (
       <ContentLayout title="dashboard">
-        <div className="flex items-center justify-center h-screen">
-          <div className="text-center">
-            <h2 className="text-2xl font-semibold mb-4">No Information Available</h2>
-            <p className="mb-2">We couldn{`'`}t find any ranking information for your school.</p>
-            <p>This could be because your account is new or hasn{`'`}t participated in any events yet.</p>
-          </div>
-        </div>
+        <NoRankingDisplay />
       </ContentLayout>
     );
   }
@@ -132,11 +147,13 @@ function Dashboard() {
       <div className="flex items-stretch flex-col md:flex-row gap-3 mt-5">
         <div className="flex-1 w-full">
           <Overview
-            totalTournamentsAttended={2000}
-            totalTournamentsUnattended={500}
+            totalTournamentsAttended={totalTournaments}
+            totalTournamentsUnattended={totalTournamentsUnattended}
             upcomingTournaments={upcomingTournaments}
             totalTournamentsPercentageChange={totalTournamentsPercentageChange}
-            upcomingTournamentsPercentageChange={upcomingTournamentsPercentageChange}
+            upcomingTournamentsPercentageChange={
+              upcomingTournamentsPercentageChange
+            }
           />
         </div>
         <div className="flex-1 max-w-full md:max-w-xs w-full">
@@ -151,12 +168,7 @@ function Dashboard() {
           <PerformanceTrendChart />
         </div>
         <div className="flex-1 max-w-full md:max-w-xs w-full">
-          <Leaderboard
-            studentRank={overallSchoolRanking.schoolRank || 0}
-            rankChange={overallSchoolRanking.rankChange || 0}
-            studentInfo={overallSchoolRanking.schoolInfo || ({} as any)}
-            topStudents={overallSchoolRanking.topSchoolsList || []}
-          />
+          <Leaderboard topSchools={overallSchoolRanking.topSchoolsList || []} />
         </div>
       </div>
     </ContentLayout>

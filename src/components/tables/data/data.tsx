@@ -44,7 +44,7 @@ export const statuses = [
 
 export const ballotStatuses = [
   {
-    value: "recorded",
+    value: "Recorded",
     label: "Recorded",
     icon: CheckCircledIcon,
   },

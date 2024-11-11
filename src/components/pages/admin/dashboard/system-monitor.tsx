@@ -14,10 +14,20 @@ import {
   AlertTriangle,
   CheckCircle2,
   XCircle,
+  RefreshCw,
 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type SystemHealth = GetSystemHealthResponse.AsObject;
+
 interface SystemStatus {
   status: "healthy" | "warning" | "critical";
   issues: string[];
@@ -34,6 +44,63 @@ interface HealthMetricProps {
   status: "healthy" | "warning" | "critical";
 }
 
+// Mock Data for Development Testing
+const mockScenarios = {
+  healthy: {
+    cpuUsagePercentage: 45.5,
+    memoryUsagePercentage: 55.2,
+    ephemeralStoragePercentage: 42.8,
+    pvcStoragePercentage: 38.6,
+    ephemeralStorageUsed: 42.8 * 1024 * 1024 * 1024,
+    ephemeralStorageTotal: 100 * 1024 * 1024 * 1024,
+    pvcStorageUsed: 38.6 * 1024 * 1024 * 1024,
+    pvcStorageTotal: 100 * 1024 * 1024 * 1024,
+    nodeCount: 3,
+    podCount: 12,
+    pvcCount: 5,
+  },
+  warning: {
+    cpuUsagePercentage: 75.8,
+    memoryUsagePercentage: 82.4,
+    ephemeralStoragePercentage: 78.5,
+    pvcStoragePercentage: 72.3,
+    ephemeralStorageUsed: 78.5 * 1024 * 1024 * 1024,
+    ephemeralStorageTotal: 100 * 1024 * 1024 * 1024,
+    pvcStorageUsed: 72.3 * 1024 * 1024 * 1024,
+    pvcStorageTotal: 100 * 1024 * 1024 * 1024,
+    nodeCount: 2,
+    podCount: 8,
+    pvcCount: 4,
+  },
+  critical: {
+    cpuUsagePercentage: 95.2,
+    memoryUsagePercentage: 93.7,
+    ephemeralStoragePercentage: 91.4,
+    pvcStoragePercentage: 94.8,
+    ephemeralStorageUsed: 91.4 * 1024 * 1024 * 1024,
+    ephemeralStorageTotal: 100 * 1024 * 1024 * 1024,
+    pvcStorageUsed: 94.8 * 1024 * 1024 * 1024,
+    pvcStorageTotal: 100 * 1024 * 1024 * 1024,
+    nodeCount: 1,
+    podCount: 3,
+    pvcCount: 2,
+  },
+  failure: {
+    cpuUsagePercentage: 100,
+    memoryUsagePercentage: 100,
+    ephemeralStoragePercentage: 99.9,
+    pvcStoragePercentage: 99.9,
+    ephemeralStorageUsed: 99.9 * 1024 * 1024 * 1024,
+    ephemeralStorageTotal: 100 * 1024 * 1024 * 1024,
+    pvcStorageUsed: 99.9 * 1024 * 1024 * 1024,
+    pvcStorageTotal: 100 * 1024 * 1024 * 1024,
+    nodeCount: 0,
+    podCount: 0,
+    pvcCount: 0,
+  },
+};
+
+// Helper Functions
 const getSystemStatus = (health: SystemHealth): SystemStatus => {
   const issues: string[] = [];
   let status: "healthy" | "warning" | "critical" = "healthy";
@@ -86,6 +153,57 @@ const getSystemStatus = (health: SystemHealth): SystemStatus => {
   return { status, issues };
 };
 
+const formatBytes = (bytes: number): string => {
+  const gb = bytes / (1024 * 1024 * 1024);
+  return `${gb.toFixed(1)} GB`;
+};
+
+const getMetricStatus = (
+  percentage: number
+): "healthy" | "warning" | "critical" => {
+  if (percentage > 90) return "critical";
+  if (percentage > 70) return "warning";
+  return "healthy";
+};
+
+const DevelopmentControls: React.FC<{
+  onScenarioChange: (scenario: keyof typeof mockScenarios) => void;
+  onRefresh: () => void;
+  currentScenario: string;
+}> = ({ onScenarioChange, onRefresh, currentScenario }) => (
+  <div className="mb-6 p-4 border border-muted rounded-md bg-muted/50">
+    <h3 className="text-sm font-medium mb-3">Development Controls</h3>
+    <div className="flex flex-col sm:flex-row gap-3">
+      <Select
+        value={currentScenario}
+        onValueChange={(value) =>
+          onScenarioChange(value as keyof typeof mockScenarios)
+        }
+      >
+        <SelectTrigger className="w-full sm:w-[180px]">
+          <SelectValue placeholder="Select scenario" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="healthy">Healthy System</SelectItem>
+          <SelectItem value="warning">System Warning</SelectItem>
+          <SelectItem value="critical">System Critical</SelectItem>
+          <SelectItem value="failure">System Failure</SelectItem>
+        </SelectContent>
+      </Select>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={onRefresh}
+        className="w-full sm:w-auto"
+      >
+        <RefreshCw className="w-4 h-4 mr-2" />
+        Simulate Refresh
+      </Button>
+    </div>
+  </div>
+);
+
+// Component: Status Badge
 const StatusBadge: React.FC<{ status: SystemStatus }> = ({ status }) => {
   const getStatusConfig = () => {
     switch (status.status) {
@@ -121,8 +239,9 @@ const StatusBadge: React.FC<{ status: SystemStatus }> = ({ status }) => {
       {status.issues.length > 0 && (
         <Alert
           variant={status.status === "critical" ? "destructive" : "warning"}
+          className="break-words"
         >
-          <Icon className="h-4 w-4" />
+          <Icon className="h-4 w-4 shrink-0" />
           <AlertTitle>
             {status.status === "critical"
               ? "System Critical"
@@ -139,7 +258,7 @@ const StatusBadge: React.FC<{ status: SystemStatus }> = ({ status }) => {
       )}
       {status.issues.length === 0 && (
         <Alert>
-          <CheckCircle2 className="h-4 w-4" />
+          <CheckCircle2 className="h-4 w-4 shrink-0" />
           <AlertTitle>All Systems Operational</AlertTitle>
           <AlertDescription>
             All system components are functioning normally.
@@ -167,21 +286,20 @@ const HealthMetric: React.FC<HealthMetricProps> = ({
     });
   };
 
-  const getProgressColors = (status: "healthy" | "warning" | "critical") => {
-    switch (status) {
-      case "critical":
-        return "bg-destructive [&::-moz-progress-bar]:bg-destructive [&::-webkit-progress-value]:bg-destructive";
-      case "warning":
-        return "bg-warning [&::-moz-progress-bar]:bg-warning [&::-webkit-progress-value]:bg-warning";
-      default:
-        return "bg-success [&::-moz-progress-bar]:bg-success [&::-webkit-progress-value]:bg-success";
+  const getProgressColors = (percentage: number) => {
+    if (percentage > 90) {
+      return "bg-destructive [&::-moz-progress-bar]:bg-destructive [&::-webkit-progress-value]:bg-destructive";
     }
+    if (percentage > 70) {
+      return "bg-amber-500 [&::-moz-progress-bar]:bg-amber-500 [&::-webkit-progress-value]:bg-amber-500";
+    }
+    return "bg-emerald-500 [&::-moz-progress-bar]:bg-emerald-500 [&::-webkit-progress-value]:bg-emerald-500";
   };
 
   if (isLoading) {
     return (
-      <div className="w-full h-auto flex rounded-md overflow-hidden border border-muted animate-pulse">
-        <div className="h-full w-32 bg-muted" />
+      <div className="w-full h-auto flex flex-col sm:flex-row rounded-md overflow-hidden border border-muted animate-pulse">
+        <div className="h-24 sm:h-full sm:w-32 bg-muted" />
         <div className="flex-1 p-5">
           <div className="h-5 w-32 bg-muted rounded mb-4" />
           <div className="h-2 w-full bg-muted rounded" />
@@ -192,7 +310,7 @@ const HealthMetric: React.FC<HealthMetricProps> = ({
 
   return (
     <div
-      className={`w-full h-auto flex rounded-md overflow-hidden border ${
+      className={`w-full h-auto flex flex-col sm:flex-row rounded-md overflow-hidden border ${
         status === "critical"
           ? "border-destructive"
           : status === "warning"
@@ -200,7 +318,7 @@ const HealthMetric: React.FC<HealthMetricProps> = ({
           : "border-muted"
       }`}
     >
-      <div className="h-full w-auto flex items-center bg-muted gap-4 py-3 px-4">
+      <div className="w-full sm:w-auto flex items-center bg-muted gap-4 py-3 px-4">
         <div
           className={`rounded-full ${
             status === "critical"
@@ -226,13 +344,13 @@ const HealthMetric: React.FC<HealthMetricProps> = ({
           </div>
         </div>
       </div>
-      <div className="flex-1 flex items-center justify-between gap-5 px-5">
+      <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-5 p-4 sm:px-5">
         <div className="flex items-center gap-2">
           <Icon className="w-5 h-5" />
           <h2 className="text-foreground capitalize">{label}</h2>
         </div>
-        <div className="block w-64">
-          <div className="flex justify-between">
+        <div className="w-full sm:w-64">
+          <div className="flex flex-col sm:flex-row sm:justify-between gap-2 sm:gap-0">
             <p
               className={`${
                 status === "critical"
@@ -252,7 +370,8 @@ const HealthMetric: React.FC<HealthMetricProps> = ({
           </div>
           <Progress
             value={percentage}
-            className={`h-1 mt-2 ${getProgressColors(status)}`}
+            className={`h-1 mt-2 `}
+            indicatorClassName={`${getProgressColors(percentage)}`}
           />
         </div>
       </div>
@@ -260,33 +379,21 @@ const HealthMetric: React.FC<HealthMetricProps> = ({
   );
 };
 
-const isDevelopment = process.env.NODE_ENV === "development";
-const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
-
-// Development mode notice component stays the same
-const DevelopmentModeNotice: React.FC = () => (
-  <div className="col-span-2 px-7 py-5 bg-background rounded-lg border-2 border-muted mt-5">
-    <Alert>
-      <AlertTitle>Development Mode</AlertTitle>
-      <AlertDescription>
-        System monitoring is disabled in development mode. This feature is only
-        available in production.
-      </AlertDescription>
-    </Alert>
-  </div>
-);
-
 const SystemMonitor: React.FC = () => {
   const [systemHealth, setSystemHealth] = useState<SystemHealth | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [loadingProgress, setLoadingProgress] = useState<number>(0);
+  const [currentScenario, setCurrentScenario] =
+    useState<keyof typeof mockScenarios>("healthy");
   const [systemStatus, setSystemStatus] = useState<SystemStatus>({
     status: "healthy",
     issues: [],
   });
   const { user } = useUserStore((state) => state);
+  const isDevelopment = process.env.NODE_ENV === "development";
+  const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
-  const getSystemHealth = useCallback(async (): Promise<void> => {
+  const getSystemHealthData = useCallback(async (): Promise<void> => {
     if (!user || !user.token) return;
     try {
       const res = await getSystemHealthCheck({ token: user.token });
@@ -299,60 +406,72 @@ const SystemMonitor: React.FC = () => {
     }
   }, [user]);
 
-  useEffect(() => {
-    if (isLoading && !isDevelopment) {
-      const interval = setInterval(() => {
-        setLoadingProgress((prev) => {
-          if (prev >= 100) {
-            clearInterval(interval);
-            return 100;
-          }
-          return prev + 10;
-        });
-      }, 200);
-      return () => clearInterval(interval);
-    }
-  }, [isLoading]);
+  const simulateLoading = () => {
+    setIsLoading(true);
+    setLoadingProgress(0);
+    const interval = setInterval(() => {
+      setLoadingProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        return prev + 10;
+      });
+    }, 200);
+  };
 
+  const handleScenarioChange = (scenario: keyof typeof mockScenarios) => {
+    setCurrentScenario(scenario);
+    simulateLoading();
+  };
+
+  const handleRefresh = () => {
+    simulateLoading();
+  };
+
+  // Effect for loading simulation in development mode
+  useEffect(() => {
+    if (isLoading && isDevelopment) {
+      const timeout = setTimeout(() => {
+        setSystemHealth(mockScenarios[currentScenario]);
+        setSystemStatus(getSystemStatus(mockScenarios[currentScenario]));
+        setIsLoading(false);
+      }, 2000);
+      return () => clearTimeout(timeout);
+    }
+  }, [isLoading, currentScenario, isDevelopment]);
+
+  // Effect for production data fetching
   useEffect(() => {
     if (!isDevelopment) {
-      getSystemHealth();
-      const interval = setInterval(getSystemHealth, REFRESH_INTERVAL);
+      getSystemHealthData();
+      const interval = setInterval(getSystemHealthData, REFRESH_INTERVAL);
       return () => clearInterval(interval);
     } else {
-      setIsLoading(false);
+      simulateLoading();
     }
-  }, [getSystemHealth]);
-
-  const formatBytes = (bytes: number): string => {
-    const gb = bytes / (1024 * 1024 * 1024);
-    return `${gb.toFixed(1)} GB`;
-  };
-
-  const getMetricStatus = (
-    percentage: number
-  ): "healthy" | "warning" | "critical" => {
-    if (percentage > 90) return "critical";
-    if (percentage > 70) return "warning";
-    return "healthy";
-  };
-
-  if (isDevelopment) {
-    return <DevelopmentModeNotice />;
-  }
+  }, [getSystemHealthData, isDevelopment.valueOf, REFRESH_INTERVAL, isDevelopment]);
 
   return (
-    <div className="col-span-2 px-7 py-5 bg-background rounded-lg border-2 border-muted mt-5">
-      <div className="flex justify-between items-center mb-4">
+    <div className="col-span-2 px-4 sm:px-7 py-5 bg-background rounded-lg border-2 border-muted mt-5">
+      {isDevelopment && (
+        <DevelopmentControls
+          onScenarioChange={handleScenarioChange}
+          onRefresh={handleRefresh}
+          currentScenario={currentScenario}
+        />
+      )}
+
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 mb-4">
         <h2 className="text-foreground text-xl capitalize">System Health</h2>
         {!isLoading && systemHealth && (
           <div
-            className={`px-3 py-1 rounded-full text-sm ${
+            className={`px-3 py-1 rounded-full text-sm whitespace-nowrap ${
               systemStatus.status === "critical"
                 ? "bg-destructive/10 text-destructive"
                 : systemStatus.status === "warning"
                 ? "bg-warning/10 text-warning"
-                : "bg-success/10 text-success"
+                : "bg-success/10 text-success dark:text-emerald-500"
             }`}
           >
             {systemStatus.status === "critical"
@@ -417,7 +536,7 @@ const SystemMonitor: React.FC = () => {
               status={getMetricStatus(systemHealth.pvcStoragePercentage)}
             />
 
-            <div className="flex gap-4 mt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2">
               {[
                 { label: "Main Server", value: systemHealth.nodeCount },
                 { label: "Mini Servers", value: systemHealth.podCount },
@@ -425,7 +544,7 @@ const SystemMonitor: React.FC = () => {
               ].map((metric) => (
                 <div
                   key={metric.label}
-                  className="flex-1 p-4 border border-muted rounded-md"
+                  className="p-4 border border-muted rounded-md"
                 >
                   <h3 className="text-foreground text-lg">{metric.label}</h3>
                   <div className="flex items-center gap-2 mt-2">

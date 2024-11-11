@@ -50,6 +50,7 @@ function Preliminaries({ is_elimination, tournament }: Props) {
 
     getBallots(options)
       .then((data) => {
+        console.log(data)
         setBallots(data);
       })
       .catch((error) => {

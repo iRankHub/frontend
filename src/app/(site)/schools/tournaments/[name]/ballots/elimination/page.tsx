@@ -20,8 +20,6 @@ import { GetTournamentType } from "@/types/tournaments/tournament";
 import { Slash } from "lucide-react";
 import React, { useEffect } from "react";
 
-
-
 const page = withAuth(
   ({ params }: Iparms) => {
     return <Page params={params} />;
@@ -55,7 +53,7 @@ function Page({ params }: Iparms) {
   return (
     <ContentLayout title="format">
       <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-5">
-        <h3 className="text-lg text-primary font-bold">Tournament Name</h3>
+        <h3 className="text-lg text-primary font-bold">{tournament.name}</h3>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -63,7 +61,7 @@ function Page({ params }: Iparms) {
                 href="/schools/dashboard"
                 className="text-muted-foreground text-base"
               >
-                Dashboard
+                School
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator>
@@ -71,7 +69,7 @@ function Page({ params }: Iparms) {
             </BreadcrumbSeparator>
             <BreadcrumbItem>
               <BreadcrumbLink
-                href="/schools/tournaments"
+                href="/schools/tournaments/list"
                 className="text-muted-foreground text-base"
               >
                 Tournament

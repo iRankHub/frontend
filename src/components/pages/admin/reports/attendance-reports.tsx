@@ -1,7 +1,13 @@
 import React from "react";
 import { Attendance } from "./charts/attendence-chart";
 import { PerformanceTable } from "./performance-table";
-import { ArrowDown, ArrowUp, Check, TrendingDown, TrendingUp } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  Check,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-react";
 import { ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -54,9 +60,8 @@ function AttendanceReports({}: Props) {
   return (
     <div className="flex gap-5">
       <div className="flex-1">
-        <div className="grid grid-cols-5 mt-10 border rounded-lg mx-5">
-          <Attendance />
-          <div className="col-span-3">
+        <div className="grid lg:grid-cols-3 mt-10 border rounded-lg mx-5 min-h-[400px]">
+          <div className="col-span-2 h-[400px]">
             <Map />
           </div>
           <div className="p-4 flex flex-col gap-4">
@@ -224,10 +229,7 @@ function AttendanceReports({}: Props) {
             </div>
           </div>
         </div>
-        <div className="px-5 mt-12">
-          <PerformanceTable type="Student" />
-          <PerformanceTable type="Volunteer" />
-        </div>
+        <Attendance />
       </div>
     </div>
   );

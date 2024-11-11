@@ -55,7 +55,7 @@ function Leaderboard({
           {topStudents[0].totalPoints}
         </span>
       </div>
-      {topStudents.slice(1).map((student, index) => (
+      {topStudents.slice(1, 3).map((student, index) => (
         <div className="w-full px-3" key={index}>
           <div className="flex items-center justify-between p-3 bg-[#F1F5F9] dark:bg-accent rounded-lg">
             <div className="flex items-center gap-3">
