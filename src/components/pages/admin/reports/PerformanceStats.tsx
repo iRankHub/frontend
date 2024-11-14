@@ -2,7 +2,8 @@ import { GraduationCap } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from "react";
 import { Icons } from "@/components/icons";
-import { PerformanceTable } from "./performance-table";
+import { StudentPerformanceTable } from "./student-performance-table";
+import { VolunteerPerformanceTable } from "./volunteer-performance-table";
 
 type Props = {};
 
@@ -28,11 +29,11 @@ function PerformanceStats({}: Props) {
       </TabsList>
 
       <TabsContent value="students" className="w-full h-full">
-        <PerformanceTable type="Student" />
+        <StudentPerformanceTable type="Student" />
       </TabsContent>
 
       <TabsContent value="volunteers" className="w-full h-full">
-        <PerformanceTable type="Volunteer" />
+        <VolunteerPerformanceTable type="Volunteer" />
       </TabsContent>
     </Tabs>
   );

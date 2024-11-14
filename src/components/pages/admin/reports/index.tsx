@@ -31,10 +31,9 @@ function Reports({}: Props) {
       </header>
 
       <Tabs defaultValue="financial" className="mt-4 mx-auto w-full">
-        <TabsList className="max-w-96 bg-white dark:bg-muted shadow-md border dark:border-none dark:shadow-none  mx-5">
+        <TabsList className="max-w-96 mx-5">
           <TabsTrigger value="financial" className="data-[state=active]:text-white">Financial</TabsTrigger>
           <TabsTrigger value="attendance" className="data-[state=active]:text-white">Attendance</TabsTrigger>
-          <TabsTrigger value="expenses" className="data-[state=active]:text-white">Expenses</TabsTrigger>
           <TabsTrigger value="performance" className="data-[state=active]:text-white">Performance</TabsTrigger>
         </TabsList>
         <TabsContent value="financial" className="w-full h-full">
@@ -42,9 +41,6 @@ function Reports({}: Props) {
         </TabsContent>
         <TabsContent value="attendance" className="w-full h-full">
           <AttendanceReports />
-        </TabsContent>
-        <TabsContent value="expenses" className="w-full h-full">
-          <ExpensesChart />
         </TabsContent>
         <TabsContent value="performance" className="w-full h-full">
           <PerformanceStats />

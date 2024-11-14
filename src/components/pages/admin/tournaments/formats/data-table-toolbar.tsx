@@ -157,8 +157,8 @@ export function DataTableToolbar<TData>({
       }));
   }, [table]);
   return (
-    <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown">
-      <div className="flex flex-1 items-center space-x-3 p-5 py-4">
+    <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown flex-wrap px-5 py-3 gap-3">
+      <div className="flex flex-1 flex-col sm:flex-row justify-end sm:justify-normal sm:items-center sm:space-x-3">
         <Input
           placeholder="Search format..."
           value={
@@ -167,25 +167,27 @@ export function DataTableToolbar<TData>({
           onChange={(event) =>
             table.getColumn("formatName")?.setFilterValue(event.target.value)
           }
-          className="h-8 w-[150px] lg:w-[280px]"
+          className="h-8 w-[200px] sm:w-full lg:w-[280px] mb-2 sm:mb-0"
         />
-        {table.getColumn("speakersPerTeam") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("speakersPerTeam")}
-            title="speakers"
-            options={speakersOptions}
-          />
-        )}
-        {isFiltered && (
-          <Button
-            variant="ghost"
-            onClick={() => table.resetColumnFilters()}
-            className="h-8 px-2 lg:px-3 text-white"
-          >
-            Reset
-            <Cross2Icon className="ml-2 h-4 w-4" />
-          </Button>
-        )}
+        <div className="flex items-center">
+          {table.getColumn("speakersPerTeam") && (
+            <DataTableFacetedFilter
+              column={table.getColumn("speakersPerTeam")}
+              title="speakers"
+              options={speakersOptions}
+            />
+          )}
+          {isFiltered && (
+            <Button
+              variant="ghost"
+              onClick={() => table.resetColumnFilters()}
+              className="h-8 px-2 lg:px-3 text-white"
+            >
+              Reset
+              <Cross2Icon className="ml-2 h-4 w-4" />
+            </Button>
+          )}
+        </div>
       </div>
       <Dialog onOpenChange={setDialogOpen} open={dialogOpen} modal>
         <DialogTrigger>

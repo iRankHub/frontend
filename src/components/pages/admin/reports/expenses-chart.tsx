@@ -7,12 +7,12 @@ type Props = {};
 
 function ExpensesChart({}: Props) {
   return (
-    <div className="px-5">
-      <div className="mt-5 w-full border rounded-md p-10">
+    <div className="mt-10 px-5">
+      <div className="mt-5 w-full rounded-md p-10">
         <h3 className="text-lg font-semibold">Expenses per category</h3>
         <div className="flex items-center justify-between gap-10">
           <ExpensesPerCategory />
-          <div className="space-y-3 h-full flex flex-col gap-4 justify-center">
+          <div className="h-full grid grid-cols-2 gap-4 justify-center">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-sky-500 border-2 border-sky-100"></div>

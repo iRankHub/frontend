@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 
-import { loginSchema } from "@/lib/validations/auth.schema";
+import { SchoolLoginFormData, schoolLoginSchema } from "@/lib/validations/auth.schema";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -26,89 +26,44 @@ import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
 import { schoolLogin } from "@/core/authentication/auth";
 import { getUserProfile } from "@/core/users/users";
 
-type Inputs = z.infer<typeof loginSchema>;
-
-interface LoginFormProps {
-  handleChange: () => void;
-}
-
-const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
+const LoginForm = () => {
   const router = useRouter();
   const [isPending, setIsPending] = React.useState(false);
   const { toast } = useToast();
   const { login: authLogin } = useUserStore((state) => state);
 
-  // react-hook-form
-  const form = useForm<Inputs>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<SchoolLoginFormData>({
+    resolver: zodResolver(schoolLoginSchema),
     defaultValues: {
-      id: "",
+      email_or_id: "",
       password: "",
     },
+    mode: "onBlur",
   });
 
-  async function onSubmit(data: Inputs) {
+  async function onSubmit(data: SchoolLoginFormData) {
+    // Check if form is valid
+    const isValid = form.formState.isValid;
+    if (!isValid) {
+      // Trigger validation on all fields
+      await form.trigger();
+      return;
+    }
+
     setIsPending(true);
 
-    await schoolLogin({ emailOrId: data.id, password: data.password })
-      .then(async (res) => {
-        if (res.success) {
-          form.reset();
-          if (res.status !== "pending") {
-            toast({
-              variant: "success",
-              title: "Success",
-              description: res.message,
-              action: (
-                <ToastAction altText="Close" className="bg-primary text-white">
-                  Close
-                </ToastAction>
-              ),
-            });
+    try {
+      const res = await schoolLogin({ 
+        emailOrId: data.email_or_id.trim(), 
+        password: data.password 
+      });
 
-            let picture = undefined;
-
-            const userProfileResponse = await getUserProfile({
-              userID: res.userid,
-              token: res.token,
-            });
-
-            picture = userProfileResponse.profile?.profilePicturePresignedUrl;
-
-            const role = Roles.SCHOOL;
-            const user: AuthStateUser = {
-              userId: res.userid,
-              name: res.username,
-              token: res.token,
-              status: "idle",
-              picture,
-              requiredPasswordReset: res.requirePasswordReset,
-              requireTwoFactor: res.requireTwoFactor,
-            };
-
-            if (res.requireTwoFactor) {
-              router.push("/auth/2fa");
-            } else {
-              authLogin(user, role);
-              router.push("/schools/dashboard");
-            }
-          } else {
-            toast({
-              variant: "success",
-              title: "Success",
-              description:
-                "Your account is pending approval. You will be notified once your account is approved.",
-              action: (
-                <ToastAction altText="Close" className="bg-primary text-white">
-                  Close
-                </ToastAction>
-              ),
-            });
-          }
-        } else {
+      if (res.success) {
+        form.reset();
+        if (res.status !== "pending") {
           toast({
-            variant: "destructive",
-            title: "Error",
+            variant: "success",
+            title: "Success",
             description: res.message,
             action: (
               <ToastAction altText="Close" className="bg-primary text-white">
@@ -116,49 +71,97 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
               </ToastAction>
             ),
           });
+
+          let picture = undefined;
+
+          const userProfileResponse = await getUserProfile({
+            userID: res.userid,
+            token: res.token,
+          });
+
+          picture = userProfileResponse.profile?.profilePicturePresignedUrl;
+
+          const role = Roles.SCHOOL;
+          const user: AuthStateUser = {
+            userId: res.userid,
+            name: res.username,
+            token: res.token,
+            status: "idle",
+            picture,
+            requiredPasswordReset: res.requirePasswordReset,
+            requireTwoFactor: res.requireTwoFactor,
+          };
+
+          if (res.requireTwoFactor) {
+            router.push("/auth/2fa");
+          } else {
+            authLogin(user, role);
+            router.push("/schools/dashboard");
+          }
+        } else {
+          toast({
+            variant: "success",
+            title: "Success",
+            description:
+              "Your account is pending approval. You will be notified once your account is approved.",
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
         }
-      })
-      .catch((err) => {
+      } else {
         toast({
           variant: "destructive",
           title: "Error",
-          description:
-            "Something went wrong. Please check your credentials and try again later",
+          description: res.message,
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close
             </ToastAction>
           ),
         });
-      })
-      .finally(() => {
-        setIsPending(false);
+      }
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description:
+          "Something went wrong. Please check your credentials and try again later",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
       });
+    } finally {
+      setIsPending(false);
+    }
   }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const formData = form.getValues();
-    await onSubmit(formData);
-  };
 
   return (
     <Form {...form}>
       <form
         className="max-w-md w-full grid gap-4"
-        onSubmit={handleSubmit}
-        method="POST"
+        onSubmit={form.handleSubmit(onSubmit)}
+        noValidate
       >
         <FormField
           control={form.control}
-          name="id"
+          name="email_or_id"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-darkBlue">
-                School Id<b className="text-primary font-light"> *</b>
+                Email or School ID<b className="text-primary font-light"> *</b>
               </FormLabel>
               <FormControl>
-                <Input placeholder="S-N-1234" {...field} />
+                <Input 
+                  placeholder="example@email.com or XXX-XX-XX-XX-00000" 
+                  {...field} 
+                  autoComplete="username"
+                  type="text"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -173,13 +176,17 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
                 Password<b className="text-primary font-light"> *</b>
               </FormLabel>
               <FormControl>
-                <PasswordInput placeholder="**********" {...field} />
+                <PasswordInput 
+                  placeholder="**********" 
+                  {...field} 
+                  autoComplete="current-password"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <div className=" mt-2 flex items-center justify-end gap-1">
+        <div className="mt-2 flex items-center justify-end gap-1">
           <Link
             href="/auth/forgot-password"
             className="text-base font-light text-blue hover:underline"
@@ -187,7 +194,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
             Forgot password?
           </Link>
         </div>
-        <Button disabled={isPending} variant={"default"} size={"lg"}>
+        <Button 
+          type="submit"
+          disabled={isPending} 
+          variant={"default"} 
+          size={"lg"}
+        >
           {isPending && (
             <Icons.spinner
               className="mr-2 h-4 w-4 animate-spin"
@@ -203,17 +215,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
             <div className="text-darkBlue text-base px-3 py-1">OR</div>
             <div className="w-full border-t border-darkBlue"></div>
           </div>
-
-          <Button
-            type="button"
-            variant={"ghost"}
-            size={"lg"}
-            className="text-darkBlue bg-[#F3F9FA] hover:bg-[#F3F9FA]"
-            onClick={handleChange}
-          >
-            <Icons.mail className="h-4 w-4 mx-4" aria-hidden="true" />
-            Sign in with Email
-          </Button>
           <div className="flex items-center gap-1 justify-center">
             <span className="text-lg text-darkBlue">
               Don{"'"}t have an account?

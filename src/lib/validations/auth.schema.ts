@@ -1,16 +1,82 @@
 import * as z from "zod"
 import validator from "validator";
 
-export const loginSchema = z.object({
-    id: z.string().min(1, {
-        message: "User ID too short"
-    }).max(100),
-    password: z.
-        string()
-        .min(1, {
-            message: "Password can't be empty"
-        })
-})
+// Helper regex patterns
+// const SCHOOL_ID_PATTERN = /^[A-Za-z0-9]{1,3}-[A-Za-z0-9]{1,3}-[A-Za-z0-9]{1,3}-\d{2}-\d{5}$/;
+const SCHOOL_ID_PATTERN = /^[A-Z0-9]+-[A-Z0-9]+-[A-Z0-9]+-[A-Z0-9]+-\d{5}$/;
+const STUDENT_ID_PATTERN = /^STUD\d{6}$/;
+const VOLUNTEER_ID_PATTERN = /^VOL\d{6}$/;
+const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+// Base schema for password to avoid repetition
+const basePasswordSchema = z.string().min(1, {
+    message: "Password can't be empty"
+});
+
+// Create a base validator function for email
+const validateEmail = (value: string) => EMAIL_PATTERN.test(value);
+
+export const adminLoginSchema = z.object({
+    email: z.string()
+        .min(1, { message: "Email is required" })
+        .max(100, { message: "Email too long" })
+        .email({ message: "Please enter a valid email address" }),
+    password: basePasswordSchema
+});
+
+export const schoolLoginSchema = z.object({
+    email_or_id: z.string()
+        .min(1, { message: "Email or ID is required" })
+        .max(100, { message: "Email or ID too long" })
+        .refine((value) => {
+            if (value.includes('@')) {
+                return validateEmail(value);
+            }
+            const trimmedValue = value.trim();
+            return SCHOOL_ID_PATTERN.test(trimmedValue);
+        }, {
+            message: "Please enter a valid email address or school ID (format: X-X-X-X-00000)"
+        }),
+    password: basePasswordSchema
+});
+
+export const studentLoginSchema = z.object({
+    email_or_id: z.string()
+        .min(1, { message: "Email or ID is required" })
+        .max(100, { message: "Email or ID too long" })
+        .refine((value) => {
+            if (value.includes('@')) {
+                return validateEmail(value);
+            }
+            const trimmedValue = value.trim();
+            return STUDENT_ID_PATTERN.test(trimmedValue.toUpperCase());
+        }, {
+            message: "Please enter a valid email address or student ID (format: STUD000001)"
+        }),
+    password: basePasswordSchema
+});
+
+export const volunteerLoginSchema = z.object({
+    email_or_id: z.string()
+        .min(1, { message: "Email or ID is required" })
+        .max(100, { message: "Email or ID too long" })
+        .refine((value) => {
+            if (value.includes('@')) {
+                return validateEmail(value);
+            }
+            const trimmedValue = value.trim();
+            return VOLUNTEER_ID_PATTERN.test(trimmedValue.toUpperCase());
+        }, {
+            message: "Please enter a valid email address or volunteer ID (format: VOL0000001)"
+        }),
+    password: basePasswordSchema
+});
+
+// Type exports
+export type AdminLoginFormData = z.infer<typeof adminLoginSchema>;
+export type SchoolLoginFormData = z.infer<typeof schoolLoginSchema>;
+export type StudentLoginFormData = z.infer<typeof studentLoginSchema>;
+export type VolunteerLoginFormData = z.infer<typeof volunteerLoginSchema>;
 
 export const emailLoginSchema = z.object({
     email: z.string().email(),

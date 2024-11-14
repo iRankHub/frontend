@@ -1,6 +1,5 @@
 import React from "react";
 import { Attendance } from "./charts/attendence-chart";
-import { PerformanceTable } from "./performance-table";
 import {
   ArrowDown,
   ArrowUp,
@@ -166,7 +165,7 @@ function AttendanceReports({}: Props) {
               </Popover>
             </div>
 
-            <div className="space-y-3 h-full flex flex-col gap-4 justify-center">
+            <div className="gap-5 grid grid-cols-1 md:grid-cols-2 ">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-sky-500 border-2 border-sky-100"></div>

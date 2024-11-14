@@ -126,12 +126,12 @@ export function DataCardView<TData, TValue>({
               cardType === "format" &&
                 "grid-cols-1 sm:grid-cols-2 md:grid-cols-4 2xl:grid-cols-5",
               cardType === "league" &&
-                "grid-cols-1 sm:grid-cols-2 md:grid-cols-4 2xl:grid-cols-5",
+                "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5",
               cardType === "feedback" &&
                 "grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 xl:gap-16"
             )}
           >
-            {table.getRowModel().rows.map((row) => handleCardDisplay(row))}
+            {table.getRowModel().rows.slice(0,2).map((row) => handleCardDisplay(row))}
           </div>
         ) : (
           <Card className="min-h-96 grid place-content-center">

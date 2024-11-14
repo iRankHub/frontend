@@ -44,42 +44,44 @@ export function DataTableToolbar<TData>({
   const [sheetOpen, setSheetOpen] = useState<boolean>();
 
   return (
-    <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between flex-wrap pb-2 bg-brown">
-      <div className="flex flex-1 items-center space-x-3 p-5 py-4">
+    <div className="w-full rounded-t-md overflow-hidden flex items-start justify-between bg-brown px-5 py-3 gap-3 flex-col 2xl:flex-row">
+      <div className="flex flex-1 flex-col xl:flex-row justify-end md:justify-normal md:items-start md:gap-3">
         <Input
           placeholder="Search names..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className="h-8 w-[150px] lg:w-[280px]"
+          className="h-8 w-full lg:w-[280px]"
         />
-        {table.getColumn("userrole") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("userrole")}
-            title="Category"
-            options={userRoles}
-          />
-        )}
-        {table.getColumn("status") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
-            options={statuses}
-          />
-        )}
-        {isFiltered && (
-          <Button
-            variant="ghost"
-            onClick={() => table.resetColumnFilters()}
-            className="h-8 px-2 lg:px-3 text-white"
-          >
-            Reset
-            <Cross2Icon className="ml-2 h-4 w-4" />
-          </Button>
-        )}
+        <div className="flex items-center flex-wrap gap-2 mt-2 md:mt-0">
+          {table.getColumn("userrole") && (
+            <DataTableFacetedFilter
+              column={table.getColumn("userrole")}
+              title="Category"
+              options={userRoles}
+            />
+          )}
+          {table.getColumn("status") && (
+            <DataTableFacetedFilter
+              column={table.getColumn("status")}
+              title="Status"
+              options={statuses}
+            />
+          )}
+          {isFiltered && (
+            <Button
+              variant="ghost"
+              onClick={() => table.resetColumnFilters()}
+              className="h-8 px-2 lg:px-3 text-white"
+            >
+              Reset
+              <Cross2Icon className="ml-2 h-4 w-4" />
+            </Button>
+          )}
+        </div>
       </div>
-      <div className="flex items-center gap-1 mx-5">
+      <div className="flex items-center flex-wrap gap-1 2xl:mx-5">
         <Sheet onOpenChange={setSheetOpen} open={sheetOpen} modal>
           <Dialog onOpenChange={setDialogOpen} open={dialogOpen}>
             <DialogTrigger>

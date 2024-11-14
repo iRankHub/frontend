@@ -27,7 +27,7 @@ export function Sidebar() {
           variant="link"
           asChild
         >
-          <Link href="/admin/dashboard" className="flex items-center gap-4">
+          <Link href="/students/dashboard" className="flex items-center gap-4">
             <Image
               src="/static/images/logo-big.png"
               alt="logo"

@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 
-import { emailLoginSchema } from "@/lib/validations/auth.schema";
+import { AdminLoginFormData, adminLoginSchema } from "@/lib/validations/auth.schema";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -24,8 +24,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
 import { adminLogin } from "@/core/authentication/auth";
 import { getUserProfile } from "@/core/users/users";
-
-type Inputs = z.infer<typeof emailLoginSchema>;
+import Link from "next/link";
 
 const LoginFormEmail = () => {
   const router = useRouter();
@@ -33,15 +32,15 @@ const LoginFormEmail = () => {
   const { toast } = useToast();
   const { login: authLogin } = useUserStore((state) => state);
 
-  const form = useForm<Inputs>({
-    resolver: zodResolver(emailLoginSchema),
+  const form = useForm<AdminLoginFormData>({
+    resolver: zodResolver(adminLoginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  async function onSubmit(data: Inputs) {
+  async function onSubmit(data: AdminLoginFormData) {
     setIsPending(true);
     try {
       const res = await adminLogin({
@@ -82,7 +81,6 @@ const LoginFormEmail = () => {
             requiredPasswordReset: res.requirePasswordReset,
             requireTwoFactor: res.requireTwoFactor,
           };
-          console.log(user);
           authLogin(user, role);
           router.push("/admin/dashboard");
         } else {
@@ -178,6 +176,14 @@ const LoginFormEmail = () => {
             </FormItem>
           )}
         />
+        <div className=" mt-2 flex items-center justify-end gap-1">
+          <Link
+            href="/auth/forgot-password"
+            className="text-base font-light text-blue hover:underline"
+          >
+            Forgot password?
+          </Link>
+        </div>
         <Button
           type="submit"
           disabled={isPending}

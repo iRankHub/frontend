@@ -80,8 +80,8 @@ export function Attendance() {
           </CardContent>
         </div>
 
-        <div className="lg:w-72 p-4 lg:p-6 border-t lg:border-t-0 lg:border-l">
-          <div className="space-y-3 max-w-md mx-auto lg:max-w-none">
+        <div className="lg:w-[500px] p-4 lg:p-6 border-t lg:border-t-0 lg:border-l">
+          <div className="grid grid-cols-2 gap-3 max-w-md mx-auto lg:max-w-none">
             {data.map((item, index) => (
               <div
                 key={index}

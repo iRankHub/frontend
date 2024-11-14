@@ -26,10 +26,6 @@ export default function IncomeOverview({}: Props) {
             <Icons.addCircle size={18} className="text-white" />
             2024
           </Button>
-          <Button type="button" size={"sm"}>
-            <Icons.downlaod size={18} className="text-white" />
-            Download
-          </Button>
         </div>
       </div>
       <div className="flex flex-col">

@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 
-import { loginSchema } from "@/lib/validations/auth.schema";
+import { StudentLoginFormData, studentLoginSchema } from "@/lib/validations/auth.schema";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -26,30 +26,35 @@ import { studentLogin } from "@/core/authentication/auth";
 import { AuthStateUser, Roles, useUserStore } from "@/stores/auth/auth.store";
 import { getUserProfile } from "@/core/users/users";
 
-type Inputs = z.infer<typeof loginSchema>;
-
-interface LoginFormProps {
-  handleChange: () => void;
-}
-
-const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
+const LoginForm = () => {
   const router = useRouter();
   const [isPending, setIsPending] = React.useState(false);
   const { toast } = useToast();
   const { login: authLogin } = useUserStore((state) => state);
 
   // react-hook-form
-  const form = useForm<Inputs>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<StudentLoginFormData>({
+    resolver: zodResolver(studentLoginSchema),
     defaultValues: {
-      id: "",
+      email_or_id: "",
       password: "",
     },
   });
 
-  async function onSubmit(data: Inputs) {
+  async function onSubmit(data: StudentLoginFormData) {
+    // Check if form is valid
+    const isValid = form.formState.isValid;
+    if (!isValid) {
+      // Trigger validation on all fields
+      await form.trigger();
+      return;
+    }
+
     try {
-      await studentLogin({ emailOrId: data.id, password: data.password })
+      await studentLogin({
+        emailOrId: data.email_or_id,
+        password: data.password,
+      })
         .then(async (res) => {
           if (res.success) {
             form.reset();
@@ -170,14 +175,19 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
       >
         <FormField
           control={form.control}
-          name="id"
+          name="email_or_id"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-darkBlue">
-                Student Id<b className="text-primary font-light"> *</b>
+                Email or Student Id<b className="text-primary font-light"> *</b>
               </FormLabel>
               <FormControl>
-                <Input placeholder="ST-01334" {...field} />
+                <Input
+                  placeholder="emma@mail.com or STUD000001"
+                  {...field}
+                  autoComplete="username"
+                  type="text"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -192,7 +202,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
                 Password<b className="text-primary font-light"> *</b>
               </FormLabel>
               <FormControl>
-                <PasswordInput placeholder="**********" {...field} />
+                <PasswordInput
+                  placeholder="**********"
+                  {...field}
+                  autoComplete="current-password"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -222,17 +236,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleChange }) => {
             <div className="text-darkBlue text-base px-3 py-1">OR</div>
             <div className="w-full border-t border-darkBlue"></div>
           </div>
-
-          <Button
-            type="button"
-            variant={"ghost"}
-            size={"lg"}
-            className="text-darkBlue bg-[#F3F9FA] hover:bg-[#F3F9FA]"
-            onClick={handleChange}
-          >
-            <Icons.mail className="h-4 w-4 mx-4" aria-hidden="true" />
-            Sign in with Email
-          </Button>
           <div className="flex items-center gap-1 justify-center">
             <span className="text-lg text-darkBlue">
               Don{"'"}t have an account?

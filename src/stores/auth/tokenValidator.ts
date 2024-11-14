@@ -10,6 +10,5 @@ export const handleInvalidToken = () => {
     deleteToken();
     logout();
     
-    // Use window.location for navigation outside of React components
     window.location.href = '/auth/select';
 };

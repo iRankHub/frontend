@@ -3,7 +3,6 @@
 import Image from "next/image";
 import LoginForm from "../_form/login-form";
 import { useState } from "react";
-import LoginFormEmail from "../_form/login-form-email";
 import {
   Carousel,
   CarouselContent,
@@ -13,8 +12,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import Autoplay from "embla-carousel-autoplay";
 
 function Login() {
-  const [isUsingEmail, setIsUsingEmail] = useState(false);
-  const handleChange = () => setIsUsingEmail(!isUsingEmail);
   return (
     <div className="grid 2xl:grid-cols-2 gap-5 p-5 px-10 min-h-screen bg-white">
       <div className="max-w-md mx-auto w-full flex flex-col justify-center">
@@ -27,12 +24,7 @@ function Login() {
             Sign in to track your progress and dominate the competition!
           </p>
         </div>
-
-        {isUsingEmail ? (
-          <LoginFormEmail handleChange={handleChange} />
-        ) : (
-          <LoginForm handleChange={handleChange} />
-        )}
+        <LoginForm />
         {/* <div className="mt-auto w-full text-center">
           <span className="text-base text-darkBlue uppercase text-center">
             © 2024 ALL RIGHTS RESERVED

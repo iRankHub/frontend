@@ -450,7 +450,12 @@ const SystemMonitor: React.FC = () => {
     } else {
       simulateLoading();
     }
-  }, [getSystemHealthData, isDevelopment.valueOf, REFRESH_INTERVAL, isDevelopment]);
+  }, [
+    getSystemHealthData,
+    isDevelopment.valueOf,
+    REFRESH_INTERVAL,
+    isDevelopment,
+  ]);
 
   return (
     <div className="col-span-2 px-4 sm:px-7 py-5 bg-background rounded-lg border-2 border-muted mt-5">
@@ -494,51 +499,54 @@ const SystemMonitor: React.FC = () => {
 
       {!isLoading && systemHealth && <StatusBadge status={systemStatus} />}
 
-      <div className="w-full flex flex-col gap-4 mt-5">
+      <>
         {systemHealth && (
           <>
-            <HealthMetric
-              icon={Cpu}
-              label="CPU Usage"
-              percentage={systemHealth.cpuUsagePercentage}
-              usedValue={systemHealth.cpuUsagePercentage.toFixed(1)}
-              totalValue="100"
-              unit="%"
-              isLoading={isLoading}
-              status={getMetricStatus(systemHealth.cpuUsagePercentage)}
-            />
-            <HealthMetric
-              icon={MemoryStick}
-              label="Memory Usage"
-              percentage={systemHealth.memoryUsagePercentage}
-              usedValue={systemHealth.memoryUsagePercentage.toFixed(1)}
-              totalValue="100"
-              unit="%"
-              isLoading={isLoading}
-              status={getMetricStatus(systemHealth.memoryUsagePercentage)}
-            />
-            <HealthMetric
-              icon={HardDrive}
-              label="Storage Usage (Temporary)"
-              percentage={systemHealth.ephemeralStoragePercentage}
-              usedValue={formatBytes(systemHealth.ephemeralStorageUsed)}
-              totalValue={formatBytes(systemHealth.ephemeralStorageTotal)}
-              isLoading={isLoading}
-              status={getMetricStatus(systemHealth.ephemeralStoragePercentage)}
-            />
-            <HealthMetric
-              icon={HardDrive}
-              label="Storage Usage (Permanent)"
-              percentage={systemHealth.pvcStoragePercentage}
-              usedValue={formatBytes(systemHealth.pvcStorageUsed)}
-              totalValue={formatBytes(systemHealth.pvcStorageTotal)}
-              isLoading={isLoading}
-              status={getMetricStatus(systemHealth.pvcStoragePercentage)}
-            />
-
+            <div className="w-full grid grid-cols-1 xl:grid-cols-2 gap-4 mt-5">
+              <HealthMetric
+                icon={Cpu}
+                label="CPU Usage"
+                percentage={systemHealth.cpuUsagePercentage}
+                usedValue={systemHealth.cpuUsagePercentage.toFixed(1)}
+                totalValue="100"
+                unit="%"
+                isLoading={isLoading}
+                status={getMetricStatus(systemHealth.cpuUsagePercentage)}
+              />
+              <HealthMetric
+                icon={MemoryStick}
+                label="Memory Usage"
+                percentage={systemHealth.memoryUsagePercentage}
+                usedValue={systemHealth.memoryUsagePercentage.toFixed(1)}
+                totalValue="100"
+                unit="%"
+                isLoading={isLoading}
+                status={getMetricStatus(systemHealth.memoryUsagePercentage)}
+              />
+              <HealthMetric
+                icon={HardDrive}
+                label="Storage Usage (Temporary)"
+                percentage={systemHealth.ephemeralStoragePercentage}
+                usedValue={formatBytes(systemHealth.ephemeralStorageUsed)}
+                totalValue={formatBytes(systemHealth.ephemeralStorageTotal)}
+                isLoading={isLoading}
+                status={getMetricStatus(
+                  systemHealth.ephemeralStoragePercentage
+                )}
+              />
+              <HealthMetric
+                icon={HardDrive}
+                label="Storage Usage (Permanent)"
+                percentage={systemHealth.pvcStoragePercentage}
+                usedValue={formatBytes(systemHealth.pvcStorageUsed)}
+                totalValue={formatBytes(systemHealth.pvcStorageTotal)}
+                isLoading={isLoading}
+                status={getMetricStatus(systemHealth.pvcStoragePercentage)}
+              />
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2">
               {[
-                { label: "Main Server", value: systemHealth.nodeCount },
+                { label: "Main Servers", value: systemHealth.nodeCount },
                 { label: "Mini Servers", value: systemHealth.podCount },
                 { label: "Storage Disks Count", value: systemHealth.pvcCount },
               ].map((metric) => (
@@ -558,7 +566,7 @@ const SystemMonitor: React.FC = () => {
             </div>
           </>
         )}
-      </div>
+      </>
     </div>
   );
 };
