@@ -14,7 +14,7 @@ const rubik = Lato({
 const APP_NAME = "iRankHub";
 const APP_DEFAULT_TITLE = "iRankHub";
 const APP_TITLE_TEMPLATE = "iRankHub";
-const APP_DESCRIPTION = "iRankHub is an end-to-end debate management platform designed to streamline the organization, execution, and analysis of debate tournaments. It aims to provide a centralized solution for all stakeholders involved, including administrators, schools, students, volunteers, and judges. The system will leverage modern technologies and best practices to deliver a seamless and efficient experience.";
+const APP_DESCRIPTION = "iRankHub: iDebate’s dedicated platform for managing debate tournaments with precision. Created by iDebate, iRankHub optimizes every round with tools for ballot scoring, volunteer feedback, and student insights on judging quality. Access real-time stats, performance data, and detailed reports that elevate the debate experience and bring accuracy to every tournament. Discover how iDebate refines debates with iRankHub!";
 
 export const metadata: Metadata = {
   applicationName: "iRankHub",

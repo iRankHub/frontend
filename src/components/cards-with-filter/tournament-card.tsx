@@ -334,10 +334,10 @@ const TournamentCard = ({
                   type="button"
                   size="sm"
                   variant="link"
-                  className="w-full justify-start text-foreground hover:no-underline"
+                  className="w-full justify-start text-foreground hover:no-underline p-0 m-0"
                 >
                   <Link
-                    className="no-underline"
+                    className="no-underline w-full h-full p-2 text-start"
                     href={`${linkRole()}/${getColumnValue(
                       row,
                       "tournamentId"
@@ -353,10 +353,10 @@ const TournamentCard = ({
                     type="button"
                     size="sm"
                     variant="link"
-                    className="w-full justify-start text-foreground hover:no-underline"
+                    className="w-full justify-start text-foreground hover:no-underline p-0 m-0"
                   >
                     <Link
-                      className="no-underline"
+                      className="no-underline w-full h-full p-2 text-start"
                       href={`${linkRole()}/${getColumnValue(
                         row,
                         "tournamentId"

@@ -1,13 +1,11 @@
 import React from "react";
 import { Attendance } from "./charts/attendence-chart";
 import {
-  ArrowDown,
-  ArrowUp,
   Check,
   TrendingDown,
   TrendingUp,
+  ChevronsUpDown,
 } from "lucide-react";
-import { ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -25,9 +23,20 @@ import {
 import { cn } from "@/lib/utils";
 import Map from "./map";
 
-type Props = {};
+interface Framework {
+  value: string;
+  label: string;
+}
 
-const frameworks = [
+interface StatsItemProps {
+  region: string;
+  trend: number;
+  value: number;
+  color: 'sky' | 'green' | 'red';
+  trending: 'up' | 'down';
+}
+
+const frameworks: Framework[] = [
   {
     value: "next.js",
     label: "Next.js",
@@ -50,188 +59,191 @@ const frameworks = [
   },
 ];
 
-function AttendanceReports({}: Props) {
-  const [continent, setContinent] = React.useState(false);
-  const [continentValue, setContinentValue] = React.useState("");
-  const [country, setCountry] = React.useState(false);
-  const [countryValue, setCountryValue] = React.useState("");
+const StatsItem: React.FC<StatsItemProps> = ({ region, trend, value, color, trending }) => {
+  return (
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-2">
+        <div className={`w-3 h-3 rounded-full bg-${color}-500 border-2 border-${color}-100`}></div>
+        <span className="text-sm">{region}</span>
+        <span className={`text-sm text-${color}-500 flex items-center gap-0.5`}>
+          {trending === "up" ? (
+            <TrendingUp className="h-3 w-3" />
+          ) : (
+            <TrendingDown className="h-3 w-3" />
+          )}
+          {trend}%
+        </span>
+      </div>
+      <span className="text-sm">{value}</span>
+    </div>
+  );
+};
+
+const AttendanceReports: React.FC = () => {
+  const [continent, setContinent] = React.useState<boolean>(false);
+  const [continentValue, setContinentValue] = React.useState<string>("");
+  const [country, setCountry] = React.useState<boolean>(false);
+  const [countryValue, setCountryValue] = React.useState<string>("");
 
   return (
-    <div className="flex gap-5">
-      <div className="flex-1">
-        <div className="grid lg:grid-cols-3 mt-10 border rounded-lg mx-5 min-h-[400px]">
-          <div className="col-span-2 h-[400px]">
-            <Map />
-          </div>
-          <div className="p-4 flex flex-col gap-4">
-            <div className="flex items-center space-x-2">
-              <Popover open={continent} onOpenChange={setContinent}>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" role="combobox" className="w-32">
-                    <span className="truncate flex-1 text-left">
-                      {continentValue
-                        ? frameworks.find(
-                            (framework) => framework.value === continentValue
-                          )?.label
-                        : "Africa"}
-                    </span>
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-full" align="start">
-                  <Command>
-                    <CommandInput placeholder="Search..." className="h-9" />
-                    <CommandList>
-                      <CommandEmpty>Not found.</CommandEmpty>
-                      <CommandGroup>
-                        {frameworks.map((framework) => (
-                          <CommandItem
-                            key={framework.value}
-                            value={framework.value}
-                            onSelect={(currentValue) => {
-                              setContinentValue(
-                                currentValue === continentValue
-                                  ? ""
-                                  : currentValue
-                              );
-                              setContinent(false);
-                            }}
-                            className="flex items-center"
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                continentValue === framework.value
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                            <span className="truncate">{framework.label}</span>
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-              <Popover open={country} onOpenChange={setCountry}>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" role="combobox" className="w-32">
-                    <span className="truncate flex-1 text-left">
-                      {countryValue
-                        ? frameworks.find(
-                            (framework) => framework.value === countryValue
-                          )?.label
-                        : "Rwanda"}
-                    </span>
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-full" align="start">
-                  <Command>
-                    <CommandInput placeholder="Search..." className="h-9" />
-                    <CommandList>
-                      <CommandEmpty>Not found.</CommandEmpty>
-                      <CommandGroup>
-                        {frameworks.map((framework) => (
-                          <CommandItem
-                            key={framework.value}
-                            value={framework.value}
-                            onSelect={(currentValue) => {
-                              setCountryValue(
-                                currentValue === countryValue
-                                  ? ""
-                                  : currentValue
-                              );
-                              setCountry(false);
-                            }}
-                            className="flex items-center"
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                countryValue === framework.value
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                            <span className="truncate">{framework.label}</span>
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
+    <div className="w-full p-4">
+      <div className="flex flex-col gap-5">
+        {/* Map and Stats Container */}
+        <div className="border rounded-lg">
+          <div className="flex flex-col lg:flex-row w-full">
+            {/* Map Section - 60% on desktop */}
+            <div className="w-full lg:w-[60%] min-h-[400px] p-4">
+              <Map />
             </div>
 
-            <div className="gap-5 grid grid-cols-1 md:grid-cols-2 ">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-sky-500 border-2 border-sky-100"></div>
-                  <span className="text-sm">South</span>
-                  <span className="text-sm text-sky-500 flex items-center gap-0.5">
-                    <TrendingUp className="h-3 w-3" />
-                    43.29%
-                  </span>
-                </div>
-                <span className="text-sm">250</span>
+            {/* Stats Section - 40% on desktop */}
+            <div className="w-full lg:w-[40%] p-4 flex flex-col gap-4">
+              {/* Filters */}
+              <div className="flex flex-wrap gap-2">
+                <Popover open={continent} onOpenChange={setContinent}>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" role="combobox" className="w-32">
+                      <span className="truncate flex-1 text-left">
+                        {continentValue
+                          ? frameworks.find(
+                              (framework) => framework.value === continentValue
+                            )?.label
+                          : "Africa"}
+                      </span>
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px]" align="start">
+                    <Command>
+                      <CommandInput placeholder="Search..." className="h-9" />
+                      <CommandList>
+                        <CommandEmpty>Not found.</CommandEmpty>
+                        <CommandGroup>
+                          {frameworks.map((framework) => (
+                            <CommandItem
+                              key={framework.value}
+                              value={framework.value}
+                              onSelect={(currentValue: string) => {
+                                setContinentValue(
+                                  currentValue === continentValue ? "" : currentValue
+                                );
+                                setContinent(false);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  continentValue === framework.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                              {framework.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+
+                <Popover open={country} onOpenChange={setCountry}>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" role="combobox" className="w-32">
+                      <span className="truncate flex-1 text-left">
+                        {countryValue
+                          ? frameworks.find(
+                              (framework) => framework.value === countryValue
+                            )?.label
+                          : "Rwanda"}
+                      </span>
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px]" align="start">
+                    <Command>
+                      <CommandInput placeholder="Search..." className="h-9" />
+                      <CommandList>
+                        <CommandEmpty>Not found.</CommandEmpty>
+                        <CommandGroup>
+                          {frameworks.map((framework) => (
+                            <CommandItem
+                              key={framework.value}
+                              value={framework.value}
+                              onSelect={(currentValue: string) => {
+                                setCountryValue(
+                                  currentValue === countryValue ? "" : currentValue
+                                );
+                                setCountry(false);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  countryValue === framework.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                              {framework.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-green-500 border-2 border-green-100"></div>
-                  <span className="text-sm">North</span>
-                  <span className="text-sm text-green-500 flex items-center gap-0.5">
-                    <TrendingUp className="h-3 w-3" />
-                    36.16%
-                  </span>
-                </div>
-                <span className="text-sm">350</span>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-green-500 border-2 border-green-100"></div>
-                  <span className="text-sm">East</span>
-                  <span className="text-sm text-green-500 flex items-center gap-0.5">
-                    <TrendingUp className="h-3 w-3" />
-                    36.16%
-                  </span>
-                </div>
-                <span className="text-sm">350</span>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-sky-500 border-2 border-sky-100"></div>
-                  <span className="text-sm">West</span>
-                  <span className="text-sm text-green-500 flex items-center gap-0.5">
-                    <TrendingUp className="h-3 w-3" />
-                    36.16%
-                  </span>
-                </div>
-                <span className="text-sm">350</span>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500 border-2 border-red-100"></div>
-                  <span className="text-sm">Kigali</span>
-                  <span className="text-sm text-red-500 flex items-center gap-0.5">
-                    <TrendingDown className="h-3 w-3" />
-                    36.16%
-                  </span>
-                </div>
-                <span className="text-sm">350</span>
+              {/* Stats Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <StatsItem
+                  region="South"
+                  trend={43.29}
+                  value={250}
+                  color="sky"
+                  trending="up"
+                />
+                <StatsItem
+                  region="North"
+                  trend={36.16}
+                  value={350}
+                  color="green"
+                  trending="up"
+                />
+                <StatsItem
+                  region="East"
+                  trend={36.16}
+                  value={350}
+                  color="green"
+                  trending="up"
+                />
+                <StatsItem
+                  region="West"
+                  trend={36.16}
+                  value={350}
+                  color="sky"
+                  trending="up"
+                />
+                <StatsItem
+                  region="Kigali"
+                  trend={36.16}
+                  value={350}
+                  color="red"
+                  trending="down"
+                />
               </div>
             </div>
           </div>
         </div>
-        <Attendance />
+
+        {/* Attendance Chart */}
+        <div className="w-full">
+          <Attendance />
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default AttendanceReports;

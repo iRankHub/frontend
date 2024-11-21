@@ -1329,5 +1329,48 @@ export class TournamentServiceClient {
     this.methodDescriptorListTournamentRegistrations);
   }
 
+  methodDescriptorSearchTournaments = new grpcWeb.MethodDescriptor(
+    '/tournament_management.TournamentService/SearchTournaments',
+    grpcWeb.MethodType.UNARY,
+    tournament_management_tournament_pb.SearchTournamentsRequest,
+    tournament_management_tournament_pb.SearchTournamentsResponse,
+    (request: tournament_management_tournament_pb.SearchTournamentsRequest) => {
+      return request.serializeBinary();
+    },
+    tournament_management_tournament_pb.SearchTournamentsResponse.deserializeBinary
+  );
+
+  searchTournaments(
+    request: tournament_management_tournament_pb.SearchTournamentsRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<tournament_management_tournament_pb.SearchTournamentsResponse>;
+
+  searchTournaments(
+    request: tournament_management_tournament_pb.SearchTournamentsRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: tournament_management_tournament_pb.SearchTournamentsResponse) => void): grpcWeb.ClientReadableStream<tournament_management_tournament_pb.SearchTournamentsResponse>;
+
+  searchTournaments(
+    request: tournament_management_tournament_pb.SearchTournamentsRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: tournament_management_tournament_pb.SearchTournamentsResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/tournament_management.TournamentService/SearchTournaments',
+        request,
+        metadata || {},
+        this.methodDescriptorSearchTournaments,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/tournament_management.TournamentService/SearchTournaments',
+    request,
+    metadata || {},
+    this.methodDescriptorSearchTournaments);
+  }
+
 }
 

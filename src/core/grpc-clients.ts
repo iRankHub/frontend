@@ -1,3 +1,4 @@
+import { AnalyticsServiceClient } from "@/lib/grpc/proto/analytics/AnalyticsServiceClientPb";
 import { AuthServiceClient } from "@/lib/grpc/proto/authentication/AuthServiceClientPb";
 import { DebateServiceClient } from "@/lib/grpc/proto/debate_management/DebateServiceClientPb";
 import { NotificationServiceClient } from "@/lib/grpc/proto/notification/NotificationServiceClientPb";
@@ -12,3 +13,4 @@ export const userClient = new UserManagementServiceClient(ENVOY_PROXY_URL, null,
 export const debateClient = new DebateServiceClient(ENVOY_PROXY_URL, null, null);
 export const systemHealthClient = new SystemHealthServiceClient(ENVOY_PROXY_URL, null, null);
 export const notificationClient = new NotificationServiceClient(ENVOY_PROXY_URL, null, null);
+export const analyticsClient = new AnalyticsServiceClient(ENVOY_PROXY_URL, null, null);

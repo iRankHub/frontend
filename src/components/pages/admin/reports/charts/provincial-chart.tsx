@@ -1,8 +1,5 @@
-"use client";
-
-import { TrendingUp } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
-
+import { LineChart, TrendingUp } from "lucide-react";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
 import {
   Card,
   CardContent,
@@ -17,65 +14,119 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { SchoolPerformanceData } from "@/lib/grpc/proto/analytics/analytics_pb";
 
-export const description = "A multiple bar chart";
-
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
+type Props = {
+  data: SchoolPerformanceData.AsObject[];
+};
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  totalAmount: {
+    label: "Total Amount",
     color: "hsl(var(--chart-1))",
   },
-  mobile: {
-    label: "Mobile",
+  schoolCount: {
+    label: "School Count",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
 
-export function ProvincialChart() {
+function EmptyChart() {
+  return (
+    <div className="flex items-center justify-center h-64">
+      <div className="flex flex-col items-center text-center">
+        <div className="rounded-full bg-muted p-3 mb-4">
+          <LineChart size={24} className="text-muted-foreground" />
+        </div>
+        <p className="text-muted-foreground text-sm">
+          No chart data available. Try searching a tournament or changing year
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export function ProvincialChart({ data }: Props) {
+  if (!data?.length) {
+    return (
+      <Card className="border-0 w-full flex flex-col justify-between h-full">
+        <EmptyChart />
+      </Card>
+    );
+  }
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'RWF',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(value);
+  };
+
+  // Calculate total amounts for percentage change
+  const totalAmount = data.reduce((sum, item) => sum + item.totalAmount, 0);
+  const averageSchoolCount = Math.round(data.reduce((sum, item) => sum + item.schoolCount, 0) / data.length);
+
   return (
     <Card className="border-0 w-full flex flex-col justify-between h-full">
-      <CardHeader className="flex flex-col items-stretch space-y-0 w-full">
-        <CardTitle className="text-lg">Expenses and income</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+      <CardHeader className="flex flex-col items-stretch space-y-0 w-full pb-2">
+        <CardTitle className="text-lg">Provincial Performance</CardTitle>
+        <CardDescription>Schools by Province</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pb-4">
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-52 w-full"
+          className="aspect-auto h-72 w-full"
         >
-          <BarChart accessibilityLayer data={chartData}>
-            <CartesianGrid vertical={false} />
+          <BarChart 
+            data={data}
+            margin={{ top: 20, right: 30, left: 25, bottom: 20 }}
+          >
+            <CartesianGrid vertical={false} strokeDasharray="3 3" />
             <XAxis
-              dataKey="month"
+              dataKey="groupName"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip
+            <YAxis
+              tickFormatter={(value) => formatCurrency(value)}
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              width={60}
+            />
+            <Tooltip
               cursor={false}
-              content={<ChartTooltipContent indicator="dashed" />}
+              formatter={(value: number, name: string) => [
+                name === "totalAmount" ? formatCurrency(value) : value,
+                name === "totalAmount" ? "Total Amount" : "School Count"
+              ]}
+              labelFormatter={(label) => `Province: ${label}`}
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-            <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+            <Bar 
+              name="totalAmount" 
+              dataKey="totalAmount" 
+              fill="hsl(var(--chart-1))" 
+              radius={[4, 4, 0, 0]} 
+            />
+            <Bar 
+              name="schoolCount" 
+              dataKey="schoolCount" 
+              fill="hsl(var(--chart-2))" 
+              radius={[4, 4, 0, 0]} 
+            />
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
+      <CardFooter className="flex-col items-start gap-2 text-sm pt-2">
         <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Total Revenue: {formatCurrency(totalAmount)}
+          <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Average of {averageSchoolCount} schools per province
         </div>
       </CardFooter>
     </Card>

@@ -2032,6 +2032,70 @@ export namespace ListRegistrationsResponse {
   }
 }
 
+export class SearchTournamentsRequest extends jspb.Message {
+  getQuery(): string;
+  setQuery(value: string): SearchTournamentsRequest;
+
+  getToken(): string;
+  setToken(value: string): SearchTournamentsRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SearchTournamentsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: SearchTournamentsRequest): SearchTournamentsRequest.AsObject;
+  static serializeBinaryToWriter(message: SearchTournamentsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SearchTournamentsRequest;
+  static deserializeBinaryFromReader(message: SearchTournamentsRequest, reader: jspb.BinaryReader): SearchTournamentsRequest;
+}
+
+export namespace SearchTournamentsRequest {
+  export type AsObject = {
+    query: string,
+    token: string,
+  }
+}
+
+export class TournamentSearchResult extends jspb.Message {
+  getTournamentId(): number;
+  setTournamentId(value: number): TournamentSearchResult;
+
+  getName(): string;
+  setName(value: string): TournamentSearchResult;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): TournamentSearchResult.AsObject;
+  static toObject(includeInstance: boolean, msg: TournamentSearchResult): TournamentSearchResult.AsObject;
+  static serializeBinaryToWriter(message: TournamentSearchResult, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): TournamentSearchResult;
+  static deserializeBinaryFromReader(message: TournamentSearchResult, reader: jspb.BinaryReader): TournamentSearchResult;
+}
+
+export namespace TournamentSearchResult {
+  export type AsObject = {
+    tournamentId: number,
+    name: string,
+  }
+}
+
+export class SearchTournamentsResponse extends jspb.Message {
+  getTournamentsList(): Array<TournamentSearchResult>;
+  setTournamentsList(value: Array<TournamentSearchResult>): SearchTournamentsResponse;
+  clearTournamentsList(): SearchTournamentsResponse;
+  addTournaments(value?: TournamentSearchResult, index?: number): TournamentSearchResult;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SearchTournamentsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: SearchTournamentsResponse): SearchTournamentsResponse.AsObject;
+  static serializeBinaryToWriter(message: SearchTournamentsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SearchTournamentsResponse;
+  static deserializeBinaryFromReader(message: SearchTournamentsResponse, reader: jspb.BinaryReader): SearchTournamentsResponse;
+}
+
+export namespace SearchTournamentsResponse {
+  export type AsObject = {
+    tournamentsList: Array<TournamentSearchResult.AsObject>,
+  }
+}
+
 export enum LeagueType { 
   LOCAL = 0,
   INTERNATIONAL = 1,

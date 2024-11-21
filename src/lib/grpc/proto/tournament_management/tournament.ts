@@ -8963,6 +8963,253 @@ export namespace tournament_management {
             return ListRegistrationsResponse.deserialize(bytes);
         }
     }
+    export class SearchTournamentsRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            query?: string;
+            token?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("query" in data && data.query != undefined) {
+                    this.query = data.query;
+                }
+                if ("token" in data && data.token != undefined) {
+                    this.token = data.token;
+                }
+            }
+        }
+        get query() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set query(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get token() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set token(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            query?: string;
+            token?: string;
+        }): SearchTournamentsRequest {
+            const message = new SearchTournamentsRequest({});
+            if (data.query != null) {
+                message.query = data.query;
+            }
+            if (data.token != null) {
+                message.token = data.token;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                query?: string;
+                token?: string;
+            } = {};
+            if (this.query != null) {
+                data.query = this.query;
+            }
+            if (this.token != null) {
+                data.token = this.token;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.query.length)
+                writer.writeString(1, this.query);
+            if (this.token.length)
+                writer.writeString(2, this.token);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): SearchTournamentsRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new SearchTournamentsRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.query = reader.readString();
+                        break;
+                    case 2:
+                        message.token = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): SearchTournamentsRequest {
+            return SearchTournamentsRequest.deserialize(bytes);
+        }
+    }
+    export class TournamentSearchResult extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tournament_id?: number;
+            name?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tournament_id" in data && data.tournament_id != undefined) {
+                    this.tournament_id = data.tournament_id;
+                }
+                if ("name" in data && data.name != undefined) {
+                    this.name = data.name;
+                }
+            }
+        }
+        get tournament_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set tournament_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get name() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set name(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            tournament_id?: number;
+            name?: string;
+        }): TournamentSearchResult {
+            const message = new TournamentSearchResult({});
+            if (data.tournament_id != null) {
+                message.tournament_id = data.tournament_id;
+            }
+            if (data.name != null) {
+                message.name = data.name;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tournament_id?: number;
+                name?: string;
+            } = {};
+            if (this.tournament_id != null) {
+                data.tournament_id = this.tournament_id;
+            }
+            if (this.name != null) {
+                data.name = this.name;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.tournament_id != 0)
+                writer.writeInt32(1, this.tournament_id);
+            if (this.name.length)
+                writer.writeString(2, this.name);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): TournamentSearchResult {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new TournamentSearchResult();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.tournament_id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.name = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): TournamentSearchResult {
+            return TournamentSearchResult.deserialize(bytes);
+        }
+    }
+    export class SearchTournamentsResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tournaments?: TournamentSearchResult[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tournaments" in data && data.tournaments != undefined) {
+                    this.tournaments = data.tournaments;
+                }
+            }
+        }
+        get tournaments() {
+            return pb_1.Message.getRepeatedWrapperField(this, TournamentSearchResult, 1) as TournamentSearchResult[];
+        }
+        set tournaments(value: TournamentSearchResult[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        static fromObject(data: {
+            tournaments?: ReturnType<typeof TournamentSearchResult.prototype.toObject>[];
+        }): SearchTournamentsResponse {
+            const message = new SearchTournamentsResponse({});
+            if (data.tournaments != null) {
+                message.tournaments = data.tournaments.map(item => TournamentSearchResult.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tournaments?: ReturnType<typeof TournamentSearchResult.prototype.toObject>[];
+            } = {};
+            if (this.tournaments != null) {
+                data.tournaments = this.tournaments.map((item: TournamentSearchResult) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.tournaments.length)
+                writer.writeRepeatedMessage(1, this.tournaments, (item: TournamentSearchResult) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): SearchTournamentsResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new SearchTournamentsResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.tournaments, () => pb_1.Message.addToRepeatedWrapperField(message, 1, TournamentSearchResult.deserialize(reader), TournamentSearchResult));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): SearchTournamentsResponse {
+            return SearchTournamentsResponse.deserialize(bytes);
+        }
+    }
     interface GrpcUnaryServiceInterface<P, R> {
         (message: P, metadata: grpc_1.Metadata, options: grpc_1.CallOptions, callback: grpc_1.requestCallback<R>): grpc_1.ClientUnaryCall;
         (message: P, metadata: grpc_1.Metadata, callback: grpc_1.requestCallback<R>): grpc_1.ClientUnaryCall;
@@ -9258,6 +9505,15 @@ export namespace tournament_management {
                 requestDeserialize: (bytes: Buffer) => ListRegistrationsRequest.deserialize(new Uint8Array(bytes)),
                 responseSerialize: (message: ListRegistrationsResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => ListRegistrationsResponse.deserialize(new Uint8Array(bytes))
+            },
+            SearchTournaments: {
+                path: "/tournament_management.TournamentService/SearchTournaments",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: SearchTournamentsRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => SearchTournamentsRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: SearchTournamentsResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => SearchTournamentsResponse.deserialize(new Uint8Array(bytes))
             }
         };
         [method: string]: grpc_1.UntypedHandleCall;
@@ -9291,6 +9547,7 @@ export namespace tournament_management {
         abstract UpdateSchoolRegistration(call: grpc_1.ServerUnaryCall<UpdateRegistrationRequest, RegistrationResponse>, callback: grpc_1.sendUnaryData<RegistrationResponse>): void;
         abstract GetSchoolRegistration(call: grpc_1.ServerUnaryCall<GetRegistrationRequest, DetailedRegistrationResponse>, callback: grpc_1.sendUnaryData<DetailedRegistrationResponse>): void;
         abstract ListTournamentRegistrations(call: grpc_1.ServerUnaryCall<ListRegistrationsRequest, ListRegistrationsResponse>, callback: grpc_1.sendUnaryData<ListRegistrationsResponse>): void;
+        abstract SearchTournaments(call: grpc_1.ServerUnaryCall<SearchTournamentsRequest, SearchTournamentsResponse>, callback: grpc_1.sendUnaryData<SearchTournamentsResponse>): void;
     }
     export class TournamentServiceClient extends grpc_1.makeGenericClientConstructor(UnimplementedTournamentServiceService.definition, "TournamentService", {}) {
         constructor(address: string, credentials: grpc_1.ChannelCredentials, options?: Partial<grpc_1.ChannelOptions>) {
@@ -9385,6 +9642,9 @@ export namespace tournament_management {
         };
         ListTournamentRegistrations: GrpcUnaryServiceInterface<ListRegistrationsRequest, ListRegistrationsResponse> = (message: ListRegistrationsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<ListRegistrationsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<ListRegistrationsResponse>, callback?: grpc_1.requestCallback<ListRegistrationsResponse>): grpc_1.ClientUnaryCall => {
             return super.ListTournamentRegistrations(message, metadata, options, callback);
+        };
+        SearchTournaments: GrpcUnaryServiceInterface<SearchTournamentsRequest, SearchTournamentsResponse> = (message: SearchTournamentsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<SearchTournamentsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<SearchTournamentsResponse>, callback?: grpc_1.requestCallback<SearchTournamentsResponse>): grpc_1.ClientUnaryCall => {
+            return super.SearchTournaments(message, metadata, options, callback);
         };
     }
 }

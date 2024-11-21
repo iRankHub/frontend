@@ -48,7 +48,6 @@ function Dashboard() {
   ] = React.useState("+∞%");
   const [approvedUsersPercentageChange, setApprovedUsersPercentageChange] =
     React.useState("+∞%");
-  const [usersList, setUsersList] = React.useState<UserSummary.AsObject[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [admin_count, setAdminCount] = React.useState(0);

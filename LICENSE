@@ -1,21 +1,52 @@
-MIT License
+# PROPRIETARY SOFTWARE LICENSE AGREEMENT
 
-Copyright (c) 2024 IrankPro
+## 1. DEFINITIONS
+- "Software" refers to all source code, documentation, issues, pull requests, and related materials in the repository
+- "Organization" refers to iDebate
+- "Authorized Users" refers to individuals explicitly granted access by the Organization
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+## 2. GRANT OF LICENSE
+The Organization retains all rights, title, and interest in the Software. This license grants no transfer of ownership.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+## 3. ACCESS RESTRICTIONS
+a) Access to the Software is restricted to Authorized Users only
+b) Authorized Users must be explicitly designated by the Organization
+c) Access credentials may not be shared
+d) The Organization maintains sole authority to grant or revoke access
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+## 4. CONFIDENTIALITY
+a) ALL repository contents are deemed Confidential Information, including but not limited to:
+   - Source code
+   - Documentation
+   - Issues
+   - Pull requests
+   - Discussions
+   - Commit messages
+   - Configuration files
+
+b) Authorized Users shall:
+   - Maintain strict confidentiality of all Software components
+   - Not disclose any information to unauthorized parties
+   - Use secure methods when accessing the repository
+   - Report any security breaches immediately
+
+## 5. PROHIBITED ACTIONS
+- Distribution of any part of the Software
+- Creation of derivative works
+- Copying of repository contents outside authorized environments
+- Public disclosure of any repository information
+- Reverse engineering
+
+## 6. TERMINATION
+- The Organization may terminate access for any user at any time
+- Upon termination, users must:
+  - Cease all Software access
+  - Delete any local copies
+  - Return any related materials
+  - Maintain confidentiality obligations
+
+## 7. SURVIVAL
+Confidentiality obligations survive termination of access.
+
+## 8. GOVERNING LAW
+This Agreement shall be governed by the laws of [JURISDICTION].

@@ -1,75 +1,58 @@
-"use client";
-
-import * as React from "react";
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import React from "react";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Icons } from "@/components/icons";
+import { SchoolPerformanceData } from "@/lib/grpc/proto/analytics/analytics_pb";
+import {BarChart as BarChartLucide} from "lucide-react"
 
-export const description = "An interactive bar chart";
-
-const chartData = [
-  { date: "2024-04-01", desktop: 222, mobile: 150 },
-  { date: "2024-04-02", desktop: 97, mobile: 180 },
-  { date: "2024-04-03", desktop: 167, mobile: 120 },
-  { date: "2024-04-04", desktop: 242, mobile: 260 },
-  { date: "2024-04-05", desktop: 373, mobile: 290 },
-  { date: "2024-04-06", desktop: 301, mobile: 340 },
-  { date: "2024-04-07", desktop: 245, mobile: 180 },
-  { date: "2024-04-08", desktop: 409, mobile: 320 },
-  { date: "2024-04-09", desktop: 59, mobile: 110 },
-  { date: "2024-04-10", desktop: 261, mobile: 190 },
-  { date: "2024-04-11", desktop: 327, mobile: 350 },
-  { date: "2024-04-12", desktop: 292, mobile: 210 },
-  { date: "2024-04-13", desktop: 342, mobile: 380 },
-  { date: "2024-04-14", desktop: 137, mobile: 220 },
-  { date: "2024-04-15", desktop: 120, mobile: 170 },
-  { date: "2024-04-16", desktop: 138, mobile: 190 },
-  { date: "2024-04-17", desktop: 446, mobile: 360 },
-  { date: "2024-04-18", desktop: 364, mobile: 410 },
-  { date: "2024-04-19", desktop: 243, mobile: 180 },
-  { date: "2024-04-20", desktop: 89, mobile: 150 },
-  { date: "2024-04-21", desktop: 137, mobile: 200 },
-  { date: "2024-04-22", desktop: 224, mobile: 170 },
-];
+type Props = {
+  data: SchoolPerformanceData.AsObject[];
+};
 
 const chartConfig = {
-  views: {
-    label: "Page Views",
-  },
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-income-2))",
-  },
-  mobile: {
-    label: "Mobile",
+  performance: {
+    label: "Performance",
     color: "hsl(var(--chart-income-2))",
   },
 } satisfies ChartConfig;
 
-export function SchoolsIncomeChart() {
-  const [activeChart, setActiveChart] =
-    React.useState<keyof typeof chartConfig>("desktop");
-
-  const total = React.useMemo(
-    () => ({
-      desktop: chartData.reduce((acc, curr) => acc + curr.desktop, 0),
-      mobile: chartData.reduce((acc, curr) => acc + curr.mobile, 0),
-    }),
-    []
+function EmptyChart() {
+  return (
+    <div className="flex items-center justify-center h-64">
+      <div className="flex flex-col items-center text-center">
+        <div className="rounded-full bg-muted p-3 mb-4">
+          <BarChartLucide size={24} className="text-muted-foreground" />
+        </div>
+        <p className="text-muted-foreground text-sm">
+          No chart data available. Try searching a tournament or changing year
+        </p>
+      </div>
+    </div>
   );
+}
+
+export function SchoolsIncomeChart({ data }: Props) {
+  if (!data?.length) {
+    return (
+      <Card className="border-0 w-full flex flex-col justify-between h-full">
+        <EmptyChart />
+      </Card>
+    );
+  }
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'RWF',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(value);
+  };
 
   return (
     <Card className="border-0 w-full flex flex-col justify-between h-full">
@@ -77,15 +60,11 @@ export function SchoolsIncomeChart() {
         <div className="flex items-center justify-start gap-3 px-6 w-full">
           <div className="flex items-center gap-1">
             <div className="w-2 h-2 rounded-full bg-blue" />
-            <small>Public</small>
+            <small>Total Amount</small>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-2 h-2 rounded-full bg-success-light" />
-            <small>Private</small>
-          </div>
-          <div className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-primary" />
-            <small>Government Aided</small>
+            <small>School Count</small>
           </div>
         </div>
       </CardHeader>
@@ -95,44 +74,40 @@ export function SchoolsIncomeChart() {
           className="aspect-auto h-52 w-full"
         >
           <BarChart
-            accessibilityLayer
-            data={chartData}
+            data={data}
             margin={{
               left: 12,
               right: 12,
             }}
           >
-            <CartesianGrid vertical={false} />
+            <CartesianGrid vertical={false} strokeDasharray="3 3" />
             <XAxis
-              dataKey="date"
+              dataKey="groupName"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-                return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                });
-              }}
             />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent
-                  className="w-full"
-                  nameKey="views"
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    });
-                  }}
-                />
-              }
+            <YAxis
+              tickFormatter={(value) => formatCurrency(value)}
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
             />
-            <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
+            <Tooltip
+              formatter={(value: number) => formatCurrency(value)}
+              labelFormatter={(label) => `Group: ${label}`}
+            />
+            <Bar 
+              dataKey="totalAmount" 
+              fill="hsl(var(--chart-income-2))" 
+              name="Total Amount"
+            />
+            <Bar 
+              dataKey="schoolCount" 
+              fill="hsl(var(--chart-success))" 
+              name="School Count"
+            />
           </BarChart>
         </ChartContainer>
       </CardContent>

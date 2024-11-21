@@ -12,7 +12,6 @@ import {
     GetInvitationsByUserRequest,
     GetInvitationsByUserResponse,
     GetTournamentRegistrationsRequest,
-    GetTournamentRegistrationsResponse,
     GetTournamentRequest,
     GetTournamentResponse,
     GetTournamentStatsRequest,
@@ -21,6 +20,8 @@ import {
     ListTournamentsResponse,
     ResendInvitationRequest,
     ResendInvitationResponse,
+    SearchTournamentsRequest,
+    SearchTournamentsResponse,
     UpdateInvitationStatusRequest,
     UpdateInvitationStatusResponse,
     UpdateTournamentRequest,
@@ -308,3 +309,24 @@ export const getTournamentRegistration = async ({
     });
 }
 
+export const searchTournament = async ({
+    token,
+    query,
+}: {
+    token: string,
+    query: string,
+}): Promise<SearchTournamentsResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new SearchTournamentsRequest();
+        request.setToken(token);
+        request.setQuery(query);
+
+        tournamentClient.searchTournaments(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}

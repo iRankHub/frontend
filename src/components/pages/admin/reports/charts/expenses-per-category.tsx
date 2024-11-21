@@ -1,63 +1,77 @@
-"use client"
-
-import { TrendingUp } from "lucide-react"
-import { LabelList, RadialBar, RadialBarChart } from "recharts"
-
+"use client";
+import { TrendingUp, TrendingDown } from "lucide-react";
+import { LabelList, RadialBar, RadialBarChart } from "recharts";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
-]
+} from "@/components/ui/chart";
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Chrome",
-    color: "hsl(var(--chart-1))",
-  },
-  safari: {
-    label: "Safari",
-    color: "hsl(var(--chart-2))",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "hsl(var(--chart-3))",
-  },
-  edge: {
-    label: "Edge",
-    color: "hsl(var(--chart-4))",
-  },
-  other: {
-    label: "Other",
-    color: "hsl(var(--chart-5))",
-  },
-} satisfies ChartConfig
+type ExpenseCategory = {
+  name: string;
+  amount: number;
+  color: string;
+  borderColor: string;
+  percentage: number;
+  trend: number;
+};
 
-export function ExpensesPerCategory() {
+type Props = {
+  data: ExpenseCategory[];
+};
+
+type ChartConfigItem = {
+  label: string;
+  color?: string;
+};
+
+type ChartConfig = {
+  [key: string]: ChartConfigItem;
+};
+
+const getChartConfig = (categories: ExpenseCategory[]): ChartConfig => {
+  const config: ChartConfig = {
+    amount: {
+      label: "Amount",
+    },
+  };
+
+  categories.forEach((category) => {
+    const key = category.name.toLowerCase();
+    config[key] = {
+      label: category.name,
+      color: category.color
+        .replace("bg-", "hsl(var(--")
+        .replace("-500", "))")
+        .replace("-", "-"),
+    };
+  });
+
+  return config;
+};
+
+export function ExpensesPerCategory({ data }: Props) {
+  const chartData = data.map((category) => ({
+    category: category.name.toLowerCase(),
+    amount: category.amount,
+    fill: `var(--color-${category.name.toLowerCase()})`,
+  }));
+
+  const chartConfig = getChartConfig(data);
+
+  // Calculate total trend
+  const averageTrend =
+    data.reduce((sum, category) => sum + category.trend, 0) / data.length;
+
+  // Calculate total expenses
+  const totalExpenses = data.reduce(
+    (sum, category) => sum + category.amount,
+    0
+  );
+
   return (
     <Card className="m-0 items-start justify-start border-0 shadow-none">
-      {/* <CardHeader className="items-center pb-0">
-        <CardTitle>Radial Chart - Label</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
-      </CardHeader> */}
       <CardContent className="flex-1 pb-0 border-0 shadow-none">
         <ChartContainer
           config={chartConfig}
@@ -72,12 +86,23 @@ export function ExpensesPerCategory() {
           >
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel nameKey="browser" />}
+              content={
+                <ChartTooltipContent
+                  hideLabel
+                  nameKey="category"
+                  formatter={(value: any) => {
+                    if (typeof value === "number") {
+                      return `RWF ${value.toLocaleString()}`;
+                    }
+                    return value;
+                  }}
+                />
+              }
             />
-            <RadialBar dataKey="visitors" background>
+            <RadialBar dataKey="amount" background>
               <LabelList
                 position="insideStart"
-                dataKey="browser"
+                dataKey="category"
                 className="fill-white capitalize mix-blend-luminosity"
                 fontSize={11}
               />
@@ -87,13 +112,22 @@ export function ExpensesPerCategory() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          {averageTrend >= 0 ? (
+            <>
+              Trending up by {averageTrend.toFixed(1)}% this month{" "}
+              <TrendingUp className="h-4 w-4 text-green-500" />
+            </>
+          ) : (
+            <>
+              Trending down by {Math.abs(averageTrend).toFixed(1)}% this month{" "}
+              <TrendingDown className="h-4 w-4 text-red-500" />
+            </>
+          )}
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Total expenses: RWF {totalExpenses.toLocaleString()}
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }
-
