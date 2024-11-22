@@ -47,7 +47,8 @@ export const updateTournament = async ({
     tournament_fee,
     token,
     coordinator_id,
-    tournament_id
+    tournament_id,
+    image_url,
 }: UpdateTournamentType): Promise<UpdateTournamentResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new UpdateTournamentRequest();
@@ -65,6 +66,7 @@ export const updateTournament = async ({
         request.setToken(token);
         request.setCoordinatorId(coordinator_id);
         request.setTournamentId(tournament_id);
+        request.setImageUrl(image_url || "");
 
         tournamentClient.updateTournament(request, {}, (err, response) => {
             if (err) {

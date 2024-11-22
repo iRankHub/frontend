@@ -90,16 +90,8 @@ function TournamentDetailPage({ params }: Iparms) {
               <Slash className="-rotate-12" />
             </BreadcrumbSeparator>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/admin/tournaments" className="text-muted-foreground text-base">
-                Tournament
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator>
-              <Slash className="-rotate-12" />
-            </BreadcrumbSeparator>
-            <BreadcrumbItem>
               <BreadcrumbLink href="/admin/tournaments/list" className="text-muted-foreground text-base">
-                List
+                Tournament
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator>

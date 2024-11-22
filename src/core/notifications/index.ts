@@ -29,10 +29,8 @@ export const getUnreadNotifications = async ({
 }
 
 export const markNotificationsAsRead = async ({
-    token,
     user_id
 }: {
-    token: string;
     user_id: number;
 }): Promise<boolean> => {
     return new Promise((resolve, reject) => {

@@ -261,7 +261,7 @@ function Leagues({
     <div className="hidden xl:inline w-full max-w-xs">
       <h3
         className={cn(
-          "text-foreground font-semibold text-2xl tracking-wider",
+          "text-foreground font-semibold text-lg tracking-wider",
           inter.className
         )}
       >

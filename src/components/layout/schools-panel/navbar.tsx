@@ -5,7 +5,6 @@ import { UserNav } from "./user-nav";
 import { useStore } from "zustand";
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
 import { SidebarToggle } from "./sidebar-toggle";
-import { Command, CommandInput } from "@/components/ui/command";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +22,10 @@ import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { ThemeToggler } from "@/components/ui/switch-sun";
 import Notifications from "./notifications";
 import { useNotificationStore } from "@/stores/notifications/notifications.store";
+import { useUserStore } from "@/stores/auth/auth.store";
+import { markNotificationsAsRead } from "@/core/notifications";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 interface NavbarProps {
   title: string;
@@ -30,7 +33,41 @@ interface NavbarProps {
 
 export function Navbar({ title }: NavbarProps) {
   const sidebar = useStore(useSidebarToggle, (state) => state);
-  const { notifications } = useNotificationStore();
+  const { notifications, setNotifications } = useNotificationStore();
+  const { user } = useUserStore();
+  const { toast } = useToast();
+
+  const handleMarkAllAsRead = async () => {
+    if (!user?.userId) return;
+
+    try {
+      await markNotificationsAsRead({ user_id: user.userId });
+      setNotifications([]);
+      toast({
+        variant: "success",
+        title: "Success",
+        description: "All notifications have been marked as read",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
+      });
+    } catch (error) {
+      console.error("Failed to mark notifications as read:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to mark notifications as read. Please try again.",
+        action: (
+          <ToastAction altText="Try again" className="bg-destructive text-white">
+            Try again
+          </ToastAction>
+        ),
+      });
+    }
+  };
+
   return (
     <header className="sticky top-0 z-10 w-full bg-background/95 shadow backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:shadow-secondary">
       <div className="mx-4 flex h-14 items-center gap-10">
@@ -40,16 +77,9 @@ export function Navbar({ title }: NavbarProps) {
             isOpen={sidebar?.isOpen}
             setIsOpen={sidebar?.setIsOpen}
           />
-          {/* <Command className="rounded-md w-10 lg:w-72 border">
-            <CommandInput
-              placeholder="Type to search..."
-              className="ring-0 h-8"
-            />
-          </Command> */}
         </div>
         <div className="flex flex-1 items-center space-x-3 justify-end">
           <ThemeToggler className="bg-muted dark:bg-[#272A2F]" />
-          {/* <ModeToggle /> */}
           <DropdownMenu>
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
@@ -63,7 +93,7 @@ export function Navbar({ title }: NavbarProps) {
                           size="icon"
                         >
                           <sup className="bg-primary w-3.5 h-3.5 grid items-center absolute rounded-full text-[10px] font-bold top-0.5 -right-1.5 text-white">
-                            5
+                            {notifications.length}
                           </sup>
                           <Icons.bell className="w-[1.2rem] h-[1.2rem] text-muted-foreground m-1" />
                           <span className="sr-only">Notifications</span>
@@ -80,8 +110,10 @@ export function Navbar({ title }: NavbarProps) {
                             </div>
                             <Button
                               type="button"
-                              variant={"link"}
+                              variant="link"
                               className="text-sm"
+                              onClick={handleMarkAllAsRead}
+                              disabled={notifications.length === 0}
                             >
                               Mark all as read
                             </Button>

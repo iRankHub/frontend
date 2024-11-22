@@ -22,7 +22,7 @@ function Page({}) {
   return (
     <>
       <div className="w-full flex items-center justify-between gap-5">
-        <h3 className="text-2xl text-primary font-bold">Create Tournament</h3>
+        <h3 className="text-lg text-primary font-bold">Create Tournament</h3>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
