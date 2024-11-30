@@ -112,12 +112,11 @@ const SignupForm = ({ activeStep, setActiveStep }: SignupFormProps) => {
         router.push("/auth/volunteer/login");
       })
       .catch((err) => {
-        console.error(err.message);
         toast({
           variant: "destructive",
           title: "Error",
           description:
-            "Something went wrong. Please check your credentials and try again later",
+            err.message,
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close

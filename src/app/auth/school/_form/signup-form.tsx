@@ -93,6 +93,9 @@ const SignupForm = () => {
   async function onSubmit(data: Inputs) {
     setIsPending(true);
 
+    const province = data.locationType === "local" ? data.province_state : data.continent;
+    const district = data.locationType === "local" ? data.district_region : data.country;
+
     await signUp({
       firstName: data.contact_person_firstname,
       lastName: data.contact_person_lastname,
@@ -102,8 +105,8 @@ const SignupForm = () => {
       userRole: UserRole.SCHOOL,
       schoolName: data.name,
       country: data.country,
-      province: data.province_state,
-      district: data.district_region,
+      province,
+      district,
       contactEmail: data.email,
       schoolType: data.type,
     })
@@ -127,7 +130,7 @@ const SignupForm = () => {
           variant: "destructive",
           title: "Error",
           description:
-            "Something went wrong. Please check your credentials and try again later",
+            err.message,
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close

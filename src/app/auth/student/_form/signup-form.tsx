@@ -101,7 +101,6 @@ const SignupForm = () => {
           form.reset();
           router.push("/auth/student/login");
         } else {
-          console.error(res.message);
           toast({
             variant: "destructive",
             title: "Error",
