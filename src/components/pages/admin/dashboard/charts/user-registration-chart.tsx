@@ -37,24 +37,32 @@ const UserRegistrationsChart = () => {
     let filteredData;
 
     switch (filterValue) {
-      case "7d":
+      case "7d": {
+        const cutoffDate = new Date(today);
+        cutoffDate.setDate(today.getDate() - 7);
         filteredData = data.filter((item) => {
           const itemDate = new Date(item.date);
-          const diffTime = Math.abs(today.getTime() - itemDate.getTime());
-          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-          return diffDays <= 7;
+          return itemDate >= cutoffDate;
         });
         break;
-      case "30d":
+      }
+      case "30d": {
+        const cutoffDate = new Date(today);
+        cutoffDate.setDate(today.getDate() - 30);
         filteredData = data.filter((item) => {
           const itemDate = new Date(item.date);
-          const diffTime = Math.abs(today.getTime() - itemDate.getTime());
-          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-          return diffDays <= 30;
+          return itemDate >= cutoffDate;
         });
         break;
+      }
       default:
-        filteredData = data;
+        // 90 days
+        const cutoffDate = new Date(today);
+        cutoffDate.setDate(today.getDate() - 90);
+        filteredData = data.filter((item) => {
+          const itemDate = new Date(item.date);
+          return itemDate >= cutoffDate;
+        });
     }
 
     // Sort the data chronologically (oldest to newest)
@@ -82,6 +90,11 @@ const UserRegistrationsChart = () => {
       });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  useEffect(() => {
+    filterData(tournamentRegistrations);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterValue]);
 
   return (
     <Card className="w-full h-full border-muted">

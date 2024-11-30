@@ -51,11 +51,20 @@ const getChartConfig = (categories: ExpenseCategory[]): ChartConfig => {
   return config;
 };
 
+const colorMap = {
+  'bg-sky-500': '#0EA5E9',
+  'bg-green-500': '#22C55E',
+  'bg-purple-500': '#A855F7',
+  'bg-yellow-500': '#EAB308',
+  'bg-red-500': '#EF4444'
+};
+
 export function ExpensesPerCategory({ data }: Props) {
   const chartData = data.map((category) => ({
     category: category.name.toLowerCase(),
     amount: category.amount,
-    fill: `var(--color-${category.name.toLowerCase()})`,
+    // Use the color map to convert Tailwind classes to hex values
+    fill: colorMap[category.color as keyof typeof colorMap] || '#000000',
   }));
 
   const chartConfig = getChartConfig(data);
@@ -73,10 +82,7 @@ export function ExpensesPerCategory({ data }: Props) {
   return (
     <Card className="m-0 items-start justify-start border-0 shadow-none">
       <CardContent className="flex-1 pb-0 border-0 shadow-none">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-square max-h-[250px]"
-        >
+        <ChartContainer config={chartConfig} className="aspect-square max-h-[250px]">
           <RadialBarChart
             data={chartData}
             startAngle={-90}
@@ -99,7 +105,11 @@ export function ExpensesPerCategory({ data }: Props) {
                 />
               }
             />
-            <RadialBar dataKey="amount" background>
+            <RadialBar 
+              dataKey="amount" 
+              background
+              fill="#000000"
+            >
               <LabelList
                 position="insideStart"
                 dataKey="category"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Archivo } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { OverviewChart } from "./charts/overview-chart";
@@ -16,7 +16,6 @@ const archivo = Archivo({
 type IncomeOverviewProps = {
   tournamentIncomeList: TournamentIncome.AsObject[];
   selectedYear: number;
-  onYearChange: (year: number) => void;
   years: number[];
 };
 
@@ -36,19 +35,40 @@ function EmptyOverviewChart() {
 export default function IncomeOverview({
   tournamentIncomeList,
   selectedYear,
-  onYearChange,
   years,
 }: IncomeOverviewProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+  
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth);
+      }
+    };
+
+    // Create ResizeObserver
+    const resizeObserver = new ResizeObserver(updateDimensions);
+    
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+      updateDimensions(); // Initial measurement
+    }
+
+    // Cleanup
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
+
   const hasData = tournamentIncomeList && tournamentIncomeList.length > 0;
 
-  // Calculate total revenue for all tournaments
   const totalRevenue = hasData
     ? tournamentIncomeList.reduce((sum, tournament) => {
         return sum + tournament.netRevenue;
       }, 0)
     : 0;
 
-  // Get the earliest tournament date to show "From" date
   const earliestDate = hasData
     ? tournamentIncomeList.reduce((earliest, tournament) => {
         const currentDate = new Date(tournament.tournamentDate);
@@ -56,7 +76,6 @@ export default function IncomeOverview({
       }, new Date(tournamentIncomeList[0].tournamentDate))
     : null;
 
-  // Format currency
   const formatCurrency = (amount: number) => {
     return `RWF ${amount.toLocaleString(undefined, {
       minimumFractionDigits: 2,
@@ -65,57 +84,35 @@ export default function IncomeOverview({
   };
 
   return (
-    <div className="w-full h-full p-3">
-      <div className="flex items-center justify-between flex-col lg:flex-row">
-        <h3 className={cn("text-lg font-bold text-foreground", archivo.className)}>
-          Income Overview
-        </h3>
-        <div className="flex items-center gap-3">
-          <Select
-            value={selectedYear.toString()}
-            onValueChange={(value) => onYearChange(parseInt(value))}
-          >
-            <SelectTriggerNoDropdownIcon className="m-0 p-0 border-0 bg-transparent w-auto h-auto [&>span]:hidden">
-              <Button type="button" size="sm">
-                <Icons.addCircle size={18} className="text-white mr-1" />
-                {selectedYear}
-              </Button>
-            </SelectTriggerNoDropdownIcon>
-            <SelectContent>
-              {years.map((year) => (
-                <SelectItem key={year} value={year.toString()}>
-                  {year}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+    <div className="w-full h-full flex flex-col" ref={containerRef}>
+      <div className="px-3 pt-3">
+        <div className="flex items-center justify-between flex-col lg:flex-row gap-2 mb-3">
+          <h3 className={cn("text-lg font-bold text-foreground", archivo.className)}>
+            Income Overview
+          </h3>
+        </div>
+        <div className="flex flex-col mb-4">
+          <h3 className={cn("text-lg font-semibold text-muted-foreground", archivo.className)}>
+            Total Revenue
+          </h3>
+          <h3 className={cn("text-lg font-bold text-foreground", archivo.className)}>
+            {hasData ? formatCurrency(totalRevenue) : formatCurrency(0)}
+          </h3>
+          <small className="text-sm text-muted-foreground">
+            {hasData ? `From ${earliestDate?.getFullYear()}` : 'No data available'}
+          </small>
         </div>
       </div>
-      <div className="flex flex-col">
-        <h3 className={cn("text-lg font-semibold text-muted-foreground", archivo.className)}>
-          Total Revenue
-        </h3>
-        {hasData ? (
-          <>
-            <h3 className={cn("text-lg font-bold text-foreground", archivo.className)}>
-              {formatCurrency(totalRevenue)}
-            </h3>
-            <small className="text-sm text-muted-foreground">
-              From {earliestDate?.getFullYear()}
-            </small>
-            <OverviewChart data={tournamentIncomeList} />
-          </>
-        ) : (
-          <>
-            <h3 className={cn("text-lg font-bold text-muted-foreground", archivo.className)}>
-              {formatCurrency(0)}
-            </h3>
-            <small className="text-sm text-muted-foreground">
-              No data available
-            </small>
+      <div className="flex-1 min-h-0 w-full px-3 pb-3">
+        <div className="w-full h-full">
+          {hasData ? (
+            <div className="w-full h-full" key={containerWidth}>
+              <OverviewChart data={tournamentIncomeList} />
+            </div>
+          ) : (
             <EmptyOverviewChart />
-          </>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

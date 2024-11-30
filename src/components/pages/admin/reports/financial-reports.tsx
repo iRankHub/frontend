@@ -1,11 +1,4 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import React, { useEffect, useState } from "react";
 import IncomeOverview from "./income-overview";
 import { ProvincialChart } from "./charts/provincial-chart";
@@ -38,13 +31,13 @@ type TournamentIncomeType = {
 
 type Props = {
   tournamentId?: number;
+  selectedYear: number;
 };
 
-function FinancialReports({ tournamentId }: Props) {
+function FinancialReports({ tournamentId, selectedYear }: Props) {
   const { user } = useUserStore();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedTab, setSelectedTab] = useState("schools");
   const [tournamentIncomeList, setTournamentIncomeList] = useState<
     TournamentIncomeType[]
@@ -77,7 +70,7 @@ function FinancialReports({ tournamentId }: Props) {
         group_by: ReportsGroup_by.Category,
         report_type: ReportType.IncomeOverview,
         token: user?.token || "",
-        tournament_id: tournamentId || 0,
+        tournament_id: tournamentId,
       };
 
       // Fetch expense data
@@ -86,7 +79,7 @@ function FinancialReports({ tournamentId }: Props) {
         group_by: ReportsGroup_by.Category,
         report_type: ReportType.Expenses,
         token: user?.token || "",
-        tournament_id: tournamentId || 0,
+        tournament_id: tournamentId,
       };
 
       // Fetch performance data with group_by based on selected tab
@@ -98,7 +91,7 @@ function FinancialReports({ tournamentId }: Props) {
             : ReportsGroup_by.Location,
         report_type: ReportType.SchoolFinancialPerformance,
         token: user?.token || "",
-        tournament_id: tournamentId || 0,
+        tournament_id: tournamentId,
       };
 
       // Fetch all reports in parallel
@@ -114,6 +107,7 @@ function FinancialReports({ tournamentId }: Props) {
       setSchoolsPerformance(performanceResponse.schoolPerformanceList || []);
     } catch (error) {
       console.error("Error fetching financial reports:", error);
+      console.log(error);
       toast({
         title: "Error",
         description:
@@ -128,7 +122,7 @@ function FinancialReports({ tournamentId }: Props) {
   useEffect(() => {
     if (!user || !user.token) return;
     fetchFinancialReports();
-  }, [user, tournamentId, selectedYear, selectedTab]); // Added selectedTab to dependencies
+  }, [user, tournamentId, selectedYear, selectedTab]);
 
   return (
     <div className="w-full flex gap-5">
@@ -142,7 +136,6 @@ function FinancialReports({ tournamentId }: Props) {
             <IncomeOverview
               tournamentIncomeList={tournamentIncomeList}
               selectedYear={selectedYear}
-              onYearChange={setSelectedYear}
               years={years}
             />
           )}

@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -15,100 +14,178 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { AttendanceReportResponse } from "@/lib/grpc/proto/analytics/analytics_pb";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
-];
-
-const chartConfig = {
-  visitors: { label: "Visitors" },
-  chrome: { label: "Chrome", color: "hsl(var(--chart-1))" },
-  safari: { label: "Safari", color: "hsl(var(--chart-2))" },
-  firefox: { label: "Firefox", color: "hsl(var(--chart-3))" },
-  edge: { label: "Edge", color: "hsl(var(--chart-4))" },
-  other: { label: "Other", color: "hsl(var(--chart-5))" },
-} satisfies ChartConfig;
-
-interface ExpenseData {
-  name: string;
-  value: number;
-  percentage: number;
-  color: string;
+interface AttendanceProps {
+  data: AttendanceReportResponse.AsObject | null;
+  isLoading: boolean;
 }
 
-const data: ExpenseData[] = [
-  { name: "Food", value: 250, percentage: 43.29, color: "#3b82f6" },
-  { name: "transport", value: 350, percentage: 36.16, color: "#10b981" },
-  { name: "perdiem", value: 350, percentage: 36.16, color: "#22c55e" },
-  { name: "awarding", value: 350, percentage: 36.16, color: "#16a34a" },
-  { name: "stationary", value: 250, percentage: 40.22, color: "#ef4444" },
-];
+interface ChartItem {
+  label: string;
+  color?: string;
+}
 
-export function Attendance() {
+type CategoryKey =
+  | "school_count"
+  | "Private"
+  | "Public"
+  | "Government"
+  | "International"
+  | "Other";
+
+const chartConfig: Record<CategoryKey, ChartItem> = {
+  school_count: { label: "Schools" },
+  Private: { label: "Private", color: "rgb(14 165 233)" }, // sky-500
+  Public: { label: "Public", color: "rgb(34 197 94)" }, // green-500
+  Government: { label: "Government", color: "rgb(239 68 68)" }, // red-500
+  International: { label: "International", color: "rgb(234 179 8)" }, // yellow-500
+  Other: { label: "Other", color: "rgb(161 161 170)" }, // zinc-400
+} as const;
+
+const categoryColors: Record<Exclude<CategoryKey, "school_count">, string> = {
+  Private: "sky",
+  Public: "green",
+  Government: "red",
+  International: "yellow",
+  Other: "zinc",
+} as const;
+
+const AttendanceItemSkeleton = () => (
+  <div className="flex items-center justify-between">
+    <div className="flex items-center gap-2">
+      <Skeleton className="w-3 h-3 rounded-full" />
+      <Skeleton className="h-4 w-24" />
+      <Skeleton className="h-4 w-16" />
+    </div>
+    <Skeleton className="h-4 w-12" />
+  </div>
+);
+
+const EmptyAttendance = () => (
+  <div className="col-span-2 flex flex-col items-center justify-center py-8 text-center">
+    <div className="text-gray-400 mb-2">No data available</div>
+    <p className="text-sm text-gray-500">
+      There are no statistics available for the selected categories
+    </p>
+  </div>
+);
+
+export function Attendance({ data, isLoading }: AttendanceProps) {
+  const categoryData =
+    data?.categoryAttendanceList?.map((item) => ({
+      category: item.category,
+      school_count: item.schoolCount,
+      fill:
+        chartConfig[item.category as CategoryKey]?.color ||
+        chartConfig.Other.color,
+    })) || [];
+
+  if (isLoading) {
+    return (
+      <Card className="w-full rounded-lg overflow-hidden">
+        <div className="flex flex-col xl:flex-row w-full relative">
+          <div className="w-full xl:w-[60%] p-4">
+            <CardHeader className="text-center xl:text-left p-0 mb-4">
+              <CardTitle>Attendance by category</CardTitle>
+              <CardDescription>Loading...</CardDescription>
+            </CardHeader>
+            <CardContent className="h-[400px] w-full p-0">
+              <div className="h-full w-full bg-muted rounded-lg" />
+            </CardContent>
+          </div>
+          <div className="hidden xl:block absolute right-[40%] top-0 bottom-0 w-px bg-muted dark:bg-muted-foreground" />
+          <div className="w-full xl:w-[40%] p-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-4">
+              {[1, 2, 3, 4].map((i) => (
+                <AttendanceItemSkeleton key={i} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+
+  if (!data?.categoryAttendanceList?.length) {
+    return (
+      <Card className="w-full rounded-lg overflow-hidden">
+        <EmptyAttendance />
+      </Card>
+    );
+  }
+
   return (
-    <Card className="border-0 w-full p-5 overflow-hidden">
-      <div className="flex flex-col lg:flex-row">
-        <div className="flex-1">
-          <CardHeader className="text-center lg:text-left">
-            <CardTitle>Pie Chart</CardTitle>
-            <CardDescription>January - June 2024</CardDescription>
+    <Card className="w-full rounded-lg overflow-hidden">
+      <div className="flex flex-col xl:flex-row w-full relative">
+        <div className="w-full xl:w-[60%] p-4">
+          <CardHeader className="text-center xl:text-left p-0 mb-4">
+            <CardTitle>Attendance by category</CardTitle>
+            <CardDescription>{`Total Schools: ${
+              data?.totalSchools || 0
+            }`}</CardDescription>
           </CardHeader>
-          <CardContent className="lg:h-[400px] w-full px-0 lg:px-6">
+          <CardContent className="h-[400px] w-full p-0">
             <ChartContainer config={chartConfig} className="h-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent hideLabel />}
-                  />
-                  <Pie
-                    data={chartData}
-                    dataKey="visitors"
-                    nameKey="browser"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={120}
-                    innerRadius={60}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
+              <div className="max-w-[400px] sm:max-w-none ml-0 sm:mx-auto">
+                <ResponsiveContainer width="100%" height={400}>
+                  <PieChart>
+                    <ChartTooltip
+                      cursor={false}
+                      content={<ChartTooltipContent hideLabel />}
+                    />
+                    <Pie
+                      data={categoryData}
+                      dataKey="school_count"
+                      nameKey="category"
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={0}
+                      outerRadius={160}
+                      paddingAngle={0}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
             </ChartContainer>
           </CardContent>
         </div>
 
-        <div className="lg:w-[500px] p-4 lg:p-6 border-t lg:border-t-0 lg:border-l">
-          <div className="grid grid-cols-2 gap-3 max-w-md mx-auto lg:max-w-none">
-            {data.map((item, index) => (
-              <div
-                key={index}
-                className="flex flex-col space-y-1 pb-2 border-b last:border-0"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
+        <div className="hidden xl:block absolute right-[40%] top-0 bottom-0 w-px bg-muted dark:bg-muted-foreground" />
+
+        <div className="w-full xl:w-[40%] p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-4">
+            {data?.categoryAttendanceList?.map((item) => {
+              const category = item.category as keyof typeof categoryColors;
+              const colorClass = categoryColors[category] || categoryColors.Other;
+
+              return (
+                <div
+                  key={item.category}
+                  className="flex items-center justify-between p-2 rounded-md hover:bg-muted/50 transition-colors"
+                >
+                  <div className="flex items-center gap-2">
                     <div
-                      className="w-3 h-3 rounded-full mr-2"
-                      style={{ backgroundColor: item.color }}
-                    ></div>
-                    <span className="font-medium capitalize">{item.name}</span>
+                      className={`w-3 h-3 rounded-full bg-${colorClass}-500 border-2 border-${colorClass}-100`}
+                    />
+                    <span className="text-sm font-medium">{item.category}</span>
+                    {item.percentageChange >= 0 ? (
+                      <span className="text-sm text-green-500 flex items-center gap-0.5">
+                        <TrendingUp className="h-3 w-3" />
+                        {item.percentageChange.toFixed(2)}%
+                      </span>
+                    ) : (
+                      <span className="text-sm text-red-500 flex items-center gap-0.5">
+                        <TrendingDown className="h-3 w-3" />
+                        {item.percentageChange.toFixed(2)}%
+                      </span>
+                    )}
                   </div>
-                  <span className="text-muted-foreground font-medium">
-                    ${item.value}
-                  </span>
+                  <span className="text-sm font-medium">{item.schoolCount}</span>
                 </div>
-                <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                  {item.percentage > 40 ? (
-                    <TrendingUp className="w-4 h-4 text-green-500" />
-                  ) : (
-                    <TrendingDown className="w-4 h-4 text-red-500" />
-                  )}
-                  <span>{item.percentage.toFixed(2)}%</span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

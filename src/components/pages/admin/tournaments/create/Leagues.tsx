@@ -262,7 +262,6 @@ function Leagues({
       <h3
         className={cn(
           "text-foreground font-semibold text-lg tracking-wider",
-          inter.className
         )}
       >
         Leagues

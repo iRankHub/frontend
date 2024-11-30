@@ -80,24 +80,41 @@ const PerformanceTrendChart: React.FC = () => {
     const today = new Date();
     let filteredData: DailyRegistration.AsObject[];
 
-    const getDayDifference = (itemDate: string): number => {
-      const date = new Date(itemDate);
-      const diffTime = Math.abs(today.getTime() - date.getTime());
-      return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    };
-
     switch (filterValue) {
-      case "7d":
-        filteredData = data.filter((item) => getDayDifference(item.date) <= 7);
+      case "7d": {
+        const cutoffDate = new Date(today);
+        cutoffDate.setDate(today.getDate() - 7);
+        filteredData = data.filter((item) => {
+          const itemDate = new Date(item.date);
+          return itemDate >= cutoffDate;
+        });
         break;
-      case "30d":
-        filteredData = data.filter((item) => getDayDifference(item.date) <= 30);
+      }
+      case "30d": {
+        const cutoffDate = new Date(today);
+        cutoffDate.setDate(today.getDate() - 30);
+        filteredData = data.filter((item) => {
+          const itemDate = new Date(item.date);
+          return itemDate >= cutoffDate;
+        });
         break;
-      default:
-        filteredData = data;
+      }
+      default: {
+        const cutoffDate = new Date(today);
+        cutoffDate.setDate(today.getDate() - 90);
+        filteredData = data.filter((item) => {
+          const itemDate = new Date(item.date);
+          return itemDate >= cutoffDate;
+        });
+      }
     }
 
-    setChartData(filteredData);
+    // Sort the data chronologically (oldest to newest)
+    const sortedData = [...filteredData].sort((a, b) => 
+      new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+
+    setChartData(sortedData);
   };
 
   useEffect(() => {

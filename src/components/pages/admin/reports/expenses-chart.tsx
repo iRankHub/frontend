@@ -106,15 +106,15 @@ function ExpensesChart({ expenseCategoriesList }: Props) {
   const hasData = expenseCategoriesList.length > 0;
 
   return (
-    <div className="mt-10 px-5">
-      <div className="mt-5 w-full rounded-md p-10">
+    <div className="mt-10 sm:px-5">
+      <div className="mt-5 w-full rounded-md p-3 md:p-10">
         <h3 className="text-lg font-semibold">Expenses per category</h3>
         {hasData ? (
-          <div className="flex items-center justify-between gap-10">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
             <ExpensesPerCategory data={expenseCategories} />
-            <div className="h-full grid grid-cols-2 gap-4 justify-center">
+            <div className="h-full grid w-full sm:w-auto sm:grid-cols-2 gap-4 md:justify-center px-5">
               {expenseCategories.map((category) => (
-                <div key={category.name} className="flex items-center justify-between">
+                <div key={category.name} className="w-full flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className={`w-3 h-3 rounded-full ${category.color} border-2 ${category.borderColor}`}></div>
                     <span className="text-sm">{category.name}</span>

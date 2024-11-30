@@ -3,14 +3,14 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Roles, useUserStore } from "@/stores/auth/auth.store";
 import { Undo2 } from "lucide-react";
-import { Rubik } from "next/font/google";
+import { Inter, Rubik } from "next/font/google";
 import Image from "next/image";
 import { redirect, useRouter } from "next/navigation";
 import React from "react";
 
-const rubik = Rubik({
+const inter = Inter({
   weight: ["400", "500", "600", "700"],
-  subsets: ["latin", "hebrew", "arabic"],
+  subsets: ["latin"],
 });
 
 function NotFound() {
@@ -37,8 +37,8 @@ function NotFound() {
   };
   return (
     <div className="bg-white min-h-screen grid place-content-center">
-      <h1 className={cn("text-6xl text-center font-bold mb-4 text-foreground dark:text-white", rubik.className)}>Oops!</h1>
-      <h2 className={cn("text-3xl mb-8 text-center font-semibold text-foreground dark:text-white", rubik.className)}>Welcome to 70&apos;s</h2>
+      <h1 className={cn("text-6xl text-center font-bold mb-4 text-foreground dark:text-white", inter.className)}>Oops!</h1>
+      <h2 className={cn("text-3xl mb-8 text-center font-semibold text-foreground dark:text-white", inter.className)}>Welcome to 70&apos;s</h2>
       <div className="w-[600px] h-[400px] relative">
         <div className="w-full h-full z-0 relative">
           <Image
@@ -59,7 +59,7 @@ function NotFound() {
           </div>
         </div>
       </div>
-      <div className="mx-auto mt-4 flex items-center bg-red-200">
+      <div className="mx-auto mt-4 flex items-center">
         <Button
           onClick={handleNavigateBack}
           className="flex items-center justify-center"

@@ -37,28 +37,66 @@ const PerformanceTrendChart: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { user } = useUserStore();
 
+  const getDateRange = (range: TimeRange) => {
+    const endDate = new Date();
+    const startDate = new Date();
+    
+    switch (range) {
+      case "7d":
+        startDate.setDate(endDate.getDate() - 7);
+        break;
+      case "30d":
+        startDate.setDate(endDate.getDate() - 30);
+        break;
+      default:
+        startDate.setDate(endDate.getDate() - 90);
+    }
+    
+    return {
+      startDate: startDate.toISOString().split('T')[0],
+      endDate: endDate.toISOString().split('T')[0]
+    };
+  };
+
   const filterData = (data: PerformanceData.AsObject[]): void => {
     const today = new Date();
     let filteredData: PerformanceData.AsObject[];
 
-    const getDayDifference = (itemDate: string): number => {
-      const date = new Date(itemDate);
-      const diffTime = Math.abs(today.getTime() - date.getTime());
-      return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    };
-
     switch (filterValue) {
-      case "7d":
-        filteredData = data.filter((item) => getDayDifference(item.tournamentDate) <= 7);
+      case "7d": {
+        const cutoffDate = new Date(today);
+        cutoffDate.setDate(today.getDate() - 7);
+        filteredData = data.filter((item) => {
+          const itemDate = new Date(item.tournamentDate);
+          return itemDate >= cutoffDate;
+        });
         break;
-      case "30d":
-        filteredData = data.filter((item) => getDayDifference(item.tournamentDate) <= 30);
+      }
+      case "30d": {
+        const cutoffDate = new Date(today);
+        cutoffDate.setDate(today.getDate() - 30);
+        filteredData = data.filter((item) => {
+          const itemDate = new Date(item.tournamentDate);
+          return itemDate >= cutoffDate;
+        });
         break;
-      default:
-        filteredData = data;
+      }
+      default: {
+        const cutoffDate = new Date(today);
+        cutoffDate.setDate(today.getDate() - 90);
+        filteredData = data.filter((item) => {
+          const itemDate = new Date(item.tournamentDate);
+          return itemDate >= cutoffDate;
+        });
+      }
     }
 
-    setChartData(filteredData);
+    // Sort the data chronologically (oldest to newest)
+    const sortedData = [...filteredData].sort((a, b) => 
+      new Date(a.tournamentDate).getTime() - new Date(b.tournamentDate).getTime()
+    );
+
+    setChartData(sortedData);
   };
 
   useEffect(() => {
@@ -66,10 +104,11 @@ const PerformanceTrendChart: React.FC = () => {
 
     setIsLoading(true);
     
+    const dateRange = getDateRange(filterValue);
     const params = {
       user_id: 26,
-      start_date: "2024-10-10",
-      end_date: "2024-10-30",
+      start_date: dateRange.startDate,
+      end_date: dateRange.endDate,
       token: user.token,
     };
 
@@ -86,11 +125,7 @@ const PerformanceTrendChart: React.FC = () => {
       });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-
-  useEffect(() => {
-    filterData(performance);
-  }, [filterValue, performance]);
+  }, [user, filterValue]);  // Added filterValue dependency
 
   return (
     <Card className="w-full h-full border-muted">

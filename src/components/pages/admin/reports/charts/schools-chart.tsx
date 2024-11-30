@@ -4,8 +4,6 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
 } from "@/components/ui/chart";
 import { SchoolPerformanceData } from "@/lib/grpc/proto/analytics/analytics_pb";
 import {BarChart as BarChartLucide} from "lucide-react"
