@@ -119,35 +119,30 @@ export const schoolSchema = z.object({
     }),
     continent: z.string()
         .optional(),
-
     // Fields for local schools
     province_state: z.string()
         .optional(),
-
     district_region: z.string()
         .optional(),
-
     // Contact Information
-    contact_person: z.string()
-        .min(3, {
-            message: "Name too short!"
-        }),
-
+    contact_person_firstname: z.string().min(3, {
+        message: "First name too short!"
+    }),
+    contact_person_lastname: z.string().min(3, {
+        message: "Last name too short!"
+    }),
     contact_person_number: z.string()
         .refine(validator.isMobilePhone, {
             message: "Please enter a valid phone number"
         }),
-
     contact_person_email: z.string()
         .email({
             message: "Please enter a valid email address"
         }),
-
     email: z.string()
         .email({
             message: "Please enter a valid email address"
         }),
-
     // Password fields
     password: z.string()
         .min(8, {
@@ -157,7 +152,6 @@ export const schoolSchema = z.object({
         .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/, {
             message: "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
         }),
-
     confirm_password: z.string()
         .min(8, {
             message: "Password must be at least 8 characters long"

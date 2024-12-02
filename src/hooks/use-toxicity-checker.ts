@@ -29,19 +29,20 @@ type UseToxicityCheckOptions = {
     apiKey: string;
 };
 
-// Add type for Gemini API error
 interface GenerativeError extends Error {
     status?: string;
 }
 
 const DEFAULT_PROMPT = `
-You are a debate judge evaluating feedback. Analyze the following text and rate how appropriate it is for a debate context.
-Rate it from 0 to 1 (0 being completely appropriate, 1 being inappropriate) on these aspects:
-- toxicity (unprofessional or inappropriate language)
-- severe_toxicity (very harsh or aggressive language)
-- identity_attack (biased or discriminatory language)
-- insult (demeaning or disrespectful language)
-- threat (intimidating language)
+You are a debate judge evaluating feedback. Analyze the following text and rate how appropriate it is for a debate context. Rate it from 0 to 1 (0 being completely appropriate, 1 being inappropriate) on these aspects:
+- toxicity (unprofessional, offensive, or inappropriate language that can harm the conversation)
+- severe_toxicity (very aggressive, vulgar, or harmful language that creates a hostile environment)
+- identity_attack (biased, discriminatory, or prejudiced language that targets someone’s identity, such as race, gender, or nationality)
+- insult (demeaning, belittling, or disrespectful language intended to degrade or humiliate someone)
+- threat (language that intimidates or implies harm or violence)
+- passive_aggressiveness (subtle or indirect hostility, such as sarcasm, backhanded compliments, or underhanded remarks)
+- mockery (language that ridicules or mocks someone or their arguments in a non-constructive way)
+- condescension (patronizing language that treats others as inferior or less capable)
 
 Respond ONLY with a JSON object. Example:
 {
@@ -49,7 +50,10 @@ Respond ONLY with a JSON object. Example:
   "severe_toxicity": 0,
   "identity_attack": 0,
   "insult": 0.2,
-  "threat": 0
+  "threat": 0,
+  "passive_aggressiveness": 0.1,
+  "mockery": 0.1,
+  "condescension": 0.2
 }
 
 Text to analyze:
@@ -105,19 +109,19 @@ export function useToxicityCheck(
                     safetySettings: [
                         {
                             category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-                            threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+                            threshold: HarmBlockThreshold.HARM_BLOCK_THRESHOLD_UNSPECIFIED,
                         },
                         {
                             category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-                            threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+                            threshold: HarmBlockThreshold.HARM_BLOCK_THRESHOLD_UNSPECIFIED,
                         },
                         {
                             category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-                            threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+                            threshold: HarmBlockThreshold.HARM_BLOCK_THRESHOLD_UNSPECIFIED,
                         },
                         {
                             category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-                            threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+                            threshold: HarmBlockThreshold.HARM_BLOCK_THRESHOLD_UNSPECIFIED,
                         },
                     ],
                 });
@@ -131,7 +135,7 @@ export function useToxicityCheck(
                     if (generationError instanceof Error && 
                         generationError.message.includes('blocked due to SAFETY')) {
                         setState({
-                            isToxic: true, // Change: Consider blocked content as toxic
+                            isToxic: true,
                             isLoading: false,
                             error: null,
                             metrics: DEFAULT_METRICS,

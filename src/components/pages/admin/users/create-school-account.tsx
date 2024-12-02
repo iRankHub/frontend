@@ -102,8 +102,8 @@ function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
         : `${data.continent}, ${data.country}`;
 
     await signUp({
-      firstName: data.contact_person.split(" ")[0],
-      lastName: data.contact_person.split(" ")[1] || "",
+      firstName: data.contact_person_firstname,
+      lastName: data.contact_person_lastname,
       address,
       email: data.email,
       password: data.password,
@@ -133,6 +133,7 @@ function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
         });
       })
       .catch((err) => {
+        console.log(err);
         console.error(err.message);
         toast({
           variant: "destructive",
@@ -591,22 +592,40 @@ function CreateSchoolAccount({ type, setSheetOpen }: CreateUserProps) {
           )}
           {activeStep === 2 && (
             <>
-              <FormField
-                control={form.control}
-                name="contact_person"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="capitalize">
-                      Contact Person Name
-                      <b className="text-primary font-light"> *</b>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder="Emma" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex items-start gap-3">
+                <FormField
+                  control={form.control}
+                  name="contact_person_firstname"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="capitalize">
+                        Contact First Name
+                        <b className="text-primary font-light"> *</b>
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder="Emma" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="contact_person_lastname"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="capitalize">
+                        Contact Last Name
+                        <b className="text-primary font-light"> *</b>
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder="Darsen" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
                 control={form.control}
                 name="contact_person_number"
