@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Image from "next/image";
-import { Camera } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 import { Button } from "@/components/ui/button";
@@ -47,7 +46,7 @@ interface ImageType {
 function ProfileForm({ user }: ProfileFormProps) {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const { user: authUser, updateUsername } = useUserStore((state) => state);
+  const { user: authUser, updateUsername, updateProfilePicture } = useUserStore((state) => state);
   const [profileImage, setProfileImage] = useState<ImageType | null>(null);
   const [currentUser, setCurrentUser] = useState<
     UserProfile.AsObject | undefined
@@ -75,6 +74,7 @@ function ProfileForm({ user }: ProfileFormProps) {
         console.error(err.message);
       });
   }, [authUser]);
+
   const form = useForm<ProfileFormInputs>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -88,7 +88,6 @@ function ProfileForm({ user }: ProfileFormProps) {
         return;
       }
       setLoading(true);
-      console.log(profileImage?.url);
       const NewProfile = {
         token: authUser.token,
         userID: user.userid,
@@ -98,10 +97,12 @@ function ProfileForm({ user }: ProfileFormProps) {
         bio: user.address,
         phone: user.phone,
         profilePicture: profileImage ? profileImage.url : undefined,
+        email: user.email,
       };
       await updateAdminProfile(NewProfile)
         .then((res) => {
           updateUsername(data.username);
+          updateProfilePicture(res.profilePicturePresignedUrl);
           toast({
             variant: "success",
             title: "Success",

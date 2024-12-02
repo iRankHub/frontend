@@ -38,12 +38,25 @@ export const PanelBody = ({ children, className }: Props) => (
 function SidePanel({ children, className, side, panelHideOnbreakpoint }: Props) {
   return (
     <SheetContent
-      className={cn("h-[calc(100vh_-_56px)] top-[57px] p-0", className, panelHideOnbreakpoint !== undefined && `${panelHideOnbreakpoint}:hidden`)}
+      className={cn("h-[calc(100vh_-_56px)] top-[57px] p-0 overflow-auto", className, panelHideOnbreakpoint !== undefined && `${panelHideOnbreakpoint}:hidden`)}
       isOverlayVisible={false}
       side={side}
     >
       {children}
     </SheetContent>
+  );
+}
+
+interface PanelHeaderProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export function PanelHeader({ children, className }: PanelHeaderProps) {
+  return (
+    <div className={cn("px-4 py-3 border-b", className)}>
+      {children}
+    </div>
   );
 }
 

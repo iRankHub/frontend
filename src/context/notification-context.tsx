@@ -35,7 +35,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   const reconnectAttempts = useRef(0);
   const maxReconnectAttempts = 5;
   const baseDelay = 5000; // 5 seconds
-  const maxDelay = 30000; // 30 seconds
+  const maxDelay = 10000; // 30 seconds
   const streamRef = useRef<any>(null);
 
   const handleInitialNotifications = useCallback(async () => {

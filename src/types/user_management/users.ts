@@ -44,11 +44,12 @@ export interface UpdateAdminProfile {
     token: string;
     userID: number;
     name: string;
+    email?: string;
     gender?: string;
     address?: string;
+    phone?: string;
     bio?: string;
     profilePicture?: string;
-    phone?: string;
 }
 
 export interface UpdateSchoolProfile {

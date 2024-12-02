@@ -73,7 +73,7 @@ export const useUserStore = create<AuthState>(
                 user: state.user ? {...state.user, name} : null,
             })),
             updateProfilePicture: (newPicture) => set((state) => ({
-                user: state.user && state.user.picture !== null && newPicture ? {...state.user, picture: newPicture} : null,
+                user: state.user && newPicture ? {...state.user, picture: newPicture} : null,
             })),
             deleteToken: () => set((state) => ({
                 user: state.user ? { ...state.user, token: '', tokenExpiresAt: 0 } : null

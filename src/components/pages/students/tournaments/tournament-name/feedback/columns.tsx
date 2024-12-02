@@ -10,16 +10,18 @@ import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import SidePanel, {
+  PanelHeader,
   Panelheader,
 } from "@/components/layout/admin-panel/side-panel";
 import ProvideFeedback from "./submit-feedback";
 import ViewFeedback from "./ViewFeedback";
 import { useState } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-const ActionCell = ({ row }: { row: any }) => {
+function ActionCell({ row }: { row: any }) {
   const [viewOpen, setViewOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
-  const data = row.original as StudentFeedbackEntry.AsObject;
+  const data = row.original;
 
   return (
     <div className="w-full text-center flex items-center justify-center gap-2">
@@ -27,48 +29,55 @@ const ActionCell = ({ row }: { row: any }) => {
         <SheetTrigger>
           <Button
             type="button"
-            variant={"secondary"}
-            size={"icon"}
+            variant="secondary"
+            size="icon"
             className="bg-transparent w-6 h-6 p-1 m-0"
           >
             <Icons.view className="w-4 h-4 text-info" />
           </Button>
         </SheetTrigger>
         <SidePanel>
-          <Panelheader>
+          <PanelHeader>
             <div className="flex items-center gap-1">
               <h3 className="text-sm font-bold capitalize">Details Summary</h3>
             </div>
-          </Panelheader>
-          <ViewFeedback feedbackData={data} />
+          </PanelHeader>
+          <div className="h-full">
+            <ViewFeedback feedbackData={data} />
+          </div>
         </SidePanel>
       </Sheet>
+
       <Sheet modal open={feedbackOpen} onOpenChange={setFeedbackOpen}>
         <SheetTrigger>
           <Button
             type="button"
-            variant={"secondary"}
-            size={"icon"}
+            variant="secondary"
+            size="icon"
             className="bg-transparent w-6 h-6 p-1 m-0"
           >
             <Icons.messageSquareReply className="w-4 h-4 text-primary" />
           </Button>
         </SheetTrigger>
         <SidePanel>
-          <Panelheader>
+          <PanelHeader>
             <div className="flex items-center gap-1">
               <h3 className="text-sm font-bold capitalize">Feedback</h3>
             </div>
-          </Panelheader>
-          <ProvideFeedback
-            onClose={() => setFeedbackOpen(false)}
-            feedbackData={data}
-          />
+          </PanelHeader>
+          <ScrollArea className="flex-1">
+            <div className="h-full">
+              <ProvideFeedback
+                onClose={() => setFeedbackOpen(false)}
+                feedbackData={data}
+              />
+            </div>
+          </ScrollArea>
         </SidePanel>
       </Sheet>
     </div>
   );
-};
+}
 
 export const columns: ColumnDef<StudentFeedbackEntry.AsObject>[] = [
   {
@@ -88,7 +97,9 @@ export const columns: ColumnDef<StudentFeedbackEntry.AsObject>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="w-full text-center pr-12">{row.getValue("roundNumber")}</div>
+        <div className="w-full text-center pr-12">
+          {row.getValue("roundNumber")}
+        </div>
       );
     },
     enableHiding: false,

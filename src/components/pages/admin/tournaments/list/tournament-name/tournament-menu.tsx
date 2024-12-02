@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 
 export function TournamentMenu() {
   const pathname = usePathname();
+  const router = useRouter();
   const { name: routeName } = useParams<{ name: string }>();
   const menuList = getTournamentMenuList(pathname, routeName);
   const [isOpen] = useState(true);
@@ -59,6 +60,12 @@ export function TournamentMenu() {
     );
   };
 
+  const handleLogisticsTournament = () => {
+    if (routeName) {
+      router.push(`/admin/tournaments/list/${routeName}/logistics/billings`);
+    }
+  };
+
   return (
     <div className="hidden xl:inline w-full max-w-xs">
       <div className="flex items-center gap-3 mt-2 h-auto">
@@ -74,6 +81,7 @@ export function TournamentMenu() {
       <p className="text-muted-foreground text-xs italic font-medium mt-1">
         {totalMatches} records found
       </p>
+      <Button onClick={handleLogisticsTournament} className="w-full mt-3 h-8">View Logistics</Button>
       <ScrollArea className="[&>div>div[style]]:!block">
         <nav className="mt-8 h-full w-full">
           <ul className="flex flex-col min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1 px-2">
@@ -126,7 +134,9 @@ export function TournamentMenu() {
                               submenu.label
                                 .toLowerCase()
                                 .includes(searchTerm.toLowerCase()) ||
-                              label.toLowerCase().includes(searchTerm.toLowerCase())
+                              label
+                                .toLowerCase()
+                                .includes(searchTerm.toLowerCase())
                           )}
                           isOpen={isOpen}
                           defaultOpen={shouldExpandMenu({ label, submenus })}

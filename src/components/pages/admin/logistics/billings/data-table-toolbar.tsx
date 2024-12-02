@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { ExternalLinkIcon } from "lucide-react";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -13,11 +15,23 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [tournamentId, setTournamentId] = useState<string | null>(null);
+
+  // Extract tournament ID from URL
+  useEffect(() => {
+    const match = pathname.match(/\/admin\/tournaments\/list\/(\d+)/);
+    if (match && match[1]) {
+      setTournamentId(match[1]);
+    }
+  }, [pathname]);
+
   const isFiltered = table.getState().columnFilters.length > 0;
 
   // Function to create a padded string with right-aligned number
   const createPaddedTeamLabel = (num: number) => {
-    const totalWidth = 30; // Total width of the string
+    const totalWidth = 30;
     const baseText = "teams";
     const numStr = num.toString();
     const spacesNeeded = totalWidth - baseText.length - numStr.length;
@@ -50,6 +64,12 @@ export function DataTableToolbar<TData>({
     { label: "Pending", value: "pending" },
     { label: "Discount", value: "discount" },
   ], []);
+
+  const handleViewTournament = () => {
+    if (tournamentId) {
+      router.push(`/admin/tournaments/list/${tournamentId}`);
+    }
+  };
 
   return (
     <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown">
@@ -84,6 +104,18 @@ export function DataTableToolbar<TData>({
           >
             Reset
             <Cross2Icon className="ml-2 h-4 w-4" />
+          </Button>
+        )}
+      </div>
+      <div className="pr-5">
+        {tournamentId && (
+          <Button
+            variant="default"
+            onClick={handleViewTournament}
+            className="h-8"
+          >
+            View Tournament
+            <ExternalLinkIcon className="ml-2 h-4 w-4" />
           </Button>
         )}
       </div>

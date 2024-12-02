@@ -256,6 +256,7 @@ export const updateAdminProfile = async ({
     bio,
     profilePicture,
     phone,
+    email,
 }: UpdateAdminProfile): Promise<UpdateAdminProfileResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new UpdateAdminProfileRequest();
@@ -267,6 +268,7 @@ export const updateAdminProfile = async ({
         request.setPhone(phone || "");
         request.setBio(bio || "");
         request.setProfilePictureUrl(profilePicture || "");
+        request.setEmail(email || "");
 
         userClient.updateAdminProfile(request, {}, (err, response) => {
             if (err) {
