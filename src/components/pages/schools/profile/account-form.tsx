@@ -1,15 +1,7 @@
 "use client";
-import React from "react";
+
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -21,231 +13,187 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
-import { schoolProfileSchemaStep2 } from "@/lib/validations/admin/accounts/profile-update.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ToastAction } from "@/components/ui/toast";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { useToast } from "@/components/ui/use-toast";
-import { UpdateSchoolProfile, UpdateUserProfile } from "@/types/user_management/users";
-import { UserRole } from "@/types";
+import { Icons } from "@/components/icons";
 import { updateSchoolProfile } from "@/core/users/users";
-// import { updateUserProfile } from "@/core/users/users";
 
 interface AccountFormProps {
   user: UserProfile.AsObject;
 }
 
-type Inputs = z.infer<typeof schoolProfileSchemaStep2>;
+const schoolProfileSchema = z.object({
+  schoolEmail: z.string().email("Invalid school email address"),
+  contactPersonName: z.string().min(2, "Contact person name must be at least 2 characters"),
+  contactEmail: z.string().email("Invalid contact email address"),
+  phone: z.string().min(6, "Phone number must be at least 6 characters"),
+});
+
+type Inputs = z.infer<typeof schoolProfileSchema>;
 
 function AccountForm({ user }: AccountFormProps) {
-  const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [isPending, setIsPending] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   const { user: storeUser } = useUserStore((state) => state);
   const { toast } = useToast();
 
-  // react-hook-form
   const form = useForm<Inputs>({
-    resolver: zodResolver(schoolProfileSchemaStep2),
+    resolver: zodResolver(schoolProfileSchema),
     defaultValues: {
-      email: user?.email,
-      contact_person: user?.schooldetails?.schoolname,
-      contact_person_email: user?.email,
-      contact_person_number: user?.phone,
+      schoolEmail: user?.email || "",
+      contactPersonName: user?.name || "",
+      contactEmail: user?.email || "",
+      phone: user?.phone || "",
     },
   });
 
   const onSubmit = async (data: Inputs) => {
     if (!storeUser) return;
-    setIsPending(true);
+    setLoading(true);
 
-    const NewProfile: UpdateSchoolProfile = {
-      token: storeUser.token,
-      userID: user.userid,
-      address: user.address,
-      bio: user.bio,
-      contactEmail: data.contact_person_email,
-      contactPersonName: data.contact_person,
-      // contactPersonNationalId: data.
-      gender: user.gender,
-      phone: data.contact_person_number,
-      schoolEmail: data.contact_person_email,
-      schoolName: data.contact_person,
-    };
+    try {
+      const newProfile = {
+        token: storeUser.token,
+        userID: user.userid,
+        schoolEmail: data.schoolEmail,
+        contactPersonName: data.contactPersonName,
+        contactEmail: data.contactEmail,
+        phone: data.phone,
+        address: user.address,
+        bio: user.bio,
+        gender: user.gender,
+        profilePicture: user.profilePicturePresignedUrl,
+        schoolName: user.schooldetails?.schoolname,
+        schoolType: user.schooldetails?.schooltype,
+        contactPersonNationalId: "1234567890",
+      };
 
-    await updateSchoolProfile(NewProfile)
-      .then((res) => {
-        toast({
-          variant: "success",
-          title: "Success",
-          description: res.message,
-          action: (
-            <ToastAction altText="Close" className="bg-primary text-white">
-              Close
-            </ToastAction>
-          ),
-        });
-      })
-      .catch((err) => {
-        console.error(err.message);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description:
-            "Something went wrong. Please check your credentials and try again later",
-          action: (
-            <ToastAction altText="Close" className="bg-primary text-white">
-              Close
-            </ToastAction>
-          ),
-        });
-      })
-      .finally(() => {
-        setIsPending(false);
-        setDialogOpen(false);
+      const response = await updateSchoolProfile(newProfile);
+
+      toast({
+        variant: "success",
+        title: "Success",
+        description: response.message,
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
       });
+    } catch (error) {
+      console.error(error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Something went wrong. Please try again later",
+        action: (
+          <ToastAction altText="Close" className="bg-primary text-white">
+            Close
+          </ToastAction>
+        ),
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="w-full rounded-md overflow-hidden">
-      <div className="flex items-center justify-between flex-wrap gap-5 px-20 py-4 bg-brown">
-        <h3 className="text-xl text-background">Account</h3>
+      <div className="flex items-center justify-between flex-wrap gap-5 px-5 md:px-20 py-4 bg-brown">
+        <h3 className="text-xl text-white">Account</h3>
       </div>
-      <div className="w-full bg-background px-20 py-5">
+      <div className="w-full bg-background px-5 md:px-20 py-5">
         <Form {...form}>
-          <form
-            onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
-            className="flex flex-col gap-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <FormField
               control={form.control}
-              name="email"
+              name="schoolEmail"
               render={({ field }) => (
-                <FormItem className="col-span-2">
+                <FormItem>
                   <FormLabel>School Email</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="School email"
-                      className=""
-                      value={field.value}
+                    <Input 
+                      placeholder="school@example.com" 
+                      {...field} 
+                      disabled
+                      className="disabled:opacity-100"
                     />
                   </FormControl>
-                  <FormDescription className="text-sm text-muted-foreground">
-                    This is the email of the contact person name
+                  <FormDescription>
+                    Your school{`'`}s official email address.
                   </FormDescription>
-                  <FormMessage className="font-bold" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
-              name="contact_person"
+              name="contactPersonName"
               render={({ field }) => (
-                <FormItem className="col-span-2">
+                <FormItem>
                   <FormLabel>Contact Person Name</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="School contact person name"
-                      className=""
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
+                    <Input placeholder="Enter contact person's name" {...field} />
                   </FormControl>
-                  <FormDescription className="text-sm text-muted-foreground">
-                    This is the name that will be displayed on your profile and
-                    in emails.
+                  <FormDescription>
+                    The name of the person responsible for managing this account.
                   </FormDescription>
-                  <FormMessage className="font-bold" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
-              name="contact_person_email"
+              name="contactEmail"
               render={({ field }) => (
-                <FormItem className="col-span-2">
-                  <FormLabel>Contact Person Email</FormLabel>
+                <FormItem>
+                  <FormLabel>Contact Email</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter School contact person email"
-                      className=""
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
+                    <Input placeholder="contact@example.com" {...field} />
                   </FormControl>
-                  <FormDescription className="text-sm text-muted-foreground">
-                    This is the email of the contact person name
+                  <FormDescription>
+                    Email address for the contact person.
                   </FormDescription>
-                  <FormMessage className="font-bold" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
-              name="contact_person_number"
+              name="phone"
               render={({ field }) => (
-                <FormItem className="col-span-2">
+                <FormItem>
                   <FormLabel>Contact phone</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter contact phone’s number"
-                      className=""
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
+                    <Input placeholder="Enter phone number" {...field} />
                   </FormControl>
-                  <FormDescription className="text-sm text-muted-foreground">
-                    This is the phone of the contact person
+                  <FormDescription>
+                    Contact phone number for the school.
                   </FormDescription>
-                  <FormMessage className="font-bold" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
-            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-              <DialogTrigger className="max-w-52 w-full h-10 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90">
-                Update Profile
-                {isPending && (
-                  <div className="ml-2 w-3.5 h-3.5 rounded-full border-2 border-background border-r-0 animate-spin" />
-                )}
-                <span className="sr-only">Update Profile</span>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogTitle className="font-semibold">
-                  Are you absolutely sure?
-                </DialogTitle>
-                <DialogDescription>
-                  This action cannot be undone. This will permanently update
-                  your profile.
-                </DialogDescription>
-                <DialogFooter>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setDialogOpen(false)}
-                  >
-                    Cancel
-                    <span className="sr-only">Cancel</span>
-                  </Button>
-                  <Button
-                    type="submit"
-                    variant="default"
-                    onClick={() => {
-                      form.trigger();
-                      if (form.formState.isValid) {
-                        onSubmit(form.getValues() as Inputs);
-                      }
-                    }}
-                  >
-                    Update
-                    {isPending && (
-                      <div className="ml-2 w-3.5 h-3.5 rounded-full border-2 border-background border-r-0 animate-spin" />
-                    )}
-                    <span className="sr-only">Update</span>
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+
+            <Button
+              type="submit"
+              className="max-w-36 md:w-auto"
+              disabled={loading}
+            >
+              Update Profile
+              {loading && (
+                <Icons.spinner
+                  className="ml-2 h-4 w-4 animate-spin"
+                  aria-hidden="true"
+                />
+              )}
+            </Button>
           </form>
         </Form>
       </div>

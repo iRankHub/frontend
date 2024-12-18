@@ -82,10 +82,10 @@ export function UserNav() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {currentUser?.name}
+              {currentUser && currentUser.schooldetails?.schoolname}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
-              {currentUser?.email}
+              Profile
             </p>
           </div>
         </DropdownMenuLabel>

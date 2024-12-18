@@ -154,7 +154,7 @@ function PasswordsForm({ user }: PasswordsFormProps) {
   return (
     <div className="w-full rounded-md overflow-hidden">
       <div className="flex items-center justify-between flex-wrap gap-5 px-20 py-4 bg-brown">
-        <h3 className="text-xl text-background">Passwords</h3>
+        <h3 className="text-xl text-white">Passwords</h3>
       </div>
       <div className="w-full bg-background px-20 py-5">
         <div className="w-full leading-6 my-10">

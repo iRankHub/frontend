@@ -120,7 +120,7 @@ function AccountForm({ user }: AccountFormProps) {
   return (
     <div className="w-full rounded-md overflow-hidden">
       <div className="flex items-center justify-between flex-wrap gap-5 px-20 py-4 bg-brown">
-        <h3 className="text-xl text-background">Account</h3>
+        <h3 className="text-xl text-white">Account</h3>
       </div>
       <div className="w-full bg-background px-20 py-5">
         <Form {...form}>

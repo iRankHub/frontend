@@ -1,5 +1,5 @@
 "use client";
-import { ContentLayout } from "@/components/layout/volunteer-panel/content-layout";
+import { ContentLayout } from "@/components/layout/schools-panel/content-layout";
 import {
   Breadcrumb,
   BreadcrumbItem,

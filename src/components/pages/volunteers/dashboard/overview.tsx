@@ -35,7 +35,7 @@ function Overview({
       const value = cleanPercentage.replace("+", "");
       const isZero = parseFloat(value) === 0;
       return {
-        color: "text-success-foreground",
+        color: "text-success",
         textWithNoSign: `${value}%`,
         background: "bg-accent",
         isZero,
@@ -44,7 +44,7 @@ function Overview({
       const value = cleanPercentage.replace("-", "");
       const isZero = parseFloat(value) === 0;
       return {
-        color: "text-destructive",
+        color: "text-white",
         textWithNoSign: `${value}%`,
         background: "bg-destructive/10",
         isZero,

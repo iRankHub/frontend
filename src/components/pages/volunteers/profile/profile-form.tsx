@@ -5,7 +5,6 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -39,17 +38,21 @@ import { volunteerProfileSchemaStep1 } from "@/lib/validations/admin/accounts/pr
 import { useUserStore } from "@/stores/auth/auth.store";
 import { UpdateVolunteerProfile } from "@/types/user_management/users";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Camera } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { boolean, z } from "zod";
-import FileUpload from "../tournaments/tournament-name/file-upload";
+import { z } from "zod";
 import { splitName } from "@/utils/split-name";
 import { getSchoolsNoAuth } from "@/core/users/schools";
+import FileUpload from "../../admin/tournaments/create/file-upload";
 
 interface ProfileFormProps {
   user: UserProfile.AsObject;
+}
+
+interface ImageType {
+  previewUrl: string;
+  url: string;
 }
 
 type Inputs = z.infer<typeof volunteerProfileSchemaStep1>;
@@ -57,9 +60,10 @@ type Inputs = z.infer<typeof volunteerProfileSchemaStep1>;
 function ProfileForm({ user }: ProfileFormProps) {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [isPending, setIsPending] = React.useState(false);
-  const { user: storeUser } = useUserStore((state) => state);
+  const { user: storeUser, updateProfilePicture, updateUsername } = useUserStore((state) => state);
   const { toast } = useToast();
   const [schools, setSchools] = React.useState<School.AsObject[]>([]);
+  const [profileImage, setProfileImage] = useState<ImageType | null>(null);
 
   React.useEffect(() => {
     getSchoolsNoAuth({
@@ -73,6 +77,7 @@ function ProfileForm({ user }: ProfileFormProps) {
         console.error(err.message);
       });
   }, []);
+
   // react-hook-form
   const form = useForm<Inputs>({
     resolver: zodResolver(volunteerProfileSchemaStep1),
@@ -96,7 +101,7 @@ function ProfileForm({ user }: ProfileFormProps) {
       address: user.address,
       bio: user.bio,
       gender: user.gender,
-      profilePicture: user.profilePicturePresignedUrl,
+      profilePicture: profileImage ? profileImage.url : user.profilePicturePresignedUrl,
       firstName: data.first_name,
       lastName: data.last_name,
       graduateYear: Number(data.graduation_year),
@@ -108,6 +113,8 @@ function ProfileForm({ user }: ProfileFormProps) {
 
     await updateVolunteerProfile(NewProfile)
       .then((res) => {
+        updateUsername(data.first_name + " " + data.last_name)
+        updateProfilePicture(res.profilePicturePresignedUrl);
         toast({
           variant: "success",
           title: "Success",
@@ -142,23 +149,10 @@ function ProfileForm({ user }: ProfileFormProps) {
       });
   };
 
-  const handleUserProfile = (): string => {
-    // check if user is not null and if the userProfile is not of type Uint8Array
-    if (user.profilePicturePresignedUrl) {
-      // convert the Uint8Array to a string
-      const blob = new Blob([user.profilePicturePresignedUrl]);
-      const url = URL.createObjectURL(blob);
-
-      return url;
-    }
-
-    return user.profilePicturePresignedUrl;
-  };
-
   return (
     <div className="w-full rounded-md overflow-hidden">
       <div className="flex items-center justify-between flex-wrap gap-5 px-20 py-4 bg-brown">
-        <h3 className="text-xl text-background">Profile</h3>
+        <h3 className="text-xl text-white">Profile</h3>
       </div>
       <div className="w-full bg-background px-20 py-5">
         {user && (
@@ -171,18 +165,13 @@ function ProfileForm({ user }: ProfileFormProps) {
                 <div className="w-24 h-24 rounded-full relative cursor-pointer">
                   <Image
                     src={
-                      handleUserProfile().length > 0
-                        ? handleUserProfile()
-                        : "https://res.cloudinary.com/dmgv5azym/image/upload/v1701979624/jp5kql33vh3he0qsjnd7.jpg"
+                      profileImage?.previewUrl || user.profilePicturePresignedUrl || "/static/images/mic-speech.jpg"
                     }
                     alt={user.name}
                     layout="fill"
                     objectFit="cover"
                     className="rounded-full"
                   />
-                  <div className="absolute bottom-3 right-4">
-                    <Camera className="w-5 h-5 text-background dark:text-foreground" />
-                  </div>
                 </div>
                 <div>
                   <h4>Picture</h4>
@@ -193,15 +182,20 @@ function ProfileForm({ user }: ProfileFormProps) {
                           Choose file
                         </h3>
                         <span className="text-muted-foreground text-sm">
-                          No file selected
+                          {profileImage ? "Image selected" : "No file selected"}
                         </span>
                       </div>
-                      <p className="text-sm text-muted-foreground font-medium">
-                        Add a nice photo of yourself for your profile.
-                      </p>
                     </DialogTrigger>
-                    <FileUpload />
+                    <DialogContent>
+                      <FileUpload
+                        setTournamentImage={setProfileImage}
+                        folderType="profile"
+                      />
+                    </DialogContent>
                   </Dialog>
+                  <p className="text-sm text-muted-foreground font-medium">
+                    Add a nice photo of yourself for your profile.
+                  </p>
                 </div>
               </div>
               <FormField

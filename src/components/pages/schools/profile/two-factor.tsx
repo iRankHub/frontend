@@ -99,7 +99,7 @@ function TwoFactor({ user }: TwoFactorProps) {
   return (
     <div className="w-full rounded-md overflow-hidden">
       <div className="flex items-center justify-between flex-wrap gap-5 px-20 py-4 bg-brown">
-        <h3 className="text-xl text-background">Two Factor Authentication</h3>
+        <h3 className="text-xl text-white">Two Factor Authentication</h3>
       </div>
       <div className="w-full bg-background px-20 py-5">
         {user && (
