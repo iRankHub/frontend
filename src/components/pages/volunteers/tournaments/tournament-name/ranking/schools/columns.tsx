@@ -1,4 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
+import { Rankings } from "@/components/tables/data/schema";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
 import { SchoolRanking } from "@/lib/grpc/proto/debate_management/debate_pb";
 
@@ -12,6 +13,7 @@ export const columns: ColumnDef<SchoolRanking.AsObject>[] = [
       return (
         <div className="w-full pr-5 text-start">
           <span className="max-w-[200px] truncate font-medium">
+            {/* {row.getValue("id")} */}
             {row.index + 4}
           </span>
         </div>

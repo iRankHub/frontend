@@ -1,13 +1,9 @@
-import { BatchImportUsersRequest } from "@/lib/grpc/proto/authentication/auth_pb";
 import { userClient } from "../grpc-clients";
 import {
   GetSchoolsNoAuthRequest,
   GetSchoolsNoAuthResponse,
   GetSchoolsRequest,
   GetSchoolsResponse,
-  GetUserProfileRequest,
-  GetUserProfileResponse,
-  SchoolDetails,
 } from "@/lib/grpc/proto/user_management/users_pb";
 import { GetSchoolsNoAuthType, GetSchoolsType } from "@/types/user_management/schools";
 

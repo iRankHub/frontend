@@ -14,29 +14,82 @@ type Props = {
 };
 
 function TeamsRanking({ tournamentId }: Props) {
-  const [teamsRankings, setTeamsRankings] = useState<TeamRanking.AsObject[]>(
-    []
-  );
+  const [teamsRankings, setTeamsRankings] = useState<TeamRanking.AsObject[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const pageSize = 10;
   const { user } = useUserStore((state) => state);
 
-  useEffect(() => {
-    if (!user) return;
+  const fetchTeams = async (page: number) => {
+    if (!user || isLoading) return;
+    setIsLoading(true);
 
-    const options = {
-      token: user.token,
-      tournament_id: tournamentId,
-      page: 1,
-      page_size: 10,
-    };
+    try {
+      const options = {
+        token: user.token,
+        tournament_id: tournamentId,
+        page,
+        page_size: pageSize,
+      };
 
-    getTournamentTeamsRanking(options)
-      .then((res) => {
-        setTeamsRankings(res);
-      })
-      .catch((err) => {
-        console.error(err.message);
+      const res = await getTournamentTeamsRanking(options);
+
+      if (!res || !res.rankingsList) {
+        return;
+      }
+
+      setTotalCount(res.totalCount || 0);
+
+      setTeamsRankings(prev => {
+        if (page === 1) {
+          return res.rankingsList;
+        } else {
+          // Keep top 3 from first page and append new data
+          const topTeams = prev.slice(0, 3);
+          const newTeams = res.rankingsList.filter(team =>
+            !prev.some(p => p.teamId === team.teamId)
+          );
+          return [...topTeams, ...prev.slice(3), ...newTeams];
+        }
       });
+
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setCurrentPage(1);
+    setTeamsRankings([]);
+    fetchTeams(1);
   }, [user, tournamentId]);
+
+  const handleLoadMore = () => {
+    if (!isLoading && teamsRankings.length < totalCount) {
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+      fetchTeams(nextPage);
+    }
+  };
+
+  // If no teams data yet, show loading or empty state
+  if (teamsRankings.length === 0) {
+    return (
+      <div className="w-full rounded-md overflow-hidden">
+        <div className="flex items-center justify-between gap-5 p-5 py-4 bg-brown">
+          <h3 className="text-lg text-background font-medium text-white">
+            Team Ranking
+          </h3>
+        </div>
+        <div className="w-full bg-background p-8 px-5 text-center">
+          {isLoading ? "Loading..." : "No teams data available."}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full rounded-md overflow-hidden">
@@ -44,29 +97,29 @@ function TeamsRanking({ tournamentId }: Props) {
         <h3 className="text-lg text-background font-medium text-white">
           Team Ranking
         </h3>
-        {/* <Button
-          type="button"
-          className="border border-dashed border-white text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground group"
-        >
-          Activate
-          <span className="sr-only">Activate</span>
-        </Button> */}
       </div>
       <div className="w-full bg-background p-8 px-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-3">
           {teamsRankings.slice(0, 3).map((team, index) => (
-            <>
+            <React.Fragment key={team.teamId || index}>
               {index < 2 ? (
-                <WinnerCard key={index} speaker={team} count={index + 1} />
+                <WinnerCard speaker={team} count={index + 1} />
               ) : (
                 <div className="w-full sm:w-auto sm:col-span-2 md:col-span-1 mx-auto">
-                  <WinnerCard key={index} speaker={team} count={index + 1} />
+                  <WinnerCard speaker={team} count={index + 1} />
                 </div>
               )}
-            </>
+            </React.Fragment>
           ))}
         </div>
-        <DataTable data={teamsRankings.slice(3)} columns={columns} />
+        <DataTable
+          data={teamsRankings.slice(3)}
+          columns={columns}
+          infiniteScroll={true}
+          isLoading={isLoading}
+          hasMore={teamsRankings.length < totalCount}
+          onLoadMore={handleLoadMore}
+        />
       </div>
     </div>
   );

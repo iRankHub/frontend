@@ -1,5 +1,4 @@
 import { GetJudgeFeedbackRequest, GetJudgeFeedbackResponse, GetStudentFeedbackRequest, GetStudentFeedbackResponse, JudgeFeedbackEntry, MarkFeedbackAsReadRequest, MarkFeedbackAsReadResponse, StudentFeedbackEntry, SubmitJudgeFeedbackRequest, SubmitJudgeFeedbackResponse } from "@/lib/grpc/proto/debate_management/debate_pb";
-import { number, string } from "zod";
 import { debateClient } from "../grpc-clients";
 
 export interface GetStudentFeedback {
@@ -14,7 +13,7 @@ export const getStudentFeedback = async ({
     page_size,
     token,
     tournament_id
-}: GetStudentFeedback): Promise<StudentFeedbackEntry.AsObject[]> => {
+}: GetStudentFeedback): Promise<GetStudentFeedbackResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new GetStudentFeedbackRequest();
         request.setPage(page);
@@ -26,7 +25,7 @@ export const getStudentFeedback = async ({
             if (err) {
                 reject(err);
             } else {
-                resolve(response.toObject().feedbackEntriesList);
+                resolve(response.toObject());
             }
         })
     })
@@ -42,7 +41,7 @@ export const getJudgeFeedback = async ({
     page,
     page_size,
     token,
-}: GetJudgeFeedback): Promise<JudgeFeedbackEntry.AsObject[]> => {
+}: GetJudgeFeedback): Promise<GetJudgeFeedbackResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new GetJudgeFeedbackRequest();
         request.setPage(page);
@@ -53,7 +52,7 @@ export const getJudgeFeedback = async ({
             if (err) {
                 reject(err);
             } else {
-                resolve(response.toObject().feedbackEntriesList);
+                resolve(response.toObject());
             }
         })
     })

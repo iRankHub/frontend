@@ -14,7 +14,6 @@ import {
   GetStudentFeedback,
 } from "@/core/debates/feedback";
 import { getTournament } from "@/core/tournament/list";
-import { StudentFeedbackEntry } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { Tournament } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import AppLoader from "@/lib/loader";
 import { useFeedbacksStore } from "@/stores/admin/debate/feedbacks.store";
@@ -35,46 +34,79 @@ const page = withAuth(
 function Page({ params }: Iparms) {
   const { name: tourn_id } = params;
   const { user } = useUserStore((state) => state);
-  const [tournament, setTournament] = React.useState<
-    Tournament.AsObject | undefined
-  >(undefined);
-  const {setFeedbacks} = useFeedbacksStore((state) => state);
+  const [tournament, setTournament] = React.useState<Tournament.AsObject | undefined>(undefined);
+  const { setFeedbacks, addFeedbacks, setTotalCount } = useFeedbacksStore((state) => state);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const pageSize = 10;
+
+  const fetchFeedbacks = async (page: number) => {
+    if (!user) return;
+
+    setIsLoading(true);
+    try {
+      const options: GetStudentFeedback = {
+        token: user.token,
+        tournament_id: Number(tourn_id) || 0,
+        page,
+        page_size: pageSize,
+      };
+
+      const feedbackRes = await getStudentFeedback(options);
+
+      if (!feedbackRes || !feedbackRes.feedbackEntriesList) {
+        return;
+      }
+
+      if (page === 1) {
+        setFeedbacks(feedbackRes.feedbackEntriesList);
+      } else {
+        addFeedbacks(feedbackRes.feedbackEntriesList);
+      }
+
+      setTotalCount(feedbackRes.totalCount || 0);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!user) return;
-    setIsLoading(true);
 
     const data: GetTournamentType = {
       tournament_id: Number(tourn_id) || 0,
       token: user.token,
     };
 
-    const options: GetStudentFeedback = {
-      token: user.token,
-      tournament_id: Number(tourn_id) || 0,
-      page: 1,
-      page_size: 500,
-    };
+    // Reset states
+    setCurrentPage(1);
+    setFeedbacks([]);
+    setTotalCount(0);
 
-    const fetchTournament = getTournament({ ...data });
-    const fetchJudges = getStudentFeedback(options);
-
-    Promise.all([fetchTournament, fetchJudges])
-      .then(([tournamentRes, judgesRes]) => {
+    // Fetch tournament and initial feedbacks
+    Promise.all([
+      getTournament({ ...data }),
+      fetchFeedbacks(1)
+    ])
+      .then(([tournamentRes]) => {
         setTournament(tournamentRes.tournament);
-        setFeedbacks(judgesRes);
       })
       .catch((err) => {
-        console.error(err.message);
-        // You might want to add a toast notification here
-      })
-      .finally(() => {
-        setIsLoading(false);
+        console.error(err);
       });
-  }, [user, tourn_id, setFeedbacks]);
+  }, [user, tourn_id]);
 
-  if (isLoading) {
+  const handleLoadMore = async () => {
+    if (!isLoading) {
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+      await fetchFeedbacks(nextPage);
+    }
+  };
+
+  if (isLoading && !tournament) {
     return <AppLoader />;
   }
 
@@ -98,6 +130,7 @@ function Page({ params }: Iparms) {
       </ContentLayout>
     );
   }
+
   return (
     <ContentLayout title="list">
       <div className="w-full flex items-center justify-between gap-5 mb-4">
@@ -123,7 +156,10 @@ function Page({ params }: Iparms) {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <StudentFeedbacks />
+      <StudentFeedbacks
+        isLoading={isLoading}
+        onLoadMore={handleLoadMore}
+      />
     </ContentLayout>
   );
 }

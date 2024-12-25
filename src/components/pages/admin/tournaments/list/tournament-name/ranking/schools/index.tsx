@@ -16,32 +16,86 @@ type Props = {
 };
 
 function Schools({ tournamentId }: Props) {
-  const [schoolsRankings, setSchoolsRankings] = useState<
-    SchoolRanking.AsObject[]
-  >([]);
+  const [schoolsRankings, setSchoolsRankings] = useState<SchoolRanking.AsObject[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const pageSize = 10;
   const { user } = useUserStore((state) => state);
 
-  useEffect(() => {
-    if (!user) return;
-    const options = {
-      token: user.token,
-      tournament_id: tournamentId,
-      page: 1,
-      page_size: 10,
-    };
-    getTournamentSchoolRanking(options)
-      .then((res) => {
-        setSchoolsRankings(res);
-      })
-      .catch((err) => {
-        console.error(err.message);
+  const fetchSchools = async (page: number) => {
+    if (!user || isLoading) return;
+    setIsLoading(true);
+
+    try {
+      const options = {
+        token: user.token,
+        tournament_id: tournamentId,
+        page,
+        page_size: pageSize,
+      };
+
+      const res = await getTournamentSchoolRanking(options);
+
+      if (!res || !res.rankingsList) {
+        return;
+      }
+
+      setTotalCount(res.totalCount || 0);
+
+      setSchoolsRankings(prev => {
+        if (page === 1) {
+          return res.rankingsList;
+        } else {
+          // Keep top 3 from first page and append new data
+          const topSchools = prev.slice(0, 3);
+          const newSchools = res.rankingsList.filter(school =>
+            !prev.some(p => p.schoolName === school.schoolName)
+          );
+          return [...topSchools, ...prev.slice(3), ...newSchools];
+        }
       });
+
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setCurrentPage(1);
+    setSchoolsRankings([]);
+    fetchSchools(1);
   }, [user, tournamentId]);
 
+  const handleLoadMore = () => {
+    if (!isLoading && schoolsRankings.length < totalCount) {
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+      fetchSchools(nextPage);
+    }
+  };
+
   const getUniqueKey = (school: SchoolRanking.AsObject, index: number) => {
-    // Create a unique key using school name and other properties
     return `${school.schoolName}-${school.totalPoints}-${index}`;
   };
+
+  // If no schools data yet, show loading or empty state
+  if (schoolsRankings.length === 0) {
+    return (
+      <div className="w-full rounded-md overflow-hidden">
+        <div className="flex items-center justify-between gap-5 p-5 py-4 bg-brown">
+          <h3 className="text-lg text-background font-medium text-white">
+            Schools Ranking
+          </h3>
+        </div>
+        <div className="w-full bg-background p-8 px-5 text-center">
+          {isLoading ? "Loading..." : "No schools data available."}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full rounded-md overflow-hidden">
@@ -64,7 +118,14 @@ function Schools({ tournamentId }: Props) {
             </div>
           ))}
         </div>
-        <DataTable data={schoolsRankings.slice(3)} columns={columns} />
+        <DataTable
+          data={schoolsRankings.slice(3)}
+          columns={columns}
+          infiniteScroll={true}
+          isLoading={isLoading}
+          hasMore={schoolsRankings.length < totalCount}
+          onLoadMore={handleLoadMore}
+        />
       </div>
     </div>
   );

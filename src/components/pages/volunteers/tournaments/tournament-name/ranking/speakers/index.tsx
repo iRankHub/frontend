@@ -4,7 +4,6 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import { DataTable } from "@/components/tables/data-table";
 import { columns } from "./columns";
-import { rankings } from "@/components/tables/data/tasks";
 import { StudentRanking } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { getTournamentStudentRanking } from "@/core/debates/rankings";
@@ -15,29 +14,73 @@ type Props = {
 };
 
 function Speakers({ tournamentId }: Props) {
-  const [studentRankings, setStudentRankings] = useState<
-    StudentRanking.AsObject[]
-  >([]);
+  const [studentRankings, setStudentRankings] = useState<StudentRanking.AsObject[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const pageSize = 5;
   const { user } = useUserStore((state) => state);
 
-  useEffect(() => {
-    if (!user) return;
+  const fetchRankings = async (page: number) => {
+    if (!user || isLoading || (!hasMore && page > 1)) return;
+    setIsLoading(true);
 
-    const options = {
-      token: user.token,
-      tournament_id: tournamentId,
-      page: 1,
-      page_size: 500,
-    };
+    try {
+      const options = {
+        token: user.token,
+        tournament_id: tournamentId,
+        page,
+        page_size: pageSize,
+      };
 
-    getTournamentStudentRanking(options)
-      .then((res) => {
-        setStudentRankings(res);
-      })
-      .catch((err) => {
-        console.error(err.message);
+      const res = await getTournamentStudentRanking(options);
+
+      if (!res || (Array.isArray(res) && res.length === 0)) {
+        setHasMore(false);
+        return;
+      }
+
+      setStudentRankings(prev => {
+        if (page === 1) {
+          // For first page, include top 3 and rest of the data
+          return res;
+        } else {
+          // For subsequent pages, keep top 3 and append new data
+          const topSpeakers = prev.slice(0, 3);
+          const newData = res.filter(speaker =>
+            !prev.some(p => p.studentId === speaker.studentId)
+          );
+          return [...topSpeakers, ...prev.slice(3), ...newData];
+        }
       });
+
+      // If we received fewer items than pageSize, we've reached the end
+      if (Array.isArray(res) && res.length < pageSize) {
+        setHasMore(false);
+      }
+
+    } catch (err) {
+      console.error(err);
+      setHasMore(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setCurrentPage(1);
+    setHasMore(true);
+    setStudentRankings([]);
+    fetchRankings(1);
   }, [user, tournamentId]);
+
+  const handleLoadMore = () => {
+    if (!isLoading && hasMore) {
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+      fetchRankings(nextPage);
+    }
+  };
 
   return (
     <div className="w-full rounded-md overflow-hidden">
@@ -45,30 +88,30 @@ function Speakers({ tournamentId }: Props) {
         <h3 className="text-lg text-background font-medium text-white">
           Speaker Ranking
         </h3>
-        {/* <Button
-          type="button"
-          className="border border-dashed border-white text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground group"
-        >
-          Activate
-          <span className="sr-only">Activate</span>
-        </Button> */}
       </div>
       <div className="w-full bg-background p-8 px-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-3">
           {studentRankings.slice(0, 3).map((speaker, index) => (
-            <>
+            <React.Fragment key={speaker.studentId || index}>
               {index < 2 ? (
-                <WinnerCard key={index} speaker={speaker} count={index + 1} />
+                <WinnerCard speaker={speaker} count={index + 1} />
               ) : (
                 <div className="w-full sm:w-auto sm:col-span-2 md:col-span-1 mx-auto">
-                  <WinnerCard key={index} speaker={speaker} count={index + 1} />
+                  <WinnerCard speaker={speaker} count={index + 1} />
                 </div>
               )}
-            </>
+            </React.Fragment>
           ))}
         </div>
 
-        <DataTable data={studentRankings.slice(3)} columns={columns} />
+        <DataTable
+          columns={columns}
+          data={studentRankings.slice(3)}
+          infiniteScroll={true}
+          isLoading={isLoading}
+          hasMore={hasMore}
+          onLoadMore={handleLoadMore}
+        />
       </div>
     </div>
   );

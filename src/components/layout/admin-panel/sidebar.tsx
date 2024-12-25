@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button";
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
 import { Menu } from "./Menu";
 import Image from "next/image";
+import GuidedOnboarding from "@/components/onboarding/GuidedOnboarding";
 
 export function Sidebar() {
   const sidebar = useStore(useSidebarToggle, (state) => state);
   if (!sidebar) return null;
 
+  // <GuidedOnboarding />
   return (
     <aside
       className={cn(

@@ -29,14 +29,17 @@ export function Menu({ isOpen }: MenuProps) {
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
-      <nav className="mt-8 h-full w-full">
+      <nav
+        className="mt-8 h-full w-full"
+        id="dashboard-section"
+      >
         <ul className="flex flex-col min-h-[calc(100vh-48px-36px-16px-50px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1 px-2">
           {menuList.map(({ groupLabel, menus }, groupIndex) => (
             <li className={cn("w-full", groupLabel ? "pt-5" : "")} key={groupIndex}>
               {menus.map(
                 ({ href, label, icon: Icon, active, submenus }, menuIndex) =>
                   submenus.length === 0 ? (
-                    <div className="w-full" key={menuIndex}>
+                    <div className="w-full" key={menuIndex} data-menu-item={label.toLowerCase().replace(/ /g, '-')}>
                       <TooltipProvider disableHoverableContent>
                         <Tooltip delayDuration={100}>
                           <TooltipTrigger asChild>

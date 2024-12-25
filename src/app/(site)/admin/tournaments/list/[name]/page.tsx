@@ -1,5 +1,4 @@
 "use client";
-import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
 import TournamentUpdateForm from "@/components/pages/admin/tournaments/list/tournament-name/tournament-update-form";
 import TournamentMenuWrapper from "@/components/pages/admin/tournaments/list/tournament-name/tournament-menu-wrapper";
 import {

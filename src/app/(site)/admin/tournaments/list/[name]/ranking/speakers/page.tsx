@@ -1,5 +1,4 @@
 "use client";
-import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
 import Speakers from "@/components/pages/admin/tournaments/list/tournament-name/ranking/speakers";
 import TournamentMenuWrapper from "@/components/pages/admin/tournaments/list/tournament-name/tournament-menu-wrapper";
 import {

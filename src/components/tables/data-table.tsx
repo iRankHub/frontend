@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import {
   ColumnDef,
@@ -16,7 +14,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
 import { DataTablePagination } from "./data-table-pagination";
 import {
   Table,
@@ -26,6 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useIntersection } from "@/hooks/use-intersection";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -33,20 +31,42 @@ interface DataTableProps<TData, TValue> {
   DataTableToolbar?: React.ComponentType<{
     table: TableType<TData>;
   }>;
+  infiniteScroll?: boolean;
+  isLoading?: boolean;
+  hasMore?: boolean;
+  onLoadMore?: () => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   DataTableToolbar,
+  infiniteScroll = false,
+  isLoading = false,
+  hasMore = false,
+  onLoadMore,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
+
+  // Reference for infinite scroll
+  const loadMoreRef = React.useRef<HTMLDivElement>(null);
+
+  // Intersection observer hook
+  const intersection = useIntersection(loadMoreRef, {
+    root: null,
+    rootMargin: "200px", // Load more when user is 200px away from bottom
+    threshold: 0.5,
+  });
+
+  // Handle infinite scroll
+  React.useEffect(() => {
+    if (infiniteScroll && intersection?.isIntersecting && !isLoading && hasMore && onLoadMore) {
+      onLoadMore();
+    }
+  }, [intersection?.isIntersecting, infiniteScroll, isLoading, hasMore, onLoadMore]);
 
   const table = useReactTable({
     data,
@@ -64,7 +84,7 @@ export function DataTable<TData, TValue>({
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    getPaginationRowModel: infiniteScroll ? undefined : getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
@@ -79,18 +99,16 @@ export function DataTable<TData, TValue>({
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id} colSpan={header.colSpan}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    );
-                  })}
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id} colSpan={header.colSpan}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                    </TableHead>
+                  ))}
                 </TableRow>
               ))}
             </TableHeader>
@@ -124,7 +142,20 @@ export function DataTable<TData, TValue>({
             </TableBody>
           </Table>
         </div>
-        <DataTablePagination table={table} />
+
+        {infiniteScroll ? (
+          <div ref={loadMoreRef} className="w-full py-4 text-center">
+            {isLoading ? (
+              <span className="text-muted-foreground">Loading more...</span>
+            ) : hasMore ? (
+              <span className="text-muted-foreground">Scroll to load more</span>
+            ) : data.length > 0 ? (
+              <span className="text-muted-foreground">No more items to load</span>
+            ) : null}
+          </div>
+        ) : (
+          <DataTablePagination table={table} />
+        )}
       </div>
     </div>
   );

@@ -15,8 +15,11 @@ import {
     TeamRanking,
     TournamentRankingRequest,
     TournamentSchoolRankingRequest,
+    TournamentSchoolRankingResponse,
     TournamentTeamsRankingRequest,
+    TournamentTeamsRankingResponse,
     TournamentVolunteerRankingRequest,
+    TournamentVolunteerRankingResponse,
     VolunteerPerformanceData,
     VolunteerTournamentRank,
     VolunteerTournamentStatsRequest,
@@ -130,10 +133,10 @@ export const getStudentPerformance = async ({
     token,
     user_id
 }: {
-        end_date: string,
-        start_date: string,
-        token: string;
-        user_id: number;
+    end_date: string,
+    start_date: string,
+    token: string;
+    user_id: number;
 }): Promise<PerformanceData.AsObject[]> => {
     return new Promise((resolve, reject) => {
         const request = new PerformanceRequest();
@@ -159,7 +162,7 @@ export const getTournamentSchoolRanking = async ({
 }: {
     token: string;
     tournament_id: number;
-}): Promise<SchoolRanking.AsObject[]> => {
+}): Promise<TournamentSchoolRankingResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new TournamentSchoolRankingRequest();
         request.setToken(token);
@@ -171,7 +174,7 @@ export const getTournamentSchoolRanking = async ({
             if (err) {
                 reject(err);
             } else {
-                resolve(response.toObject().rankingsList);
+                resolve(response.toObject());
             }
         });
     });
@@ -237,7 +240,7 @@ export const getTournamentTeamsRanking = async ({
     tournament_id: number;
     page: number;
     page_size: number;
-}): Promise<TeamRanking.AsObject[]> => {
+}): Promise<TournamentTeamsRankingResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new TournamentTeamsRankingRequest();
         request.setToken(token);
@@ -249,7 +252,7 @@ export const getTournamentTeamsRanking = async ({
             if (err) {
                 reject(err);
             } else {
-                resolve(response.toObject().rankingsList);
+                resolve(response.toObject());
             }
         });
     });
@@ -337,7 +340,7 @@ export const getTournamentVolunteerRanking = async ({
     tournament_id: number;
     page: number;
     page_size: number;
-}): Promise<VolunteerTournamentRank.AsObject[]> => {
+}): Promise<TournamentVolunteerRankingResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new TournamentVolunteerRankingRequest();
         request.setToken(token);
@@ -349,7 +352,7 @@ export const getTournamentVolunteerRanking = async ({
             if (err) {
                 reject(err);
             } else {
-                resolve(response.toObject().rankingsList);
+                resolve(response.toObject());
             }
         });
     });

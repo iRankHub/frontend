@@ -70,7 +70,6 @@ export const signUp = (data: {
         request.setSafeguardingCertificateUrl(data.safeguardingCertificate ?? "")
         request.setGender(data.gender ?? "male")
         request.setNationalid(data.nationalId ?? "")
-        // Set other fields as necessary
 
         authClient.signUp(request, {}, (err, response) => {
             if (err) {
@@ -166,7 +165,6 @@ export const schoolLogin = (
     })
 }
 
-// forgot password
 export const forgotPassword = (email: string): Promise<PasswordResetResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new PasswordResetRequest();
@@ -182,7 +180,6 @@ export const forgotPassword = (email: string): Promise<PasswordResetResponse.AsO
     });
 };
 
-// reset password
 export const resetPassword = (data: {
     password: string;
     token: string;
@@ -202,7 +199,6 @@ export const resetPassword = (data: {
     });
 };
 
-// 2fa
 export const generateTwoFactorOTP = (data: {
     email: string;
 }): Promise<GenerateTwoFactorOTPResponse.AsObject> => {

@@ -1,17 +1,14 @@
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { DataTable } from "@/components/tables/data-table";
 import { columns } from "./columns";
-import { rankings } from "@/components/tables/data/tasks";
 import {
-  StudentRanking,
   VolunteerTournamentRank,
 } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
 import {
-  getTournamentStudentRanking,
   getTournamentVolunteerRanking,
 } from "@/core/debates/rankings";
 import { cn } from "@/lib/utils";
@@ -21,68 +18,119 @@ type Props = {
 };
 
 function Volunteers({ tournamentId }: Props) {
-  const [volunteerRankings, setVolunteerRankings] = useState<
-    VolunteerTournamentRank.AsObject[]
-  >([]);
+  const [volunteerRankings, setVolunteerRankings] = useState<VolunteerTournamentRank.AsObject[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const pageSize = 10;
   const { user } = useUserStore((state) => state);
 
-  useEffect(() => {
-    if (!user) return;
+  const fetchVolunteers = async (page: number) => {
+    if (!user || isLoading) return;
+    setIsLoading(true);
 
-    const options = {
-      token: user.token,
-      tournament_id: tournamentId,
-      page: 1,
-      page_size: 500,
-    };
+    try {
+      const options = {
+        token: user.token,
+        tournament_id: tournamentId,
+        page,
+        page_size: pageSize,
+      };
 
-    getTournamentVolunteerRanking(options)
-      .then((res) => {
-        setVolunteerRankings(res);
-      })
-      .catch((err) => {
-        console.error(err.message);
+      const res = await getTournamentVolunteerRanking(options);
+
+      if (!res || !res.rankingsList) {
+        return;
+      }
+
+      setTotalCount(res.totalCount || 0);
+
+      setVolunteerRankings(prev => {
+        if (page === 1) {
+          return res.rankingsList;
+        } else {
+          // Keep top 3 from first page and append new data
+          const topVolunteers = prev.slice(0, 3);
+          const newVolunteers = res.rankingsList.filter(volunteer =>
+            !prev.some(p => p.volunteerId === volunteer.volunteerId)
+          );
+          return [...topVolunteers, ...prev.slice(3), ...newVolunteers];
+        }
       });
+
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setCurrentPage(1);
+    setVolunteerRankings([]);
+    fetchVolunteers(1);
   }, [user, tournamentId]);
+
+  const handleLoadMore = () => {
+    if (!isLoading && volunteerRankings.length < totalCount) {
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+      fetchVolunteers(nextPage);
+    }
+  };
+
+  // If no volunteers data yet, show loading or empty state
+  if (volunteerRankings.length === 0) {
+    return (
+      <div className="w-full rounded-md overflow-hidden">
+        <div className="flex items-center justify-between gap-5 p-5 py-4 bg-brown">
+          <h3 className="text-lg text-background font-medium text-white">
+            Volunteer Ranking
+          </h3>
+        </div>
+        <div className="w-full bg-background p-8 px-5 text-center">
+          {isLoading ? "Loading..." : "No volunteers data available."}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full rounded-md overflow-hidden">
       <div className="flex items-center justify-between gap-5 p-5 py-4 bg-brown">
         <h3 className="text-lg text-background font-medium text-white">
-          Speaker Ranking
+          Volunteer Ranking
         </h3>
-        {/* <Button
-          type="button"
-          className="border border-dashed border-white text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground group"
-        >
-          Activate
-          <span className="sr-only">Activate</span>
-        </Button> */}
       </div>
       <div className="w-full bg-background p-8 px-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-3">
           {volunteerRankings.slice(0, 3).map((volunteer, index) => (
-            <>
+            <React.Fragment key={volunteer.volunteerId || index}>
               {index < 2 ? (
                 <WinnerCard
-                  key={index}
                   volunteer={volunteer}
                   count={index + 1}
                 />
               ) : (
                 <div className="w-full sm:w-auto sm:col-span-2 md:col-span-1 mx-auto sm:mx-0.5">
                   <WinnerCard
-                    key={index}
                     volunteer={volunteer}
                     count={index + 1}
                   />
                 </div>
               )}
-            </>
+            </React.Fragment>
           ))}
         </div>
 
-        <DataTable data={volunteerRankings.slice(3)} columns={columns} />
+        <DataTable
+          data={volunteerRankings.slice(3)}
+          columns={columns}
+          infiniteScroll={true}
+          isLoading={isLoading}
+          hasMore={volunteerRankings.length < totalCount}
+          onLoadMore={handleLoadMore}
+        />
       </div>
     </div>
   );

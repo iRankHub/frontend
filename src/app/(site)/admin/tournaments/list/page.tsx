@@ -1,5 +1,4 @@
 "use client";
-import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
 import Tournaments from "@/components/pages/admin/tournaments/list/tournaments";
 import {
   Breadcrumb,

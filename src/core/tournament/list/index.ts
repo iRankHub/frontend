@@ -31,7 +31,6 @@ import { DeleteTournamentType, GetTournamentType, UpdateTournamentType } from "@
 import {
     ListTournamentFormats,
 } from "@/types/tournaments/tournament-formats";
-import { string } from "zod";
 
 export const updateTournament = async ({
     end_date,
@@ -139,8 +138,6 @@ export const deleteTournament = async ({
         });
     });
 }
-
-export const getTournamentCoordinator = async (token: string): Promise<any> => { }
 
 // invitations
 export const getInvitationsByTournament = async (

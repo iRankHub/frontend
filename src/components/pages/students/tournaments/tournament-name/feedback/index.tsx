@@ -1,18 +1,25 @@
 import React from "react";
 import { columns } from "./columns";
 import { DataTable } from "@/components/tables/data-table";
-import { DataTableToolbar } from "./data-table-toolbar";
 import { useFeedbacksStore } from "@/stores/admin/debate/feedbacks.store";
 
-function StudentFeedbacks() {
-  const { feedbacks } = useFeedbacksStore((state) => state);
+interface StudentFeedbacksProps {
+  isLoading: boolean;
+  onLoadMore: () => void;
+}
+
+function StudentFeedbacks({ isLoading, onLoadMore }: StudentFeedbacksProps) {
+  const { feedbacks, totalCount } = useFeedbacksStore((state) => state);
 
   return (
     <div className="w-full rounded-md overflow-hidden border border-muted">
       <DataTable
-        data={feedbacks}
         columns={columns}
-        DataTableToolbar={DataTableToolbar}
+        data={feedbacks}
+        infiniteScroll={true}
+        isLoading={isLoading}
+        hasMore={feedbacks.length < totalCount}
+        onLoadMore={onLoadMore}
       />
     </div>
   );

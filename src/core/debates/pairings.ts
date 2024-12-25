@@ -10,7 +10,6 @@ import {
 import { debateClient } from "../grpc-clients";
 import {
     GetPairingsProps,
-    RegeneratePairingsProps,
     UpdatePairingProps,
 } from "@/types/pairings";
 
