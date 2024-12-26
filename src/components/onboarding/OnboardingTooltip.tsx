@@ -1,147 +1,241 @@
-"use client";
+import React from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { useOnboarding } from '@/context/OnboardingContext';
+import type { PageConfig } from '@/types/onboarding';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Button } from "@/components/ui/button";
-import { TooltipProps } from '@/types';
-import { cn } from "@/lib/utils";
+type OnboardingTooltipProps = {
+  pageConfig: PageConfig;
+};
 
-const OnboardingTooltip: React.FC<TooltipProps> = ({
-  title,
-  description,
-  targetId,
-  position = 'right',
-  onNext,
-  onPrevious,
-  isFirst,
-  isLast,
-  onSkip,
-  sidebarOpen
-}) => {
-  const [coords, setCoords] = useState({ top: 190, left: 290 });
-  const tooltipRef = useRef<HTMLDivElement>(null);
+export const OnboardingTooltip = ({ pageConfig }: OnboardingTooltipProps) => {
+  const {
+    currentStep,
+    isWaitingForAction,
+    nextStep,
+    previousStep,
+    markPageComplete,
+    verifyActionComplete,
+    skipOnboarding,
+    disableGlobally,
+    setIsEnabled
+  } = useOnboarding();
+
+  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0, transform: '' });
+  const [isPositioned, setIsPositioned] = useState(false);
+  const actionObserverRef = useRef<MutationObserver | null>(null);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+  const positioningTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const currentStepConfig = pageConfig.steps[currentStep];
+
+  const cleanup = () => {
+    if (overlayRef.current && document.body.contains(overlayRef.current)) {
+      document.body.removeChild(overlayRef.current);
+    }
+
+    if (positioningTimeoutRef.current) {
+      clearTimeout(positioningTimeoutRef.current);
+    }
+
+    const target = document.querySelector(
+      `[data-onboarding-id="${currentStepConfig?.targetSelector}"]`
+    );
+    if (target) {
+      target.classList.remove('relative', 'z-50');
+      target.removeAttribute('style');
+    }
+  };
 
   useEffect(() => {
+    if (!currentStepConfig) return;
+
+    cleanup();
+
+    overlayRef.current = document.createElement('div');
+    overlayRef.current.className = 'fixed inset-0 bg-black/50 dark:bg-black/70 z-40';
+    document.body.appendChild(overlayRef.current);
+
+    const target = document.querySelector(
+      `[data-onboarding-id="${currentStepConfig.targetSelector}"]`
+    );
+    if (!target) return;
+
+    target.classList.add('relative', 'z-50');
+    target.setAttribute('style', 'box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5); border-radius: 4px;');
+
+    if (currentStepConfig.waitForAction) {
+      const { type, verificationFn } = currentStepConfig.waitForAction;
+
+      if (type === 'click') {
+        const handleClick = async () => {
+          if (verificationFn) {
+            const isComplete = await verificationFn();
+            if (isComplete) {
+              await verifyActionComplete();
+              nextStep();
+            }
+          } else {
+            await verifyActionComplete();
+            nextStep();
+          }
+        };
+
+        target.addEventListener('click', handleClick);
+        return () => {
+          target.removeEventListener('click', handleClick);
+          cleanup();
+        };
+      }
+
+      if (type === 'custom' && verificationFn) {
+        actionObserverRef.current = new MutationObserver(async () => {
+          const isComplete = await verificationFn();
+          if (isComplete) {
+            actionObserverRef.current?.disconnect();
+            await verifyActionComplete();
+            nextStep();
+          }
+        });
+
+        actionObserverRef.current.observe(target, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          characterData: true
+        });
+
+        return () => {
+          actionObserverRef.current?.disconnect();
+          cleanup();
+        };
+      }
+    }
+
     const updatePosition = () => {
-      const target = document.getElementById(targetId);
-      const tooltip = tooltipRef.current;
+      const rect = target.getBoundingClientRect();
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+      const spacing = 15;
 
-      if (target && tooltip) {
-        const rect = target.getBoundingClientRect();
-        const tooltipRect = tooltip.getBoundingClientRect();
-        let top = rect.top;
-        let left = rect.left;
+      // Default position is below the element
+      let top = rect.bottom + scrollTop + spacing;
+      let left = rect.left + scrollLeft + (rect.width / 2);
+      let transform = 'translate(-50%, 0)';
 
-        // Adjust based on sidebar state
-        const sidebarWidth = sidebarOpen ? 288 : 90; // w-72 = 18rem = 288px
+      // If too close to bottom, position above
+      if (rect.bottom + 250 > window.innerHeight) {
+        top = rect.top + scrollTop - spacing;
+        transform = 'translate(-50%, -100%)';
+      }
 
-        switch (position) {
-          case 'right':
-            left = sidebarWidth + 16; // Position next to sidebar
-            top = rect.top + (rect.height / 2);
-            break;
-          case 'left':
-            left = rect.left - tooltipRect.width - 16;
-            top = rect.top + (rect.height / 2);
-            break;
-          case 'bottom':
-            top = rect.bottom + 16;
-            left = rect.left + (rect.width / 2);
-            break;
-          case 'top':
-            top = rect.top - tooltipRect.height - 16;
-            left = rect.left + (rect.width / 2);
-            break;
-        }
+      setTooltipPosition({ top, left, transform });
+      setIsPositioned(true);
+    };
 
-        // Ensure tooltip stays within viewport
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
+    const attemptPositioning = (attempts = 0) => {
+      updatePosition();
 
-        // Prevent right overflow
-        if (left + tooltipRect.width > viewportWidth) {
-          left = viewportWidth - tooltipRect.width - 16;
-        }
-
-        // Prevent bottom overflow
-        if (top + tooltipRect.height > viewportHeight) {
-          top = viewportHeight - tooltipRect.height - 16;
-        }
-
-        // Prevent top overflow
-        if (top < 0) {
-          top = 16;
-        }
-
-        setCoords({ top, left });
+      if (attempts < 3) {
+        positioningTimeoutRef.current = setTimeout(() => {
+          attemptPositioning(attempts + 1);
+        }, 50);
       }
     };
 
-    const observer = new MutationObserver(updatePosition);
-    const target = document.getElementById(targetId);
-
-    if (target) {
-      observer.observe(target, {
-        attributes: true,
-        childList: true,
-        subtree: true
-      });
-      updatePosition();
-    }
+    attemptPositioning();
 
     window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition);
+
     return () => {
-      observer.disconnect();
       window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition);
+      cleanup();
     };
-  }, [targetId, position, sidebarOpen]);
+  }, [currentStep, currentStepConfig]);
+
+  useEffect(() => {
+    return () => cleanup();
+  }, []);
+
+  if (!currentStepConfig || !isPositioned) return null;
 
   return (
     <div
-      ref={tooltipRef}
-      className={cn(
-        "fixed z-50 bg-white rounded-lg shadow-lg p-4 w-80",
-        "dark:bg-zinc-900 dark:border dark:border-zinc-800"
-      )}
+      className="fixed z-50 bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 max-w-sm border border-gray-200 dark:border-gray-700"
       style={{
-        top: coords.top,
-        left: coords.left,
-        transform: position === 'right' || position === 'left'
-          ? 'translateY(-50%)'
-          : 'translateX(-50%)',
-        maxWidth: '90vw'
+        top: tooltipPosition.top,
+        left: tooltipPosition.left,
+        transform: tooltipPosition.transform,
       }}
     >
-      <h3 className="font-bold mb-2 dark:text-white">{title}</h3>
-      <p className="text-sm text-gray-600 mb-4 dark:text-gray-300">{description}</p>
-      <div className="flex justify-between">
-        <div>
-          {!isFirst && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onPrevious}
-              className="dark:border-zinc-700"
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+        {currentStepConfig.title}
+      </h3>
+      <p className="text-gray-600 dark:text-gray-300 mb-4">
+        {currentStepConfig.content}
+      </p>
+      {currentStepConfig.waitForAction && (
+        <p className="text-sm text-blue-600 dark:text-blue-400 mb-4 font-medium">
+          {currentStepConfig.waitForAction.message || 'Complete this action to continue'}
+        </p>
+      )}
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between items-center">
+          <button
+            onClick={previousStep}
+            disabled={currentStep === 0}
+            className="px-4 py-2 text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          {!currentStepConfig.waitForAction && (
+            <button
+              onClick={async () => {
+                if (currentStep === pageConfig.steps.length - 1) {
+                  // Mark as complete first
+                  await markPageComplete(pageConfig.id);
+                  // Then cleanup and disable
+                  cleanup();
+                  setIsEnabled(false);
+                  // Force a localStorage update
+                  const currentCompleted = localStorage.getItem('onboardingCompletedPages');
+                  const completedPages = currentCompleted ? JSON.parse(currentCompleted) : [];
+                  if (!completedPages.includes(pageConfig.id)) {
+                    completedPages.push(pageConfig.id);
+                    localStorage.setItem('onboardingCompletedPages', JSON.stringify(completedPages));
+                  }
+                } else {
+                  nextStep();
+                }
+              }}
+              className="px-4 py-2 text-sm font-medium bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors"
             >
-              Previous
-            </Button>
+              {currentStep === pageConfig.steps.length - 1 ? 'Finish' : 'Next'}
+            </button>
           )}
         </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onSkip}
-            className="dark:border-zinc-700"
+        <div className="flex justify-between items-center border-t dark:border-gray-700 pt-4 mt-2">
+          <button
+            onClick={() => {
+              cleanup();
+              skipOnboarding();
+            }}
+            className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
           >
-            Skip Tour
-          </Button>
-          <Button size="sm" onClick={onNext}>
-            {isLast ? 'Finish' : 'Next'}
-          </Button>
+            Skip this page
+          </button>
+          <button
+            onClick={() => {
+              cleanup();
+              disableGlobally();
+            }}
+            className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+          >
+            Don&apos;t show onboarding again
+          </button>
         </div>
       </div>
     </div>
   );
 };
-
-export default OnboardingTooltip;

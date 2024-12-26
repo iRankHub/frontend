@@ -310,23 +310,21 @@ const HealthMetric: React.FC<HealthMetricProps> = ({
 
   return (
     <div
-      className={`w-full h-auto flex flex-col sm:flex-row rounded-md overflow-hidden border ${
-        status === "critical"
+      className={`w-full h-auto flex flex-col sm:flex-row rounded-md overflow-hidden border ${status === "critical"
           ? "border-destructive"
           : status === "warning"
-          ? "border-warning"
-          : "border-muted"
-      }`}
+            ? "border-warning"
+            : "border-muted"
+        }`}
     >
       <div className="w-full sm:w-auto flex items-center bg-muted gap-4 py-3 px-4">
         <div
-          className={`rounded-full ${
-            status === "critical"
+          className={`rounded-full ${status === "critical"
               ? "bg-destructive"
               : status === "warning"
-              ? "bg-warning"
-              : "bg-success"
-          }`}
+                ? "bg-warning"
+                : "bg-success"
+            }`}
         >
           {status === "critical" ? (
             <CircleX className="w-5 h-5 text-white m-1" />
@@ -352,13 +350,12 @@ const HealthMetric: React.FC<HealthMetricProps> = ({
         <div className="w-full sm:w-64">
           <div className="flex flex-col sm:flex-row sm:justify-between gap-2 sm:gap-0">
             <p
-              className={`${
-                status === "critical"
+              className={`${status === "critical"
                   ? "text-destructive"
                   : status === "warning"
-                  ? "text-warning"
-                  : "text-[#23235F] dark:text-foreground"
-              }`}
+                    ? "text-warning"
+                    : "text-[#23235F] dark:text-foreground"
+                }`}
             >
               {percentage.toFixed(1)}% used
             </p>
@@ -458,7 +455,7 @@ const SystemMonitor: React.FC = () => {
   ]);
 
   return (
-    <div className="col-span-2 px-4 sm:px-7 py-5 bg-background rounded-lg border-2 border-muted mt-5">
+    <div data-onboarding-id="dashboard-system-performance" className="col-span-2 px-4 sm:px-7 py-5 bg-background rounded-lg border-2 border-muted mt-5">
       {isDevelopment && (
         <DevelopmentControls
           onScenarioChange={handleScenarioChange}
@@ -471,19 +468,18 @@ const SystemMonitor: React.FC = () => {
         <h2 className="text-foreground text-xl capitalize">System Health</h2>
         {!isLoading && systemHealth && (
           <div
-            className={`px-3 py-1 rounded-full text-sm whitespace-nowrap ${
-              systemStatus.status === "critical"
+            className={`px-3 py-1 rounded-full text-sm whitespace-nowrap ${systemStatus.status === "critical"
                 ? "bg-destructive/10 text-destructive"
                 : systemStatus.status === "warning"
-                ? "bg-warning/10 text-warning"
-                : "bg-success/10 text-success dark:text-emerald-500"
-            }`}
+                  ? "bg-warning/10 text-warning"
+                  : "bg-success/10 text-success dark:text-emerald-500"
+              }`}
           >
             {systemStatus.status === "critical"
               ? "System Critical"
               : systemStatus.status === "warning"
-              ? "System Warning"
-              : "All Systems Operational"}
+                ? "System Warning"
+                : "All Systems Operational"}
           </div>
         )}
       </div>

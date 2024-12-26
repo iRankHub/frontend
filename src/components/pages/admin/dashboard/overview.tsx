@@ -29,7 +29,7 @@ function Overview({
   const changeColorBasedOnPercentage = (percentage: string) => {
     // Remove the % sign if it exists in the input
     const cleanPercentage = percentage.replace('%', '');
-    
+
     // Handle infinity cases
     if (cleanPercentage.includes("∞")) {
       return {
@@ -68,19 +68,19 @@ function Overview({
       };
     }
   };
-  
+
   const renderChevron = (percentage: string) => {
     const { isZero, color } = changeColorBasedOnPercentage(percentage);
     if (isZero) {
       return <Icons.chevronDown size={14} className={cn(color)} />;
     }
-    return percentage.includes("-") ? 
+    return percentage.includes("-") ?
       <Icons.chevronDown size={14} className={cn(color)} /> :
       <Icons.chevronUp size={14} className={cn(color)} />;
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-x gap-4 px-4 py-6 bg-background rounded-lg border-2 border-muted mt-5">
+    <div data-onboarding-id="dashboard-header" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-x gap-4 px-4 py-6 bg-background rounded-lg border-2 border-muted mt-5">
       <Link href={"/admin/users"}>
         <div className="flex flex-col gap-2 cursor-pointer">
           <div className="w-full flex items-center justify-between gap-3">
@@ -93,7 +93,7 @@ function Overview({
                 changeColorBasedOnPercentage(approvedUsersPercentageChange)
                   .background
               )
-            }
+              }
             >
               {renderChevron(approvedUsersPercentageChange)}
               <small
