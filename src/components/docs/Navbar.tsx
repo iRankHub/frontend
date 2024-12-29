@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { DocsSidebar } from "./Sidebar";
 import { DocSearch } from "./Search";
 import { ThemeToggle } from "./ThemeSwitcher";
+import Image from "next/image";
 
 interface NavbarProps {
   className?: string;
@@ -31,6 +32,14 @@ export function DocsNavbar({ className }: NavbarProps) {
         </div>
         <div className="flex items-center justify-between flex-1">
           <div className="flex items-center space-x-2">
+            <Image
+              src="/static/images/logo-big.png"
+              alt="logo"
+              width={40}
+              height={40}
+              className="rounded-md"
+            />
+
             <Link href="/docs" className="font-bold">
               Documentation
             </Link>

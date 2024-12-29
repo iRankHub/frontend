@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
 import { TableOfContents } from '@/components/docs/TableOfContents';
 import { useScrollToHash } from '@/hooks/useScrollToHas';
+import { Card } from '@/components/ui/card';
 
 interface CategoryContentProps {
   content: React.ReactNode;
@@ -18,42 +18,33 @@ export function CategoryContent({ content, frontmatter }: CategoryContentProps) 
   return (
     <div className="container px-4 md:px-8">
       <div className="mx-auto max-w-5xl">
-        {/* On mobile: single column layout */}
-        {/* On desktop: grid with content and TOC */}
         <div className="lg:grid lg:grid-cols-[1fr_250px] lg:gap-8">
           <div className="min-w-0">
-            <div className="space-y-2">
-              <h1 className="scroll-m-20 text-3xl font-bold tracking-tight md:text-4xl">
-                {frontmatter.title}
-              </h1>
-              {frontmatter.description && (
-                <p className="text-lg text-muted-foreground">
-                  {frontmatter.description}
-                </p>
-              )}
-            </div>
-            <div className="prose prose-slate dark:prose-invert mt-8 w-full max-w-none break-words pb-16">
+            <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:text-primary">
               {content}
             </div>
           </div>
 
-          {/* Table of Contents - Hidden on mobile */}
           <div className="hidden lg:block">
             <div className="sticky top-20">
-              <TableOfContents />
+              <Card className="p-4">
+                <TableOfContents />
+              </Card>
             </div>
           </div>
 
-          {/* Mobile TOC - Only visible on smaller screens */}
+          {/* Mobile TOC */}
           <div className="fixed bottom-4 right-4 lg:hidden">
-            <details className="bg-background border rounded-lg shadow-lg">
-              <summary className="px-4 py-2 cursor-pointer font-medium">
-                On This Page
-              </summary>
-              <div className="px-4 py-2 border-t">
-                <TableOfContents />
-              </div>
-            </details>
+            <Card className="w-auto">
+              <details className="p-4">
+                <summary className="cursor-pointer font-medium text-primary">
+                  On This Page
+                </summary>
+                <div className="mt-4">
+                  <TableOfContents />
+                </div>
+              </details>
+            </Card>
           </div>
         </div>
       </div>
