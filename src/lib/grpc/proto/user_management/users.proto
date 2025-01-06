@@ -1,0 +1,469 @@
+syntax = "proto3";
+
+option go_package = "github.com/iRankHub/backend/internal/grpc/proto/user_management";
+
+package user_management;
+
+service UserManagementService {
+  rpc GetPendingUsers(GetPendingUsersRequest) returns (GetPendingUsersResponse) {}
+  rpc ApproveUser(ApproveUserRequest) returns (ApproveUserResponse) {}
+  rpc RejectUser(RejectUserRequest) returns (RejectUserResponse) {}
+  rpc ApproveUsers(ApproveUsersRequest) returns (ApproveUsersResponse) {}
+  rpc RejectUsers(RejectUsersRequest) returns (RejectUsersResponse) {}
+  rpc DeleteUsers(DeleteUsersRequest) returns (DeleteUsersResponse) {}
+  rpc GetUserProfile(GetUserProfileRequest) returns (GetUserProfileResponse) {}
+  rpc UpdateAdminProfile(UpdateAdminProfileRequest) returns (UpdateAdminProfileResponse) {}
+  rpc UpdateSchoolProfile(UpdateSchoolProfileRequest) returns (UpdateSchoolProfileResponse) {}
+  rpc UpdateStudentProfile(UpdateStudentProfileRequest) returns (UpdateStudentProfileResponse) {}
+  rpc UpdateVolunteerProfile(UpdateVolunteerProfileRequest) returns (UpdateVolunteerProfileResponse) {}
+  rpc DeleteUserProfile(DeleteUserProfileRequest) returns (DeleteUserProfileResponse) {}
+  rpc DeactivateAccount(DeactivateAccountRequest) returns (DeactivateAccountResponse) {}
+  rpc ReactivateAccount(ReactivateAccountRequest) returns (ReactivateAccountResponse) {}
+  rpc GetAccountStatus(GetAccountStatusRequest) returns (GetAccountStatusResponse) {}
+  rpc GetCountries(GetCountriesRequest) returns (GetCountriesResponse) {}
+  rpc GetCountriesNoAuth(GetCountriesNoAuthRequest) returns (GetCountriesNoAuthResponse) {}
+  rpc GetSchools(GetSchoolsRequest) returns (GetSchoolsResponse) {}
+  rpc GetStudents(GetStudentsRequest) returns (GetStudentsResponse) {}
+  rpc GetVolunteers(GetVolunteersRequest) returns (GetVolunteersResponse) {}
+  rpc GetAllUsers(GetAllUsersRequest) returns (GetAllUsersResponse) {}
+  rpc GetUserStatistics(GetUserStatisticsRequest) returns (GetUserStatisticsResponse) {}
+  rpc GetVolunteersAndAdmins(GetVolunteersAndAdminsRequest) returns (GetVolunteersAndAdminsResponse) {}
+  rpc GetSchoolsNoAuth(GetSchoolsNoAuthRequest) returns (GetSchoolsNoAuthResponse) {}
+  rpc InitiatePasswordUpdate(InitiatePasswordUpdateRequest) returns (InitiatePasswordUpdateResponse) {}
+  rpc VerifyAndUpdatePassword(VerifyAndUpdatePasswordRequest) returns (VerifyAndUpdatePasswordResponse) {}
+  rpc GetSchoolIDsByNames(GetSchoolIDsByNamesRequest) returns (GetSchoolIDsByNamesResponse) {}
+  rpc GetStudentsBySchoolContact(GetStudentsBySchoolContactRequest) returns (GetStudentsBySchoolContactResponse) {}
+}
+
+message GetPendingUsersRequest {
+  string token = 1;
+}
+
+message GetPendingUsersResponse {
+  repeated UserSummary users = 1;
+}
+
+message GetAllUsersRequest {
+  string token = 1;
+  int32 page = 2;
+  int32 pageSize = 3;
+}
+
+message GetAllUsersResponse {
+  repeated UserSummary users = 1;
+  int32 totalCount = 2;
+  int32 approvedUsersCount = 3;
+  int32 recentSignupsCount = 4;
+}
+
+message GetUserStatisticsRequest {
+  string token = 1;
+}
+
+message GetUserStatisticsResponse {
+  int64 admin_count = 1;
+  int64 school_count = 2;
+  int64 student_count = 3;
+  int64 volunteer_count = 4;
+  int64 approved_count = 5;
+  int64 new_registrations_count = 6;
+  string new_registrations_percentage_change = 7;
+  string approved_users_percentage_change = 8;
+}
+
+
+message UserSummary {
+  int32 userID = 1;
+  string name = 2;
+  string email = 3;
+  string userRole = 4;
+  string signUpDate = 5;
+  string gender = 6;
+  string status = 7;
+  string idebateID = 8;
+}
+
+message UserProfile {
+  int32 userID = 1;
+  string name = 2;
+  string email = 3;
+  string userRole = 4;
+  string gender = 5;
+  string address = 6;
+  string phone = 7;
+  string bio = 8;
+  string profile_picture_url = 9;
+  bool verificationStatus = 10;
+  string signUpDate = 11;
+  bool twoFactorEnabled = 12;
+  bool biometricAuthEnabled = 13;
+
+  oneof role_specific_details {
+    StudentDetails studentDetails = 14;
+    SchoolDetails schoolDetails = 15;
+    VolunteerDetails volunteerDetails = 16;
+  }
+  string profile_picture_presigned_url = 17;
+}
+
+message StudentDetails {
+  string grade = 1;
+  string dateOfBirth = 2;
+  int32 schoolID = 3;
+}
+
+message SchoolDetails {
+  string schoolName = 1;
+  string address = 2;
+  string country = 3;
+  string province = 4;
+  string district = 5;
+  string schoolType = 6;
+}
+
+message VolunteerDetails {
+  string role = 1;
+  int32 graduateYear = 2;
+  string safeguard_certificate_url = 3;
+  bool hasInternship = 4;
+  bool isEnrolledInUniversity = 5;
+}
+
+message ApproveUserRequest {
+  string token = 1;
+  int32 userID = 2;
+}
+
+message ApproveUserResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message RejectUserRequest {
+  string token = 1;
+  int32 userID = 2;
+}
+
+message RejectUserResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message ApproveUsersRequest {
+  string token = 1;
+  repeated int32 userIDs = 2;
+}
+
+message ApproveUsersResponse {
+  bool success = 1;
+  string message = 2;
+  repeated int32 failedUserIDs = 3;
+}
+
+message RejectUsersRequest {
+  string token = 1;
+  repeated int32 userIDs = 2;
+}
+
+message RejectUsersResponse {
+  bool success = 1;
+  string message = 2;
+  repeated int32 failedUserIDs = 3;
+}
+
+message DeleteUsersRequest {
+  string token = 1;
+  repeated int32 userIDs = 2;
+}
+
+message DeleteUsersResponse {
+  bool success = 1;
+  string message = 2;
+  repeated int32 failedUserIDs = 3;
+}
+
+message GetUserProfileRequest {
+  string token = 1;
+  int32 userID = 2;
+}
+
+message GetUserProfileResponse {
+  UserProfile profile = 1;
+}
+
+message UpdateAdminProfileRequest {
+  string token = 1;
+  int32 userID = 2;
+  string name = 3;
+  string gender = 4;
+  string address = 5;
+  string bio = 6;
+  string phone = 7;
+  string profile_picture_url = 8;
+  string email = 9;
+}
+
+message UpdateAdminProfileResponse {
+  bool success = 1;
+  string message = 2;
+  string profile_picture_presigned_url = 3;
+}
+
+message UpdateSchoolProfileRequest {
+  string token = 1;
+  int32 userID = 2;
+  string contactPersonName = 3;
+  string gender = 4;
+  string address = 5;
+  string schoolName = 6;
+  string schoolEmail = 7;
+  string schoolType = 8;
+  string contactEmail = 9;
+  string contactPersonNationalId = 10;
+  string phone = 11;
+  string profile_picture_url = 12;
+  string bio = 13;
+}
+
+message UpdateSchoolProfileResponse {
+  bool success = 1;
+  string message = 2;
+  string profile_picture_presigned_url = 3;
+}
+
+message UpdateStudentProfileRequest {
+  string token = 1;
+  int32 userID = 2;
+  string firstName = 3;
+  string lastName = 4;
+  string gender = 5;
+  string email = 6;
+  string grade = 7;
+  string dateOfBirth = 8;
+  string address = 9;
+  string bio = 10;
+  string profile_picture_url = 11;
+  string phone = 12;
+}
+
+message UpdateStudentProfileResponse {
+  bool success = 1;
+  string message = 2;
+  string profile_picture_presigned_url = 3;
+}
+
+message UpdateVolunteerProfileRequest {
+  string token = 1;
+  int32 userID = 2;
+  string firstName = 3;
+  string lastName = 4;
+  string gender = 5;
+  string email = 6;
+  string nationalID = 7;
+  int32 graduateYear = 8;
+  bool isEnrolledInUniversity = 9;
+  bool hasInternship = 10;
+  string address = 11;
+  string bio = 12;
+  string profile_picture_url = 13;
+  string safeguard_certificate_url = 14;
+  string role = 15;
+  string phone = 16;
+}
+
+message UpdateVolunteerProfileResponse {
+  bool success = 1;
+  string message = 2;
+  string profile_picture_presigned_url = 3;
+  string safeguard_certificate_presigned_url = 4;
+}
+
+message DeleteUserProfileRequest {
+  string token = 1;
+  int32 userID = 2;
+}
+
+message DeleteUserProfileResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message DeactivateAccountRequest {
+  string token = 1;
+  int32 userID = 2;
+}
+
+message DeactivateAccountResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message ReactivateAccountRequest {
+  string token = 1;
+  int32 userID = 2;
+}
+
+message ReactivateAccountResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetAccountStatusRequest {
+  string token = 1;
+  int32 userID = 2;
+}
+
+message GetAccountStatusResponse {
+  string status = 1;
+}
+
+message GetCountriesRequest {
+  string token = 1;
+}
+
+message GetCountriesResponse {
+  repeated Country countries = 1;
+}
+
+message GetCountriesNoAuthRequest {}
+
+message GetCountriesNoAuthResponse {
+  repeated Country countries = 1;
+}
+
+message Country {
+  string name = 1;
+  string code = 2;
+}
+
+message GetSchoolsRequest {
+  string token = 1;
+  int32 page = 2;
+  int32 pageSize = 3;
+}
+
+message GetSchoolsResponse {
+  repeated School schools = 1;
+  int32 totalCount = 2;
+}
+
+message School {
+  int32 schoolID = 1;
+  string name = 2;
+  string address = 3;
+  string country = 4;
+  string province = 5;
+  string district = 6;
+  string schoolType = 7;
+  string contactPersonName = 8;
+  string contactEmail = 9;
+  string schoolEmail = 10;
+}
+
+message GetStudentsRequest {
+  string token = 1;
+  int32 page = 2;
+  int32 pageSize = 3;
+}
+
+message GetStudentsResponse {
+  repeated Student students = 1;
+  int32 totalCount = 2;
+}
+
+message Student {
+  int32 studentID = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string grade = 4;
+  string dateOfBirth = 5;
+  string email = 6;
+  int32 schoolID = 7;
+  string schoolName = 8;
+}
+
+message GetVolunteersRequest {
+  string token = 1;
+  int32 page = 2;
+  int32 pageSize = 3;
+}
+
+message GetVolunteersResponse {
+  repeated Volunteer volunteers = 1;
+  int32 totalCount = 2;
+}
+
+message Volunteer {
+  int32 volunteerID = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string dateOfBirth = 4;
+  string role = 5;
+  int32 graduateYear = 6;
+  string safeguard_certificate_url = 7;
+  string email = 8;
+}
+
+message GetVolunteersAndAdminsRequest {
+  string token = 1;
+  int32 page = 2;
+  int32 pageSize = 3;
+}
+
+message GetVolunteersAndAdminsResponse {
+  repeated UserSummary users = 1;
+  int32 totalCount = 2;
+}
+
+message GetSchoolsNoAuthRequest {
+  int32 page = 1;
+  int32 pageSize = 2;
+}
+
+message GetSchoolsNoAuthResponse {
+  repeated School schools = 1;
+  int32 totalCount = 2;
+}
+
+message InitiatePasswordUpdateRequest {
+  string token = 1;
+  int32 userID = 2;
+}
+
+message InitiatePasswordUpdateResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message VerifyAndUpdatePasswordRequest {
+  string token = 1;
+  int32 userID = 2;
+  string verificationCode = 3;
+  string newPassword = 4;
+}
+
+message VerifyAndUpdatePasswordResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetSchoolIDsByNamesRequest {
+  string token = 1;
+  repeated string school_names = 2;
+}
+
+message GetSchoolIDsByNamesResponse {
+  map<string, int32> school_ids = 1;
+}
+
+message GetStudentsBySchoolContactRequest {
+  string token = 1;
+  int32 userID = 2;
+  int32 page = 3;
+  int32 pageSize = 4;
+}
+
+message GetStudentsBySchoolContactResponse {
+  repeated Student students = 1;
+  int32 totalCount = 2;
+}

@@ -1,0 +1,541 @@
+syntax = "proto3";
+
+package tournament_management;
+
+option go_package = "github.com/iRankHub/backend/internal/grpc/proto/tournament_management";
+
+
+
+service TournamentService {
+  // League operations
+  rpc CreateLeague(CreateLeagueRequest) returns (CreateLeagueResponse);
+  rpc GetLeague(GetLeagueRequest) returns (GetLeagueResponse);
+  rpc ListLeagues(ListLeaguesRequest) returns (ListLeaguesResponse);
+  rpc UpdateLeague(UpdateLeagueRequest) returns (UpdateLeagueResponse);
+  rpc DeleteLeague(DeleteLeagueRequest) returns (DeleteLeagueResponse);
+
+  // Tournament Format operations
+  rpc CreateTournamentFormat(CreateTournamentFormatRequest) returns (CreateTournamentFormatResponse);
+  rpc GetTournamentFormat(GetTournamentFormatRequest) returns (GetTournamentFormatResponse);
+  rpc ListTournamentFormats(ListTournamentFormatsRequest) returns (ListTournamentFormatsResponse);
+  rpc UpdateTournamentFormat(UpdateTournamentFormatRequest) returns (UpdateTournamentFormatResponse);
+  rpc DeleteTournamentFormat(DeleteTournamentFormatRequest) returns (DeleteTournamentFormatResponse);
+
+  // Tournament operations
+  rpc CreateTournament(CreateTournamentRequest) returns (CreateTournamentResponse);
+  rpc GetTournament(GetTournamentRequest) returns (GetTournamentResponse);
+  rpc ListTournaments(ListTournamentsRequest) returns (ListTournamentsResponse);
+  rpc UpdateTournament(UpdateTournamentRequest) returns (UpdateTournamentResponse);
+  rpc DeleteTournament(DeleteTournamentRequest) returns (DeleteTournamentResponse);
+  rpc GetTournamentStats(GetTournamentStatsRequest) returns (GetTournamentStatsResponse);
+  rpc GetTournamentRegistrations(GetTournamentRegistrationsRequest) returns (GetTournamentRegistrationsResponse);
+
+  // Invitation operations
+  rpc GetInvitationsByUser(GetInvitationsByUserRequest) returns (GetInvitationsByUserResponse);
+  rpc GetInvitationsByTournament(GetInvitationsByTournamentRequest) returns (GetInvitationsByTournamentResponse);
+  rpc UpdateInvitationStatus(UpdateInvitationStatusRequest) returns (UpdateInvitationStatusResponse);
+  rpc BulkUpdateInvitationStatus(BulkUpdateInvitationStatusRequest) returns (BulkUpdateInvitationStatusResponse);
+  rpc ResendInvitation(ResendInvitationRequest) returns (ResendInvitationResponse);
+  rpc BulkResendInvitations(BulkResendInvitationsRequest) returns (BulkResendInvitationsResponse);
+
+   // Tournament Expenses operations
+  rpc CreateTournamentExpenses(CreateExpensesRequest) returns (ExpensesResponse);
+  rpc UpdateTournamentExpenses(UpdateExpensesRequest) returns (ExpensesResponse);
+  rpc GetTournamentExpenses(GetExpensesRequest) returns (ExpensesResponse);
+
+  // School Registration operations
+  rpc CreateSchoolRegistration(CreateRegistrationRequest) returns (RegistrationResponse);
+  rpc UpdateSchoolRegistration(UpdateRegistrationRequest) returns (RegistrationResponse);
+  rpc GetSchoolRegistration(GetRegistrationRequest) returns (DetailedRegistrationResponse);
+  rpc ListTournamentRegistrations(ListRegistrationsRequest) returns (ListRegistrationsResponse);
+
+  // Real-time tournament search
+  rpc SearchTournaments(SearchTournamentsRequest) returns (SearchTournamentsResponse);
+
+}
+
+// Enum definitions
+enum LeagueType {
+  local = 0;
+  international = 1;
+}
+
+// Message definitions
+message LocalDetails {
+  repeated string provinces = 1;
+  repeated string districts = 2;
+}
+
+message InternationalDetails {
+  repeated string continents = 1;
+  repeated string countries = 2;
+}
+
+message League {
+  int32 league_id = 1;
+  string name = 2;
+  LeagueType league_type = 3;
+  string details = 4;
+}
+
+message TournamentFormat {
+  int32 format_id = 1;
+  string format_name = 2;
+  string description = 3;
+  int32 speakers_per_team = 4;
+}
+
+message Tournament {
+  int32 tournament_id = 1;
+  string name = 2;
+  string start_date = 3;
+  string end_date = 4;
+  string location = 5;
+  int32 format_id = 6;
+  int32 league_id = 7;
+  int32 coordinator_id = 8;
+  string coordinator_name = 9;
+  int32 number_of_preliminary_rounds = 10;
+  int32 number_of_elimination_rounds = 11;
+  int32 judges_per_debate_preliminary = 12;
+  int32 judges_per_debate_elimination = 13;
+  double tournament_fee = 14;
+  string image_url = 15;
+  int32 number_of_schools = 16;
+  int32 number_of_teams = 17;
+  string league_name = 18;
+}
+
+message GetTournamentStatsRequest {
+  string token = 1;
+}
+
+message GetTournamentStatsResponse {
+  int32 total_tournaments = 1;
+  int32 upcoming_tournaments = 2;
+  string total_percentage_change = 3;
+  string upcoming_percentage_change = 4;
+  int32 active_debaters = 5;
+  string active_debaters_percentage_change = 6;
+}
+
+message GetTournamentRegistrationsRequest {
+  string token = 1;
+}
+
+message DailyRegistration {
+  string date = 1;
+  int32 count = 2;
+}
+
+message GetTournamentRegistrationsResponse {
+  repeated DailyRegistration registrations = 1;
+}
+
+// Request messages
+message CreateLeagueRequest {
+  string name = 1;
+  LeagueType league_type = 2;
+  oneof league_details {
+    LocalDetails local_details = 3;
+    InternationalDetails international_details = 4;
+  }
+  string token = 5;
+}
+
+message GetLeagueRequest {
+  int32 league_id = 1;
+  string token = 2;
+}
+
+message ListLeaguesRequest {
+  int32 page_size = 1;
+  int32 page_token = 2;
+  string token = 3;
+}
+
+message UpdateLeagueRequest {
+  int32 league_id = 1;
+  string name = 2;
+  LeagueType league_type = 3;
+  oneof league_details {
+    LocalDetails local_details = 4;
+    InternationalDetails international_details = 5;
+  }
+  string token = 6;
+}
+
+message DeleteLeagueRequest {
+  int32 league_id = 1;
+  string token = 2;
+}
+
+message CreateTournamentFormatRequest {
+  string format_name = 1;
+  string description = 2;
+  int32 speakers_per_team = 3;
+  string token = 4;
+}
+
+message GetTournamentFormatRequest {
+  int32 format_id = 1;
+  string token = 2;
+}
+
+message ListTournamentFormatsRequest {
+  int32 page_size = 1;
+  int32 page_token = 2;
+  string token = 3;
+}
+
+message UpdateTournamentFormatRequest {
+  int32 format_id = 1;
+  string format_name = 2;
+  string description = 3;
+  int32 speakers_per_team = 4;
+  string token = 5;
+}
+
+message DeleteTournamentFormatRequest {
+  int32 format_id = 1;
+  string token = 2;
+}
+
+message CreateTournamentRequest {
+  string name = 1;
+  string start_date = 2;
+  string end_date = 3;
+  string location = 4;
+  int32 format_id = 5;
+  int32 league_id = 6;
+  int32 coordinator_id = 7;
+  int32 number_of_preliminary_rounds = 8;
+  int32 number_of_elimination_rounds = 9;
+  int32 judges_per_debate_preliminary = 10;
+  int32 judges_per_debate_elimination = 11;
+  double tournament_fee = 12;
+  string token = 13;
+  string image_url = 14;
+}
+
+message GetTournamentRequest {
+  int32 tournament_id = 1;
+  string token = 2;
+}
+
+message ListTournamentsRequest {
+  int32 page_size = 1;
+  int32 page_token = 2;
+  string token = 3;
+}
+
+message UpdateTournamentRequest {
+  int32 tournament_id = 1;
+  string name = 2;
+  string start_date = 3;
+  string end_date = 4;
+  string location = 5;
+  int32 format_id = 6;
+  int32 league_id = 7;
+  int32 coordinator_id = 8;
+  int32 number_of_preliminary_rounds = 9;
+  int32 number_of_elimination_rounds = 10;
+  int32 judges_per_debate_preliminary = 11;
+  int32 judges_per_debate_elimination = 12;
+  double tournament_fee = 13;
+  string token = 14;
+  string image_url = 15;
+}
+
+message DeleteTournamentRequest {
+  int32 tournament_id = 1;
+  string token = 2;
+}
+
+// Response messages
+message CreateLeagueResponse {
+  League league = 1;
+}
+
+message GetLeagueResponse {
+  League league = 1;
+}
+
+message ListLeaguesResponse {
+  repeated League leagues = 1;
+  int32 next_page_token = 2;
+}
+
+message UpdateLeagueResponse {
+  League league = 1;
+}
+
+message DeleteLeagueResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message CreateTournamentFormatResponse {
+  TournamentFormat format = 1;
+}
+
+message GetTournamentFormatResponse {
+  TournamentFormat format = 1;
+}
+
+message ListTournamentFormatsResponse {
+  repeated TournamentFormat formats = 1;
+  int32 next_page_token = 2;
+}
+
+message UpdateTournamentFormatResponse {
+  TournamentFormat format = 1;
+  string presigned_url = 2;
+}
+
+message DeleteTournamentFormatResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message CreateTournamentResponse {
+  Tournament tournament = 1;
+  repeated int32 invitation_ids = 2;
+}
+
+message GetTournamentResponse {
+  Tournament tournament = 1;
+}
+
+message ListTournamentsResponse {
+  repeated Tournament tournaments = 1;
+  int32 next_page_token = 2;
+}
+
+message UpdateTournamentResponse {
+  Tournament tournament = 1;
+}
+
+message DeleteTournamentResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetInvitationsByUserRequest {
+  string token = 1;
+}
+
+message GetInvitationsByUserResponse {
+  repeated InvitationInfo invitations = 1;
+}
+
+message GetInvitationsByTournamentRequest {
+  int32 tournament_id = 1;
+  string token = 2;
+}
+
+message InvitationInfo {
+  int32 invitation_id = 1;
+  string status = 2;
+  string idebate_id = 3;
+  string invitee_name = 4;
+  string invitee_role = 5;
+  string created_at = 6;
+  string updated_at = 7;
+}
+
+message GetInvitationsByTournamentResponse {
+  repeated InvitationInfo invitations = 1;
+}
+
+message UpdateInvitationStatusRequest {
+  int32 invitation_id = 1;
+  string new_status = 2;
+  string token = 3;
+}
+
+message UpdateInvitationStatusResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message BulkUpdateInvitationStatusRequest {
+  repeated int32 invitation_ids = 1;
+  string new_status = 2;
+  string token = 3;
+}
+
+message BulkUpdateInvitationStatusResponse {
+  bool success = 1;
+  string message = 2;
+  repeated int32 updated_invitation_ids = 3;
+}
+
+message ResendInvitationRequest {
+  int32 invitation_id = 1;
+  string token = 2;
+}
+
+message ResendInvitationResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message BulkResendInvitationsRequest {
+  repeated int32 invitation_ids = 1;
+  string token = 2;
+}
+
+message BulkResendInvitationsResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// Tournament Expenses messages
+message CreateExpensesRequest {
+  int32 tournament_id = 1;
+  double food_expense = 2;
+  double transport_expense = 3;
+  double per_diem_expense = 4;
+  double awarding_expense = 5;
+  double stationary_expense = 6;
+  double other_expenses = 7;
+  string notes = 8;
+  string token = 9;
+}
+
+message UpdateExpensesRequest {
+  int32 tournament_id = 1;
+  double food_expense = 2;
+  double transport_expense = 3;
+  double per_diem_expense = 4;
+  double awarding_expense = 5;
+  double stationary_expense = 6;
+  double other_expenses = 7;
+  string currency = 8;
+  string notes = 9;
+  string token = 10;
+}
+
+message GetExpensesRequest {
+  int32 tournament_id = 1;
+  string token = 2;
+}
+
+message ExpensesResponse {
+  int32 expense_id = 1;
+  int32 tournament_id = 2;
+  double food_expense = 3;
+  double transport_expense = 4;
+  double per_diem_expense = 5;
+  double awarding_expense = 6;
+  double stationary_expense = 7;
+  double other_expenses = 8;
+  double total_expense = 9;
+  string currency = 10;
+  string notes = 11;
+  string created_at = 12;
+  string updated_at = 13;
+}
+
+// School Registration messages
+message CreateRegistrationRequest {
+  int32 school_id = 1;
+  int32 tournament_id = 2;
+  int32 planned_teams_count = 3;
+  string token = 4;
+}
+
+message UpdateRegistrationRequest {
+  int32 school_id = 1;
+  int32 tournament_id = 2;
+  int32 actual_teams_count = 3;
+  double discount_amount = 4;
+  double actual_paid_amount = 5;
+  string payment_status = 6;
+  string token = 7;
+}
+
+message GetRegistrationRequest {
+  int32 school_id = 1;
+  int32 tournament_id = 2;
+  string token = 3;
+}
+
+message ListRegistrationsRequest {
+  int32 tournament_id = 1;
+  int32 page_size = 2;
+  int32 page_token = 3;
+  string token = 4;
+}
+
+message RegistrationResponse {
+  int32 registration_id = 1;
+  int32 school_id = 2;
+  int32 tournament_id = 3;
+  int32 planned_teams_count = 4;
+  int32 actual_teams_count = 5;
+  double amount_per_team = 6;
+  double total_amount = 7;
+  double discount_amount = 8;
+  double actual_paid_amount = 9;
+  string payment_status = 10;
+  string currency = 11;
+  string created_at = 12;
+  string updated_at = 13;
+}
+
+message DetailedRegistrationResponse {
+  int32 registration_id = 1;
+  int32 school_id = 2;
+  int32 tournament_id = 3;
+  string school_name = 4;
+  string school_email = 5;
+  string school_type = 6;
+  string contact_email = 7;
+  string contact_person_name = 8;
+  string country = 9;
+  string province = 10;
+  string district = 11;
+  string address = 12;
+  int32 planned_teams_count = 13;
+  int32 actual_teams_count = 14;
+  double amount_per_team = 15;
+  double total_amount = 16;
+  double discount_amount = 17;
+  double actual_paid_amount = 18;
+  string payment_status = 19;
+  string currency = 20;
+}
+
+message ListRegistrationItem {
+  int32 registration_id = 1;
+  string i_debate_school_id = 2;
+  string school_name = 3;
+  string school_email = 4;
+  int32 planned_teams_count = 5;
+  int32 actual_teams_count = 6;
+  double total_amount = 7;
+  string payment_status = 8;
+  string currency = 9;
+  int32 school_id = 10;
+}
+
+message ListRegistrationsResponse {
+  repeated ListRegistrationItem registrations = 1;
+  int32 next_page_token = 2;
+}
+
+message SearchTournamentsRequest {
+  string query = 1;
+  string token = 2;
+}
+
+message TournamentSearchResult {
+  int32 tournament_id = 1;
+  string name = 2;
+}
+
+message SearchTournamentsResponse {
+  repeated TournamentSearchResult tournaments = 1;
+}

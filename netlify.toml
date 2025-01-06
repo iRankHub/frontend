@@ -1,7 +1,0 @@
-[[headers]]
-  for = "/*"
-  [headers.values]
-    Access-Control-Allow-Origin = "https://backend.debaterwanda.org"
-    Access-Control-Allow-Methods = "GET, PUT, DELETE, POST, OPTIONS"
-    Access-Control-Allow-Headers = "Origin, X-Requested-With, Content-Type, Accept, Authorization, grpc-timeout"
-    Access-Control-Allow-Credentials = "true"

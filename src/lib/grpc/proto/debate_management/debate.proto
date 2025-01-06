@@ -1,0 +1,651 @@
+syntax = "proto3";
+
+package debate_management;
+
+option go_package = "github.com/iRankHub/backend/internal/grpc/proto/debate_management";
+
+service DebateService {
+  // Room operations
+  rpc GetRooms(GetRoomsRequest) returns (GetRoomsResponse);
+  rpc GetRoom(GetRoomRequest) returns (GetRoomResponse);
+  rpc UpdateRoom(UpdateRoomRequest) returns (UpdateRoomResponse);
+
+  // Judge operations
+  rpc GetJudges(GetJudgesRequest) returns (GetJudgesResponse);
+  rpc GetJudge(GetJudgeRequest) returns (GetJudgeResponse);
+  rpc UpdateJudge(UpdateJudgeRequest) returns (UpdateJudgeResponse);
+
+  // Pairing operations
+  rpc GetPairings(GetPairingsRequest) returns (GetPairingsResponse);
+  rpc UpdatePairings(UpdatePairingsRequest) returns (UpdatePairingsResponse);
+
+  // Ballot operations
+  rpc GetBallots(GetBallotsRequest) returns (GetBallotsResponse);
+  rpc GetBallot(GetBallotRequest) returns (GetBallotResponse);
+  rpc UpdateBallot(UpdateBallotRequest) returns (UpdateBallotResponse);
+  rpc GetBallotByJudgeID(GetBallotByJudgeIDRequest) returns (GetBallotByJudgeIDResponse);
+
+  // Algorithm integration
+  rpc GeneratePreliminaryPairings(GeneratePreliminaryPairingsRequest) returns (GeneratePairingsResponse);
+  rpc GenerateEliminationPairings(GenerateEliminationPairingsRequest) returns (GeneratePairingsResponse);
+
+
+  // Team operations
+  rpc CreateTeam(CreateTeamRequest) returns (Team);
+  rpc GetTeam(GetTeamRequest) returns (Team);
+  rpc UpdateTeam(UpdateTeamRequest) returns (Team);
+  rpc GetTeamsByTournament(GetTeamsByTournamentRequest) returns (GetTeamsByTournamentResponse);
+  rpc DeleteTeam(DeleteTeamRequest) returns (DeleteTeamResponse);
+
+  // Ranking operations
+  rpc GetTournamentStudentRanking(TournamentRankingRequest) returns (TournamentRankingResponse);
+  rpc GetOverallStudentRanking(OverallRankingRequest) returns (OverallRankingResponse);
+  rpc GetStudentOverallPerformance(PerformanceRequest) returns (PerformanceResponse);
+  rpc GetStudentTournamentStats(StudentTournamentStatsRequest) returns (StudentTournamentStatsResponse);
+  rpc GetTournamentTeamsRanking(TournamentTeamsRankingRequest) returns (TournamentTeamsRankingResponse);
+  rpc GetTournamentSchoolRanking(TournamentSchoolRankingRequest) returns (TournamentSchoolRankingResponse);
+  rpc GetOverallSchoolRanking(OverallSchoolRankingRequest) returns (OverallSchoolRankingResponse);
+  rpc GetSchoolOverallPerformance(SchoolPerformanceRequest) returns (SchoolPerformanceResponse);
+  rpc GetVolunteerTournamentStats(VolunteerTournamentStatsRequest) returns (VolunteerTournamentStatsResponse);
+  rpc GetTournamentVolunteerRanking(TournamentVolunteerRankingRequest) returns (TournamentVolunteerRankingResponse);
+  rpc GetStudentFeedback(GetStudentFeedbackRequest) returns (GetStudentFeedbackResponse);
+  rpc SubmitJudgeFeedback(SubmitJudgeFeedbackRequest) returns (SubmitJudgeFeedbackResponse);
+  rpc GetJudgeFeedback(GetJudgeFeedbackRequest) returns (GetJudgeFeedbackResponse);
+  rpc GetVolunteerRanking(GetVolunteerRankingRequest) returns (GetVolunteerRankingResponse);
+  rpc GetVolunteerPerformance(GetVolunteerPerformanceRequest) returns (GetVolunteerPerformanceResponse);
+  rpc MarkStudentFeedbackAsRead(MarkFeedbackAsReadRequest) returns (MarkFeedbackAsReadResponse);
+  rpc MarkJudgeFeedbackAsRead(MarkFeedbackAsReadRequest) returns (MarkFeedbackAsReadResponse);
+
+}
+
+// Room messages
+message Room {
+  int32 room_id = 1;
+  string room_name = 2;
+  string location = 3;
+  int32 capacity = 4;
+}
+
+message RoundStatus {
+  int32 round = 1;
+  string status = 2;
+}
+
+message RoomStatus {
+  int32 room_id = 1;
+  string room_name = 2;
+  string preliminary = 3;
+  string elimination = 4;
+}
+
+message GetRoomsRequest {
+  int32 tournament_id = 1;
+  string token = 2;
+}
+
+message GetRoomsResponse {
+  repeated RoomStatus rooms = 1;
+}
+
+message GetRoomRequest {
+  int32 room_id = 1;
+  int32 tournament_id = 2;
+  string token = 3;
+}
+
+message GetRoomResponse {
+  int32 room_id = 1;
+  string name = 2;
+  repeated RoundStatus preliminary = 3;
+  repeated RoundStatus elimination = 4;
+}
+
+message UpdateRoomRequest {
+  Room room = 1;
+  string token = 2;
+}
+
+message UpdateRoomResponse {
+  Room room = 1;
+}
+
+// Judge messages
+message Judge {
+  int32 judge_id = 1;
+  string name = 2;
+  string idebate_id = 3;
+  int32 preliminary_debates = 4;
+  int32 elimination_debates = 5;
+}
+
+message GetJudgesRequest {
+  int32 tournament_id = 1;
+  string token = 2;
+}
+
+message GetJudgesResponse {
+  repeated Judge judges = 1;
+}
+
+message RoomInfo {
+  int32 room_id = 1;
+  string room_name = 2;
+  bool is_head_judge = 3;
+}
+
+message RoundInfo {
+  map<int32, RoomInfo> rooms = 1;
+}
+
+message GetJudgeRequest {
+  int32 judge_id = 1;
+  int32 tournament_id = 2;
+  string token = 3;
+}
+
+message GetJudgeResponse {
+  int32 judge_id = 1;
+  string name = 2;
+  string idebate_id = 3;
+  map<int32, RoomInfo> preliminary = 4;
+  map<int32, RoomInfo> elimination = 5;
+}
+
+message UpdateJudgeRequest {
+  int32 judge_id = 1;
+  int32 tournament_id = 2;
+  map<int32, RoomInfo> preliminary = 3;
+  map<int32, RoomInfo> elimination = 4;
+  string token = 5;
+}
+
+message UpdateJudgeResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// Pairing messages
+message Pairing {
+  int32 pairing_id = 1;
+  int32 round_number = 2;
+  bool is_elimination_round = 3;
+  int32 room_id = 4;
+  string room_name = 5;
+  Team team1 = 6;
+  Team team2 = 7;
+  string head_judge_name = 8;
+  repeated Judge judges = 9;
+}
+
+message Team {
+  int32 team_id = 1;
+  string name = 2;
+  repeated Speaker speakers = 3;
+  repeated string speaker_names = 4;
+  double total_points = 5;
+  string league_name = 6;
+  string feedback = 7;
+}
+
+message Speaker {
+  int32 speaker_id = 1;
+  string name = 2;
+  int32 score_id = 3;
+  int32 rank = 4;
+  double points = 5;
+  string feedback = 6;
+  int32 team_id = 7;
+  string team_name = 8;
+}
+
+message GetPairingsRequest {
+  int32 tournament_id = 1;
+  int32 round_number = 2;
+  bool is_elimination = 3;
+  string token = 4;
+}
+
+message GetPairingsResponse {
+  repeated Pairing pairings = 1;
+}
+
+
+message UpdatePairingsRequest {
+  repeated Pairing pairings = 1;
+  string token = 2;
+}
+
+message UpdatePairingsResponse {
+  repeated Pairing pairings = 1;
+}
+
+
+// Ballot messages
+message Ballot {
+  int32 ballot_id = 1;
+  int32 round_number = 2;
+  bool is_elimination = 3;
+  int32 room_id = 4;
+  string room_name = 5;
+  repeated Judge judges = 6;
+  Team team1 = 7;
+  Team team2 = 8;
+  string recording_status = 9;
+  string verdict = 10;
+  int32 last_updated_by = 11;
+  string last_updated_at = 12;
+  bool head_judge_submitted = 13;
+}
+
+message GetBallotsRequest {
+  int32 tournament_id = 1;
+  int32 round_number = 2;
+  bool is_elimination = 3;
+  string token = 4;
+}
+
+message GetBallotsResponse {
+  repeated Ballot ballots = 1;
+}
+
+message GetBallotRequest {
+  int32 ballot_id = 1;
+  string token = 2;
+}
+
+message GetBallotResponse {
+  Ballot ballot = 1;
+}
+
+message GetBallotByJudgeIDRequest {
+  int32 judge_id = 1;
+  int32 tournament_id = 2;
+  string token = 3;
+}
+
+message GetBallotByJudgeIDResponse {
+  Ballot ballot = 1;
+}
+
+message UpdateBallotRequest {
+  Ballot ballot = 1;
+  string token = 2;
+}
+
+message UpdateBallotResponse {
+  Ballot ballot = 1;
+}
+
+// Algorithm integration messages
+message GeneratePreliminaryPairingsRequest {
+  int32 tournament_id = 1;
+  string token = 2;
+}
+
+message GenerateEliminationPairingsRequest {
+  int32 tournament_id = 1;
+  int32 round_number = 2;
+  string token = 3;
+}
+
+message GeneratePairingsResponse {
+  repeated Pairing pairings = 1;
+}
+
+message CreateTeamRequest {
+  string name = 1;
+  int32 tournament_id = 2;
+  repeated Speaker speakers = 3;
+  string token = 4;
+}
+
+message GetTeamRequest {
+  int32 team_id = 1;
+  string token = 2;
+}
+
+message UpdateTeamRequest {
+  Team team = 1;
+  string token = 2;
+}
+
+message DeleteTeamRequest {
+  int32 team_id = 1;
+  string token = 2;
+}
+
+message DeleteTeamResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetTeamsByTournamentRequest {
+  int32 tournament_id = 1;
+  string token = 2;
+}
+
+message GetTeamsByTournamentResponse {
+  repeated Team teams = 1;
+}
+
+message OverallRankingRequest {
+  int32 user_id = 1;
+  string token = 2;
+}
+
+message OverallRankingResponse {
+  int32 student_rank = 1;
+  int32 total_students = 2;
+  int32 rank_change = 3; // Positive for improvement, negative for decline
+  repeated TopStudent top_students = 4;
+  StudentInfo student_info = 5;
+}
+
+message TopStudent {
+  int32 rank = 1;
+  string name = 2;
+  double total_points = 3;
+  int32 rank_change = 4;
+}
+
+message StudentInfo {
+  string name = 1;
+  double total_points = 2;
+}
+
+message PerformanceRequest {
+  int32 user_id = 1;
+  string start_date = 2;
+  string end_date = 3;
+  string token = 4;
+}
+
+message PerformanceResponse {
+  repeated PerformanceData performance_data = 1;
+}
+
+message PerformanceData {
+  string tournament_date = 1;
+  double student_total_points = 2;
+  double student_average_points = 3;
+  int32 tournament_rank = 6;
+}
+
+message TournamentRankingRequest {
+  int32 tournament_id = 1;
+  string token = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message TournamentRankingResponse {
+  repeated StudentRanking rankings = 1;
+}
+
+message StudentRanking {
+  int32 student_id = 1;
+  string student_name = 2;
+  string school_name = 3;
+  int32 total_wins = 4;
+  double total_points = 5;
+  double average_rank = 6;
+}
+
+message TournamentTeamsRankingRequest {
+  int32 tournament_id = 1;
+  string token = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message TournamentTeamsRankingResponse {
+  repeated TeamRanking rankings = 1;
+  int32 total_count = 2;
+}
+
+message TeamRanking {
+  int32 team_id = 1;
+  string team_name = 2;
+  repeated string school_names = 3;
+  int32 wins = 4;
+  double total_points = 5;
+  double average_rank = 6;
+}
+
+message TournamentSchoolRankingRequest {
+  int32 tournament_id = 1;
+  string token = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message TournamentSchoolRankingResponse {
+  repeated SchoolRanking rankings = 1;
+  int32 total_count = 2;
+}
+
+message SchoolRanking {
+  string school_name = 1;
+  int32 team_count = 2;
+  int32 total_wins = 3;
+  double average_rank = 4;
+  double total_points = 5;
+}
+
+message OverallSchoolRankingRequest {
+  int32 user_id = 1;
+  string token = 2;
+}
+
+message OverallSchoolRankingResponse {
+  int32 school_rank = 1;
+  int32 total_schools = 2;
+  int32 rank_change = 3;
+  repeated TopSchool top_schools = 4;
+  SchoolInfo school_info = 5;
+}
+
+message TopSchool {
+  int32 rank = 1;
+  string name = 2;
+  double total_points = 3;
+  int32 rank_change = 4;
+}
+
+message SchoolInfo {
+  string name = 1;
+  double total_points = 2;
+}
+
+message SchoolPerformanceRequest {
+  int32 user_id = 1;
+  string start_date = 2;
+  string end_date = 3;
+  string token = 4;
+}
+
+message SchoolPerformanceResponse {
+  repeated SchoolPerformanceData performance_data = 1;
+}
+
+message SchoolPerformanceData {
+  string tournament_date = 1;
+  double school_total_points = 2;
+  double school_average_points = 3;
+  int32 tournament_rank = 4;
+}
+
+message StudentTournamentStatsRequest {
+  int32 student_id = 1;
+  string token = 2;
+}
+
+message StudentTournamentStatsResponse {
+  int32 total_tournaments = 1;
+  string total_tournaments_change = 2;
+  int32 attended_tournaments = 3;
+  string attended_tournaments_change = 4;
+  int32 upcoming_tournaments = 5;
+  string upcoming_tournaments_change = 6;
+}
+
+message VolunteerTournamentStatsRequest {
+  string token = 1;
+}
+
+message VolunteerTournamentStatsResponse {
+  int32 total_rounds_judged = 1;
+  string rounds_judged_change = 2;
+  int32 tournaments_attended = 3;
+  string tournaments_attended_change = 4;
+  int32 upcoming_tournaments = 5;
+  string upcoming_tournaments_change = 6;
+}
+
+message GetStudentFeedbackRequest {
+  int32 tournament_id = 1;
+  string token = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message StudentFeedbackEntry {
+  int32 round_number = 1;
+  bool is_elimination_round = 2;
+  double speaker_points = 3;
+  string feedback = 4;
+  bool is_read = 5;
+  string head_judge_name = 6;
+  string room_name = 7;
+  string opponent_team_name = 8;
+  string student_team_name = 9;
+  int32 debate_id = 10;
+  repeated JudgeInfo judges = 11;
+  int32 ballot_id = 12;
+}
+
+message JudgeInfo {
+  int32 judge_id = 1;
+  string judge_name = 2;
+  bool is_head_judge = 3;
+}
+
+message GetStudentFeedbackResponse {
+  repeated StudentFeedbackEntry feedback_entries = 1;
+  int32 total_count = 2;
+}
+
+message SubmitJudgeFeedbackRequest {
+  int32 judge_id = 1;
+  int32 debate_id = 2;
+  double clarity_rating = 3;
+  double constructiveness_rating = 4;
+  double timeliness_rating = 5;
+  double fairness_rating = 6;
+  double engagement_rating = 7;
+  string text_feedback = 8;
+  string token = 9;
+}
+
+message SubmitJudgeFeedbackResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetJudgeFeedbackRequest {
+  string token = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message JudgeFeedbackEntry {
+  string student_alias = 1;
+  string tournament_date = 2;
+  bool is_read = 3;
+  double clarity_rating = 4;
+  double constructiveness_rating = 5;
+  double timeliness_rating = 6;
+  double fairness_rating = 7;
+  double engagement_rating = 8;
+  string text_feedback = 9;
+  int32 round_number = 10;
+  bool is_elimination_round = 11;
+  int32 feedback_id = 12;
+}
+
+message GetJudgeFeedbackResponse {
+  repeated JudgeFeedbackEntry feedback_entries = 1;
+  int32 total_count = 2;
+}
+
+message GetVolunteerRankingRequest {
+  string token = 1;
+}
+
+message TopVolunteer {
+  int32 rank = 1;
+  string name = 2;
+  double average_rating = 3;
+  int32 rank_change = 4;
+}
+
+message VolunteerInfo {
+  string name = 1;
+  double average_rating = 2;
+}
+
+message GetVolunteerRankingResponse {
+  int32 volunteer_rank = 1;
+  int32 total_volunteers = 2;
+  int32 rank_change = 3;
+  repeated TopVolunteer top_volunteers = 4;
+  VolunteerInfo volunteer_info = 5;
+}
+
+message GetVolunteerPerformanceRequest {
+  string start_date = 1;
+  string end_date = 2;
+  string token = 3;
+}
+
+message VolunteerPerformanceData {
+  string tournament_date = 1;
+  double volunteer_average_rating = 2;
+  double overall_average_rating = 3;
+  int32 tournament_rank = 4;
+}
+
+message GetVolunteerPerformanceResponse {
+  repeated VolunteerPerformanceData performance_data = 1;
+}
+
+message MarkFeedbackAsReadRequest {
+    int32 feedback_id = 1;
+    string token = 2;
+}
+
+message MarkFeedbackAsReadResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message TournamentVolunteerRankingRequest {
+  int32 tournament_id = 1;
+  string token = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message VolunteerTournamentRank {
+  int32 volunteer_id = 1;
+  string volunteer_name = 2;
+  double average_rating = 3;
+  int32 preliminary_rounds = 4;
+  int32 elimination_rounds = 5;
+  int32 rank = 6;
+}
+
+message TournamentVolunteerRankingResponse {
+  repeated VolunteerTournamentRank rankings = 1;
+  int32 total_count = 2;
+}
