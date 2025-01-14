@@ -54,7 +54,11 @@ export function UserNav() {
         <Tooltip delayDuration={100}>
           <TooltipTrigger asChild>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative border-none p-2">
+              <Button
+                data-onboarding-id="profile"
+                variant="ghost"
+                className="relative border-none p-2"
+              >
                 <div className="hidden md:flex flex-col items-end mr-2">
                   <h3 className="text-sm text-[#212B36] dark:text-foreground capitalize leading-4">
                     {user && user.name}

@@ -23,6 +23,7 @@ import FormatCard from "./formats-card";
 import { cn } from "@/lib/utils";
 import LeagueCard from "./leagues-card";
 import FeedbackCard from "./feedback-card";
+import { defaults } from "lodash";
 
 interface DataCardViewProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -113,6 +114,20 @@ export function DataCardView<TData, TValue>({
         );
     }
   };
+
+  const dataOnboarding = () => {
+    switch (cardType) {
+      case "format":
+        return "tournament-formats"
+      case "league":
+        return "tournament-leagues"
+      case "tournament":
+        return "tournament-list"
+      default:
+        return null;
+    }
+  }
+
   return (
     <div>
       {DataTableToolbar && <DataTableToolbar table={table} />}
@@ -122,19 +137,20 @@ export function DataCardView<TData, TValue>({
             className={cn(
               "grid gap-4 mb-10",
               cardType === "tournament" &&
-                "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
+              "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
               cardType === "format" &&
-                "grid-cols-1 sm:grid-cols-2 md:grid-cols-4 2xl:grid-cols-5",
+              "grid-cols-1 sm:grid-cols-2 md:grid-cols-4 2xl:grid-cols-5",
               cardType === "league" &&
-                "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5",
+              "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5",
               cardType === "feedback" &&
-                "grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 xl:gap-16"
+              "grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 xl:gap-16"
             )}
+            data-onboarding-id={dataOnboarding()}
           >
             {table.getRowModel().rows.map((row) => handleCardDisplay(row))}
           </div>
         ) : (
-          <Card className="min-h-96 grid place-content-center">
+          <Card data-onboarding-id={dataOnboarding()} className="min-h-96 grid place-content-center">
             <div className="h-24 flex items-center justify-center">
               No results found
             </div>

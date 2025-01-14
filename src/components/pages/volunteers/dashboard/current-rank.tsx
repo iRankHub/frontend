@@ -24,7 +24,7 @@ function CurrentRank({ currentRank, totalVolunteers }: CurrentRankProps) {
         </h3>
         <TrendingUp size={14} className="text-success-foreground" />
       </div>
-      <p className="text-muted-text text-sm">Out of {totalVolunteers} students</p>
+      <p className="text-muted-text text-sm">Out of {totalVolunteers} volunteers</p>
     </div>
   );
 }

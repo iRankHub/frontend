@@ -1,7 +1,6 @@
 "use client";
 
 import { DataTableFacetedFilter } from "@/components/tables/data-table-faceted-filter";
-import { userRoles } from "@/components/tables/data/data";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Cross2Icon } from "@radix-ui/react-icons";
@@ -193,6 +192,7 @@ export function DataTableToolbar<TData>({
         <DialogTrigger>
           <Button
             type="button"
+            data-onboarding-id="add-format-button"
             className="text-background dark:text-foreground dark:hover:text-background gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground group mr-5"
           >
             <Icons.add className="text-white w-3.5 h-3.5 group-hover:text-foreground group-hover:dark:text-background" />

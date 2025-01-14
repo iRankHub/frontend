@@ -49,7 +49,7 @@ function Leaderboard({ topVolunteers }: LeaderboardProps) {
         </div>
 
         <h2 className="text-xl font-medium text-foreground m-0 p-0">
-          {topVolunteers[0].name}
+          {topVolunteers.length ? topVolunteers[0].name : ""}
         </h2>
         <span
           className={cn(
@@ -57,7 +57,7 @@ function Leaderboard({ topVolunteers }: LeaderboardProps) {
             inter.className
           )}
         >
-          {topVolunteers[0].averageRating}
+          {topVolunteers.length ? topVolunteers[0].averageRating : ""}
         </span>
       </div>
       {topVolunteers.slice(1).map((student, index) => (

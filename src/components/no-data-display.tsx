@@ -5,6 +5,7 @@ type TimeRange = "7d" | "30d" | "90d";
 
 interface NoDataDisplayProps {
   timeRange: TimeRange;
+  type: "volunteer" | "student" | "school";
 }
 
 const getTimeRangeMessage = (timeRange: TimeRange): string => {
@@ -18,7 +19,7 @@ const getTimeRangeMessage = (timeRange: TimeRange): string => {
   }
 };
 
-const NoDataDisplay: React.FC<NoDataDisplayProps> = ({ timeRange }) => (
+const NoDataDisplay: React.FC<NoDataDisplayProps> = ({ timeRange, type }) => (
   <div className="flex flex-col items-center justify-center h-[300px] text-center p-6 space-y-4">
     <div className="rounded-full bg-orange-100 p-3">
       <AlertCircle className="w-6 h-6 text-orange-500" />
@@ -28,7 +29,9 @@ const NoDataDisplay: React.FC<NoDataDisplayProps> = ({ timeRange }) => (
       <p className="text-gray-500 text-sm max-w-[400px]">
         {getTimeRangeMessage(timeRange)}
         <br />
-        Register for tournaments to start tracking registration trends!
+        {type === "volunteer" ? (
+          "Judge for tournaments to start tracking performance trends!"
+        ) : "Register for tournaments to start tracking registration trends!"}
       </p>
     </div>
   </div>

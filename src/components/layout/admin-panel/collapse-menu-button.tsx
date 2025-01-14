@@ -31,12 +31,14 @@ type Submenu = {
   href: string;
   label: string;
   active: boolean;
+  dataOnboardingId?: string;
 };
 
 interface CollapseMenuButtonProps {
   icon: LucideIcon;
   label: string;
   active: boolean;
+  dataOnboardingId?: string;
   submenus: Submenu[];
   isOpen: boolean | undefined;
   defaultOpen?: boolean;
@@ -47,6 +49,7 @@ export function CollapseMenuButton({
   label,
   active,
   submenus,
+  dataOnboardingId,
   isOpen,
   defaultOpen = false,
 }: CollapseMenuButtonProps) {
@@ -66,6 +69,7 @@ export function CollapseMenuButton({
     >
       <CollapsibleTrigger
         className="[&[data-state=open]>div>div>svg]:rotate-180 mb-1"
+        data-onboarding-id={dataOnboardingId}
         asChild
       >
         <Button
@@ -115,9 +119,10 @@ export function CollapseMenuButton({
         </Button>
       </CollapsibleTrigger>
       <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-        {submenus.map(({ href, label, active }, index) => (
+        {submenus.map(({ href, label, active, dataOnboardingId: subMenuOnboardingId }, index) => (
           <Button
             key={index}
+            data-onboarding-id={subMenuOnboardingId}
             variant={active ? "secondary" : "ghost"}
             className={cn(
               "w-full justify-start h-10 mb-1 text-background dark:text-foreground font-bold group",
@@ -156,6 +161,7 @@ export function CollapseMenuButton({
             <DropdownMenuTrigger asChild>
               <Button
                 variant={active ? "secondary" : "ghost"}
+                data-onboarding-id={dataOnboardingId}
                 className={cn(
                   "w-full justify-start h-10 mb-1 text-background dark:text-foreground font-bold group",
                   active && "bg-[#F5AE73] hover:bg-[#F5AE73]"
@@ -190,9 +196,16 @@ export function CollapseMenuButton({
           {label}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {submenus.map(({ href, label }, index) => (
-          <DropdownMenuItem key={index} asChild>
-            <Link className="cursor-pointer" href={href}>
+        {submenus.map(({ href, label, dataOnboardingId: subMenuOnboardingId }, index) => (
+          <DropdownMenuItem
+            key={index}
+            asChild
+          >
+            <Link
+              className="cursor-pointer"
+              href={href}
+              data-onboarding-id={subMenuOnboardingId}
+            >
               <p className="max-w-[180px] truncate">{label}</p>
             </Link>
           </DropdownMenuItem>

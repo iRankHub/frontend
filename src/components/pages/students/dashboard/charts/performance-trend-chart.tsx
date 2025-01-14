@@ -20,7 +20,6 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { AlertCircle } from "lucide-react";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { getStudentPerformance } from "@/core/debates/rankings";
 import {
@@ -33,14 +32,14 @@ type TimeRange = "7d" | "30d" | "90d";
 const PerformanceTrendChart: React.FC = () => {
   const [chartData, setChartData] = useState<PerformanceData.AsObject[]>([]);
   const [filterValue, setFilterValue] = useState<TimeRange>("90d");
-  const [performance, setPerformance] = useState<PerformanceData.AsObject[]>([]);
+  const [, setPerformance] = useState<PerformanceData.AsObject[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { user } = useUserStore();
 
   const getDateRange = (range: TimeRange) => {
     const endDate = new Date();
     const startDate = new Date();
-    
+
     switch (range) {
       case "7d":
         startDate.setDate(endDate.getDate() - 7);
@@ -51,7 +50,7 @@ const PerformanceTrendChart: React.FC = () => {
       default:
         startDate.setDate(endDate.getDate() - 90);
     }
-    
+
     return {
       startDate: startDate.toISOString().split('T')[0],
       endDate: endDate.toISOString().split('T')[0]
@@ -92,7 +91,7 @@ const PerformanceTrendChart: React.FC = () => {
     }
 
     // Sort the data chronologically (oldest to newest)
-    const sortedData = [...filteredData].sort((a, b) => 
+    const sortedData = [...filteredData].sort((a, b) =>
       new Date(a.tournamentDate).getTime() - new Date(b.tournamentDate).getTime()
     );
 
@@ -103,7 +102,7 @@ const PerformanceTrendChart: React.FC = () => {
     if (!user) return;
 
     setIsLoading(true);
-    
+
     const dateRange = getDateRange(filterValue);
     const params = {
       user_id: 26,
@@ -195,7 +194,7 @@ const PerformanceTrendChart: React.FC = () => {
             </AreaChart>
           </ResponsiveContainer>
         ) : (
-          <NoDataDisplay timeRange={filterValue} />
+          <NoDataDisplay timeRange={filterValue} type="student" />
         )}
       </CardContent>
     </Card>

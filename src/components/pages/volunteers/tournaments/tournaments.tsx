@@ -8,7 +8,7 @@ import { DataCardView } from "@/components/cards-with-filter/data-card";
 import { columns } from "./columns";
 import { DataTableToolbar } from "./data-table-toolbar";
 
-function Tournaments({}) {
+function Tournaments({ }) {
   const [pageLoading, setPageLoading] = useState<boolean>(true);
   const [tournaments, setTournaments] = useState<Tournament.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
@@ -56,31 +56,17 @@ function Tournaments({}) {
   };
   return (
     <div className="w-full mt-5 rounded-md overflow-hidden border border-muted bg-background">
-      {pageLoading ? (
+      <DataCardView
+        data={tournaments}
+        columns={columns}
+        DataTableToolbar={DataTableToolbar}
+        setTournaments={setTournaments}
+        cardType="tournament"
+      />
+
+      {loadMoreLoading && (
         <div className="flex items-center justify-center w-full h-96">
           <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
-        </div>
-      ) : tournaments.length ? (
-        <>
-          <DataCardView
-            data={tournaments}
-            columns={columns}
-            DataTableToolbar={DataTableToolbar}
-            setTournaments={setTournaments}
-            cardType="tournament"
-          />
-
-          {loadMoreLoading && (
-            <div className="flex items-center justify-center w-full h-96">
-              <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="flex items-center justify-center w-full h-96">
-          <p className="text-darkBlue text-lg font-semibold">
-            No tournaments available
-          </p>
         </div>
       )}
 
@@ -97,7 +83,7 @@ function Tournaments({}) {
           </Button>
         )}
       </div>
-    </div>
+    </div >
   );
 }
 

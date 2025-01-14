@@ -24,14 +24,13 @@ import { getUserProfile } from "@/core/users/users";
 
 import {
   GetVolunteerRankingResponse,
-  OverallRankingResponse,
   VolunteerTournamentStatsResponse,
 } from "@/lib/grpc/proto/debate_management/debate_pb";
 import AppLoader from "@/lib/loader";
 import {
-  getOverallVolunteerRanking,
   getVolunteerTournamentStats,
 } from "@/core/debates/rankings";
+import { NoRankingDisplay } from "@/utils/no-ranking-information";
 
 const Page = withAuth(() => {
   return <Dashboard />;
@@ -139,26 +138,35 @@ function Dashboard() {
     return <AppLoader />;
   }
 
-  if (hasError || !overallVolunteerRanking) {
-    return (
-      <ContentLayout title="dashboard">
-        <div className="flex items-center justify-center h-screen">
-          <div className="text-center">
-            <h2 className="text-2xl font-semibold mb-4">
-              No Information Available
-            </h2>
-            <p className="mb-2">
-              We couldn{`'`}t find any ranking information for you.
-            </p>
-            <p>
-              This could be because your account is new or you haven{`'`}t
-              participated in any tournaments yet.
-            </p>
-          </div>
-        </div>
-      </ContentLayout>
-    );
-  }
+  // if (hasError || !overallVolunteerRanking) {
+  //   return (
+  //     <ContentLayout title="dashboard">
+  //       <div className="flex items-center justify-center h-screen">
+  //         <div className="text-center">
+  //           <h2 className="text-2xl font-semibold mb-4">
+  //             No Information Available
+  //           </h2>
+  //           <p className="mb-2">
+  //             We couldn{`'`}t find any ranking information for you.
+  //           </p>
+  //           <p>
+  //             This could be because your account is new or you haven{`'`}t
+  //             participated in any tournaments yet.
+  //           </p>
+  //         </div>
+  //       </div>
+  //     </ContentLayout>
+  //   );
+  // }
+
+  // if (hasError || !overallVolunteerRanking) {
+  //   console.log(hasError, overallVolunteerRanking)
+  //   return (
+  //     <ContentLayout title="dashboard">
+  //       <NoRankingDisplay />
+  //     </ContentLayout>
+  //   );
+  // }
 
   return (
     <ContentLayout title="dashboard">
@@ -191,7 +199,7 @@ function Dashboard() {
         </div>
       </header>
       <div className="flex items-stretch flex-col md:flex-row gap-3 mt-5">
-        <div className="flex-1 w-full">
+        <div data-onboarding-id="dashboard-analytics" className="flex-1 w-full">
           <Overview
             totalTournamentsAttended={totalTournaments}
             totalTournamentsJudged={totalRoundsJudged}
@@ -202,23 +210,23 @@ function Dashboard() {
             }
           />
         </div>
-        <div className="flex-1 max-w-full md:max-w-xs w-full">
+        <div data-onboarding-id="dashboard-current-rank" className="flex-1 max-w-full md:max-w-xs w-full">
           <CurrentRank
-            currentRank={overallVolunteerRanking.volunteerRank || 0}
-            totalVolunteers={overallVolunteerRanking.totalVolunteers || 0}
+            currentRank={overallVolunteerRanking ? overallVolunteerRanking.volunteerRank : 0}
+            totalVolunteers={overallVolunteerRanking ? overallVolunteerRanking.totalVolunteers : 0}
           />
         </div>
       </div>
       <div className="flex items-stretch flex-col md:flex-row gap-3 mt-5">
-        <div className="flex-1 w-full">
+        <div data-onboarding-id="dashboard-performance-trend" className="flex-1 w-full">
           <PerformanceTrendChart />
         </div>
-        <div className="flex-1 max-w-full md:max-w-xs w-full">
+        <div data-onboarding-id="dashboard-volunteer-leaderboard" className="flex-1 max-w-full md:max-w-xs w-full">
           <Leaderboard
-            volunteerRank={overallVolunteerRanking.volunteerRank || 0}
-            rankChange={overallVolunteerRanking.rankChange || 0}
-            volunteerInfo={overallVolunteerRanking.volunteerInfo || ({} as any)}
-            topVolunteers={overallVolunteerRanking.topVolunteersList || []}
+            volunteerRank={overallVolunteerRanking ? overallVolunteerRanking.volunteerRank : 0}
+            rankChange={overallVolunteerRanking ? overallVolunteerRanking.rankChange : 0}
+            volunteerInfo={overallVolunteerRanking ? overallVolunteerRanking.volunteerInfo : ({} as any)}
+            topVolunteers={overallVolunteerRanking ? overallVolunteerRanking.topVolunteersList : []}
           />
         </div>
       </div>

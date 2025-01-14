@@ -85,6 +85,7 @@ export function Navbar({ title }: NavbarProps) {
                     <Button
                       className="relative rounded-full w-8 h-8 bg-background cursor-pointer"
                       variant="outline"
+                      data-onboarding-id="notifications"
                       size="icon"
                     >
                       <sup className="bg-primary w-3.5 h-3.5 grid items-center absolute rounded-full text-[10px] font-bold top-0.5 -right-1.5 text-white">

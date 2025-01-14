@@ -58,20 +58,16 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[280px]"
         />
-        {table.getColumn("leagueName") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("leagueName")}
-            title="Leagues"
-            options={leagueNames}
-          />
-        )}
-        {table.getColumn("status") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
-            options={statuses}
-          />
-        )}
+        <div data-onboarding-id="tournament-filter-league">
+          {table.getColumn("leagueName") && (
+            <DataTableFacetedFilter
+              column={table.getColumn("leagueName")}
+              title="Leagues"
+              options={leagueNames}
+            />
+          )}
+        </div>
+
         {isFiltered && (
           <Button
             variant="ghost"

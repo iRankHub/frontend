@@ -94,6 +94,7 @@ export function Navbar({ title }: NavbarProps) {
                           className="relative rounded-full w-8 h-8 bg-background cursor-pointer"
                           variant="outline"
                           size="icon"
+                          data-onboarding-id="dashboard-volunteer-notifications"
                         >
                           <sup className="bg-primary w-3.5 h-3.5 grid items-center absolute rounded-full text-[10px] font-bold top-0.5 -right-1.5 text-white">
                             {notifications.length}

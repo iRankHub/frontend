@@ -1,6 +1,5 @@
 "use client";
 
-import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -18,14 +17,11 @@ import { withAuth } from "@/stores/auth/middleware.store";
 import { Roles, useUserStore } from "@/stores/auth/auth.store";
 import {
   UserProfile,
-  UserSummary,
 } from "@/lib/grpc/proto/user_management/users_pb";
 import { getUserProfile, getUserStatistics } from "@/core/users/users";
 import { getTournamentStats } from "@/core/tournament/list";
 import UserRegistrationsChart from "@/components/pages/admin/dashboard/charts/user-registration-chart";
 import AppLoader from "@/lib/loader";
-import { useOnboarding } from "@/context/OnboardingContext";
-import { Button } from "@/components/ui/button";
 
 const page = withAuth(() => {
   return <Dashboard />;
@@ -56,7 +52,6 @@ function Dashboard() {
   const [student_count, setStudentCount] = React.useState(0);
   const [school_count, setSchoolCount] = React.useState(0);
   const [volunteer_count, setVolunteerCount] = React.useState(0);
-  const { toggleOnboarding } = useOnboarding();
 
   const { user } = useUserStore((state) => state);
   const [currentUser, setCurrentUser] = useState<
@@ -158,7 +153,6 @@ function Dashboard() {
             Hope you have a good day
           </span>
         </div>
-        <Button onClick={toggleOnboarding}>Show guide</Button>
       </header>
       <Overview
         newSignups={newSignups}
