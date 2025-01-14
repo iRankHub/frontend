@@ -24,6 +24,8 @@ import { getUserProfile, getUserStatistics } from "@/core/users/users";
 import { getTournamentStats } from "@/core/tournament/list";
 import UserRegistrationsChart from "@/components/pages/admin/dashboard/charts/user-registration-chart";
 import AppLoader from "@/lib/loader";
+import { useOnboarding } from "@/context/OnboardingContext";
+import { Button } from "@/components/ui/button";
 
 const page = withAuth(() => {
   return <Dashboard />;
@@ -54,6 +56,7 @@ function Dashboard() {
   const [student_count, setStudentCount] = React.useState(0);
   const [school_count, setSchoolCount] = React.useState(0);
   const [volunteer_count, setVolunteerCount] = React.useState(0);
+  const { toggleOnboarding } = useOnboarding();
 
   const { user } = useUserStore((state) => state);
   const [currentUser, setCurrentUser] = useState<
@@ -122,7 +125,7 @@ function Dashboard() {
   }
 
   return (
-    <>
+    <div>
       <header>
         <div className="w-full flex items-center justify-between gap-5">
           <h3 className="text-lg text-primary font-semibold">Dashboard</h3>
@@ -155,6 +158,7 @@ function Dashboard() {
             Hope you have a good day
           </span>
         </div>
+        <Button onClick={toggleOnboarding}>Show guide</Button>
       </header>
       <Overview
         newSignups={newSignups}
@@ -168,7 +172,7 @@ function Dashboard() {
         newRegistrationsPercentageChange={newRegistrationsPercentageChange}
         approvedUsersPercentageChange={approvedUsersPercentageChange}
       />
-      <div className="grid grid-cols-1 md:grid-cols-3 mt-5 md:gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 mt-5 md:gap-3" data-onboarding-id="dashboard-user-insights">
         <UserCategoryOverview
           admin_count={admin_count}
           student_count={student_count}
@@ -180,7 +184,7 @@ function Dashboard() {
         </div>
       </div>
       <SystemMonitor />
-    </>
+    </div>
   );
 }
 
