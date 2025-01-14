@@ -37,9 +37,14 @@ export function Menu({ isOpen }: MenuProps) {
           {menuList.map(({ groupLabel, menus }, groupIndex) => (
             <li className={cn("w-full", groupLabel ? "pt-5" : "")} key={groupIndex}>
               {menus.map(
-                ({ href, label, icon: Icon, active, submenus }, menuIndex) =>
+                ({ href, label, icon: Icon, active, dataOnboardingId, submenus }, menuIndex) =>
                   submenus.length === 0 ? (
-                    <div className="w-full" key={menuIndex} data-menu-item={label.toLowerCase().replace(/ /g, '-')}>
+                    <div
+                      className="w-full"
+                      key={menuIndex}
+                      data-menu-item={label.toLowerCase().replace(/ /g, '-')}
+                      data-onboarding-id={dataOnboardingId}
+                    >
                       <TooltipProvider disableHoverableContent>
                         <Tooltip delayDuration={100}>
                           <TooltipTrigger asChild>
@@ -90,6 +95,7 @@ export function Menu({ isOpen }: MenuProps) {
                         active={active}
                         submenus={submenus}
                         isOpen={isOpen}
+                        dataOnboardingId={dataOnboardingId}
                       />
                     </div>
                   )

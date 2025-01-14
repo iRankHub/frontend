@@ -18,7 +18,6 @@ import Leaderboard from "@/components/pages/students/dashboard/leaderboard";
 import PerformanceTrendChart from "@/components/pages/students/dashboard/charts/performance-trend-chart";
 import { UserProfile } from "@/lib/grpc/proto/user_management/users_pb";
 import { getUserProfile } from "@/core/users/users";
-import { getTournamentStats } from "@/core/tournament/list";
 import {
   getOverallStudentRanking,
   getStudentTournamentStats,
@@ -124,7 +123,7 @@ function Dashboard() {
   }
 
   if (hasError || !overallStudentRanking) {
-    console.log(hasError, overallStudentRanking)
+    // console.log(hasError, overallStudentRanking)
     return (
       <ContentLayout title="dashboard">
         <NoRankingDisplay />

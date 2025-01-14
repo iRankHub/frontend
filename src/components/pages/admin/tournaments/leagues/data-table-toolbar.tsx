@@ -275,6 +275,7 @@ export function DataTableToolbar<TData>({
           <Button
             type="button"
             className="text-white gap-2 text-sm font-semibold h-8 hover:bg-white hover:text-foreground hover:dark:text-background group mr-5"
+            data-onboarding-id="add-league-button"
           >
             <Icons.add className="text-white w-3.5 h-3.5 group-hover:text-foreground group-hover:dark:text-background" />
             Add New League

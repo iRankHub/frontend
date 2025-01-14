@@ -16,12 +16,14 @@ type Submenu = {
   href: string;
   label: string;
   active: boolean;
+  dataOnboardingId?: string;
 };
 
 type Menu = {
   href: string;
   label: string;
   active: boolean;
+  dataOnboardingId?: string;
   icon: LucideIcon;
   submenus: Submenu[];
 };
@@ -47,27 +49,32 @@ export function getMenuList(pathname: string): Group[] {
           href: "/admin/tournaments",
           label: "Tournaments",
           active: pathname.includes("/admin/tournaments"),
+          dataOnboardingId: "tournaments-collapse-button",
           icon: Sheet,
           submenus: [
             {
               href: "/admin/tournaments/formats",
               label: "Formats",
               active: pathname === "/formats",
+              dataOnboardingId: "tournaments-formats-submenu",
             },
             {
               href: "/admin/tournaments/leagues",
               label: "Leagues",
               active: pathname === "/leagues",
+              dataOnboardingId: "tournaments-leagues-submenu",
             },
             {
               href: "/admin/tournaments/create",
               label: "Create Tournament",
               active: pathname === "/create",
+              dataOnboardingId: "tournaments-create-submenu",
             },
             {
               href: "/admin/tournaments/list",
               label: "List Tournaments",
               active: pathname === "/list",
+              dataOnboardingId: "tournaments-list-submenu",
             },
           ],
         },
@@ -75,6 +82,7 @@ export function getMenuList(pathname: string): Group[] {
           href: "/admin/users",
           label: "Users",
           active: pathname.includes("/admin/users"),
+          dataOnboardingId: "users",
           icon: Users,
           submenus: [],
         },
@@ -82,6 +90,7 @@ export function getMenuList(pathname: string): Group[] {
           href: "/admin/reports",
           label: "Reporting & Analytics",
           active: pathname.includes("/admin/reports"),
+          dataOnboardingId: "reporting-&-analytics",
           icon: File,
           submenus: [],
         },
@@ -89,16 +98,10 @@ export function getMenuList(pathname: string): Group[] {
           href: "/admin/archives",
           label: "Archives",
           active: pathname.includes("/admin/archives"),
+          dataOnboardingId: "archives",
           icon: ArchiveIcon,
           submenus: [],
         },
-        // {
-        //   href: "/admin/notification-settings/schools",
-        //   label: "Notification Settings",
-        //   active: pathname.includes("/admin/notification-settings/schools"),
-        //   icon: ArchiveIcon,
-        //   submenus: [],
-        // },
       ],
     },
   ];
