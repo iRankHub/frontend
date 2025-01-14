@@ -65,8 +65,8 @@ export const onboardingConfig: Record<string, PageConfig> = {
                 order: 7
             },
             {
-                id: 'tournament-create',
-                title: 'Create Tournaments',
+                id: 'tournaments',
+                title: 'Tournaments list',
                 content: 'View all previous and upcoming tournaments.',
                 targetSelector: 'tournaments-list-submenu',
                 placement: 'right',
