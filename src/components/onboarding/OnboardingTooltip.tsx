@@ -32,7 +32,6 @@ type ActionConfig = ClickActionConfig | InputActionConfig | CustomActionConfig;
 const isActionConfig = (action: any): action is ActionConfig => {
   if (!action || typeof action !== 'object') return false;
   if (!('type' in action)) return false;
-
   return ['click', 'input', 'custom'].includes(action.type);
 };
 
@@ -170,62 +169,87 @@ export const OnboardingTooltip = ({ pageConfig }: OnboardingTooltipProps) => {
     const rect = target.getBoundingClientRect();
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-    const spacing = 15;
+    const spacing = window.innerWidth < 640 ? 8 : 15;
+    const isMobile = window.innerWidth < 680;
 
     let position = { top: 0, left: 0, transform: '' };
 
-    switch (currentStepConfig.placement) {
-      case 'top':
-        position = {
-          top: rect.top + scrollTop - spacing,
-          left: rect.left + scrollLeft + (rect.width / 2),
-          transform: 'translate(-50%, -100%)'
-        };
-        break;
-      case 'bottom':
-        position = {
-          top: rect.bottom + scrollTop + spacing,
-          left: rect.left + scrollLeft + (rect.width / 2),
-          transform: 'translate(-50%, 0)'
-        };
-        break;
-      case 'left':
-        position = {
-          top: rect.top + scrollTop + (rect.height / 2),
-          left: rect.left + scrollLeft - spacing,
-          transform: 'translate(-100%, -50%)'
-        };
-        break;
-      case 'right':
-        position = {
-          top: rect.top + scrollTop + (rect.height / 2),
-          left: rect.right + scrollLeft + spacing,
-          transform: 'translate(0, -50%)'
-        };
-        break;
-      default:
-        position = {
-          top: rect.bottom + scrollTop + spacing,
-          left: rect.left + scrollLeft + (rect.width / 2),
-          transform: 'translate(-50%, 0)'
-        };
+    // Always use bottom placement for mobile
+    if (isMobile) {
+      position = {
+        top: rect.bottom + scrollTop + spacing,
+        // Center the tooltip but ensure it stays within viewport
+        left: Math.max(16, Math.min(
+          rect.left + scrollLeft + (rect.width / 2),
+          window.innerWidth - 16
+        )),
+        transform: 'translate(-16px, 0)' // Small offset to prevent left edge cutoff
+      };
+    } else {
+      // Desktop positioning logic
+      switch (currentStepConfig.placement) {
+        case 'top':
+          position = {
+            top: rect.top + scrollTop - spacing,
+            left: rect.left + scrollLeft + (rect.width / 2),
+            transform: 'translate(-50%, -100%)'
+          };
+          break;
+        case 'bottom':
+          position = {
+            top: rect.bottom + scrollTop + spacing,
+            left: rect.left + scrollLeft + (rect.width / 2),
+            transform: 'translate(-50%, 0)'
+          };
+          break;
+        case 'left':
+          position = {
+            top: rect.top + scrollTop + (rect.height / 2),
+            left: rect.left + scrollLeft - spacing,
+            transform: 'translate(-100%, -50%)'
+          };
+          break;
+        case 'right':
+          position = {
+            top: rect.top + scrollTop + (rect.height / 2),
+            left: rect.right + scrollLeft + spacing,
+            transform: 'translate(0, -50%)'
+          };
+          break;
+        default:
+          position = {
+            top: rect.bottom + scrollTop + spacing,
+            left: rect.left + scrollLeft + (rect.width / 2),
+            transform: 'translate(-50%, 0)'
+          };
+      }
     }
 
+    // Ensure tooltip stays within viewport bounds
     const tooltipRect = tooltipRef.current?.getBoundingClientRect();
     if (tooltipRect) {
-      if (position.top < 0) position.top = spacing;
-      if (position.left < 0) position.left = spacing;
-      if (position.top + tooltipRect.height > window.innerHeight) {
-        position.top = window.innerHeight - tooltipRect.height - spacing;
+      // Adjust vertical position
+      if (position.top < scrollTop + spacing) {
+        position.top = scrollTop + spacing;
+      } else if (position.top + tooltipRect.height > window.innerHeight + scrollTop - spacing) {
+        position.top = window.innerHeight + scrollTop - tooltipRect.height - spacing;
       }
-      if (position.left + tooltipRect.width > window.innerWidth) {
-        position.left = window.innerWidth - tooltipRect.width - spacing;
+
+      // Adjust horizontal position for mobile
+      if (isMobile) {
+        // Ensure minimum padding from viewport edges
+        const minPadding = 16;
+        position.left = Math.max(
+          minPadding,
+          Math.min(position.left, window.innerWidth - tooltipRect.width - minPadding)
+        );
       }
     }
 
     setTooltipPosition(position);
     setIsVisible(true);
 
+    // Update target element styling
     target.classList.add('relative', 'z-50');
     target.setAttribute(
       'style',
@@ -276,37 +300,44 @@ export const OnboardingTooltip = ({ pageConfig }: OnboardingTooltipProps) => {
   return (
     <>
       {error && (
-        <div className="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50">
+        <div className="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-3 py-2 sm:px-4 sm:py-3 rounded z-50 text-sm sm:text-base">
           {error}
         </div>
       )}
       <div
         ref={tooltipRef}
-        className={`fixed z-50 bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 max-w-sm border border-gray-200 dark:border-gray-700 transition-opacity duration-200 ${isVisible ? 'opacity-100' : 'opacity-0'
-          } ${currentStepConfig.waitForAction ? 'pointer-events-none' : ''}`}
+        className={`fixed z-50 bg-white dark:bg-gray-800 rounded-xl shadow-xl 
+          p-4 sm:p-6 w-[calc(100%-32px)] sm:w-auto sm:max-w-sm mx-4 sm:mx-0
+          border border-gray-200 dark:border-gray-700 transition-opacity duration-200
+          mt-auto max-w-[calc(100vw-32px)]
+          ${isVisible ? 'opacity-100' : 'opacity-0'}
+        ${currentStepConfig.waitForAction ? 'pointer-events-none' : ''}`}
         style={{
           top: tooltipPosition.top,
           left: tooltipPosition.left,
           transform: tooltipPosition.transform,
         }}
       >
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2 sm:mb-3">
           {currentStepConfig.title}
         </h3>
-        <p className="text-gray-600 dark:text-gray-300 mb-4">
+        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-3 sm:mb-4">
           {currentStepConfig.content}
         </p>
         {currentStepConfig.waitForAction && (
-          <p className="text-sm text-blue-600 dark:text-blue-400 mb-4 font-medium">
+          <p className="text-xs sm:text-sm text-blue-600 dark:text-blue-400 mb-3 sm:mb-4 font-medium">
             {currentStepConfig.waitForAction.message || 'Complete this action to continue'}
           </p>
         )}
-        <div className={`flex flex-col gap-4 ${currentStepConfig.waitForAction ? 'pointer-events-auto' : ''}`}>
-          <div className="flex justify-between items-center">
+        <div className={`flex flex-col gap-3 sm:gap-4 ${currentStepConfig.waitForAction ? 'pointer-events-auto' : ''}`}>
+          <div className="flex justify-between items-center gap-2 sm:gap-4">
             <button
               onClick={previousStep}
               disabled={currentStep === 0}
-              className="px-4 py-2 text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium 
+                bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 
+                hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors 
+                disabled:opacity-50 disabled:cursor-not-allowed min-w-[80px] sm:min-w-[100px]"
             >
               Previous
             </button>
@@ -321,19 +352,24 @@ export const OnboardingTooltip = ({ pageConfig }: OnboardingTooltipProps) => {
                     nextStep();
                   }
                 }}
-                className="px-4 py-2 text-sm font-medium bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium 
+                  bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors
+                  min-w-[80px] sm:min-w-[100px]"
               >
                 {currentStep === pageConfig.steps.length - 1 ? 'Finish' : 'Next'}
               </button>
             )}
           </div>
-          <div className="flex justify-between items-center border-t dark:border-gray-700 pt-4 mt-2">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-4 
+            border-t dark:border-gray-700 pt-3 sm:pt-4 mt-1 sm:mt-2">
             <button
               onClick={() => {
                 cleanup();
                 skipOnboarding();
               }}
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+              className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 
+                hover:text-gray-700 dark:hover:text-gray-200 transition-colors
+                w-full sm:w-auto text-left"
             >
               Skip this page
             </button>
@@ -342,13 +378,15 @@ export const OnboardingTooltip = ({ pageConfig }: OnboardingTooltipProps) => {
                 cleanup();
                 disableGlobally();
               }}
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+              className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 
+                hover:text-gray-700 dark:hover:text-gray-200 transition-colors
+                w-full sm:w-auto text-left"
             >
               Don&apos;t show onboarding again
             </button>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 };
