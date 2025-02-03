@@ -315,7 +315,7 @@ export const batchCreateUsers = async (data: {
         userData.setHasinternship(volunteer.hasInternship.toLowerCase() === "yes");
         userData.setIsenrolledinuniversity(volunteer.isEnrolledInUniversity.toLowerCase() === "yes");
         userData.setUserrole("volunteer");
-        userData.setSafeguardingCertificateUrl(volunteer.safeguardingCertificate ?? "")
+        userData.setSafeguardingCertificateUrl(volunteer.safeguardingCertificate ?? "");
         addUserData(userData);
     });
 
@@ -350,10 +350,16 @@ export const batchCreateUsers = async (data: {
         });
     });
 
-    // Step 3: Get school IDs for newly created schools
-    const schoolNames = data.school.map(school => school.schoolName);
+    // Step 3: Get school IDs for all schools referenced in the student data
+    const allSchoolNames = [
+        ...new Set([
+            ...data.school.map(school => school.schoolName), // New schools being imported
+            ...data.student.map(student => student.schoolName) // Schools referenced by students
+        ])
+    ];
+
     const schoolIdsRequest = new GetSchoolIDsByNamesRequest();
-    schoolIdsRequest.setSchoolNamesList(schoolNames);
+    schoolIdsRequest.setSchoolNamesList(allSchoolNames);
     schoolIdsRequest.setToken(data.token);
 
     const schoolIds = await new Promise<[string, number][]>((resolve, reject) => {

@@ -17,14 +17,12 @@ import {
   ParsedDataVolunteer,
   parseExcelFile,
 } from "@/file-parser/parse-excel-file";
-import { useUsersStore } from "@/stores/admin/users/users.store";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { Trash2 } from "lucide-react";
 import Link from "next/link";
 import React, { useCallback, useState } from "react";
-import { DropzoneOptions, useDropzone } from "react-dropzone";
-
-type Props = {};
+import { useDropzone } from "react-dropzone";
+import ImportResultsDialog from "./ImportResultsDialog";
 
 interface ParsedData {
   admin: ParsedDataAdmin[];
@@ -33,26 +31,45 @@ interface ParsedData {
   volunteer: ParsedDataVolunteer[];
 }
 
+interface ImportResponse {
+  success: boolean;
+  importedcount: number;
+  failedemailsList: string[];
+  message: string;
+}
+
+interface ImportResults {
+  importedCount: number;
+  failedEmailsList: string[];
+}
+
 type CardVariant = "uploading" | "success" | "failed" | "view";
 
-function FileUpload({}: Props) {
-  const [parsedData, setParsedData] = useState<ParsedData | null>(null);
-  const [error, setError] = useState<string | null>(null);
+interface UploadLoaderCardProps {
+  variant: CardVariant;
+  progress: number;
+  size: string;
+  link?: string;
+}
+
+const FileUpload: React.FC = () => {
+  const [, setParsedData] = useState<ParsedData | null>(null);
+  const [, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
-  const { toast } = useToast();
   const [fileSize, setFileSize] = useState<string | null>(null);
-  const [cardVariant, setCardVariant] = useState<
-    "uploading" | "success" | "failed" | "view"
-  >("uploading");
-  const { setUsers } = useUsersStore((state) => state);
-  const {user} = useUserStore((state) => state);
+  const [importResults, setImportResults] = useState<ImportResults | null>(null);
+  const [cardVariant, setCardVariant] = useState<CardVariant>("uploading");
+
+  const { toast } = useToast();
+  const { user } = useUserStore((state) => state);
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       setIsLoading(true);
       setProgress(0);
       setFileSize(`${(acceptedFiles[0].size / 1024).toFixed(2)} kb`);
+      setImportResults(null);
 
       try {
         const parsedData = await parseExcelFile(acceptedFiles[0]);
@@ -62,24 +79,32 @@ function FileUpload({}: Props) {
           setProgress((prev) => (prev >= 95 ? 95 : prev + 5));
         }, 1000);
 
-
         if (!user) {
-          return
+          clearInterval(uploadInterval);
+          return;
         }
-        const res = await batchCreateUsers({...parsedData, token: user.token});
+
+        const res: ImportResponse = await batchCreateUsers({ ...parsedData, token: user.token });
         clearInterval(uploadInterval);
 
         if (res.success) {
           setCardVariant("success");
           setProgress(100);
+          setImportResults({
+            importedCount: res.importedcount,
+            failedEmailsList: res.failedemailsList || []
+          });
         } else {
           setCardVariant("failed");
+          setImportResults({
+            importedCount: res.importedcount || 0,
+            failedEmailsList: res.failedemailsList || []
+          });
 
           toast({
             variant: "destructive",
-            title: "Error",
-            description:
-              "Something went wrong while importing users. This could be due to invalid data or duplicate entries",
+            title: "Partial Import",
+            description: res.message || "Some users could not be imported. Check the details below.",
             action: (
               <ToastAction altText="Close" className="bg-primary text-white">
                 Close
@@ -89,8 +114,8 @@ function FileUpload({}: Props) {
         }
       } catch (error) {
         console.error("Error creating users", error);
+        setCardVariant("failed");
 
-        // check if its a parsing error or a file not an excel file
         if (error instanceof Error) {
           toast({
             variant: "destructive",
@@ -105,9 +130,17 @@ function FileUpload({}: Props) {
           setError(error.message);
         } else {
           setError("Invalid file format");
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Invalid file format",
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
         }
-
-        setCardVariant("failed");
       } finally {
         setIsLoading(false);
       }
@@ -122,8 +155,9 @@ function FileUpload({}: Props) {
   });
 
   const handleRedirectToTemplateSheet = () => {
+    const NEXT_PUBLIC_IMPORT_USER_TEMPLATE_PATH = process.env.NEXT_PUBLIC_IMPORT_USER_TEMPLATE_PATH!;
     window.open(
-      "https://docs.google.com/spreadsheets/d/1Dy2bnTc1PkQBsdf-rugz0JpmGufTsQW8F7M0rezZXa0/edit?gid=1130316211#gid=1130316211",
+      NEXT_PUBLIC_IMPORT_USER_TEMPLATE_PATH,
       "_blank"
     );
   };
@@ -147,9 +181,8 @@ function FileUpload({}: Props) {
 
       <div
         {...getRootProps()}
-        className={`relative w-full border border-dashed rounded-md h-40 cursor-pointer flex items-center justify-center ${
-          isDragActive ? "border-primary" : "border-border"
-        }`}
+        className={`relative w-full border border-dashed rounded-md h-40 cursor-pointer flex items-center justify-center ${isDragActive ? "border-primary" : "border-border"
+          }`}
       >
         <input {...getInputProps()} />
         <div className="flex flex-col items-center gap-3">
@@ -186,16 +219,17 @@ function FileUpload({}: Props) {
           link={cardVariant === "success" ? "/admin/users" : undefined}
         />
       )}
+
+      {importResults && (
+        <ImportResultsDialog
+          importedCount={importResults.importedCount}
+          failedEmailsList={importResults.failedEmailsList}
+          onClose={() => setImportResults(null)}
+        />
+      )}
     </DialogContent>
   );
-}
-
-interface UploadLoaderCardProps {
-  variant: CardVariant;
-  progress: number;
-  size: string;
-  link?: string;
-}
+};
 
 const UploadLoaderCard: React.FC<UploadLoaderCardProps> = ({
   progress,
@@ -249,15 +283,13 @@ const UploadLoaderCard: React.FC<UploadLoaderCardProps> = ({
       <div className="flex items-start justify-between gap-5">
         <div className="flex-1 flex items-start gap-3">
           <Icons.fileUp
-            className={`w-5 h-5 ${
-              variant === "failed" ? "text-destructive" : "text-[#0F172A]"
-            }`}
+            className={`w-5 h-5 ${variant === "failed" ? "text-destructive" : "text-[#0F172A]"
+              }`}
           />
           <div className="w-full flex flex-col p-0 m-0">
             <span
-              className={`text-sm font-medium m-0 p-0 leading-5 ${
-                variant === "failed" ? "text-destructive" : ""
-              }`}
+              className={`text-sm font-medium m-0 p-0 leading-5 ${variant === "failed" ? "text-destructive" : ""
+                }`}
             >
               Users.xlsx
             </span>
@@ -277,9 +309,8 @@ const UploadLoaderCard: React.FC<UploadLoaderCardProps> = ({
           </Button>
         ) : (
           <Trash2
-            className={`w-5 h-5 ${
-              variant === "failed" ? "text-destructive" : "text-foreground"
-            }`}
+            className={`w-5 h-5 ${variant === "failed" ? "text-destructive" : "text-foreground"
+              }`}
           />
         )}
       </div>

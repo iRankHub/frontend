@@ -12,32 +12,34 @@ import AppLoader from "@/lib/loader";
 
 function Users() {
   const { user } = useUserStore((state) => state);
-  const { users, setUsers } = useUsersStore((state) => state);
+  const { users, setUsers, pagination, setPagination } = useUsersStore((state) => state);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchUserData = async () => {
     if (!user) return;
-    setIsLoading(true);
 
+    setIsLoading(true);
     const options: GetSchoolsType = {
-      pageSize: 200,
-      page: 1,
+      pageSize: pagination.pageSize,
+      page: pagination.pageIndex + 1, // Convert to 1-based index for API
       token: user.token,
     };
 
-    const fetchUsers = getAllUsers({ ...options });
+    try {
+      const usersRes = await getAllUsers({ ...options });
+      setUsers(usersRes.usersList);
+      setPagination({ totalCount: usersRes.totalcount });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    Promise.all([fetchUsers])
-      .then(([usersRes]) => {
-        setUsers(usersRes.usersList);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [user, setUsers]);
+  // Initial data fetch
+  useEffect(() => {
+    fetchUserData();
+  }, [pagination.pageIndex, pagination.pageSize, user]);
 
   if (isLoading) {
     return <AppLoader />;

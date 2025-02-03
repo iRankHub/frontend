@@ -57,20 +57,17 @@ export function DataTable<TData, TValue>({
   DataTableToolbar,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [loadingActions, setLoadingActions] = React.useState<
-    Record<ActionType, boolean>
-  >({
+  const [loadingActions, setLoadingActions] = React.useState<Record<ActionType, boolean>>({
     approve: false,
     reject: false,
     delete: false,
   });
-  const [contextMenuOpen, setContextMenuOpen] = React.useState(false);
+  const [, setContextMenuOpen] = React.useState(false);
+
+  const { pagination, setPagination } = useUsersStore((state) => state);
 
   const table = useReactTable({
     data,
@@ -80,12 +77,29 @@ export function DataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
+      pagination: {
+        pageIndex: pagination.pageIndex,
+        pageSize: pagination.pageSize,
+      },
     },
+    pageCount: Math.ceil(pagination.totalCount / pagination.pageSize),
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: (updater) => {
+      if (typeof updater === 'function') {
+        const newState = updater({
+          pageIndex: pagination.pageIndex,
+          pageSize: pagination.pageSize,
+        });
+        setPagination(newState);
+      } else {
+        setPagination(updater);
+      }
+    },
+    manualPagination: true,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -98,9 +112,7 @@ export function DataTable<TData, TValue>({
   const { user } = useUserStore((state) => state);
   const { toast } = useToast();
 
-  const handleContextMenuAction = async (
-    action: "approve" | "reject" | "delete"
-  ) => {
+  const handleContextMenuAction = async (action: "approve" | "reject" | "delete") => {
     if (!user) return;
     setLoadingActions((prev) => ({ ...prev, [action]: true }));
     const selectedRows = table
@@ -114,74 +126,69 @@ export function DataTable<TData, TValue>({
       action,
     };
 
-    if (action === "delete") {
-      bulkDeleteUsers(options)
-        .then((res) => {
-          if (res.success) {
-            setUsers(users.filter((user) => !userIds.includes(user.userid)));
-            table.resetRowSelection();
-            toast({
-              variant: "success",
-              title: "Success",
-              description: `Users ${action} successfully`,
-              action: (
-                <ToastAction altText="Close" className="bg-primary text-white">
-                  Close
-                </ToastAction>
-              ),
-            });
-          } else {
-            toast({
-              variant: "destructive",
-              title: "Error",
-              description: res.message,
-              action: (
-                <ToastAction altText="Close" className="bg-primary text-white">
-                  Close
-                </ToastAction>
-              ),
-            });
-          }
-        })
-        .catch((err) => {
-          console.error(err.message);
-        });
-    } else {
-      bulkApproveOrRejectUsers(options)
-        .then((res) => {
-          if (res.success) {
-            const formattedStatus =
-              action === "approve" ? "approved" : "rejected";
-            selectedRows.forEach((row) => {
-              updateUserStatus(row.userid, formattedStatus);
-            });
-            table.resetRowSelection();
-            toast({
-              variant: "success",
-              title: "Success",
-              description: `Users ${action} successfully`,
-              action: (
-                <ToastAction altText="Close" className="bg-primary text-white">
-                  Close
-                </ToastAction>
-              ),
-            });
-          } else {
-            toast({
-              variant: "destructive",
-              title: "Error",
-              description: res.message,
-              action: (
-                <ToastAction altText="Close" className="bg-primary text-white">
-                  Close
-                </ToastAction>
-              ),
-            });
-          }
-        })
-        .catch((err) => {
-          console.error(err.message);
-        });
+    try {
+      if (action === "delete") {
+        const res = await bulkDeleteUsers(options);
+        if (res.success) {
+          setUsers(users.filter((user) => !userIds.includes(user.userid)));
+          table.resetRowSelection();
+          toast({
+            variant: "success",
+            title: "Success",
+            description: `Users ${action} successfully`,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: res.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        }
+      } else {
+        const res = await bulkApproveOrRejectUsers(options);
+        if (res.success) {
+          const formattedStatus = action === "approve" ? "approved" : "rejected";
+          selectedRows.forEach((row) => {
+            updateUserStatus(row.userid, formattedStatus);
+          });
+          table.resetRowSelection();
+          toast({
+            variant: "success",
+            title: "Success",
+            description: `Users ${action} successfully`,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: res.message,
+            action: (
+              <ToastAction altText="Close" className="bg-primary text-white">
+                Close
+              </ToastAction>
+            ),
+          });
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingActions((prev) => ({ ...prev, [action]: false }));
     }
   };
 
@@ -195,7 +202,6 @@ export function DataTable<TData, TValue>({
         (row) => row.status === "pending" || row.status === "approved"
       )
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [table, rowSelection]);
 
   const ActionMenuItem: React.FC<{
@@ -237,9 +243,9 @@ export function DataTable<TData, TValue>({
                             {header.isPlaceholder
                               ? null
                               : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext()
-                                )}
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
                           </TableHead>
                         );
                       })}

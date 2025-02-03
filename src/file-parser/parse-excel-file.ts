@@ -62,10 +62,10 @@ export const parseExcelFile = async (file: File) => {
         };
 
         return {
-            admin: parseSheet<ParsedDataAdmin>('Admin'),
-            student: parseSheet<ParsedDataStudent>('Student'),
-            school: parseSheet<ParsedDataSchool>('School'),
-            volunteer: parseSheet<ParsedDataVolunteer>('Volunteer'),
+            admin: parseSheet<ParsedDataAdmin>('Admins'),
+            student: parseSheet<ParsedDataStudent>('Students'),
+            school: parseSheet<ParsedDataSchool>('Schools'),
+            volunteer: parseSheet<ParsedDataVolunteer>('Volunteers'),
         };
     } catch (error) {
         console.error('Error parsing Excel file:', error);
