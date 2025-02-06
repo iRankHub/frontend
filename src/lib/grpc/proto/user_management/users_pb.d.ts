@@ -50,6 +50,9 @@ export class GetAllUsersRequest extends jspb.Message {
   getPagesize(): number;
   setPagesize(value: number): GetAllUsersRequest;
 
+  getSearchquery(): string;
+  setSearchquery(value: string): GetAllUsersRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetAllUsersRequest.AsObject;
   static toObject(includeInstance: boolean, msg: GetAllUsersRequest): GetAllUsersRequest.AsObject;
@@ -63,6 +66,7 @@ export namespace GetAllUsersRequest {
     token: string,
     page: number,
     pagesize: number,
+    searchquery: string,
   }
 }
 

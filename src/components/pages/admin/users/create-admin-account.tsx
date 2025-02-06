@@ -24,13 +24,13 @@ import { signUp } from "@/core/authentication/auth";
 import { adminSchema } from "@/lib/validations/admin/accounts";
 import { UserRole } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 interface CreateUserProps {
   type: "school" | "student" | "volunteer" | "admin" | null;
-  setSheetOpen: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+  setSheetOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 type Inputs = z.infer<typeof adminSchema>;

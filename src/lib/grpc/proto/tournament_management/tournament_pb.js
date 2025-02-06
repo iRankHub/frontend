@@ -2,24 +2,15 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
-/* eslint-disable */
-// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global =
-    (typeof globalThis !== 'undefined' && globalThis) ||
-    (typeof window !== 'undefined' && window) ||
-    (typeof global !== 'undefined' && global) ||
-    (typeof self !== 'undefined' && self) ||
-    (function () { return this; }).call(null) ||
-    Function('return this')();
+var global = Function('return this')();
 
 goog.exportSymbol('proto.tournament_management.BulkResendInvitationsRequest', null, global);
 goog.exportSymbol('proto.tournament_management.BulkResendInvitationsResponse', null, global);
@@ -4382,7 +4373,8 @@ proto.tournament_management.ListLeaguesRequest.toObject = function(includeInstan
   var f, obj = {
     pageSize: jspb.Message.getFieldWithDefault(msg, 1, 0),
     pageToken: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    token: jspb.Message.getFieldWithDefault(msg, 3, "")
+    token: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    searchQuery: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -4431,6 +4423,10 @@ proto.tournament_management.ListLeaguesRequest.deserializeBinaryFromReader = fun
       var value = /** @type {string} */ (reader.readString());
       msg.setToken(value);
       break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSearchQuery(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -4478,6 +4474,13 @@ proto.tournament_management.ListLeaguesRequest.serializeBinaryToWriter = functio
   if (f.length > 0) {
     writer.writeString(
       3,
+      f
+    );
+  }
+  f = message.getSearchQuery();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
       f
     );
   }
@@ -4535,6 +4538,24 @@ proto.tournament_management.ListLeaguesRequest.prototype.getToken = function() {
  */
 proto.tournament_management.ListLeaguesRequest.prototype.setToken = function(value) {
   return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string search_query = 4;
+ * @return {string}
+ */
+proto.tournament_management.ListLeaguesRequest.prototype.getSearchQuery = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.ListLeaguesRequest} returns this
+ */
+proto.tournament_management.ListLeaguesRequest.prototype.setSearchQuery = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
 };
 
 
@@ -5460,7 +5481,8 @@ proto.tournament_management.ListTournamentFormatsRequest.toObject = function(inc
   var f, obj = {
     pageSize: jspb.Message.getFieldWithDefault(msg, 1, 0),
     pageToken: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    token: jspb.Message.getFieldWithDefault(msg, 3, "")
+    token: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    searchQuery: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -5509,6 +5531,10 @@ proto.tournament_management.ListTournamentFormatsRequest.deserializeBinaryFromRe
       var value = /** @type {string} */ (reader.readString());
       msg.setToken(value);
       break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSearchQuery(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -5556,6 +5582,13 @@ proto.tournament_management.ListTournamentFormatsRequest.serializeBinaryToWriter
   if (f.length > 0) {
     writer.writeString(
       3,
+      f
+    );
+  }
+  f = message.getSearchQuery();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
       f
     );
   }
@@ -5613,6 +5646,24 @@ proto.tournament_management.ListTournamentFormatsRequest.prototype.getToken = fu
  */
 proto.tournament_management.ListTournamentFormatsRequest.prototype.setToken = function(value) {
   return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string search_query = 4;
+ * @return {string}
+ */
+proto.tournament_management.ListTournamentFormatsRequest.prototype.getSearchQuery = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.ListTournamentFormatsRequest} returns this
+ */
+proto.tournament_management.ListTournamentFormatsRequest.prototype.setSearchQuery = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
 };
 
 
@@ -6740,7 +6791,8 @@ proto.tournament_management.ListTournamentsRequest.toObject = function(includeIn
   var f, obj = {
     pageSize: jspb.Message.getFieldWithDefault(msg, 1, 0),
     pageToken: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    token: jspb.Message.getFieldWithDefault(msg, 3, "")
+    token: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    searchQuery: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -6789,6 +6841,10 @@ proto.tournament_management.ListTournamentsRequest.deserializeBinaryFromReader =
       var value = /** @type {string} */ (reader.readString());
       msg.setToken(value);
       break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSearchQuery(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -6836,6 +6892,13 @@ proto.tournament_management.ListTournamentsRequest.serializeBinaryToWriter = fun
   if (f.length > 0) {
     writer.writeString(
       3,
+      f
+    );
+  }
+  f = message.getSearchQuery();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
       f
     );
   }
@@ -6893,6 +6956,24 @@ proto.tournament_management.ListTournamentsRequest.prototype.getToken = function
  */
 proto.tournament_management.ListTournamentsRequest.prototype.setToken = function(value) {
   return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string search_query = 4;
+ * @return {string}
+ */
+proto.tournament_management.ListTournamentsRequest.prototype.getSearchQuery = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.tournament_management.ListTournamentsRequest} returns this
+ */
+proto.tournament_management.ListTournamentsRequest.prototype.setSearchQuery = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
 };
 
 
@@ -9325,10 +9406,8 @@ proto.tournament_management.CreateTournamentResponse.deserializeBinaryFromReader
       msg.setTournament(value);
       break;
     case 2:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addInvitationIds(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setInvitationIdsList(value);
       break;
     default:
       reader.skipField();
@@ -11452,10 +11531,8 @@ proto.tournament_management.BulkUpdateInvitationStatusRequest.deserializeBinaryF
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addInvitationIds(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setInvitationIdsList(value);
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
@@ -11678,10 +11755,8 @@ proto.tournament_management.BulkUpdateInvitationStatusResponse.deserializeBinary
       msg.setMessage(value);
       break;
     case 3:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addUpdatedInvitationIds(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setUpdatedInvitationIdsList(value);
       break;
     default:
       reader.skipField();
@@ -12207,10 +12282,8 @@ proto.tournament_management.BulkResendInvitationsRequest.deserializeBinaryFromRe
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addInvitationIds(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setInvitationIdsList(value);
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());

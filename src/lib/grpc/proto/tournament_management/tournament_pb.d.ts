@@ -394,6 +394,9 @@ export class ListLeaguesRequest extends jspb.Message {
   getToken(): string;
   setToken(value: string): ListLeaguesRequest;
 
+  getSearchQuery(): string;
+  setSearchQuery(value: string): ListLeaguesRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ListLeaguesRequest.AsObject;
   static toObject(includeInstance: boolean, msg: ListLeaguesRequest): ListLeaguesRequest.AsObject;
@@ -407,6 +410,7 @@ export namespace ListLeaguesRequest {
     pageSize: number,
     pageToken: number,
     token: string,
+    searchQuery: string,
   }
 }
 
@@ -544,6 +548,9 @@ export class ListTournamentFormatsRequest extends jspb.Message {
   getToken(): string;
   setToken(value: string): ListTournamentFormatsRequest;
 
+  getSearchQuery(): string;
+  setSearchQuery(value: string): ListTournamentFormatsRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ListTournamentFormatsRequest.AsObject;
   static toObject(includeInstance: boolean, msg: ListTournamentFormatsRequest): ListTournamentFormatsRequest.AsObject;
@@ -557,6 +564,7 @@ export namespace ListTournamentFormatsRequest {
     pageSize: number,
     pageToken: number,
     token: string,
+    searchQuery: string,
   }
 }
 
@@ -718,6 +726,9 @@ export class ListTournamentsRequest extends jspb.Message {
   getToken(): string;
   setToken(value: string): ListTournamentsRequest;
 
+  getSearchQuery(): string;
+  setSearchQuery(value: string): ListTournamentsRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ListTournamentsRequest.AsObject;
   static toObject(includeInstance: boolean, msg: ListTournamentsRequest): ListTournamentsRequest.AsObject;
@@ -731,6 +742,7 @@ export namespace ListTournamentsRequest {
     pageSize: number,
     pageToken: number,
     token: string,
+    searchQuery: string,
   }
 }
 

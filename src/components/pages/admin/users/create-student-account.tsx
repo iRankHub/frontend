@@ -34,13 +34,13 @@ import { StudentSchema } from "@/lib/validations/admin/accounts";
 import { UserRole } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, ChevronsUpDown } from "lucide-react";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 interface CreateUserProps {
   type: "school" | "student" | "volunteer" | "admin" | null;
-  setSheetOpen: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+  setSheetOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 type Inputs = z.infer<typeof StudentSchema>;
@@ -212,9 +212,9 @@ function CreateStudentAccount({ type, setSheetOpen }: CreateUserProps) {
                       >
                         {field.value
                           ? schools.find(
-                              (school) =>
-                                String(school.schoolid) === field.value
-                            )?.name
+                            (school) =>
+                              String(school.schoolid) === field.value
+                          )?.name
                           : "Select school..."}
                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                       </Button>

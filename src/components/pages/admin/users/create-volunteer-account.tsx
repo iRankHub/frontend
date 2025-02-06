@@ -46,38 +46,25 @@ import { UserRole } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, CheckIcon, ChevronsUpDown } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 interface CreateUserProps {
   type: "school" | "student" | "volunteer" | "admin" | null;
-  setSheetOpen: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+  setSheetOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 type Inputs = z.infer<typeof volunteerSchema>;
 
 function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
-  const [isPending, setIsPending] = React.useState(false);
+  const [, setIsPending] = React.useState(false);
   const [openCountries, setOpenCountries] = React.useState(false);
   const { toast } = useToast();
   const [activeStep, setActiveStep] = React.useState(1);
   const [countries, setCountries] = React.useState<Country.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
-  // const [schools, setSchools] = React.useState<School.AsObject[]>([]);
 
-  // React.useEffect(() => {
-  //   getSchoolsNoAuth({
-  //     pageSize: 100,
-  //     page: 1,
-  //   })
-  //     .then((res) => {
-  //       setSchools(res.schoolsList);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err.message);
-  //     });
-  // }, []);
   // react-hook-form
   const form = useForm<Inputs>({
     resolver: zodResolver(volunteerSchema),
@@ -380,8 +367,8 @@ function CreateVolunteerAccount({ type, setSheetOpen }: CreateUserProps) {
                           >
                             {field.value
                               ? countries.find(
-                                  (country) => country.name === field.value
-                                )?.name
+                                (country) => country.name === field.value
+                              )?.name
                               : "Select country..."}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>

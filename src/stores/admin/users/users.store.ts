@@ -2,8 +2,8 @@ import { UserSummary } from "@/lib/grpc/proto/user_management/users_pb";
 import { create } from "zustand";
 
 interface PaginationState {
-    pageIndex: number;
     pageSize: number;
+    pageIndex: number;
     totalCount: number;
 }
 
@@ -15,7 +15,7 @@ interface UsersStore {
     addUser: (user: UserSummary.AsObject) => void;
     updateUserStatus: (userId: number, new_status: string) => void;
     deleteUser: (userID: number) => void;
-    setPagination: (pagination: Partial<PaginationState>) => void;
+    setPagination: (pagination: Partial<PaginationState> | ((prev: PaginationState) => PaginationState)) => void;
 }
 
 export const useUsersStore = create<UsersStore>((set) => ({

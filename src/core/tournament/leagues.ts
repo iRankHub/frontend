@@ -22,12 +22,14 @@ export const tournamentLeagues = async ({
     page_size,
     page_token,
     token,
+    search,
 }: ListTournamentLeagues): Promise<ListLeaguesResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new ListLeaguesRequest();
         request.setPageSize(page_size);
         request.setPageToken(page_token);
         request.setToken(token);
+        request.setSearchQuery(search || '')
 
         tournamentClient.listLeagues(request, {}, (err, response) => {
             if (err) {

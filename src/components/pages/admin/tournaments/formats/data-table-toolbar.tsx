@@ -27,7 +27,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { createTournamentFormatSchema } from "@/lib/validations/admin/tournaments/create-tournament-format.schema";
 import { z } from "zod";
@@ -35,15 +35,20 @@ import { createTournamentFormat } from "@/core/tournament/formats";
 import { useFormatsStore } from "@/stores/admin/tournaments/formats.store";
 import { TournamentFormat } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { Icons } from "@/components/icons";
+import { cn } from "@/lib/utils";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  searchTerm: string;
+  isLoading: boolean;
 }
 
 type TournamentFormatInput = z.infer<typeof createTournamentFormatSchema>;
 
 export function DataTableToolbar<TData>({
   table,
+  searchTerm,
+  isLoading,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const { toast } = useToast();
@@ -51,6 +56,7 @@ export function DataTableToolbar<TData>({
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const { user } = useUserStore((state) => state);
   const { addSingleFormat } = useFormatsStore((state) => state);
+  const [inputValue, setInputValue] = useState(searchTerm);
 
   const form = useForm<TournamentFormatInput>({
     resolver: zodResolver(createTournamentFormatSchema),
@@ -59,6 +65,34 @@ export function DataTableToolbar<TData>({
       format_name: "",
     },
   });
+
+  useEffect(() => {
+    setInputValue(searchTerm);
+  }, [searchTerm]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setInputValue(newValue);
+
+    const event = new CustomEvent('search-change', {
+      detail: newValue
+    });
+    window.dispatchEvent(event);
+  };
+
+  const handleClearSearch = () => {
+    setInputValue('');
+    const event = new CustomEvent('search-change', {
+      detail: ''
+    });
+    window.dispatchEvent(event);
+  };
+
+  const handleResetAll = () => {
+    table.resetColumnFilters();
+    const event = new CustomEvent('reset-table');
+    window.dispatchEvent(event);
+  };
 
   const createFormat = async (data: TournamentFormatInput) => {
     if (!user) return;
@@ -158,16 +192,27 @@ export function DataTableToolbar<TData>({
   return (
     <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown flex-wrap px-5 py-3 gap-3">
       <div className="flex flex-1 flex-col sm:flex-row justify-end sm:justify-normal sm:items-center sm:space-x-3">
-        <Input
-          placeholder="Search format..."
-          value={
-            (table.getColumn("formatName")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("formatName")?.setFilterValue(event.target.value)
-          }
-          className="h-8 w-[200px] sm:w-full lg:w-[280px] mb-2 sm:mb-0"
-        />
+        <div className="flex items-center gap-2 w-full sm:w-[280px] mb-2 sm:mb-0">
+          <Input
+            placeholder="Search format..."
+            value={inputValue}
+            onChange={handleInputChange}
+            className={cn("h-8 w-full", isLoading && "opacity-50")}
+            disabled={isLoading}
+          />
+          {inputValue && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleClearSearch}
+              className="h-8 px-2 text-white"
+              disabled={isLoading}
+            >
+              <Cross2Icon className="h-4 w-4" />
+              <span className="sr-only">Clear search</span>
+            </Button>
+          )}
+        </div>
         <div className="flex items-center">
           {table.getColumn("speakersPerTeam") && (
             <DataTableFacetedFilter
@@ -176,11 +221,12 @@ export function DataTableToolbar<TData>({
               options={speakersOptions}
             />
           )}
-          {isFiltered && (
+          {(isFiltered || inputValue) && (
             <Button
               variant="ghost"
-              onClick={() => table.resetColumnFilters()}
+              onClick={handleResetAll}
               className="h-8 px-2 lg:px-3 text-white"
+              disabled={isLoading}
             >
               Reset
               <Cross2Icon className="ml-2 h-4 w-4" />
@@ -188,8 +234,9 @@ export function DataTableToolbar<TData>({
           )}
         </div>
       </div>
+
       <Dialog onOpenChange={setDialogOpen} open={dialogOpen} modal>
-        <DialogTrigger>
+        <DialogTrigger asChild>
           <Button
             type="button"
             data-onboarding-id="add-format-button"
@@ -198,8 +245,7 @@ export function DataTableToolbar<TData>({
             <Icons.add className="text-white w-3.5 h-3.5 group-hover:text-foreground group-hover:dark:text-background" />
             Add New Format
           </Button>
-        </DialogTrigger>
-        <DialogContent>
+        </DialogTrigger>        <DialogContent>
           <DialogHeader>
             <DialogTitle className="text-base">
               Create Tournament Format

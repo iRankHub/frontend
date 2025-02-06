@@ -2,24 +2,15 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
-/* eslint-disable */
-// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global =
-    (typeof globalThis !== 'undefined' && globalThis) ||
-    (typeof window !== 'undefined' && window) ||
-    (typeof global !== 'undefined' && global) ||
-    (typeof self !== 'undefined' && self) ||
-    (function () { return this; }).call(null) ||
-    Function('return this')();
+var global = Function('return this')();
 
 goog.exportSymbol('proto.user_management.ApproveUserRequest', null, global);
 goog.exportSymbol('proto.user_management.ApproveUserResponse', null, global);
@@ -1776,7 +1767,8 @@ proto.user_management.GetAllUsersRequest.toObject = function(includeInstance, ms
   var f, obj = {
     token: jspb.Message.getFieldWithDefault(msg, 1, ""),
     page: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    pagesize: jspb.Message.getFieldWithDefault(msg, 3, 0)
+    pagesize: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    searchquery: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -1825,6 +1817,10 @@ proto.user_management.GetAllUsersRequest.deserializeBinaryFromReader = function(
       var value = /** @type {number} */ (reader.readInt32());
       msg.setPagesize(value);
       break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSearchquery(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -1872,6 +1868,13 @@ proto.user_management.GetAllUsersRequest.serializeBinaryToWriter = function(mess
   if (f !== 0) {
     writer.writeInt32(
       3,
+      f
+    );
+  }
+  f = message.getSearchquery();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
       f
     );
   }
@@ -1929,6 +1932,24 @@ proto.user_management.GetAllUsersRequest.prototype.getPagesize = function() {
  */
 proto.user_management.GetAllUsersRequest.prototype.setPagesize = function(value) {
   return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional string searchQuery = 4;
+ * @return {string}
+ */
+proto.user_management.GetAllUsersRequest.prototype.getSearchquery = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.user_management.GetAllUsersRequest} returns this
+ */
+proto.user_management.GetAllUsersRequest.prototype.setSearchquery = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
 };
 
 
@@ -5134,10 +5155,8 @@ proto.user_management.ApproveUsersRequest.deserializeBinaryFromReader = function
       msg.setToken(value);
       break;
     case 2:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addUserids(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setUseridsList(value);
       break;
     default:
       reader.skipField();
@@ -5327,10 +5346,8 @@ proto.user_management.ApproveUsersResponse.deserializeBinaryFromReader = functio
       msg.setMessage(value);
       break;
     case 3:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addFaileduserids(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setFaileduseridsList(value);
       break;
     default:
       reader.skipField();
@@ -5540,10 +5557,8 @@ proto.user_management.RejectUsersRequest.deserializeBinaryFromReader = function(
       msg.setToken(value);
       break;
     case 2:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addUserids(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setUseridsList(value);
       break;
     default:
       reader.skipField();
@@ -5733,10 +5748,8 @@ proto.user_management.RejectUsersResponse.deserializeBinaryFromReader = function
       msg.setMessage(value);
       break;
     case 3:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addFaileduserids(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setFaileduseridsList(value);
       break;
     default:
       reader.skipField();
@@ -5946,10 +5959,8 @@ proto.user_management.DeleteUsersRequest.deserializeBinaryFromReader = function(
       msg.setToken(value);
       break;
     case 2:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addUserids(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setUseridsList(value);
       break;
     default:
       reader.skipField();
@@ -6139,10 +6150,8 @@ proto.user_management.DeleteUsersResponse.deserializeBinaryFromReader = function
       msg.setMessage(value);
       break;
     case 3:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addFaileduserids(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setFaileduseridsList(value);
       break;
     default:
       reader.skipField();
@@ -15198,8 +15207,7 @@ proto.user_management.GetSchoolIDsByNamesResponse.prototype.getSchoolIdsMap = fu
  */
 proto.user_management.GetSchoolIDsByNamesResponse.prototype.clearSchoolIdsMap = function() {
   this.getSchoolIdsMap().clear();
-  return this;
-};
+  return this;};
 
 
 

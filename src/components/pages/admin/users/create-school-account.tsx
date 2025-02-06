@@ -39,7 +39,7 @@ import { useUserStore } from "@/stores/auth/auth.store";
 import { UserRole } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, ChevronsUpDown } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 // @ts-ignore
@@ -50,7 +50,7 @@ import { schoolSchema } from "@/lib/validations/admin/accounts";
 
 interface CreateUserProps {
   type: "school" | "student" | "volunteer" | "admin" | null;
-  setSheetOpen: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+  setSheetOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 type Inputs = z.infer<typeof schoolSchema>;
