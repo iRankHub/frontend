@@ -127,12 +127,14 @@ export const getAllUsers = async ({
     token,
     page,
     pageSize,
+    searchQuery,
 }: GetAllUsers): Promise<GetAllUsersResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new GetAllUsersRequest();
         request.setToken(token);
         request.setPage(page);
         request.setPagesize(pageSize);
+        request.setSearchquery(searchQuery || "");
 
         userClient.getAllUsers(request, {}, (err, response) => {
             if (err) {

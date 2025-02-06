@@ -15,6 +15,7 @@ import SidePanel, {
 import CreateStudentAccount from "./create-student-account";
 import CreateSchoolAccount from "./create-school-account";
 import CreateVolunteerAccount from "./create-volunteer-account";
+import CreateAdminAccount from "./create-admin-account";
 import FileUpload from "./file-upload";
 import {
   Dialog,
@@ -25,35 +26,85 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { Icons } from "@/components/icons";
-import CreateAdminAccount from "./create-admin-account";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  searchTerm: string;
+  isLoading: boolean;
+}
+
+interface SearchEvent extends CustomEvent {
+  detail: string;
 }
 
 export function DataTableToolbar<TData>({
   table,
+  searchTerm,
+  isLoading,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const [selected, setSelected] = useState<
     "school" | "student" | "volunteer" | "admin" | null
   >(null);
-  const [dialogOpen, setDialogOpen] = useState<boolean>();
-  const [sheetOpen, setSheetOpen] = useState<boolean>();
+  const [dialogOpen, setDialogOpen] = useState<boolean | undefined>(undefined);
+  const [sheetOpen, setSheetOpen] = useState<boolean | undefined>(undefined);
+  const [inputValue, setInputValue] = useState(searchTerm);
+
+  // Update input value when searchTerm prop changes
+  useEffect(() => {
+    setInputValue(searchTerm);
+  }, [searchTerm]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setInputValue(newValue);
+
+    const event = new CustomEvent('search-change', {
+      detail: newValue
+    }) as SearchEvent;
+    window.dispatchEvent(event);
+  };
+
+  const handleClearSearch = () => {
+    setInputValue('');
+    const event = new CustomEvent('search-change', {
+      detail: ''
+    }) as SearchEvent;
+    window.dispatchEvent(event);
+  };
+
+  const handleResetAll = () => {
+    table.resetColumnFilters();
+    const event = new CustomEvent('reset-table');
+    window.dispatchEvent(event);
+  };
 
   return (
     <div className="w-full rounded-t-md overflow-hidden flex items-start justify-between bg-brown px-5 py-3 gap-3 flex-col 2xl:flex-row">
       <div className="flex flex-1 flex-col xl:flex-row justify-end md:justify-normal md:items-start md:gap-3">
-        <Input
-          placeholder="Search names..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="h-8 w-full lg:w-[280px]"
-        />
+        <div className="flex items-center gap-2 w-full lg:w-[280px]">
+          <Input
+            placeholder="Search users..."
+            value={inputValue}
+            onChange={handleInputChange}
+            className={cn("h-8 w-full", isLoading && "opacity-50")}
+            disabled={isLoading}
+          />
+          {inputValue && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleClearSearch}
+              className="h-8 px-2 text-white"
+              disabled={isLoading}
+            >
+              <Cross2Icon className="h-4 w-4" />
+              <span className="sr-only">Clear search</span>
+            </Button>
+          )}
+        </div>
         <div className="flex items-center flex-wrap gap-2 mt-2 md:mt-0">
           {table.getColumn("userrole") && (
             <DataTableFacetedFilter
@@ -69,11 +120,12 @@ export function DataTableToolbar<TData>({
               options={statuses}
             />
           )}
-          {isFiltered && (
+          {(isFiltered || inputValue) && (
             <Button
               variant="ghost"
-              onClick={() => table.resetColumnFilters()}
+              onClick={handleResetAll}
               className="h-8 px-2 lg:px-3 text-white"
+              disabled={isLoading}
             >
               Reset
               <Cross2Icon className="ml-2 h-4 w-4" />
@@ -84,7 +136,7 @@ export function DataTableToolbar<TData>({
       <div className="flex items-center flex-wrap gap-1 2xl:mx-5">
         <Sheet onOpenChange={setSheetOpen} open={sheetOpen} modal>
           <Dialog onOpenChange={setDialogOpen} open={dialogOpen}>
-            <DialogTrigger>
+            <DialogTrigger asChild>
               <Button
                 type="button"
                 className="border border-dashed border-background text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground dark:hover:text-background group"
@@ -130,7 +182,7 @@ export function DataTableToolbar<TData>({
                 >
                   <Image
                     src="/static/images/SchoolSVG.png"
-                    alt="Student"
+                    alt="School"
                     width={50}
                     height={50}
                   />
@@ -147,7 +199,7 @@ export function DataTableToolbar<TData>({
                 >
                   <Image
                     src="/static/images/Education-Student.png"
-                    alt="Student"
+                    alt="Volunteer"
                     width={50}
                     height={50}
                   />
@@ -195,28 +247,31 @@ export function DataTableToolbar<TData>({
             {selected === "student" && (
               <CreateStudentAccount
                 type={selected}
-                setSheetOpen={setSheetOpen}
+                setSheetOpen={setSheetOpen as Dispatch<SetStateAction<boolean>>}
               />
             )}
             {selected === "school" && (
               <CreateSchoolAccount
                 type={selected}
-                setSheetOpen={setSheetOpen}
+                setSheetOpen={setSheetOpen as Dispatch<SetStateAction<boolean>>}
               />
             )}
             {selected === "volunteer" && (
               <CreateVolunteerAccount
                 type={selected}
-                setSheetOpen={setSheetOpen}
+                setSheetOpen={setSheetOpen as Dispatch<SetStateAction<boolean>>}
               />
             )}
             {selected === "admin" && (
-              <CreateAdminAccount type={selected} setSheetOpen={setSheetOpen} />
+              <CreateAdminAccount
+                type={selected}
+                setSheetOpen={setSheetOpen as Dispatch<SetStateAction<boolean>>}
+              />
             )}
           </SidePanel>
         </Sheet>
         <Dialog>
-          <DialogTrigger>
+          <DialogTrigger asChild>
             <Button
               type="button"
               className="border border-dashed border-background text-white gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground dark:hover:text-background group"

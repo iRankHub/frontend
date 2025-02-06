@@ -57,15 +57,20 @@ import { Provinces, Districts } from "rwanda";
 import { Icons } from "@/components/icons";
 import { useLeaguesStore } from "@/stores/admin/tournaments/leagues.store";
 import { countriesPerContinent } from "@/lib/data";
-
-interface DataTableToolbarProps<TData> {
-  table: Table<TData>;
-}
+import { cn } from "@/lib/utils"
 
 type TournamentLeagueInput = z.infer<typeof createTournamentLeagueSchema>;
 
+interface DataTableToolbarProps<TData> {
+  table: Table<TData>;
+  searchTerm: string;
+  isLoading: boolean;
+}
+
 export function DataTableToolbar<TData>({
   table,
+  searchTerm,
+  isLoading,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const [selectedProvinces, setSelectedProvinces] = useState<string[]>([]);
@@ -76,7 +81,7 @@ export function DataTableToolbar<TData>({
   const { user } = useUserStore((state) => state);
   const { toast } = useToast();
   const [provinces, setProvinces] = useState<string[]>(Provinces());
-
+  const [inputValue, setInputValue] = useState(searchTerm);
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [selectedContinents, setSelectedContinents] = useState<string[]>([]);
 
@@ -234,35 +239,76 @@ export function DataTableToolbar<TData>({
       });
   };
 
+  // Update input value when searchTerm prop changes
+  useEffect(() => {
+    setInputValue(searchTerm);
+  }, [searchTerm]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setInputValue(newValue);
+
+    const event = new CustomEvent('search-change', {
+      detail: newValue
+    });
+    window.dispatchEvent(event);
+  };
+
+  const handleClearSearch = () => {
+    setInputValue('');
+    const event = new CustomEvent('search-change', {
+      detail: ''
+    });
+    window.dispatchEvent(event);
+  };
+
+  const handleResetAll = () => {
+    table.resetColumnFilters();
+    const event = new CustomEvent('reset-table');
+    window.dispatchEvent(event);
+  };
+
   return (
     <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown flex-wrap px-5 py-3 gap-3">
       <div className="flex flex-1 flex-col sm:flex-row justify-end sm:justify-normal sm:items-center sm:space-x-3">
-        <Input
-          placeholder="Search leagues..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="h-8 w-[200px] sm:w-full lg:w-[280px] mb-2 sm:mb-0"
-        />
+        <div className="flex items-center gap-2 w-full sm:w-[280px] mb-2 sm:mb-0">
+          <Input
+            placeholder="Search leagues..."
+            value={inputValue}
+            onChange={handleInputChange}
+            className={cn("h-8 w-full", isLoading && "opacity-50")}
+            disabled={isLoading}
+          />
+          {inputValue && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleClearSearch}
+              className="h-8 px-2 text-white"
+              disabled={isLoading}
+            >
+              <Cross2Icon className="h-4 w-4" />
+              <span className="sr-only">Clear search</span>
+            </Button>
+          )}
+        </div>
         <div className="flex items-center">
           {table.getColumn("leagueType") && (
             <DataTableFacetedFilter
               column={table.getColumn("leagueType")}
               title="League Type"
               options={[
-                // @ts-ignore
                 { value: 0, label: "Local" },
-                // @ts-ignore
                 { value: 1, label: "International" },
               ]}
             />
           )}
-          {isFiltered && (
+          {(isFiltered || inputValue) && (
             <Button
               variant="ghost"
-              onClick={() => table.resetColumnFilters()}
+              onClick={handleResetAll}
               className="h-8 px-2 lg:px-3 text-white"
+              disabled={isLoading}
             >
               Reset
               <Cross2Icon className="ml-2 h-4 w-4" />

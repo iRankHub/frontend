@@ -83,12 +83,14 @@ export const tournamentsList = async ({
     page_size,
     page_token,
     token,
+    search,
 }: ListTournamentFormats): Promise<ListTournamentsResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new ListTournamentsRequest();
         request.setPageSize(page_size);
         request.setPageToken(page_token);
         request.setToken(token);
+        request.setSearchQuery(search || '');
 
         tournamentClient.listTournaments(request, {}, (err, response) => {
             if (err) {

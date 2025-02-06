@@ -20,6 +20,7 @@ export interface GetAllUsers {
     page: number;
     pageSize: number;
     token: string;
+    searchQuery?: string;
 }
 
 // Define the main user interface
@@ -64,7 +65,7 @@ export interface UpdateSchoolProfile {
     contactEmail?: string;
     contactPersonNationalId?: string;
     phone?: string;
-    profilePicture?: string; 
+    profilePicture?: string;
     bio?: string;
 }
 

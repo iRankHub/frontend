@@ -1,7 +1,7 @@
 "use client"
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { tournamentLeagues } from "@/core/tournament/leagues";
 import { useLeaguesStore } from "@/stores/admin/tournaments/leagues.store";
@@ -13,12 +13,14 @@ import AppLoader from "@/lib/loader";
 const PAGE_SIZE_COUNT = 20;
 
 function Leagues() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [searchLoading, setSearchLoading] = useState(false);
   const { user } = useUserStore((state) => state);
   const { setLeagues, leagues } = useLeaguesStore((state) => state);
   const [defaultPageToken, setDefaultPageToken] = useState(0);
   const [loadMoreLoading, setLoadMoreLoading] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Helper function to filter out duplicates
   const removeDuplicates = (existingData: any[], newData: any[]) => {
@@ -26,71 +28,105 @@ function Leagues() {
     return newData.filter(league => !existingIds.has(league.leagueId));
   };
 
-  useEffect(() => {
-    if (!user) return;
-    setIsLoading(true);
+  const fetchLeaguesData = useCallback(async (pageToken: number, search?: string) => {
+    if (!user) return 0;
 
-    const fetchLeagues = tournamentLeagues({
+    const options = {
       page_size: PAGE_SIZE_COUNT,
-      page_token: 0,
+      page_token: pageToken,
       token: user.token,
-    });
-
-    Promise.all([fetchLeagues])
-      .then(([leaguesRes]) => {
-        const uniqueLeagues = Array.from(
-          new Map(leaguesRes.leaguesList.map(item => [item.leagueId, item])).values()
-        );
-        setLeagues(uniqueLeagues);
-
-        if (uniqueLeagues.length < PAGE_SIZE_COUNT) {
-          setHasMoreData(false);
-        }
-      })
-      .catch((err) => {
-        console.error(err.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [user, setLeagues]);
-
-  const loadMore = async () => {
-    if (!user) return;
-    setLoadMoreLoading(true);
-
-    const data = {
-      page_size: PAGE_SIZE_COUNT,
-      page_token: defaultPageToken + 1,
-      token: user.token,
+      search: search?.trim()
     };
 
-    await tournamentLeagues({ ...data })
-      .then((res) => {
-        if (res.leaguesList.length > 0) {
-          const newUniqueData = removeDuplicates(leagues, res.leaguesList);
+    try {
+      const leaguesRes = await tournamentLeagues(options);
+      const uniqueLeagues = Array.from(
+        new Map(leaguesRes.leaguesList.map(item => [item.leagueId, item])).values()
+      );
 
-          if (newUniqueData.length > 0) {
-            setLeagues([...leagues, ...newUniqueData]);
-            setDefaultPageToken(prev => prev + 1);
-          }
-
-          if (res.leaguesList.length < PAGE_SIZE_COUNT || newUniqueData.length === 0) {
-            setHasMoreData(false);
-          }
-        } else {
-          setHasMoreData(false);
+      if (pageToken === 0) {
+        setLeagues(uniqueLeagues);
+      } else {
+        const newUniqueData = removeDuplicates(leagues, uniqueLeagues);
+        if (newUniqueData.length > 0) {
+          setLeagues([...leagues, ...newUniqueData]);
         }
-      })
-      .catch((err) => {
-        console.error("Error loading more leagues:", err.message);
-      })
-      .finally(() => {
-        setLoadMoreLoading(false);
-      });
+      }
+
+      return uniqueLeagues.length;
+    } catch (err) {
+      console.error(err);
+      return 0;
+    }
+  }, [user, setLeagues, leagues]);
+
+  // Initial data fetch
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      if (initialLoading) {
+        const count = await fetchLeaguesData(0, searchTerm);
+        setHasMoreData(count >= PAGE_SIZE_COUNT);
+        setInitialLoading(false);
+      }
+    };
+
+    fetchInitialData();
+  }, [fetchLeaguesData, searchTerm, initialLoading]);
+
+  // Handle search events
+  useEffect(() => {
+    let searchTimeout: NodeJS.Timeout;
+
+    const handleSearch = (e: CustomEvent<string>) => {
+      if (searchTimeout) {
+        clearTimeout(searchTimeout);
+      }
+
+      searchTimeout = setTimeout(async () => {
+        setSearchLoading(true);
+        setSearchTerm(e.detail);
+        setDefaultPageToken(0);
+        const count = await fetchLeaguesData(0, e.detail);
+        setHasMoreData(count >= PAGE_SIZE_COUNT);
+        setSearchLoading(false);
+      }, 500);
+    };
+
+    const handleReset = async () => {
+      setSearchLoading(true);
+      setSearchTerm("");
+      setDefaultPageToken(0);
+      const count = await fetchLeaguesData(0, "");
+      setHasMoreData(count >= PAGE_SIZE_COUNT);
+      setSearchLoading(false);
+    };
+
+    window.addEventListener('search-change', handleSearch as EventListener);
+    window.addEventListener('reset-table', handleReset as EventListener);
+
+    return () => {
+      window.removeEventListener('search-change', handleSearch as EventListener);
+      window.removeEventListener('reset-table', handleReset as EventListener);
+      if (searchTimeout) {
+        clearTimeout(searchTimeout);
+      }
+    };
+  }, [fetchLeaguesData]);
+
+  const loadMore = async () => {
+    if (!user || loadMoreLoading) return;
+
+    setLoadMoreLoading(true);
+    const nextPage = defaultPageToken + 1;
+
+    const count = await fetchLeaguesData(nextPage, searchTerm);
+
+    setDefaultPageToken(nextPage);
+    setHasMoreData(count >= PAGE_SIZE_COUNT);
+    setLoadMoreLoading(false);
   };
 
-  if (isLoading) {
+  if (initialLoading) {
     return <AppLoader />;
   }
 
@@ -99,16 +135,22 @@ function Leagues() {
       <DataCardView
         data={leagues}
         columns={columns}
-        DataTableToolbar={DataTableToolbar}
+        DataTableToolbar={(props) => (
+          <DataTableToolbar
+            {...props}
+            searchTerm={searchTerm}
+            isLoading={searchLoading || loadMoreLoading}
+          />
+        )}
         cardType="league"
       />
-      
+
       {loadMoreLoading && (
         <div className="flex items-center justify-center w-full h-96">
           <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
         </div>
       )}
-      
+
       <div className="p-5 grid place-content-center">
         {leagues.length >= PAGE_SIZE_COUNT && hasMoreData && (
           <Button
@@ -117,6 +159,7 @@ function Leagues() {
             variant="link"
             className="max-w-auto mx-auto ring-0 border-none outline-none mt-10 hover:bg-primary hover:text-white underline"
             onClick={loadMore}
+            disabled={loadMoreLoading}
           >
             Load More
           </Button>

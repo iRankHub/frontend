@@ -1,7 +1,7 @@
 "use client"
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { tournamentFormats } from "@/core/tournament/formats";
 import { DataCardView } from "@/components/cards-with-filter/data-card";
@@ -13,12 +13,14 @@ import AppLoader from "@/lib/loader";
 const PAGE_SIZE_COUNT = 20;
 
 function Formats() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [searchLoading, setSearchLoading] = useState(false);
   const { user } = useUserStore((state) => state);
   const { setFormats, formats } = useFormatsStore((state) => state);
   const [defaultPageToken, setDefaultPageToken] = useState(0);
   const [loadMoreLoading, setLoadMoreLoading] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Helper function to filter out duplicates
   const removeDuplicates = (existingData: any[], newData: any[]) => {
@@ -26,72 +28,105 @@ function Formats() {
     return newData.filter(format => !existingIds.has(format.formatId));
   };
 
-  useEffect(() => {
-    if (!user) return;
-    setIsLoading(true);
+  const fetchFormatsData = useCallback(async (pageToken: number, search?: string) => {
+    if (!user) return 0;
 
-    const fetchFormats = tournamentFormats({
+    const options = {
       page_size: PAGE_SIZE_COUNT,
-      page_token: 0,
+      page_token: pageToken,
       token: user.token,
-    });
-
-    Promise.all([fetchFormats])
-      .then(([formatsRes]) => {
-        const uniqueFormats = Array.from(
-          new Map(formatsRes.formatsList.map(item => [item.formatId, item])).values()
-        );
-        setFormats(uniqueFormats);
-
-        if (uniqueFormats.length < PAGE_SIZE_COUNT) {
-          setHasMoreData(false);
-        }
-      })
-      .catch((err) => {
-        console.error(err.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [user, setFormats]);
-
-  const loadMore = async () => {
-    if (!user) return;
-    setLoadMoreLoading(true);
-
-    const data = {
-      page_size: PAGE_SIZE_COUNT,
-      page_token: defaultPageToken + 1,
-      token: user.token,
+      search: search?.trim()
     };
 
-    await tournamentFormats({ ...data })
-      .then((res) => {
-        if (res.formatsList.length > 0) {
-          const newUniqueData = removeDuplicates(formats, res.formatsList);
+    try {
+      const formatsRes = await tournamentFormats(options);
+      const uniqueFormats = Array.from(
+        new Map(formatsRes.formatsList.map(item => [item.formatId, item])).values()
+      );
 
-          if (newUniqueData.length > 0) {
-            setFormats([...formats, ...newUniqueData]);
-            setDefaultPageToken(prev => prev + 1);
-          }
-
-          if (res.formatsList.length < PAGE_SIZE_COUNT || newUniqueData.length === 0) {
-            setHasMoreData(false);
-          }
-        } else {
-          console.log("No new data returned");
-          setHasMoreData(false);
+      if (pageToken === 0) {
+        setFormats(uniqueFormats);
+      } else {
+        const newUniqueData = removeDuplicates(formats, uniqueFormats);
+        if (newUniqueData.length > 0) {
+          setFormats([...formats, ...newUniqueData]);
         }
-      })
-      .catch((err) => {
-        console.error("Error loading more formats:", err.message);
-      })
-      .finally(() => {
-        setLoadMoreLoading(false);
-      });
+      }
+
+      return uniqueFormats.length;
+    } catch (err) {
+      console.error(err);
+      return 0;
+    }
+  }, [user, setFormats, formats]);
+
+  // Initial data fetch
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      if (initialLoading) {
+        const count = await fetchFormatsData(0, searchTerm);
+        setHasMoreData(count >= PAGE_SIZE_COUNT);
+        setInitialLoading(false);
+      }
+    };
+
+    fetchInitialData();
+  }, [fetchFormatsData, searchTerm, initialLoading]);
+
+  // Handle search events
+  useEffect(() => {
+    let searchTimeout: NodeJS.Timeout;
+
+    const handleSearch = (e: CustomEvent<string>) => {
+      if (searchTimeout) {
+        clearTimeout(searchTimeout);
+      }
+
+      searchTimeout = setTimeout(async () => {
+        setSearchLoading(true);
+        setSearchTerm(e.detail);
+        setDefaultPageToken(0);
+        const count = await fetchFormatsData(0, e.detail);
+        setHasMoreData(count >= PAGE_SIZE_COUNT);
+        setSearchLoading(false);
+      }, 500);
+    };
+
+    const handleReset = async () => {
+      setSearchLoading(true);
+      setSearchTerm("");
+      setDefaultPageToken(0);
+      const count = await fetchFormatsData(0, "");
+      setHasMoreData(count >= PAGE_SIZE_COUNT);
+      setSearchLoading(false);
+    };
+
+    window.addEventListener('search-change', handleSearch as EventListener);
+    window.addEventListener('reset-table', handleReset as EventListener);
+
+    return () => {
+      window.removeEventListener('search-change', handleSearch as EventListener);
+      window.removeEventListener('reset-table', handleReset as EventListener);
+      if (searchTimeout) {
+        clearTimeout(searchTimeout);
+      }
+    };
+  }, [fetchFormatsData]);
+
+  const loadMore = async () => {
+    if (!user || loadMoreLoading) return;
+
+    setLoadMoreLoading(true);
+    const nextPage = defaultPageToken + 1;
+
+    const count = await fetchFormatsData(nextPage, searchTerm);
+
+    setDefaultPageToken(nextPage);
+    setHasMoreData(count >= PAGE_SIZE_COUNT);
+    setLoadMoreLoading(false);
   };
 
-  if (isLoading) {
+  if (initialLoading) {
     return <AppLoader />;
   }
 
@@ -100,16 +135,22 @@ function Formats() {
       <DataCardView
         data={formats}
         columns={columns}
-        DataTableToolbar={DataTableToolbar}
+        DataTableToolbar={(props) => (
+          <DataTableToolbar
+            {...props}
+            searchTerm={searchTerm}
+            isLoading={searchLoading || loadMoreLoading}
+          />
+        )}
         cardType="format"
       />
-      
+
       {loadMoreLoading && (
         <div className="flex items-center justify-center w-full h-96">
           <Icons.spinner className="h-10 w-10 animate-spin text-primary" />
         </div>
       )}
-      
+
       <div className="p-5 grid place-content-center">
         {formats.length >= PAGE_SIZE_COUNT && hasMoreData && (
           <Button
@@ -118,6 +159,7 @@ function Formats() {
             variant="link"
             className="max-w-auto mx-auto ring-0 border-none outline-none mt-10 hover:bg-primary hover:text-white underline"
             onClick={loadMore}
+            disabled={loadMoreLoading}
           >
             Load More
           </Button>
