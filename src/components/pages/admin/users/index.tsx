@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState, useCallback } from "react";
 import { columns } from "./columns";
 import { useUserStore } from "@/stores/auth/auth.store";
@@ -19,35 +18,35 @@ interface PaginationState {
 
 function Users() {
   const { user } = useUserStore((state) => state);
-  const { users, setUsers, pagination, setPagination } = useUsersStore((state) => state);
+  const { users, setUsers, pagination, setPagination } = useUsersStore(
+    (state) => state
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const fetchUserData = useCallback(async (searchValue: string, pageIndex: number) => {
-    if (!user) return;
-    setIsLoading(true);
+  const fetchUserData = useCallback(
+    async (searchValue: string, pageIndex: number) => {
+      if (!user) return;
+      setIsLoading(true);
+      const options: GetAllUsers = {
+        pageSize: pagination.pageSize,
+        page: pageIndex + 1,
+        token: user.token,
+        searchQuery: searchValue.trim() || undefined,
+      };
 
-    const options: GetAllUsers = {
-      pageSize: pagination.pageSize,
-      page: pageIndex + 1,
-      token: user.token,
-      searchQuery: searchValue.trim() || undefined
-    };
-
-    try {
-      const usersRes = await getAllUsers(options);
-      setUsers(usersRes.usersList);
-      setPagination((prev: PaginationState) => ({
-        ...prev,
-        totalCount: usersRes.totalcount,
-        pageIndex
-      }));
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [pagination.pageSize, user, setPagination, setUsers]);
+      try {
+        const usersRes = await getAllUsers({ ...options });
+        setUsers(usersRes.usersList);
+        setPagination({ totalCount: usersRes.totalcount });
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [pagination.pageSize, user, setPagination, setUsers]
+  );
 
   // Handle search term changes
   useEffect(() => {
@@ -58,12 +57,9 @@ function Users() {
 
   // Handle pagination changes
   useEffect(() => {
-    if (pagination.pageIndex > 0) {
-      fetchUserData(searchTerm, pagination.pageIndex);
-    }
+    fetchUserData(searchTerm, pagination.pageIndex);
   }, [pagination.pageIndex, fetchUserData, searchTerm]);
 
-  // Handle search events
   useEffect(() => {
     let searchTimeout: NodeJS.Timeout;
 
@@ -71,7 +67,6 @@ function Users() {
       if (searchTimeout) {
         clearTimeout(searchTimeout);
       }
-
       searchTimeout = setTimeout(() => {
         setSearchTerm(e.detail);
       }, 500);
@@ -79,25 +74,24 @@ function Users() {
 
     const handleReset = () => {
       setSearchTerm("");
-      setPagination((prev: PaginationState) => ({
-        ...prev,
-        pageIndex: 0
-      }));
+      setPagination({ pageIndex: 0 });
     };
 
-    window.addEventListener('search-change', handleSearch as EventListener);
-    window.addEventListener('reset-table', handleReset as EventListener);
+    window.addEventListener("search-change", handleSearch as EventListener);
+    window.addEventListener("reset-table", handleReset as EventListener);
 
     return () => {
-      window.removeEventListener('search-change', handleSearch as EventListener);
-      window.removeEventListener('reset-table', handleReset as EventListener);
+      window.removeEventListener(
+        "search-change",
+        handleSearch as EventListener
+      );
+      window.removeEventListener("reset-table", handleReset as EventListener);
       if (searchTimeout) {
         clearTimeout(searchTimeout);
       }
     };
   }, [setPagination]);
 
-  // Create toolbar wrapper to match DataTable's expected prop type
   const ToolbarWrapper = useCallback(
     (props: { table: Table<any> }) => (
       <DataTableToolbar
@@ -123,5 +117,4 @@ function Users() {
     </div>
   );
 }
-
 export default Users;

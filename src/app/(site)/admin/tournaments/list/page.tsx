@@ -20,7 +20,7 @@ const page = withAuth(() => {
 function Page() {
   return (
     <>
-      <div className="w-full flex items-center justify-between gap-5">
+      <div className="w-full flex flex-col md:flex-row items-start md:items-center md:justify-between gap-3 md:gap-5">
         <h3 className="text-lg text-primary font-semibold">All Tournaments</h3>
         <Breadcrumb>
           <BreadcrumbList>

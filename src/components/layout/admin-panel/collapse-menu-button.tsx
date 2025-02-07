@@ -42,6 +42,7 @@ interface CollapseMenuButtonProps {
   submenus: Submenu[];
   isOpen: boolean | undefined;
   defaultOpen?: boolean;
+  onMobileNavigate?: () => void;
 }
 
 export function CollapseMenuButton({
@@ -52,14 +53,18 @@ export function CollapseMenuButton({
   dataOnboardingId,
   isOpen,
   defaultOpen = false,
+  onMobileNavigate,
 }: CollapseMenuButtonProps) {
   const isSubmenuActive = submenus.some((submenu) => submenu.active);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(isSubmenuActive || defaultOpen);
 
-  // Update collapsed state when defaultOpen changes
   useEffect(() => {
     setIsCollapsed(defaultOpen || isSubmenuActive);
   }, [defaultOpen, isSubmenuActive]);
+
+  const handleLinkClick = () => {
+    onMobileNavigate?.();
+  };
 
   return isOpen ? (
     <Collapsible
@@ -130,7 +135,7 @@ export function CollapseMenuButton({
             )}
             asChild
           >
-            <Link href={href}>
+            <Link href={href} onClick={handleLinkClick}>
               <span className="mr-4 ml-2">
                 <Dot
                   size={18}
@@ -205,6 +210,7 @@ export function CollapseMenuButton({
               className="cursor-pointer"
               href={href}
               data-onboarding-id={subMenuOnboardingId}
+              onClick={handleLinkClick}
             >
               <p className="max-w-[180px] truncate">{label}</p>
             </Link>

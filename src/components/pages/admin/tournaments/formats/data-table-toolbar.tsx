@@ -1,5 +1,3 @@
-"use client";
-
 import { DataTableFacetedFilter } from "@/components/tables/data-table-faceted-filter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,7 +22,6 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useMemo, useState } from "react";
@@ -73,25 +70,17 @@ export function DataTableToolbar<TData>({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setInputValue(newValue);
-
-    const event = new CustomEvent('search-change', {
-      detail: newValue
-    });
-    window.dispatchEvent(event);
+    window.dispatchEvent(new CustomEvent('search-change', { detail: newValue }));
   };
 
   const handleClearSearch = () => {
     setInputValue('');
-    const event = new CustomEvent('search-change', {
-      detail: ''
-    });
-    window.dispatchEvent(event);
+    window.dispatchEvent(new CustomEvent('search-change', { detail: '' }));
   };
 
   const handleResetAll = () => {
     table.resetColumnFilters();
-    const event = new CustomEvent('reset-table');
-    window.dispatchEvent(event);
+    window.dispatchEvent(new CustomEvent('reset-table'));
   };
 
   const createFormat = async (data: TournamentFormatInput) => {
@@ -102,26 +91,17 @@ export function DataTableToolbar<TData>({
         variant: "destructive",
         title: "Error",
         description: "Format name can't only be numbers",
-        action: (
-          <ToastAction altText="Close" className="bg-primary text-white">
-            Close
-          </ToastAction>
-        ),
+        action: <ToastAction altText="Close" className="bg-primary text-white">Close</ToastAction>,
       });
       return;
     }
 
-    // check if speakers per team is a number
     if (isNaN(Number(data.speakers_per_team))) {
       toast({
         variant: "destructive",
         title: "Error",
         description: "Speakers per team must be a number",
-        action: (
-          <ToastAction altText="Close" className="bg-primary text-white">
-            Close
-          </ToastAction>
-        ),
+        action: <ToastAction altText="Close" className="bg-primary text-white">Close</ToastAction>,
       });
       return;
     }
@@ -134,54 +114,40 @@ export function DataTableToolbar<TData>({
     };
 
     setLoading(true);
-    await createTournamentFormat({ ...options })
-      .then((res) => {
-        setLoading(false);
-        form.reset();
-        addSingleFormat(res.format as TournamentFormat.AsObject);
-        setDialogOpen(false);
-        toast({
-          variant: "success",
-          title: "Success",
-          description: "Tournament format created successfully",
-          action: (
-            <ToastAction altText="Close" className="bg-primary text-white">
-              Close
-            </ToastAction>
-          ),
-        });
-      })
-      .catch((err) => {
-        setLoading(false);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: err.message,
-          action: (
-            <ToastAction altText="Close" className="bg-primary text-white">
-              Close
-            </ToastAction>
-          ),
-        });
-      })
-      .finally(() => {
-        setLoading(false);
+    try {
+      const res = await createTournamentFormat({ ...options });
+      form.reset();
+      addSingleFormat(res.format as TournamentFormat.AsObject);
+      setDialogOpen(false);
+      toast({
+        variant: "success",
+        title: "Success",
+        description: "Tournament format created successfully",
+        action: <ToastAction altText="Close" className="bg-primary text-white">Close</ToastAction>,
       });
+    } catch (err: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: err.message,
+        action: <ToastAction altText="Close" className="bg-primary text-white">Close</ToastAction>,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const speakersOptions = useMemo(() => {
     const column = table.getColumn("speakersPerTeam");
     if (!column) return [];
 
-    const uniqueSpeakerCounts = Array.from(
+    return Array.from(
       new Set(
         table
           .getFilteredRowModel()
           .rows.map((row) => row.getValue("speakersPerTeam"))
       )
-    );
-
-    return uniqueSpeakerCounts
+    )
       .filter((value) => typeof value === "number")
       .sort((a, b) => (a as number) - (b as number))
       .map((value) => ({
@@ -189,15 +155,16 @@ export function DataTableToolbar<TData>({
         value: value as number,
       }));
   }, [table]);
+
   return (
-    <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown flex-wrap px-5 py-3 gap-3">
-      <div className="flex flex-1 flex-col sm:flex-row justify-end sm:justify-normal sm:items-center sm:space-x-3">
-        <div className="flex items-center gap-2 w-full sm:w-[280px] mb-2 sm:mb-0">
+    <div className="w-full bg-brown p-4 space-y-4 md:space-y-0 md:flex md:items-center md:justify-between">
+      <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:items-center md:space-x-4 flex-1">
+        <div className="relative w-full md:w-80">
           <Input
             placeholder="Search format..."
             value={inputValue}
             onChange={handleInputChange}
-            className={cn("h-8 w-full", isLoading && "opacity-50")}
+            className={cn("h-9 pr-8", isLoading && "opacity-50")}
             disabled={isLoading}
           />
           {inputValue && (
@@ -205,7 +172,7 @@ export function DataTableToolbar<TData>({
               variant="ghost"
               size="sm"
               onClick={handleClearSearch}
-              className="h-8 px-2 text-white"
+              className="absolute right-0 top-0 h-9 px-2 text-white hover:bg-transparent"
               disabled={isLoading}
             >
               <Cross2Icon className="h-4 w-4" />
@@ -213,7 +180,8 @@ export function DataTableToolbar<TData>({
             </Button>
           )}
         </div>
-        <div className="flex items-center">
+
+        <div className="flex items-center space-x-2">
           {table.getColumn("speakersPerTeam") && (
             <DataTableFacetedFilter
               column={table.getColumn("speakersPerTeam")}
@@ -225,7 +193,7 @@ export function DataTableToolbar<TData>({
             <Button
               variant="ghost"
               onClick={handleResetAll}
-              className="h-8 px-2 lg:px-3 text-white"
+              className="h-9 px-3 text-white hover:bg-white/10"
               disabled={isLoading}
             >
               Reset
@@ -235,110 +203,95 @@ export function DataTableToolbar<TData>({
         </div>
       </div>
 
-      <Dialog onOpenChange={setDialogOpen} open={dialogOpen} modal>
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogTrigger asChild>
           <Button
             type="button"
             data-onboarding-id="add-format-button"
-            className="text-background dark:text-foreground dark:hover:text-background gap-2 text-sm font-medium h-8 hover:bg-white hover:text-foreground group mr-5"
+            className="w-full md:w-auto text-background dark:text-foreground dark:hover:text-background gap-2 text-sm font-medium h-9 hover:bg-white hover:text-foreground group"
           >
-            <Icons.add className="text-white w-3.5 h-3.5 group-hover:text-foreground group-hover:dark:text-background" />
+            <Icons.add className="w-4 h-4 text-white group-hover:text-foreground" />
             Add New Format
           </Button>
-        </DialogTrigger>        <DialogContent>
+        </DialogTrigger>
+
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-base">
-              Create Tournament Format
-            </DialogTitle>
+            <DialogTitle>Create Tournament Format</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-3">
-            <Form {...form}>
-              <form
-                onSubmit={(...args) =>
-                  void form.handleSubmit(createFormat)(...args)
-                }
-              >
-                <FormField
-                  control={form.control}
-                  name="format_name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-darkBlue dark:text-foreground">
-                        Format Name
-                        <b className="text-primary font-light"> *</b>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Eg. World Schools Debate"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-darkBlue dark:text-foreground">
-                        Description
-                        <b className="text-primary font-light"> *</b>
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Type your message here."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="speakers_per_team"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-darkBlue dark:text-foreground">
-                        Speakers per team
-                        <b className="text-primary font-light"> *</b>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="3 speakers"
-                          {...field}
-                          className="w-full"
-                          onChange={(e) => {
-                            field.onChange(Number(e.target.value));
-                          }}
-                          type="number"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <DialogFooter className="w-full mt-3">
-                  <Button
-                    type="submit"
-                    size={"sm"}
-                    className="w-full hover:bg-primary"
-                  >
-                    Create Format
-                    {loading && (
-                      <Icons.spinner
-                        className="mr-2 h-4 w-4 animate-spin"
-                        aria-hidden="true"
+
+          <Form {...form}>
+            <form onSubmit={(...args) => void form.handleSubmit(createFormat)(...args)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="format_name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Format Name
+                      <span className="text-primary"> *</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Eg. World Schools Debate" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Description
+                      <span className="text-primary"> *</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Type your message here." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="speakers_per_team"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Speakers per team
+                      <span className="text-primary"> *</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="3 speakers"
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
                       />
-                    )}
-                    <div className="sr-only">Create Format</div>
-                  </Button>
-                </DialogFooter>
-              </form>
-            </Form>
-          </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <DialogFooter>
+                <Button
+                  type="submit"
+                  className="w-full sm:w-auto"
+                  disabled={loading}
+                >
+                  {loading && (
+                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  Create Format
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </div>

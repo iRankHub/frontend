@@ -1,5 +1,6 @@
-import Link from "next/link";
+"use client";
 
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useStore } from "@/hooks/use-store";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,20 @@ import Image from "next/image";
 
 export function Sidebar() {
   const sidebar = useStore(useSidebarToggle, (state) => state);
+  // Get the setIsOpen function directly from the store
+  const { setIsOpen } = useSidebarToggle.getState();
+
   if (!sidebar) return null;
+
+  const handleMobileNavigate = () => {
+    // Debug log
+    console.log('Mobile navigate clicked', window.innerWidth);
+
+    if (window.innerWidth < 1024) {
+      console.log('Toggling sidebar');
+      setIsOpen();
+    }
+  };
 
   return (
     <aside
@@ -27,7 +41,7 @@ export function Sidebar() {
           variant="link"
           asChild
         >
-          <Link href="/admin/dashboard" className="flex items-center gap-4">
+          <Link href="/admin/dashboard" onClick={handleMobileNavigate} className="flex items-center gap-4">
             <Image
               src="/static/images/logo-big.png"
               alt="logo"
@@ -47,7 +61,7 @@ export function Sidebar() {
             </h1>
           </Link>
         </Button>
-        <Menu isOpen={sidebar?.isOpen} />
+        <Menu isOpen={sidebar?.isOpen} onMobileNavigate={handleMobileNavigate} />
       </div>
     </aside>
   );
