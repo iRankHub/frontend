@@ -1,3 +1,14 @@
+interface Motion {
+    text: string;
+    info_slide: string;
+    round_number: number;
+}
+
+interface TournamentMotions {
+    preliminary_motions: Motion[];
+    elimination_motions: Motion[];
+}
+
 export interface CreateTournamentType {
     name: string;
     start_date: string,
@@ -13,6 +24,7 @@ export interface CreateTournamentType {
     tournament_fee: number,
     image_url: string | null;
     token: string;
+    motions: TournamentMotions;
 }
 
 export interface UpdateTournamentType {
@@ -31,6 +43,7 @@ export interface UpdateTournamentType {
     tournament_fee: number,
     image_url: string | null;
     token: string;
+    motions: TournamentMotions;
 }
 
 export interface GetTournamentType {

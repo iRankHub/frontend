@@ -60,6 +60,7 @@ import { deleteTournament, updateTournament } from "@/core/tournament/list";
 import { useRouter } from "next/navigation";
 import { getVolunteersAndAdmins } from "@/core/users/users";
 import Image from "next/image";
+import MotionManagement, { Motion, Motions } from "../../create/motion-management";
 
 type Props = {
   tournament: Tournament.AsObject;
@@ -84,6 +85,26 @@ function TournamentUpdateForm({ tournament }: Props) {
   const [coordinators, setCoordinators] = React.useState<
     UserSummary.AsObject[]
   >([]);
+  const [motions, setMotions] = useState<Motions>(() => {
+    // Map preliminary motions
+    const preliminary_motions: Motion[] = tournament.motions?.preliminaryMotionsList?.map(motion => ({
+      text: motion.text,
+      info_slide: motion.infoSlide,
+      round_number: motion.roundNumber
+    })) || [];
+
+    // Map elimination motions
+    const elimination_motions: Motion[] = tournament.motions?.eliminationMotionsList?.map(motion => ({
+      text: motion.text,
+      info_slide: motion.infoSlide,
+      round_number: motion.roundNumber
+    })) || [];
+
+    return {
+      preliminary_motions,
+      elimination_motions
+    };
+  });
   const router = useRouter();
   const { toast } = useToast();
   const [tournamentImage, setTournamentImage] = useState<ImageType | null>(
@@ -107,7 +128,7 @@ function TournamentUpdateForm({ tournament }: Props) {
   }, [user, tournament]);
 
   // useEffect to force re-render when coordinatorId changes
-  useEffect(() => {}, [user]);
+  useEffect(() => { }, [user]);
 
   const formatStartDate = (): string => {
     // format return from api: 2023-07-15 09:00
@@ -205,6 +226,10 @@ function TournamentUpdateForm({ tournament }: Props) {
       number_of_preliminary_rounds: Number(data.preliminaries_start_from),
       tournament_fee: Number(data.fees),
       image_url: tournamentImage ? tournamentImage.url : null,
+      motions: {
+        preliminary_motions: motions.preliminary_motions,
+        elimination_motions: motions.elimination_motions
+      }
     };
 
     setLoading(true);
@@ -371,7 +396,7 @@ function TournamentUpdateForm({ tournament }: Props) {
                         {format(form.watch("startDate"), "PPP")}
                         {/* Check if dates are the same */}
                         {format(form.watch("startDate"), "yyyy-MM-dd") ===
-                        format(form.watch("endDate"), "yyyy-MM-dd") ? (
+                          format(form.watch("endDate"), "yyyy-MM-dd") ? (
                           // If same day, show time difference
                           form.watch("startTime") && form.watch("endTime") ? (
                             <span>
@@ -1046,6 +1071,16 @@ function TournamentUpdateForm({ tournament }: Props) {
                       <FormMessage />
                     </FormItem>
                   )}
+                />
+              </div>
+
+              <div className="mt-10">
+                <MotionManagement
+                  preliminaryRounds={Number(form.watch("preliminaries_end_at") || 0)}
+                  eliminationRounds={Number(form.watch("preliminaries_start_from") || 0)}
+                  motions={motions}
+                  setMotions={setMotions}
+                  disabled={!isEditing}
                 />
               </div>
 

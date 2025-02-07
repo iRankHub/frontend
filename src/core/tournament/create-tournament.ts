@@ -1,4 +1,4 @@
-import { CreateTournamentRequest, CreateTournamentResponse } from "@/lib/grpc/proto/tournament_management/tournament_pb";
+import { CreateTournamentRequest, CreateTournamentResponse, Motion, TournamentMotions } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { CreateTournamentType } from "@/types/tournaments/tournament";
 import { tournamentClient } from "../grpc-clients";
 
@@ -17,6 +17,7 @@ export const createTournament = async ({
     tournament_fee,
     token,
     image_url,
+    motions,
 }: CreateTournamentType): Promise<CreateTournamentResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new CreateTournamentRequest();
@@ -34,15 +35,42 @@ export const createTournament = async ({
         request.setTournamentFee(tournament_fee);
         request.setToken(token);
 
+        // Handle tournament motions
+        const tournamentMotion = new TournamentMotions();
+
+        // Handle elimination motions
+        const motionList_elimination: Motion[] = motions.elimination_motions.map((motion) => {
+            const newMotion = new Motion();
+            newMotion.setText(motion.text);
+            newMotion.setInfoSlide(motion.info_slide);
+            newMotion.setRoundNumber(motion.round_number);
+            return newMotion;
+        });
+        tournamentMotion.setEliminationMotionsList(motionList_elimination);
+
+        // Handle preliminary motions
+        const motionList_preliminary: Motion[] = motions.preliminary_motions.map((motion) => {
+            const newMotion = new Motion();
+            newMotion.setText(motion.text);
+            newMotion.setInfoSlide(motion.info_slide);
+            newMotion.setRoundNumber(motion.round_number);
+            return newMotion;
+        });
+        tournamentMotion.setPreliminaryMotionsList(motionList_preliminary);
+
+        // Set motions in the request
+        request.setMotions(tournamentMotion);
+
+        // Handle optional image URL
         if (image_url) {
             request.setImageUrl(image_url);
         }
-        
+
+        // Make the request
         tournamentClient.createTournament(request, {}, (err, response) => {
             if (err) {
                 reject(err);
             } else {
-                console.log(err);
                 resolve(response.toObject());
             }
         });

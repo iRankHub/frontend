@@ -18,10 +18,14 @@ import {
     GetTournamentStatsResponse,
     ListTournamentsRequest,
     ListTournamentsResponse,
+    Motion,
     ResendInvitationRequest,
     ResendInvitationResponse,
     SearchTournamentsRequest,
     SearchTournamentsResponse,
+    SendInvitationsRequest,
+    SendInvitationsResponse,
+    TournamentMotions,
     UpdateInvitationStatusRequest,
     UpdateInvitationStatusResponse,
     UpdateTournamentRequest,
@@ -48,6 +52,7 @@ export const updateTournament = async ({
     coordinator_id,
     tournament_id,
     image_url,
+    motions,
 }: UpdateTournamentType): Promise<UpdateTournamentResponse.AsObject> => {
     return new Promise((resolve, reject) => {
         const request = new UpdateTournamentRequest();
@@ -67,12 +72,36 @@ export const updateTournament = async ({
         request.setTournamentId(tournament_id);
         request.setImageUrl(image_url || "");
 
+        // Handle tournament motions
+        const tournamentMotion = new TournamentMotions();
+
+        // Handle elimination motions
+        const motionList_elimination: Motion[] = motions.elimination_motions.map((motion) => {
+            const newMotion = new Motion();
+            newMotion.setText(motion.text);
+            newMotion.setInfoSlide(motion.info_slide);
+            newMotion.setRoundNumber(motion.round_number);
+            return newMotion;
+        });
+        tournamentMotion.setEliminationMotionsList(motionList_elimination);
+
+        // Handle preliminary motions
+        const motionList_preliminary: Motion[] = motions.preliminary_motions.map((motion) => {
+            const newMotion = new Motion();
+            newMotion.setText(motion.text);
+            newMotion.setInfoSlide(motion.info_slide);
+            newMotion.setRoundNumber(motion.round_number);
+            return newMotion;
+        });
+        tournamentMotion.setPreliminaryMotionsList(motionList_preliminary);
+
+        // Set motions in the request
+        request.setMotions(tournamentMotion);
+
         tournamentClient.updateTournament(request, {}, (err, response) => {
             if (err) {
-                console.log(err);
                 reject(err);
             } else {
-                console.log(err);
                 resolve(response.toObject());
             }
         });
@@ -170,6 +199,34 @@ export const getInvitationsByUser = async (
 
         tournamentClient.getInvitationsByUser(request, {}, (err, response) => {
             if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    });
+}
+
+
+export interface SendInvitations {
+    token: string;
+    tournament_id: number;
+    user_ids: number[];
+}
+export const sendInvitations = async ({
+    tournament_id,
+    user_ids,
+    token,
+}: SendInvitations): Promise<SendInvitationsResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new SendInvitationsRequest();
+        request.setToken(token);
+        request.setTournamentId(tournament_id);
+        request.setUserIdsList(user_ids);
+
+        tournamentClient.sendInvitations(request, {}, (err, response) => {
+            if (err) {
+                console.log(err)
                 reject(err);
             } else {
                 resolve(response.toObject());

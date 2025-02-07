@@ -114,6 +114,58 @@ export namespace TournamentFormat {
   }
 }
 
+export class Motion extends jspb.Message {
+  getText(): string;
+  setText(value: string): Motion;
+
+  getInfoSlide(): string;
+  setInfoSlide(value: string): Motion;
+
+  getRoundNumber(): number;
+  setRoundNumber(value: number): Motion;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Motion.AsObject;
+  static toObject(includeInstance: boolean, msg: Motion): Motion.AsObject;
+  static serializeBinaryToWriter(message: Motion, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Motion;
+  static deserializeBinaryFromReader(message: Motion, reader: jspb.BinaryReader): Motion;
+}
+
+export namespace Motion {
+  export type AsObject = {
+    text: string,
+    infoSlide: string,
+    roundNumber: number,
+  }
+}
+
+export class TournamentMotions extends jspb.Message {
+  getPreliminaryMotionsList(): Array<Motion>;
+  setPreliminaryMotionsList(value: Array<Motion>): TournamentMotions;
+  clearPreliminaryMotionsList(): TournamentMotions;
+  addPreliminaryMotions(value?: Motion, index?: number): Motion;
+
+  getEliminationMotionsList(): Array<Motion>;
+  setEliminationMotionsList(value: Array<Motion>): TournamentMotions;
+  clearEliminationMotionsList(): TournamentMotions;
+  addEliminationMotions(value?: Motion, index?: number): Motion;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): TournamentMotions.AsObject;
+  static toObject(includeInstance: boolean, msg: TournamentMotions): TournamentMotions.AsObject;
+  static serializeBinaryToWriter(message: TournamentMotions, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): TournamentMotions;
+  static deserializeBinaryFromReader(message: TournamentMotions, reader: jspb.BinaryReader): TournamentMotions;
+}
+
+export namespace TournamentMotions {
+  export type AsObject = {
+    preliminaryMotionsList: Array<Motion.AsObject>,
+    eliminationMotionsList: Array<Motion.AsObject>,
+  }
+}
+
 export class Tournament extends jspb.Message {
   getTournamentId(): number;
   setTournamentId(value: number): Tournament;
@@ -169,6 +221,11 @@ export class Tournament extends jspb.Message {
   getLeagueName(): string;
   setLeagueName(value: string): Tournament;
 
+  getMotions(): TournamentMotions | undefined;
+  setMotions(value?: TournamentMotions): Tournament;
+  hasMotions(): boolean;
+  clearMotions(): Tournament;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Tournament.AsObject;
   static toObject(includeInstance: boolean, msg: Tournament): Tournament.AsObject;
@@ -197,6 +254,7 @@ export namespace Tournament {
     numberOfSchools: number,
     numberOfTeams: number,
     leagueName: string,
+    motions?: TournamentMotions.AsObject,
   }
 }
 
@@ -667,6 +725,11 @@ export class CreateTournamentRequest extends jspb.Message {
   getImageUrl(): string;
   setImageUrl(value: string): CreateTournamentRequest;
 
+  getMotions(): TournamentMotions | undefined;
+  setMotions(value?: TournamentMotions): CreateTournamentRequest;
+  hasMotions(): boolean;
+  clearMotions(): CreateTournamentRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateTournamentRequest.AsObject;
   static toObject(includeInstance: boolean, msg: CreateTournamentRequest): CreateTournamentRequest.AsObject;
@@ -691,6 +754,7 @@ export namespace CreateTournamentRequest {
     tournamentFee: number,
     token: string,
     imageUrl: string,
+    motions?: TournamentMotions.AsObject,
   }
 }
 
@@ -792,6 +856,11 @@ export class UpdateTournamentRequest extends jspb.Message {
   getImageUrl(): string;
   setImageUrl(value: string): UpdateTournamentRequest;
 
+  getMotions(): TournamentMotions | undefined;
+  setMotions(value?: TournamentMotions): UpdateTournamentRequest;
+  hasMotions(): boolean;
+  clearMotions(): UpdateTournamentRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UpdateTournamentRequest.AsObject;
   static toObject(includeInstance: boolean, msg: UpdateTournamentRequest): UpdateTournamentRequest.AsObject;
@@ -817,6 +886,7 @@ export namespace UpdateTournamentRequest {
     tournamentFee: number,
     token: string,
     imageUrl: string,
+    motions?: TournamentMotions.AsObject,
   }
 }
 
@@ -1167,6 +1237,62 @@ export namespace DeleteTournamentResponse {
   export type AsObject = {
     success: boolean,
     message: string,
+  }
+}
+
+export class SendInvitationsRequest extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): SendInvitationsRequest;
+
+  getTournamentId(): number;
+  setTournamentId(value: number): SendInvitationsRequest;
+
+  getUserIdsList(): Array<number>;
+  setUserIdsList(value: Array<number>): SendInvitationsRequest;
+  clearUserIdsList(): SendInvitationsRequest;
+  addUserIds(value: number, index?: number): SendInvitationsRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SendInvitationsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: SendInvitationsRequest): SendInvitationsRequest.AsObject;
+  static serializeBinaryToWriter(message: SendInvitationsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SendInvitationsRequest;
+  static deserializeBinaryFromReader(message: SendInvitationsRequest, reader: jspb.BinaryReader): SendInvitationsRequest;
+}
+
+export namespace SendInvitationsRequest {
+  export type AsObject = {
+    token: string,
+    tournamentId: number,
+    userIdsList: Array<number>,
+  }
+}
+
+export class SendInvitationsResponse extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): SendInvitationsResponse;
+
+  getMessage(): string;
+  setMessage(value: string): SendInvitationsResponse;
+
+  getFailedUserIdsList(): Array<number>;
+  setFailedUserIdsList(value: Array<number>): SendInvitationsResponse;
+  clearFailedUserIdsList(): SendInvitationsResponse;
+  addFailedUserIds(value: number, index?: number): SendInvitationsResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SendInvitationsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: SendInvitationsResponse): SendInvitationsResponse.AsObject;
+  static serializeBinaryToWriter(message: SendInvitationsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SendInvitationsResponse;
+  static deserializeBinaryFromReader(message: SendInvitationsResponse, reader: jspb.BinaryReader): SendInvitationsResponse;
+}
+
+export namespace SendInvitationsResponse {
+  export type AsObject = {
+    success: boolean,
+    message: string,
+    failedUserIdsList: Array<number>,
   }
 }
 

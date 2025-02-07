@@ -770,6 +770,49 @@ export class TournamentServiceClient {
     this.methodDescriptorGetTournamentRegistrations);
   }
 
+  methodDescriptorSendInvitations = new grpcWeb.MethodDescriptor(
+    '/tournament_management.TournamentService/SendInvitations',
+    grpcWeb.MethodType.UNARY,
+    tournament_management_tournament_pb.SendInvitationsRequest,
+    tournament_management_tournament_pb.SendInvitationsResponse,
+    (request: tournament_management_tournament_pb.SendInvitationsRequest) => {
+      return request.serializeBinary();
+    },
+    tournament_management_tournament_pb.SendInvitationsResponse.deserializeBinary
+  );
+
+  sendInvitations(
+    request: tournament_management_tournament_pb.SendInvitationsRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<tournament_management_tournament_pb.SendInvitationsResponse>;
+
+  sendInvitations(
+    request: tournament_management_tournament_pb.SendInvitationsRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: tournament_management_tournament_pb.SendInvitationsResponse) => void): grpcWeb.ClientReadableStream<tournament_management_tournament_pb.SendInvitationsResponse>;
+
+  sendInvitations(
+    request: tournament_management_tournament_pb.SendInvitationsRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: tournament_management_tournament_pb.SendInvitationsResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/tournament_management.TournamentService/SendInvitations',
+        request,
+        metadata || {},
+        this.methodDescriptorSendInvitations,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/tournament_management.TournamentService/SendInvitations',
+    request,
+    metadata || {},
+    this.methodDescriptorSendInvitations);
+  }
+
   methodDescriptorGetInvitationsByUser = new grpcWeb.MethodDescriptor(
     '/tournament_management.TournamentService/GetInvitationsByUser',
     grpcWeb.MethodType.UNARY,

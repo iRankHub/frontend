@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { v4 as uuidv4 } from "uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarIcon, Clock, Plus, Trash2, Undo2 } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import { CalendarIcon, Clock, Plus, Undo2 } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -48,6 +48,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { getSchools } from "@/core/users/schools";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import MotionManagement, { Motions } from './motion-management';
 
 type Props = {
   selectedLeague: League.AsObject | null;
@@ -69,6 +70,10 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
   const [tournamentImage, setTournamentImage] = useState<ImageType | null>(
     null
   );
+  const [motions, setMotions] = useState<Motions>({
+    preliminary_motions: [],
+    elimination_motions: []
+  });
   const [isCustomLocation, setIsCustomLocation] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
@@ -113,6 +118,10 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
       endTime: undefined,
     });
 
+    setMotions({
+      preliminary_motions: [],
+      elimination_motions: []
+    });
     // Reset tournament image
     setTournamentImage(null);
   };
@@ -173,7 +182,13 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
       number_of_preliminary_rounds: Number(data.preliminaries_start_from),
       tournament_fee: Number(data.fees),
       image_url: tournamentImage ? tournamentImage.url : null,
+      motions: {
+        preliminary_motions: motions.preliminary_motions,
+        elimination_motions: motions.elimination_motions
+      }
     };
+
+    console.log(options)
 
     setLoading(true);
     await createTournament({ ...options })
@@ -200,6 +215,11 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
         // Reset tournament image
         setTournamentImage(null);
 
+        setMotions({
+          preliminary_motions: [],
+          elimination_motions: []
+        });
+
         toast({
           variant: "success",
           title: "Success",
@@ -216,7 +236,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
         }
       })
       .catch((err) => {
-        console.error(err.message);
+        console.error(err);
         toast({
           variant: "destructive",
           title: "Error",
@@ -892,6 +912,15 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                       <FormMessage />
                     </FormItem>
                   )}
+                />
+              </div>
+
+              <div className="mt-10">
+                <MotionManagement
+                  preliminaryRounds={Number(form.watch("preliminaries_end_at") || 0)}
+                  eliminationRounds={Number(form.watch("preliminaries_start_from") || 0)}
+                  motions={motions}
+                  setMotions={setMotions}
                 />
               </div>
 
