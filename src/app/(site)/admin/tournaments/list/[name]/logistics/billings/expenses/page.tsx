@@ -37,7 +37,7 @@ function ExpensesPage({ params }: Iparms) {
     undefined
   );
   const [isLoading, setIsLoading] = useState(true);
-  const {toast} = useToast();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!user) return;
@@ -54,15 +54,15 @@ function ExpensesPage({ params }: Iparms) {
       })
       .catch((err) => {
         toast({
-            variant: "destructive",
-            title: "Error",
-            description: err.message,
-            action: (
-              <ToastAction altText="Close" className="bg-primary text-white">
-                Close
-              </ToastAction>
-            ),
-          });
+          variant: "destructive",
+          title: "Error",
+          description: err.message,
+          action: (
+            <ToastAction altText="Close" className="bg-primary text-white">
+              Close
+            </ToastAction>
+          ),
+        });
       })
       .finally(() => {
         setIsLoading(false);
@@ -95,7 +95,7 @@ function ExpensesPage({ params }: Iparms) {
   }
   return (
     <>
-      <div className="w-full flex items-center justify-between gap-5">
+      <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-5">
         <h3 className="text-2xl text-primary font-bold">Billings</h3>
         <Breadcrumb>
           <BreadcrumbList>

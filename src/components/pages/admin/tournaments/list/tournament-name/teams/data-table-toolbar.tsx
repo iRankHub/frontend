@@ -1,9 +1,7 @@
 "use client";
 
 import { Icons } from "@/components/icons";
-import SidePanel, {
-  Panelheader,
-} from "@/components/layout/admin-panel/side-panel";
+import SidePanel, { Panelheader } from "@/components/layout/admin-panel/side-panel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
@@ -34,7 +32,7 @@ export function DataTableToolbar<TData>({
   const { toast } = useToast();
   const [studentPagination, setStudentPagination] = useState({
     page: 1,
-    pageSize: 50, 
+    pageSize: 50,
     total: 0,
   });
 
@@ -56,14 +54,12 @@ export function DataTableToolbar<TData>({
         setAllStudents((prev) => [...prev, ...res.studentsList]);
       }
 
-      // Update pagination info
       setStudentPagination((prev) => ({
         ...prev,
         page,
         total: res.totalcount,
       }));
 
-      // Check if we have more data to load
       setHasMore(res.studentsList.length === studentPagination.pageSize);
     } catch (err: any) {
       toast({
@@ -76,73 +72,67 @@ export function DataTableToolbar<TData>({
     }
   };
 
-  // Initial load
   useEffect(() => {
     loadStudents(1);
   }, [user]);
 
-  // Extract speakers from existing teams
-  const teams = table
-    .getRowModel()
-    .rows.map((row) => row.original) as Team.AsObject[];
-
-  const usedStudents = teams.flatMap((team) =>
-    team.speakersList.map((speaker) => speaker.speakerId)
-  );
-
-  // Filter students to exclude already assigned ones
-  const availableStudents = allStudents.filter(
-    (student) => !usedStudents.includes(student.studentid)
-  );
+  const teams = table.getRowModel().rows.map((row) => row.original) as Team.AsObject[];
+  const usedStudents = teams.flatMap((team) => team.speakersList.map((speaker) => speaker.speakerId));
+  const availableStudents = allStudents.filter((student) => !usedStudents.includes(student.studentid));
 
   return (
     <div className="flex flex-col w-full">
-      <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between bg-brown">
-        <div className="flex flex-1 items-center space-x-3 p-5 py-4">
-          <Input
-            placeholder="Search team name..."
-            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
-            }
-            className="h-8 w-[150px] lg:w-[280px]"
-          />
-          {isFiltered && (
-            <Button
-              variant="ghost"
-              onClick={() => table.resetColumnFilters()}
-              className="h-8 px-2 lg:px-3"
-            >
-              Reset
-              <Cross2Icon className="ml-2 h-4 w-4" />
-            </Button>
-          )}
-        </div>
-        <div className="mx-5 flex items-center gap-5">
-          <Sheet modal>
-            <SheetTrigger>
-              <Button
-                type="button"
-                className="border border-dashed border-white text-background dark:text-foreground gap-2 text-sm font-bold h-8 hover:bg-background dark:hover:bg-foreground hover:text-foreground dark:hover:text-background group"
-              >
-                <Icons.fileUp className="text-white w-3.5 h-3.5 group-hover:text-foreground group-hover:dark:text-background" />
-                Add Team
-                <span className="sr-only">Add Team</span>
-              </Button>
-            </SheetTrigger>
-            <SidePanel>
-              <Panelheader>Add Team</Panelheader>
-              <AddTeamForm
-                availableStudents={availableStudents}
-                setAllStudents={setAllStudents}
-                pagination={studentPagination}
-                onLoadMore={() => loadStudents(studentPagination.page + 1)}
-                hasMore={hasMore}
-                loading={loading}
+      <div className="w-full rounded-t-md overflow-hidden bg-brown">
+        <div className="flex flex-col sm:flex-row gap-4 p-4">
+          <div className="flex flex-1 flex-col sm:flex-row items-start sm:items-center gap-3">
+            <div className="w-full sm:w-auto">
+              <Input
+                placeholder="Search team name..."
+                value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+                onChange={(event) =>
+                  table.getColumn("name")?.setFilterValue(event.target.value)
+                }
+                className="h-8 w-full sm:w-[150px] lg:w-[280px]"
               />
-            </SidePanel>
-          </Sheet>
-          {exportToExcel({ table })}
+            </div>
+            {isFiltered && (
+              <Button
+                variant="ghost"
+                onClick={() => table.resetColumnFilters()}
+                className="h-8 px-2 lg:px-3 w-full sm:w-auto"
+              >
+                Reset
+                <Cross2Icon className="ml-2 h-4 w-4" />
+              </Button>
+            )}
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <Sheet modal>
+              <SheetTrigger asChild>
+                <Button
+                  type="button"
+                  className="border border-dashed border-white text-background dark:text-foreground gap-2 text-sm font-bold h-8 hover:bg-background dark:hover:bg-foreground hover:text-foreground dark:hover:text-background group w-full sm:w-auto"
+                >
+                  <Icons.fileUp className="text-white w-3.5 h-3.5 group-hover:text-foreground group-hover:dark:text-background" />
+                  Add Team
+                  <span className="sr-only">Add Team</span>
+                </Button>
+              </SheetTrigger>
+              <SidePanel>
+                <Panelheader>Add Team</Panelheader>
+                <AddTeamForm
+                  availableStudents={availableStudents}
+                  setAllStudents={setAllStudents}
+                  pagination={studentPagination}
+                  onLoadMore={() => loadStudents(studentPagination.page + 1)}
+                  hasMore={hasMore}
+                  loading={loading}
+                />
+              </SidePanel>
+            </Sheet>
+            {exportToExcel({ table })}
+          </div>
         </div>
       </div>
     </div>
@@ -158,19 +148,14 @@ const exportToExcel = ({
 }) => {
   const handleExport = () => {
     const rows = table.getRowModel().rows;
-    const data = rows.map((row) => {
-      return {
-        "Team Name": row.getValue("name"),
-        "No. of Speakers": (row.getValue("speakersList") as any[]).length,
-      };
-    });
+    const data = rows.map((row) => ({
+      "Team Name": row.getValue("name"),
+      "No. of Speakers": (row.getValue("speakersList") as any[]).length,
+    }));
 
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(data);
-
-    const colWidths = [{ wch: 30 }, { wch: 15 }];
-    ws["!cols"] = colWidths;
-
+    ws["!cols"] = [{ wch: 30 }, { wch: 15 }];
     XLSX.utils.book_append_sheet(wb, ws, "Teams");
     XLSX.writeFile(wb, filename);
   };
@@ -179,7 +164,7 @@ const exportToExcel = ({
     <Button
       onClick={handleExport}
       type="button"
-      className="border border-dashed border-white text-white dark:text-foreground gap-2 text-sm font-bold h-8 hover:bg-background dark:hover:bg-foreground hover:text-foreground dark:hover:text-background group"
+      className="border border-dashed border-white text-white dark:text-foreground gap-2 text-sm font-bold h-8 hover:bg-background dark:hover:bg-foreground hover:text-foreground dark:hover:text-background group w-full sm:w-auto"
     >
       <Icons.fileUp className="text-white w-3.5 h-3.5 group-hover:text-foreground group-hover:dark:text-background" />
       Export

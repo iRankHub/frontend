@@ -1,8 +1,6 @@
 "use client";
 
 import { Icons } from "@/components/icons";
-import { DataTableFacetedFilter } from "@/components/tables/data-table-faceted-filter";
-import { priorities, statuses } from "@/components/tables/data/data";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { updatePairings } from "@/core/debates/pairings";
@@ -58,50 +56,55 @@ export function DataTableToolbar<TData>({
   };
 
   return (
-    <div className="w-full rounded-t-md overflow-hidden bg-brown pr-5 flex items-center justify-between mb-14">
-      <div className="flex flex-1 items-center space-x-3 bg-brown p-5 py-4">
-        <Input
-          placeholder="Search team..."
-          value={(table.getState().globalFilter as string) ?? ""}
-          onChange={(event) => table.setGlobalFilter(event.target.value)}
-          className="h-8 w-[150px] lg:w-[280px]"
-        />
-        {isFiltered && (
-          <Button
-            variant="ghost"
-            onClick={() => table.resetColumnFilters()}
-            className="h-8 px-2 lg:px-3"
-          >
-            Reset
-            <Cross2Icon className="ml-2 h-4 w-4" />
-          </Button>
-        )}
-      </div>
-      {exportToExcel({ table })}
-      {isSwapMade && (
-        <div className="flex items-center gap-3">
-          <Button
-            variant="secondary"
-            onClick={handleCancelSwap}
-            className="h-8 px-2 lg:px-3"
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="default"
-            onClick={handleUpdatePairings}
-            className="h-8 px-2 lg:px-3"
-          >
-            Update
-            {isUpdating && (
-              <Icons.spinner
-                className="ml-2 h-4 w-4 animate-spin"
-                aria-hidden="true"
-              />
-            )}
-          </Button>
+    <div className="w-full rounded-t-md overflow-hidden bg-brown p-4 mb-14">
+      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+        <div className="w-full sm:w-auto flex flex-wrap gap-3 items-center">
+          <Input
+            placeholder="Search team..."
+            value={(table.getState().globalFilter as string) ?? ""}
+            onChange={(event) => table.setGlobalFilter(event.target.value)}
+            className="h-8 w-full sm:w-[150px] lg:w-[280px]"
+          />
+          {isFiltered && (
+            <Button
+              variant="ghost"
+              onClick={() => table.resetColumnFilters()}
+              className="h-8 px-2 lg:px-3"
+            >
+              Reset
+              <Cross2Icon className="ml-2 h-4 w-4" />
+            </Button>
+          )}
         </div>
-      )}
+
+        <div className="flex flex-wrap items-center gap-3">
+          {exportToExcel({ table })}
+          {isSwapMade && (
+            <div className="flex items-center gap-3">
+              <Button
+                variant="secondary"
+                onClick={handleCancelSwap}
+                className="h-8 px-2 lg:px-3"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="default"
+                onClick={handleUpdatePairings}
+                className="h-8 px-2 lg:px-3"
+              >
+                Update
+                {isUpdating && (
+                  <Icons.spinner
+                    className="ml-2 h-4 w-4 animate-spin"
+                    aria-hidden="true"
+                  />
+                )}
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -114,13 +117,10 @@ const exportToExcel = ({
   filename?: string;
 }) => {
   const handleExport = () => {
-    // Get the rows from the table
     const rows = table.getRowModel().rows;
-
-    // Convert the rows to a format suitable for XLSX
     const data = rows.map((row) => {
-    const team1 = row.getValue("team1") as { name: string };
-    const team2 = row.getValue("team2") as { name: string };
+      const team1 = row.getValue("team1") as { name: string };
+      const team2 = row.getValue("team2") as { name: string };
       return {
         Affirmative: team1.name,
         Negative: team2.name,
@@ -128,20 +128,16 @@ const exportToExcel = ({
       };
     });
 
-    // Create a new workbook and add the data
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(data);
 
-    // Adjust column widths
     const colWidths = [
-      { wch: 30 }, // Team Name
-      { wch: 15 }, // No. of Speakers
+      { wch: 30 },
+      { wch: 15 },
     ];
     ws["!cols"] = colWidths;
 
     XLSX.utils.book_append_sheet(wb, ws, "Teams");
-
-    // Save the file
     XLSX.writeFile(wb, filename);
   };
 

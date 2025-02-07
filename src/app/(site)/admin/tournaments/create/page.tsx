@@ -1,5 +1,5 @@
 'use client'
-import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
+
 import CreateTournament from "@/components/pages/admin/tournaments/create/create-tournament";
 import {
   Breadcrumb,
@@ -18,7 +18,7 @@ const page = withAuth(() => {
   return <Page />
 }, [Roles.ADMIN]);
 
-function Page({}) {
+function Page({ }) {
   return (
     <>
       <div className="w-full flex items-center justify-between gap-5">
