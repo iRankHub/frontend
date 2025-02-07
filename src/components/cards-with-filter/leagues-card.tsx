@@ -331,7 +331,59 @@ const LeagueCard = ({ row, getColumnValue }: LeagueCardProps) => {
                   }}
                   open={dialogOpen}
                 >
-                  {/* Delete dialog content remains the same */}
+                  <DialogTrigger className="mt-0.5">
+                    {!isDelete && (
+                      <Button
+                        type="button"
+                        className="rounded-full m-0 p-0 w-6 h-6 hover:bg-primary"
+                        size={"icon"}
+                        onClick={() => {
+                          setIsEdit(false);
+                          setIsDelete(true);
+                        }}
+                      >
+                        <Icons.trash className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle className="text-base">
+                        Are you absolutely sure?
+                      </DialogTitle>
+                      <DialogDescription className="text-sm text-muted-foreground">
+                        This action cannot be undone. This will permanently
+                        delete this tournament format and remove all related
+                        data from our servers.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter className="w-full justify-end">
+                      <Button
+                        type="submit"
+                        size={"sm"}
+                        variant={"outline"}
+                        className="max-w-32"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="submit"
+                        size={"sm"}
+                        variant={"destructive"}
+                        className="max-w-32"
+                        onClick={deleteLeague}
+                      >
+                        Delete
+                        {deleteLoading && (
+                          <Icons.spinner
+                            className="mr-2 h-4 w-4 animate-spin"
+                            aria-hidden="true"
+                          />
+                        )}
+                        <span className="sr-only">Delete</span>
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
                 </Dialog>
               </div>
             </Panelheader>
