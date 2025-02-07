@@ -106,7 +106,7 @@ function Page({ params }: Iparms) {
   }
   return (
     <>
-      <div className="w-full flex items-center justify-between gap-5">
+      <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-5">
         <h3 className="text-2xl text-primary font-bold">Billings</h3>
         <Breadcrumb>
           <BreadcrumbList>

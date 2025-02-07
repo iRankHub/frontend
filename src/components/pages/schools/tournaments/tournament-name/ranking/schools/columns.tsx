@@ -1,5 +1,4 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Rankings } from "@/components/tables/data/schema";
 import { DataTableColumnHeader } from "@/components/tables/data-table-column-header";
 import { SchoolRanking } from "@/lib/grpc/proto/debate_management/debate_pb";
 

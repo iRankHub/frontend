@@ -89,8 +89,8 @@ function Speakers({ tournamentId }: Props) {
           Speaker Ranking
         </h3>
       </div>
-      <div className="w-full bg-background p-8 px-5">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-3">
+      <div className="w-full bg-background">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-5 gap-3 mb-3">
           {studentRankings.slice(0, 3).map((speaker, index) => (
             <React.Fragment key={speaker.studentId || index}>
               {index < 2 ? (

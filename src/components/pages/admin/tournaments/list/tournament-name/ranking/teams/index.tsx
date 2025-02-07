@@ -98,8 +98,8 @@ function TeamsRanking({ tournamentId }: Props) {
           Team Ranking
         </h3>
       </div>
-      <div className="w-full bg-background p-8 px-5">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-3">
+      <div className="w-full bg-background">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-5 gap-3 mb-3">
           {teamsRankings.slice(0, 3).map((team, index) => (
             <React.Fragment key={team.teamId || index}>
               {index < 2 ? (

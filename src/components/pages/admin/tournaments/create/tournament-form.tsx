@@ -270,81 +270,95 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
     <div className="p-5">
       <Form {...form}>
         <form onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}>
-          <div className="w-full bg-brown rounded-md h-60 relative overflow-hidden">
+          {/* Tournament Header Container */}
+          <div className="w-full bg-brown rounded-md h-60 sm:h-72 relative overflow-hidden">
+            {/* Tournament Image */}
             {tournamentImage && (
-              <div className="w-full h-full">
+              <div className="absolute inset-0">
                 <Image
                   src={tournamentImage.previewUrl}
-                  alt="some image"
+                  alt="Tournament cover"
                   fill
-                  className="w-full h-full object-cover"
+                  className="object-cover"
                 />
               </div>
             )}
-            <div className="w-full px-5 absolute h-full bg-black/30 top-0 bottom-0 right-0 flex items-end">
-              <div className="flex-1">
-                <div className="flex items-center gap-5">
+
+            {/* Overlay Content */}
+            <div className="absolute inset-0 bg-black/30 flex flex-col justify-end">
+              <div className="px-4 sm:px-5 pb-4 sm:pb-5 w-full">
+                {/* Info Row */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-5 mb-2">
+                  {/* Date/Time */}
                   <div className="flex items-center gap-1 text-sm text-white font-medium">
-                    <Icons.calendar className="w-3.5 h-3.5 text-white" />
-                    {form.watch("startDate") && form.watch("endDate") ? (
-                      <span>
-                        {format(form.watch("startDate"), "PPP")}
-                        {/* Check if dates are the same */}
-                        {format(form.watch("startDate"), "yyyy-MM-dd") ===
-                        format(form.watch("endDate"), "yyyy-MM-dd") ? (
-                          // If same day, show time difference
-                          form.watch("startTime") && form.watch("endTime") ? (
-                            <span>
-                              {" "}
-                              ({format(form.watch("startTime"), "HH:mm")} -{" "}
-                              {format(form.watch("endTime"), "HH:mm")})
-                            </span>
-                          ) : null
-                        ) : (
-                          // If different days, show full end date
-                          <span> - {format(form.watch("endDate"), "PPP")}</span>
-                        )}
-                      </span>
-                    ) : (
-                      "Pick a Date"
-                    )}
+                    <Icons.calendar className="w-3.5 h-3.5 text-white flex-shrink-0" />
+                    <span className="truncate">
+                      {form.watch("startDate") && form.watch("endDate") ? (
+                        <span className="whitespace-normal">
+                          {format(form.watch("startDate"), "PPP")}
+                          {format(form.watch("startDate"), "yyyy-MM-dd") ===
+                            format(form.watch("endDate"), "yyyy-MM-dd") ? (
+                            form.watch("startTime") && form.watch("endTime") ? (
+                              <span className="whitespace-nowrap">
+                                {" "}({format(form.watch("startTime"), "HH:mm")} -{" "}
+                                {format(form.watch("endTime"), "HH:mm")})
+                              </span>
+                            ) : null
+                          ) : (
+                            <span className="whitespace-nowrap"> - {format(form.watch("endDate"), "PPP")}</span>
+                          )}
+                        </span>
+                      ) : (
+                        "Pick a Date"
+                      )}
+                    </span>
                   </div>
+
+                  {/* Location */}
                   <div className="flex items-center gap-1 text-sm text-white font-medium">
-                    <Icons.mapPin className="w-3.5 h-3.5 text-white" />
-                    {form.watch("location")
-                      ? form.watch("location")
-                      : "Location"}
+                    <Icons.mapPin className="w-3.5 h-3.5 text-white flex-shrink-0" />
+                    <span className="truncate">
+                      {form.watch("location") ? form.watch("location") : "Location"}
+                    </span>
                   </div>
                 </div>
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem className="col-span-2">
-                      <FormControl>
-                        <Input
-                          placeholder="Your Tournament Name"
-                          className="text-white placeholder:text-white text-xl font-bold w-72 mt-1 bg-transparent outline-none border-none focus-visible:outline-none focus-visible:border-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 p-0"
-                          value={field.value}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormMessage className="py-1 font-bold" />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="p-5 flex items-center gap-3">
-                <Dialog>
-                  <DialogTrigger className="rounded-full bg-primary cursor-pointer">
-                    <Icons.imagePlus className="w-[1rem] h-[1rem] text-white m-2" />
-                    <span className="sr-only">Image</span>
-                  </DialogTrigger>
-                  <FileUpload
-                    setTournamentImage={setTournamentImage}
-                    folderType="tournaments"
+
+                {/* Tournament Name Input and Upload Button Container */}
+                <div className="flex items-start justify-between gap-4">
+                  {/* Tournament Name Input */}
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormControl>
+                          <Input
+                            placeholder="Your Tournament Name"
+                            className="text-white placeholder:text-white text-lg sm:text-xl font-bold 
+                           w-full max-w-2xl bg-transparent outline-none border-none 
+                           focus-visible:outline-none focus-visible:border-none 
+                           focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 p-0"
+                            value={field.value}
+                            onChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormMessage className="py-1 font-bold absolute" />
+                      </FormItem>
+                    )}
                   />
-                </Dialog>
+
+                  {/* Upload Button */}
+                  <Dialog>
+                    <DialogTrigger className="rounded-full bg-primary cursor-pointer flex-shrink-0">
+                      <Icons.imagePlus className="w-4 h-4 text-white m-2" />
+                      <span className="sr-only">Upload Image</span>
+                    </DialogTrigger>
+                    <FileUpload
+                      setTournamentImage={setTournamentImage}
+                      folderType="tournaments"
+                    />
+                  </Dialog>
+                </div>
               </div>
             </div>
           </div>

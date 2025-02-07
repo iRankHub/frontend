@@ -1,4 +1,5 @@
 "use client";
+
 import { DataTableFacetedFilter } from "@/components/tables/data-table-faceted-filter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +22,6 @@ export function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0;
   const [inputValue, setInputValue] = useState(searchTerm);
 
-  // Update input value when searchTerm prop changes
   useEffect(() => {
     setInputValue(searchTerm);
   }, [searchTerm]);
@@ -29,25 +29,17 @@ export function DataTableToolbar<TData>({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setInputValue(newValue);
-
-    const event = new CustomEvent('search-change', {
-      detail: newValue
-    });
-    window.dispatchEvent(event);
+    window.dispatchEvent(new CustomEvent('search-change', { detail: newValue }));
   };
 
   const handleClearSearch = () => {
     setInputValue('');
-    const event = new CustomEvent('search-change', {
-      detail: ''
-    });
-    window.dispatchEvent(event);
+    window.dispatchEvent(new CustomEvent('search-change', { detail: '' }));
   };
 
   const handleResetAll = () => {
     table.resetColumnFilters();
-    const event = new CustomEvent('reset-table');
-    window.dispatchEvent(event);
+    window.dispatchEvent(new CustomEvent('reset-table'));
   };
 
   const leagueOptions = useMemo(() => {
@@ -60,11 +52,10 @@ export function DataTableToolbar<TData>({
           .rows.map((row) => row.getValue("leagueName"))
       )
     );
-    return uniqueLeagueName
-      .map((value) => ({
-        label: value as string,
-        value: value as string,
-      }));
+    return uniqueLeagueName.map((value) => ({
+      label: value as string,
+      value: value as string,
+    }));
   }, [table]);
 
   const coordinatorOptions = useMemo(() => {
@@ -77,63 +68,73 @@ export function DataTableToolbar<TData>({
           .rows.map((row) => row.getValue("coordinatorName"))
       )
     );
-    return uniqueCoordinatorName
-      .map((value) => ({
-        label: value as string,
-        value: value as string,
-      }));
+    return uniqueCoordinatorName.map((value) => ({
+      label: value as string,
+      value: value as string,
+    }));
   }, [table]);
 
   return (
-    <div className="w-full rounded-t-md overflow-hidden flex items-center justify-between">
-      <div className="flex flex-1 items-center space-x-3 bg-brown p-5 py-4">
-        <div className="flex items-center gap-2">
-          <Input
-            placeholder="Search tournaments..."
-            value={inputValue}
-            onChange={handleInputChange}
-            className={cn("h-8 w-[150px] lg:w-[280px]", isLoading && "opacity-50")}
-            disabled={isLoading}
-          />
-          {inputValue && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleClearSearch}
-              className="h-8 px-2 text-white"
+    <div className="w-full rounded-t-md overflow-hidden bg-brown">
+      <div className="p-4">
+        <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:items-center md:gap-4">
+          {/* Search Input */}
+          <div className="relative flex-1 md:max-w-[280px]">
+            <Input
+              placeholder="Search tournaments..."
+              value={inputValue}
+              onChange={handleInputChange}
+              className={cn(
+                "h-9 pr-8 w-full",
+                isLoading && "opacity-50"
+              )}
               disabled={isLoading}
-            >
-              <Cross2Icon className="h-4 w-4" />
-              <span className="sr-only">Clear search</span>
-            </Button>
-          )}
-        </div>
+            />
+            {inputValue && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleClearSearch}
+                className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 p-0 hover:bg-transparent"
+                disabled={isLoading}
+              >
+                <Cross2Icon className="h-4 w-4 text-white" />
+                <span className="sr-only">Clear search</span>
+              </Button>
+            )}
+          </div>
 
-        {table.getColumn("leagueName") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("leagueName")}
-            title="League"
-            options={leagueOptions}
-          />
-        )}
-        {table.getColumn("coordinatorName") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("coordinatorName")}
-            title="Coordinator"
-            options={coordinatorOptions}
-          />
-        )}
-        {(isFiltered || inputValue) && (
-          <Button
-            variant="ghost"
-            onClick={handleResetAll}
-            className="h-8 px-2 lg:px-3 text-white"
-            disabled={isLoading}
-          >
-            Reset
-            <Cross2Icon className="ml-2 h-4 w-4" />
-          </Button>
-        )}
+          {/* Filters Group */}
+          <div className="flex items-center gap-2 overflow-x-auto">
+            <div className="flex items-center gap-2 min-w-fit">
+              {table.getColumn("leagueName") && (
+                <DataTableFacetedFilter
+                  column={table.getColumn("leagueName")}
+                  title="League"
+                  options={leagueOptions}
+                />
+              )}
+              {table.getColumn("coordinatorName") && (
+                <DataTableFacetedFilter
+                  column={table.getColumn("coordinatorName")}
+                  title="Coordinator"
+                  options={coordinatorOptions}
+                />
+              )}
+            </div>
+            {(isFiltered || inputValue) && (
+              <Button
+                variant="ghost"
+                onClick={handleResetAll}
+                className="h-9 px-3 text-white hover:bg-white/10 whitespace-nowrap"
+                disabled={isLoading}
+              >
+                Reset
+                <Cross2Icon className="ml-2 h-4 w-4" />
+              </Button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

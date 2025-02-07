@@ -1,5 +1,4 @@
 'use client'
-import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
 import Formats from "@/components/pages/admin/tournaments/formats/formats";
 import {
   Breadcrumb,
@@ -18,10 +17,10 @@ const page = withAuth(() => {
   return <Page />
 }, [Roles.ADMIN]);
 
-function Page({}) {
+function Page({ }) {
   return (
     <>
-      <div className="w-full flex items-center justify-between gap-5">
+      <div className="w-full flex flex-col md:flex-row items-start md:items-center md:justify-between gap-3 md:gap-5">
         <h3 className="text-lg text-primary font-semibold">Tournament Formats</h3>
         <Breadcrumb>
           <BreadcrumbList>

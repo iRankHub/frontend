@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { Ellipsis, LogOut } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -20,19 +20,24 @@ import { useUserStore } from "@/stores/auth/auth.store";
 
 interface MenuProps {
   isOpen: boolean | undefined;
+  onMobileNavigate?: () => void;
 }
 
-export function Menu({ isOpen }: MenuProps) {
+export function Menu({ isOpen, onMobileNavigate }: MenuProps) {
   const pathname = usePathname();
   const menuList = getMenuList(pathname);
   const { logout } = useUserStore((state) => state);
 
+  const handleLinkClick = () => {
+    // Only close on mobile
+    if (window.innerWidth < 1024) { // 1024px is the lg breakpoint in Tailwind
+      onMobileNavigate?.();
+    }
+  };
+
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
-      <nav
-        className="mt-8 h-full w-full"
-        id="dashboard-section"
-      >
+      <nav className="mt-8 h-full w-full" id="dashboard-section">
         <ul className="flex flex-col min-h-[calc(100vh-48px-36px-16px-50px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1 px-2">
           {menuList.map(({ groupLabel, menus }, groupIndex) => (
             <li className={cn("w-full", groupLabel ? "pt-5" : "")} key={groupIndex}>
@@ -56,7 +61,7 @@ export function Menu({ isOpen }: MenuProps) {
                               )}
                               asChild
                             >
-                              <Link href={href}>
+                              <Link href={href} onClick={handleLinkClick}>
                                 <span className={cn(isOpen === false ? "" : "mr-4")}>
                                   <Icon
                                     size={18}
@@ -96,6 +101,7 @@ export function Menu({ isOpen }: MenuProps) {
                         submenus={submenus}
                         isOpen={isOpen}
                         dataOnboardingId={dataOnboardingId}
+                        onMobileNavigate={handleLinkClick}
                       />
                     </div>
                   )
@@ -107,7 +113,10 @@ export function Menu({ isOpen }: MenuProps) {
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
                   <Button
-                    onClick={logout}
+                    onClick={() => {
+                      handleLinkClick();
+                      logout();
+                    }}
                     variant="outline"
                     className="w-full justify-center h-10 mt-5 group dark:bg-foreground outline-none ring-0 border-0"
                   >

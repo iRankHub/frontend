@@ -102,8 +102,8 @@ function Volunteers({ tournamentId }: Props) {
           Volunteer Ranking
         </h3>
       </div>
-      <div className="w-full bg-background p-8 px-5">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-3">
+      <div className="w-full bg-background">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-5 gap-3 mb-3">
           {volunteerRankings.slice(0, 3).map((volunteer, index) => (
             <React.Fragment key={volunteer.volunteerId || index}>
               {index < 2 ? (

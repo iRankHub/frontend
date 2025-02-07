@@ -65,7 +65,7 @@ export function DataTable<TData, TValue>({
     reject: false,
     delete: false,
   });
-  const [, setContextMenuOpen] = React.useState(false);
+  const [contextMenuOpen, setContextMenuOpen] = React.useState(false);
 
   const { pagination, setPagination } = useUsersStore((state) => state);
 
