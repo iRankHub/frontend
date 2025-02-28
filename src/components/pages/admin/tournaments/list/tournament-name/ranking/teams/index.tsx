@@ -1,25 +1,55 @@
 import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import { DataTable } from "@/components/tables/data-table";
 import { columns } from "./columns";
 import { TeamRanking } from "@/lib/grpc/proto/debate_management/debate_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
-import { getTournamentTeamsRanking } from "@/core/debates/rankings";
+import { activateRanking, getTournamentTeamsRanking } from "@/core/debates/rankings";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/components/ui/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 type Props = {
   tournamentId: number;
 };
+
+// Define the role type
+type Role = "student" | "volunteer" | "school";
 
 function TeamsRanking({ tournamentId }: Props) {
   const [teamsRankings, setTeamsRankings] = useState<TeamRanking.AsObject[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isActivatingRanking, setIsActivatingRanking] = useState(false);
+  const [isRankingVisible, setIsRankingVisible] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRoles, setSelectedRoles] = useState<Role[]>(["student", "volunteer", "school"]);
+  const [activationProgress, setActivationProgress] = useState(0);
   const pageSize = 10;
   const { user } = useUserStore((state) => state);
+  const { toast } = useToast();
+
+  // Track component mount state
+  const isMountedRef = useRef(true);
+
+  // Reset mount state on unmount
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   const fetchTeams = async (page: number) => {
     if (!user || isLoading) return;
@@ -75,6 +105,172 @@ function TeamsRanking({ tournamentId }: Props) {
     }
   };
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleRoleToggle = (role: Role) => {
+    setSelectedRoles(prevRoles => {
+      if (prevRoles.includes(role)) {
+        return prevRoles.filter(r => r !== role);
+      } else {
+        return [...prevRoles, role];
+      }
+    });
+  };
+
+  // Make a single API call to set visibility for one role
+  const setVisibilityForRole = async (role: Role) => {
+    if (!user || !tournamentId) return false;
+
+    try {
+      await activateRanking({
+        token: user.token,
+        isVisible: true,
+        ranking_type: "team",
+        tournament_id: tournamentId,
+        visible_to: role
+      });
+      return true;
+    } catch (error) {
+      console.error(`Failed to set team ranking visibility for role ${role}:`, error);
+      return false;
+    }
+  };
+
+  const handleSaveVisibility = async () => {
+    if (!user || selectedRoles.length === 0) {
+      if (selectedRoles.length === 0) {
+        toast({
+          title: "Error",
+          description: "Please select at least one role to see the rankings.",
+          variant: "destructive"
+        });
+      }
+      return;
+    }
+
+    if (isActivatingRanking) return;
+
+    setIsActivatingRanking(true);
+    setActivationProgress(0);
+
+    try {
+      let successCount = 0;
+
+      // Make separate API calls for each selected role
+      for (let i = 0; i < selectedRoles.length; i++) {
+        // Check if component is still mounted
+        if (!isMountedRef.current) return;
+
+        const role = selectedRoles[i];
+        const success = await setVisibilityForRole(role);
+
+        if (success) {
+          successCount++;
+        }
+
+        // Update progress
+        setActivationProgress(Math.round(((i + 1) / selectedRoles.length) * 100));
+      }
+
+      // Check if component is still mounted
+      if (!isMountedRef.current) return;
+
+      if (successCount === selectedRoles.length) {
+        setIsRankingVisible(true);
+        toast({
+          title: "Ranking Activated",
+          description: `Team rankings are now visible to: ${selectedRoles.join(", ")}.`,
+          variant: "success"
+        });
+        handleCloseModal();
+      } else if (successCount > 0) {
+        setIsRankingVisible(true);
+        toast({
+          title: "Partial Activation",
+          description: `Rankings activated for ${successCount} out of ${selectedRoles.length} roles.`,
+          variant: "warning"
+        });
+        handleCloseModal();
+      } else {
+        toast({
+          title: "Activation Failed",
+          description: "Could not activate rankings for any of the selected roles.",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      console.error("Failed to set ranking visibility:", error);
+
+      // Check if component is still mounted
+      if (!isMountedRef.current) return;
+
+      toast({
+        title: "Operation Failed",
+        description: "Could not change the visibility of team rankings.",
+        variant: "destructive"
+      });
+    } finally {
+      // Check if component is still mounted
+      if (isMountedRef.current) {
+        setIsActivatingRanking(false);
+        setActivationProgress(0);
+      }
+    }
+  };
+
+  const handleDeactivateRanking = async () => {
+    if (!user || isActivatingRanking) return;
+
+    setIsActivatingRanking(true);
+    try {
+      // When deactivating, we need to make calls for all possible roles to ensure complete deactivation
+      const allRoles: Role[] = ["student", "volunteer", "school"];
+
+      for (const role of allRoles) {
+        await activateRanking({
+          token: user.token,
+          isVisible: false,
+          ranking_type: "team",
+          tournament_id: tournamentId,
+          visible_to: role
+        });
+      }
+
+      // Check if component is still mounted
+      if (!isMountedRef.current) return;
+
+      setIsRankingVisible(false);
+      toast({
+        title: "Ranking Deactivated",
+        description: "Team rankings are now hidden from all users.",
+        variant: "success"
+      });
+
+    } catch (error) {
+      console.error("Failed to deactivate ranking:", error);
+
+      // Check if component is still mounted
+      if (!isMountedRef.current) return;
+
+      toast({
+        title: "Operation Failed",
+        description: "Could not deactivate team rankings.",
+        variant: "destructive"
+      });
+    } finally {
+      // Check if component is still mounted
+      if (isMountedRef.current) {
+        setIsActivatingRanking(false);
+      }
+    }
+  };
+
   // If no teams data yet, show loading or empty state
   if (teamsRankings.length === 0) {
     return (
@@ -83,6 +279,22 @@ function TeamsRanking({ tournamentId }: Props) {
           <h3 className="text-lg text-background font-medium text-white">
             Team Ranking
           </h3>
+          {isRankingVisible ? (
+            <Button
+              onClick={handleDeactivateRanking}
+              disabled={isActivatingRanking}
+              variant="destructive"
+            >
+              {isActivatingRanking ? "Processing..." : "Deactivate"}
+            </Button>
+          ) : (
+            <Button
+              onClick={handleOpenModal}
+              disabled={isActivatingRanking}
+            >
+              {isActivatingRanking ? "Processing..." : "Activate"}
+            </Button>
+          )}
         </div>
         <div className="w-full bg-background p-8 px-5 text-center">
           {isLoading ? "Loading..." : "No teams data available."}
@@ -97,8 +309,24 @@ function TeamsRanking({ tournamentId }: Props) {
         <h3 className="text-lg text-background font-medium text-white">
           Team Ranking
         </h3>
+        {isRankingVisible ? (
+          <Button
+            onClick={handleDeactivateRanking}
+            disabled={isActivatingRanking}
+            variant="destructive"
+          >
+            {isActivatingRanking ? "Processing..." : "Deactivate"}
+          </Button>
+        ) : (
+          <Button
+            onClick={handleOpenModal}
+            disabled={isActivatingRanking}
+          >
+            {isActivatingRanking ? "Processing..." : "Activate"}
+          </Button>
+        )}
       </div>
-      <div className="w-full bg-background">
+      <div className="w-full bg-background mt-3">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-5 gap-3 mb-3">
           {teamsRankings.slice(0, 3).map((team, index) => (
             <React.Fragment key={team.teamId || index}>
@@ -121,6 +349,69 @@ function TeamsRanking({ tournamentId }: Props) {
           onLoadMore={handleLoadMore}
         />
       </div>
+
+      {/* Visibility Settings Modal */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Activate Team Rankings</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <p className="text-sm text-muted-foreground mb-4">
+              Select who can see the team rankings:
+            </p>
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="student-role"
+                  checked={selectedRoles.includes("student")}
+                  onCheckedChange={() => handleRoleToggle("student")}
+                />
+                <Label htmlFor="student-role">Students</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="volunteer-role"
+                  checked={selectedRoles.includes("volunteer")}
+                  onCheckedChange={() => handleRoleToggle("volunteer")}
+                />
+                <Label htmlFor="volunteer-role">Volunteers</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="school-role"
+                  checked={selectedRoles.includes("school")}
+                  onCheckedChange={() => handleRoleToggle("school")}
+                />
+                <Label htmlFor="school-role">Schools</Label>
+              </div>
+            </div>
+
+            {isActivatingRanking && activationProgress > 0 && (
+              <div className="mt-4">
+                <div className="text-sm text-muted-foreground mb-2">
+                  Activating rankings: {activationProgress}%
+                </div>
+                <div className="w-full bg-muted rounded-full h-2">
+                  <div
+                    className="bg-primary h-2 rounded-full"
+                    style={{ width: `${activationProgress}%` }}
+                  ></div>
+                </div>
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={handleCloseModal}>Cancel</Button>
+            <Button
+              onClick={handleSaveVisibility}
+              disabled={isActivatingRanking || selectedRoles.length === 0}
+            >
+              {isActivatingRanking ? "Processing..." : "Save & Activate"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -115,6 +115,41 @@ export function getTournamentMenuList(
             },
           ],
         },
+        {
+          href: `/volunteers/tournaments/${routeName}/ranking`,
+          label: "Ranking",
+          active: pathname === `/volunteers/tournaments/${routeName}/ranking`,
+          icon: BarChart,
+          submenus: [
+            {
+              href: `/volunteers/tournaments/${routeName}/ranking/speakers`,
+              label: "Speakers",
+              active:
+                pathname ===
+                `/volunteers/tournaments/${routeName}/ranking/speakers`,
+            },
+            {
+              href: `/volunteers/tournaments/${routeName}/ranking/teams`,
+              label: "Teams",
+              active:
+                pathname === `/volunteers/tournaments/${routeName}/ranking/teams`,
+            },
+            {
+              href: `/volunteers/tournaments/${routeName}/ranking/schools`,
+              label: "Schools",
+              active:
+                pathname ===
+                `/volunteers/tournaments/${routeName}/ranking/schools`,
+            },
+            {
+              href: `/volunteers/tournaments/${routeName}/ranking/volunteers`,
+              label: "Volunteers",
+              active:
+                pathname ===
+                `/volunteers/tournaments/${routeName}/ranking/volunteers`,
+            },
+          ],
+        },
       ],
     },
   ];

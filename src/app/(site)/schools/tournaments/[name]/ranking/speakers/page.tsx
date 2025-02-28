@@ -19,8 +19,6 @@ import { GetTournamentType } from "@/types/tournaments/tournament";
 import { Slash } from "lucide-react";
 import React, { useEffect } from "react";
 
-
-
 const page = withAuth(
   ({ params }: Iparms) => {
     return <Page params={params} />;

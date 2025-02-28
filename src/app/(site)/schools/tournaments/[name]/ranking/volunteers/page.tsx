@@ -1,7 +1,7 @@
 "use client";
 import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
-import Speakers from "@/components/pages/admin/tournaments/list/tournament-name/ranking/speakers";
 import TournamentMenuWrapper from "@/components/pages/admin/tournaments/list/tournament-name/tournament-menu-wrapper";
+import Volunteers from "@/components/pages/schools/tournaments/tournament-name/ranking/volunteers";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -19,13 +19,11 @@ import { GetTournamentType } from "@/types/tournaments/tournament";
 import { Slash } from "lucide-react";
 import React, { useEffect } from "react";
 
-
-
 const page = withAuth(
   ({ params }: Iparms) => {
     return <Page params={params} />;
   },
-  [Roles.ADMIN]
+  [Roles.SCHOOL]
 );
 
 function Page({ params }: Iparms) {
@@ -88,7 +86,7 @@ function Page({ params }: Iparms) {
         </Breadcrumb>
       </div>
       <TournamentMenuWrapper>
-        <Speakers tournamentId={Number(tournament?.tournamentId)} />
+        <Volunteers tournamentId={Number(tournament?.tournamentId)} />
       </TournamentMenuWrapper>
     </ContentLayout>
   );
