@@ -16,7 +16,6 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import {
   Popover,
-  PopoverContent,
   PopoverContentWithNoPrimitivePortal,
   PopoverTrigger,
 } from "@/components/ui/popover";
@@ -87,6 +86,12 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
   const [hasMoreSchools, setHasMoreSchools] = useState(true);
   const [filteredUsers, setFilteredUsers] = useState<Student.AsObject[]>([]);
 
+  // Track loading state for the entire form
+  const [formLoading, setFormLoading] = useState<boolean>(true);
+
+  // Track which speakers need names to be loaded
+  const [pendingSpeakers, setPendingSpeakers] = useState<boolean>(false);
+
   const [openPopover, setOpenPopover] = useState<{
     speaker_1: boolean;
     speaker_2: boolean;
@@ -103,21 +108,46 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
     resolver: zodResolver(updateTeamSchemaWithSchool),
     defaultValues: {
       name: team.name,
-      speaker_1: String(team.speakersList[0].speakerId || ""),
-      speaker_2: String(team.speakersList[1].speakerId || ""),
-      speaker_3: String(team.speakersList[2].speakerId || ""),
+      speaker_1: String(team.speakersList[0]?.speakerId || ""),
+      speaker_2: String(team.speakersList[1]?.speakerId || ""),
+      speaker_3: String(team.speakersList[2]?.speakerId || ""),
     },
   });
 
+  // Enhanced structure to store both ID and display name
   const [selectedUsers, setSelectedUsers] = useState<{
-    speaker_1: string | null;
-    speaker_2: string | null;
-    speaker_3: string | null;
+    speaker_1: { id: string | null; name: string | null };
+    speaker_2: { id: string | null; name: string | null };
+    speaker_3: { id: string | null; name: string | null };
   }>({
-    speaker_1: String(team.speakersList[0].speakerId),
-    speaker_2: String(team.speakersList[1].speakerId),
-    speaker_3: String(team.speakersList[2].speakerId),
+    speaker_1: {
+      id: String(team.speakersList[0]?.speakerId || ""),
+      name: team.speakersList[0]?.name ? team.speakersList[0].name.trim() : null
+    },
+    speaker_2: {
+      id: String(team.speakersList[1]?.speakerId || ""),
+      name: team.speakersList[1]?.name ? team.speakersList[1].name.trim() : null
+    },
+    speaker_3: {
+      id: String(team.speakersList[2]?.speakerId || ""),
+      name: team.speakersList[2]?.name ? team.speakersList[2].name.trim() : null
+    },
   });
+
+  // Check if any speakers need to have names loaded
+  useEffect(() => {
+    // Check if any speakers have IDs but no names
+    const needsNames = Object.values(selectedUsers).some(
+      speaker => speaker.id && !speaker.name
+    );
+
+    setPendingSpeakers(needsNames);
+
+    // If all speakers have names or no IDs, we're done loading
+    if (!needsNames && !loadingStudents) {
+      setFormLoading(false);
+    }
+  }, [selectedUsers, loadingStudents]);
 
   // Load schools
   const loadSchools = async (page: number) => {
@@ -196,16 +226,80 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
     }
   };
 
-  // Initial load
+  // Function to fetch all missing speaker names
+  const fetchMissingSpeakerNames = async () => {
+    if (!user || users.length === 0) return;
+
+    const positions = ["speaker_1", "speaker_2", "speaker_3"] as const;
+    const updatedUsers = { ...selectedUsers };
+    let hasUpdates = false;
+
+    // Process each speaker position
+    for (const position of positions) {
+      const speaker = selectedUsers[position];
+
+      // If we have an ID but no name
+      if (speaker.id && !speaker.name) {
+        // Try to find in already loaded users first
+        const foundUser = users.find(u => String(u.studentid) === speaker.id);
+
+        if (foundUser) {
+          updatedUsers[position] = {
+            id: speaker.id,
+            name: `${foundUser.firstname} ${foundUser.lastname}`
+          };
+          hasUpdates = true;
+        }
+      }
+    }
+
+    // Update state if changes were made
+    if (hasUpdates) {
+      setSelectedUsers(updatedUsers);
+    }
+  };
+
+  // Initial data loading
   useEffect(() => {
     if (open) {
-      loadStudents(1);
-      loadSchools(1);
+      // Set initial loading state
+      setFormLoading(true);
+
+      // Load data
+      Promise.all([
+        loadStudents(1),
+        loadSchools(1)
+      ]).then(() => {
+        // After loading both students and schools, try to fetch speaker names
+        fetchMissingSpeakerNames();
+      }).catch(error => {
+        console.error("Error loading initial data:", error);
+        // If there's an error, still turn off loading state after a timeout
+        setTimeout(() => setFormLoading(false), 1000);
+      });
     }
   }, [open]);
 
-  // Filter students based on selected school
+  // Load student data immediately when component mounts if team has speakers
   useEffect(() => {
+    if (user && team && team.speakersList && team.speakersList.length > 0) {
+      // Set loading state
+      setFormLoading(true);
+
+      // Load students and try to match with speakers
+      loadStudents(1).then(() => {
+        fetchMissingSpeakerNames();
+      }).catch(error => {
+        console.error("Error loading student data:", error);
+        // If there's an error, still turn off loading state after a timeout
+        setTimeout(() => setFormLoading(false), 1000);
+      });
+    }
+  }, [user, team]);
+
+  // Filter students based on selected school and update selectedUsers names
+  useEffect(() => {
+    // Handle school filtering
     if (selectedSchool) {
       const filtered = users.filter(
         (student) => student.schoolid === Number(selectedSchool)
@@ -213,6 +307,11 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
       setFilteredUsers(filtered);
     } else {
       setFilteredUsers(users);
+    }
+
+    // When users are loaded, update speaker names
+    if (users.length > 0) {
+      fetchMissingSpeakerNames();
     }
   }, [selectedSchool, users]);
 
@@ -282,20 +381,27 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
     userId: string,
     fieldName: "speaker_1" | "speaker_2" | "speaker_3"
   ) => {
+    // Find the user to get their name
+    const selectedUser = filteredUsers.find(user => String(user.studentid) === userId);
+    const userName = selectedUser ? `${selectedUser.firstname} ${selectedUser.lastname}` : null;
+
     setSelectedUsers((prev) => {
       const newSelectedUsers = { ...prev };
-      if (prev[fieldName] === userId) {
-        newSelectedUsers[fieldName] = null;
+      if (prev[fieldName].id === userId) {
+        // Deselecting this user
+        newSelectedUsers[fieldName] = { id: null, name: null };
         form.setValue(fieldName, "");
       } else {
+        // Check if this user is already selected in another position
         Object.keys(newSelectedUsers).forEach((key) => {
           if (
-            newSelectedUsers[key as keyof typeof newSelectedUsers] === userId
+            newSelectedUsers[key as keyof typeof newSelectedUsers].id === userId
           ) {
-            newSelectedUsers[key as keyof typeof newSelectedUsers] = null;
+            newSelectedUsers[key as keyof typeof newSelectedUsers] = { id: null, name: null };
           }
         });
-        newSelectedUsers[fieldName] = userId;
+        // Set the new user for this position
+        newSelectedUsers[fieldName] = { id: userId, name: userName };
         form.setValue(fieldName, userId);
       }
       return newSelectedUsers;
@@ -332,8 +438,8 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
                   >
                     {field.value
                       ? schools.find(
-                          (school) => String(school.schoolid) === field.value
-                        )?.name || "Select school"
+                        (school) => String(school.schoolid) === field.value
+                      )?.name || "Select school"
                       : "Select school"}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
@@ -400,115 +506,100 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
     <FormField
       control={form.control}
       name={fieldName}
-      render={({ field }) => (
-        <FormItem className="flex flex-col">
-          <FormLabel className="font-medium text-foreground">{label}</FormLabel>
-          <Popover
-            open={openPopover[fieldName]}
-            onOpenChange={(open) =>
-              setOpenPopover((prev) => ({ ...prev, [fieldName]: open }))
-            }
-          >
-            <PopoverTrigger asChild>
-              <FormControl>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  disabled={!isUpdating}
-                  className={cn(
-                    "w-full justify-between",
-                    !field.value && "text-muted-foreground"
-                  )}
-                >
-                  {field.value
-                    ? filteredUsers.find(
-                        (user) => String(user.studentid) === field.value
-                      )
-                      ? // User found in filtered list
-                        filteredUsers.find(
-                          (user) => String(user.studentid) === field.value
-                        )?.firstname +
-                        " " +
-                        filteredUsers.find(
-                          (user) => String(user.studentid) === field.value
-                        )?.lastname
-                      : // User not found in filtered list (likely due to school filter)
-                      selectedSchool
-                      ? "No student selected"
-                      : // Original user from the complete list
-                        users.find(
-                          (user) => String(user.studentid) === field.value
-                        )?.firstname +
-                          " " +
-                          users.find(
-                            (user) => String(user.studentid) === field.value
-                          )?.lastname || "Select user"
-                    : selectedSchool
-                    ? "Select student from this school"
-                    : "Select user"}
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
-              </FormControl>
-            </PopoverTrigger>
-            {/* Rest of the popover content remains the same */}
-            <PopoverContentWithNoPrimitivePortal className="w-full p-0">
-              <Command>
-                <CommandInput placeholder="Search user..." />
-                <CommandList>
-                  <CommandEmpty>No speaker found.</CommandEmpty>
-                  <CommandGroup>
-                    {filteredUsers.map((user) => (
-                      <CommandItem
-                        value={`${user.firstname} ${user.lastname}`}
-                        key={String(user.studentid)}
-                        onSelect={() => {
-                          handleUserSelect(String(user.studentid), fieldName);
-                        }}
-                        disabled={
-                          Object.values(selectedUsers).includes(
-                            String(user.studentid)
-                          ) &&
-                          selectedUsers[fieldName] !== String(user.studentid)
-                        }
-                      >
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            Object.values(selectedUsers).includes(
-                              String(user.studentid)
-                            )
-                              ? "opacity-100"
-                              : "opacity-0"
+      render={({ field }) => {
+        // Get the current speaker state
+        const speaker = selectedUsers[fieldName];
+
+        // Determine display text based on speaker state
+        let displayText = "Select user";
+
+        if (speaker.id && speaker.name) {
+          // If we have both ID and name, display the name
+          displayText = speaker.name;
+        } else if (selectedSchool) {
+          displayText = "Select student from this school";
+        }
+
+        return (
+          <FormItem className="flex flex-col">
+            <FormLabel className="font-medium text-foreground">{label}</FormLabel>
+            <Popover
+              open={openPopover[fieldName]}
+              onOpenChange={(open) =>
+                setOpenPopover((prev) => ({ ...prev, [fieldName]: open }))
+              }
+            >
+              <PopoverTrigger asChild>
+                <FormControl>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    disabled={!isUpdating}
+                    className={cn(
+                      "w-full justify-between text-left truncate",
+                      !field.value && "text-muted-foreground"
+                    )}
+                  >
+                    <span className="truncate mr-2 overflow-hidden">{displayText}</span>
+                    <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 ml-auto flex-none" />
+                  </Button>
+                </FormControl>
+              </PopoverTrigger>
+              <PopoverContentWithNoPrimitivePortal className="w-full p-0">
+                <Command>
+                  <CommandInput placeholder="Search user..." />
+                  <CommandList>
+                    <CommandEmpty>No speaker found.</CommandEmpty>
+                    <CommandGroup>
+                      {filteredUsers.map((user) => (
+                        <CommandItem
+                          value={`${user.firstname} ${user.lastname}`}
+                          key={String(user.studentid)}
+                          onSelect={() => {
+                            handleUserSelect(String(user.studentid), fieldName);
+                          }}
+                          disabled={
+                            Object.values(selectedUsers).some(s => s.id === String(user.studentid)) &&
+                            selectedUsers[fieldName].id !== String(user.studentid)
+                          }
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              Object.values(selectedUsers).some(s => s.id === String(user.studentid))
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
+                          />
+                          {user.firstname + " " + user.lastname}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                    {hasMoreStudents && (
+                      <div className="py-2 px-2 text-center">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => loadStudents(studentPagination.page + 1)}
+                          disabled={loadingStudents}
+                          className="w-full"
+                        >
+                          {loadingStudents ? (
+                            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                          ) : (
+                            "Load More Students"
                           )}
-                        />
-                        {user.firstname + " " + user.lastname}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                  {hasMoreStudents && (
-                    <div className="py-2 px-2 text-center">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => loadStudents(studentPagination.page + 1)}
-                        disabled={loadingStudents}
-                        className="w-full"
-                      >
-                        {loadingStudents ? (
-                          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                        ) : (
-                          "Load More Students"
-                        )}
-                      </Button>
-                    </div>
-                  )}
-                </CommandList>
-              </Command>
-            </PopoverContentWithNoPrimitivePortal>
-          </Popover>
-          <FormMessage />
-        </FormItem>
-      )}
+                        </Button>
+                      </div>
+                    )}
+                  </CommandList>
+                </Command>
+              </PopoverContentWithNoPrimitivePortal>
+            </Popover>
+            <FormMessage />
+          </FormItem>
+        );
+      }}
     />
   );
 
@@ -546,70 +637,79 @@ const UpdateTeamForm = ({ team }: TeamUserProps) => {
             </Button>
           </div>
         </Panelheader>
-        <Form {...form}>
-          <form
-            onSubmit={(...args) => void form.handleSubmit(updateTeam)(...args)}
-            className="p-5"
-          >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm text-darkBlue dark:text-foreground font-medium my-3">
-                    Team Name
-                    <b className="text-primary font-light"> *</b>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Dreamers teams"
-                      {...field}
-                      disabled={!isUpdating}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
-            {/* School filter field */}
-            {isUpdating && RenderSchoolField()}
-
-            <div className="w-full mb-5">
-              <h3 className="text-sm text-muted-foreground font-medium my-3">
-                Team Members
-              </h3>
-              <div className="grid grid-cols-2 gap-2">
-                {renderSpeakerField("speaker_1", "1st Speaker")}
-                {renderSpeakerField("speaker_2", "2nd Speaker")}
-                {renderSpeakerField("speaker_3", "3rd Speaker")}
-              </div>
-            </div>
-            {isUpdating && (
-              <Button
-                type="submit"
-                size={"sm"}
-                className="w-full hover:bg-primary"
-                disabled={loading}
-              >
-                {loading ? (
-                  <>
-                    <Icons.spinner
-                      className="mr-2 h-4 w-4 animate-spin"
-                      aria-hidden="true"
-                    />
-                    Updating Team...
-                  </>
-                ) : (
-                  <>
-                    Update Team
-                    <span className="sr-only">Update Team</span>
-                  </>
+        {/* Show loading spinner when still loading speaker data */}
+        {formLoading && pendingSpeakers ? (
+          <div className="flex flex-col items-center justify-center h-64">
+            <Icons.spinner className="w-10 h-10 animate-spin text-primary mb-4" />
+            <p className="text-sm text-muted-foreground">Loading team members...</p>
+          </div>
+        ) : (
+          <Form {...form}>
+            <form
+              onSubmit={(...args) => void form.handleSubmit(updateTeam)(...args)}
+              className="p-5"
+            >
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm text-darkBlue dark:text-foreground font-medium my-3">
+                      Team Name
+                      <b className="text-primary font-light"> *</b>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Dreamers teams"
+                        {...field}
+                        disabled={!isUpdating}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </Button>
-            )}
-          </form>
-        </Form>
+              />
+
+              {/* School filter field */}
+              {isUpdating && RenderSchoolField()}
+
+              <div className="w-full mb-5">
+                <h3 className="text-sm text-muted-foreground font-medium my-3">
+                  Team Members
+                </h3>
+                <div className="grid grid-cols-2 gap-2">
+                  {renderSpeakerField("speaker_1", "1st Speaker")}
+                  {renderSpeakerField("speaker_2", "2nd Speaker")}
+                  {renderSpeakerField("speaker_3", "3rd Speaker")}
+                </div>
+              </div>
+              {isUpdating && (
+                <Button
+                  type="submit"
+                  size={"sm"}
+                  className="w-full hover:bg-primary"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <Icons.spinner
+                        className="mr-2 h-4 w-4 animate-spin"
+                        aria-hidden="true"
+                      />
+                      Updating Team...
+                    </>
+                  ) : (
+                    <>
+                      Update Team
+                      <span className="sr-only">Update Team</span>
+                    </>
+                  )}
+                </Button>
+              )}
+            </form>
+          </Form>
+        )}
       </SidePanel>
     </Sheet>
   );
