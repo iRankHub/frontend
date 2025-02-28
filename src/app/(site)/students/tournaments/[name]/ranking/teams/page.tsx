@@ -1,6 +1,7 @@
 "use client";
 import { ContentLayout } from "@/components/layout/students-panel/content-layout";
 import Speakers from "@/components/pages/students/tournaments/tournament-name/ranking/speakers";
+import TeamsRanking from "@/components/pages/students/tournaments/tournament-name/ranking/teams";
 import TournamentMenuWrapper from "@/components/pages/students/tournaments/tournament-name/tournament-menu-wrapper";
 import {
   Breadcrumb,
@@ -18,8 +19,6 @@ import { Iparms } from "@/types";
 import { GetTournamentType } from "@/types/tournaments/tournament";
 import { Slash } from "lucide-react";
 import React, { useEffect } from "react";
-
-
 
 const page = withAuth(
   ({ params }: Iparms) => {
@@ -88,7 +87,7 @@ function Page({ params }: Iparms) {
         </Breadcrumb>
       </div>
       <TournamentMenuWrapper>
-        <Speakers tournamentId={Number(tournament?.tournamentId)} />
+        <TeamsRanking tournamentId={Number(tournament?.tournamentId)} />
       </TournamentMenuWrapper>
     </ContentLayout>
   );

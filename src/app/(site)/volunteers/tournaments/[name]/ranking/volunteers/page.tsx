@@ -1,7 +1,7 @@
 "use client";
-import { ContentLayout } from "@/components/layout/students-panel/content-layout";
-import Volunteers from "@/components/pages/students/tournaments/tournament-name/ranking/volunteers";
-import TournamentMenuWrapper from "@/components/pages/students/tournaments/tournament-name/tournament-menu-wrapper";
+import { ContentLayout } from "@/components/layout/volunteer-panel/content-layout";
+import Volunteers from "@/components/pages/schools/tournaments/tournament-name/ranking/volunteers";
+import TournamentMenuWrapper from "@/components/pages/volunteers/tournaments/tournament-name/tournament-menu-wrapper";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -23,7 +23,7 @@ const page = withAuth(
   ({ params }: Iparms) => {
     return <Page params={params} />;
   },
-  [Roles.STUDENT]
+  [Roles.VOLUNTEER]
 );
 
 function Page({ params }: Iparms) {
@@ -57,10 +57,10 @@ function Page({ params }: Iparms) {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink
-                href="/students/dashboard"
+                href="/volunteers/dashboard"
                 className="text-muted-foreground text-base"
               >
-                Students
+                Volunteers
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator>
@@ -68,7 +68,7 @@ function Page({ params }: Iparms) {
             </BreadcrumbSeparator>
             <BreadcrumbItem>
               <BreadcrumbLink
-                href="/students/tournaments/list"
+                href="/volunteers/tournaments/list"
                 className="text-muted-foreground text-base"
               >
                 Tournament

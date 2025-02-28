@@ -1399,6 +1399,9 @@ export class TournamentRankingRequest extends jspb.Message {
   getPageSize(): number;
   setPageSize(value: number): TournamentRankingRequest;
 
+  getSearch(): string;
+  setSearch(value: string): TournamentRankingRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): TournamentRankingRequest.AsObject;
   static toObject(includeInstance: boolean, msg: TournamentRankingRequest): TournamentRankingRequest.AsObject;
@@ -1413,6 +1416,7 @@ export namespace TournamentRankingRequest {
     token: string,
     page: number,
     pageSize: number,
+    search: string,
   }
 }
 
@@ -1455,6 +1459,9 @@ export class StudentRanking extends jspb.Message {
   getAverageRank(): number;
   setAverageRank(value: number): StudentRanking;
 
+  getPlace(): number;
+  setPlace(value: number): StudentRanking;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): StudentRanking.AsObject;
   static toObject(includeInstance: boolean, msg: StudentRanking): StudentRanking.AsObject;
@@ -1471,6 +1478,7 @@ export namespace StudentRanking {
     totalWins: number,
     totalPoints: number,
     averageRank: number,
+    place: number,
   }
 }
 
@@ -1487,6 +1495,9 @@ export class TournamentTeamsRankingRequest extends jspb.Message {
   getPageSize(): number;
   setPageSize(value: number): TournamentTeamsRankingRequest;
 
+  getSearch(): string;
+  setSearch(value: string): TournamentTeamsRankingRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): TournamentTeamsRankingRequest.AsObject;
   static toObject(includeInstance: boolean, msg: TournamentTeamsRankingRequest): TournamentTeamsRankingRequest.AsObject;
@@ -1501,6 +1512,7 @@ export namespace TournamentTeamsRankingRequest {
     token: string,
     page: number,
     pageSize: number,
+    search: string,
   }
 }
 
@@ -1549,6 +1561,9 @@ export class TeamRanking extends jspb.Message {
   getAverageRank(): number;
   setAverageRank(value: number): TeamRanking;
 
+  getPlace(): number;
+  setPlace(value: number): TeamRanking;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): TeamRanking.AsObject;
   static toObject(includeInstance: boolean, msg: TeamRanking): TeamRanking.AsObject;
@@ -1565,6 +1580,7 @@ export namespace TeamRanking {
     wins: number,
     totalPoints: number,
     averageRank: number,
+    place: number,
   }
 }
 
@@ -1581,6 +1597,9 @@ export class TournamentSchoolRankingRequest extends jspb.Message {
   getPageSize(): number;
   setPageSize(value: number): TournamentSchoolRankingRequest;
 
+  getSearch(): string;
+  setSearch(value: string): TournamentSchoolRankingRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): TournamentSchoolRankingRequest.AsObject;
   static toObject(includeInstance: boolean, msg: TournamentSchoolRankingRequest): TournamentSchoolRankingRequest.AsObject;
@@ -1595,6 +1614,7 @@ export namespace TournamentSchoolRankingRequest {
     token: string,
     page: number,
     pageSize: number,
+    search: string,
   }
 }
 
@@ -1638,6 +1658,9 @@ export class SchoolRanking extends jspb.Message {
   getTotalPoints(): number;
   setTotalPoints(value: number): SchoolRanking;
 
+  getPlace(): number;
+  setPlace(value: number): SchoolRanking;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SchoolRanking.AsObject;
   static toObject(includeInstance: boolean, msg: SchoolRanking): SchoolRanking.AsObject;
@@ -1653,6 +1676,7 @@ export namespace SchoolRanking {
     totalWins: number,
     averageRank: number,
     totalPoints: number,
+    place: number,
   }
 }
 
@@ -2533,6 +2557,9 @@ export class TournamentVolunteerRankingRequest extends jspb.Message {
   getPageSize(): number;
   setPageSize(value: number): TournamentVolunteerRankingRequest;
 
+  getSearch(): string;
+  setSearch(value: string): TournamentVolunteerRankingRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): TournamentVolunteerRankingRequest.AsObject;
   static toObject(includeInstance: boolean, msg: TournamentVolunteerRankingRequest): TournamentVolunteerRankingRequest.AsObject;
@@ -2547,6 +2574,7 @@ export namespace TournamentVolunteerRankingRequest {
     token: string,
     page: number,
     pageSize: number,
+    search: string,
   }
 }
 
@@ -2569,6 +2597,9 @@ export class VolunteerTournamentRank extends jspb.Message {
   getRank(): number;
   setRank(value: number): VolunteerTournamentRank;
 
+  getPlace(): number;
+  setPlace(value: number): VolunteerTournamentRank;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): VolunteerTournamentRank.AsObject;
   static toObject(includeInstance: boolean, msg: VolunteerTournamentRank): VolunteerTournamentRank.AsObject;
@@ -2585,6 +2616,7 @@ export namespace VolunteerTournamentRank {
     preliminaryRounds: number,
     eliminationRounds: number,
     rank: number,
+    place: number,
   }
 }
 
@@ -2609,6 +2641,62 @@ export namespace TournamentVolunteerRankingResponse {
   export type AsObject = {
     rankingsList: Array<VolunteerTournamentRank.AsObject>,
     totalCount: number,
+  }
+}
+
+export class SetRankingVisibilityRequest extends jspb.Message {
+  getTournamentId(): number;
+  setTournamentId(value: number): SetRankingVisibilityRequest;
+
+  getRankingType(): string;
+  setRankingType(value: string): SetRankingVisibilityRequest;
+
+  getVisibleTo(): string;
+  setVisibleTo(value: string): SetRankingVisibilityRequest;
+
+  getIsVisible(): boolean;
+  setIsVisible(value: boolean): SetRankingVisibilityRequest;
+
+  getToken(): string;
+  setToken(value: string): SetRankingVisibilityRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SetRankingVisibilityRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: SetRankingVisibilityRequest): SetRankingVisibilityRequest.AsObject;
+  static serializeBinaryToWriter(message: SetRankingVisibilityRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SetRankingVisibilityRequest;
+  static deserializeBinaryFromReader(message: SetRankingVisibilityRequest, reader: jspb.BinaryReader): SetRankingVisibilityRequest;
+}
+
+export namespace SetRankingVisibilityRequest {
+  export type AsObject = {
+    tournamentId: number,
+    rankingType: string,
+    visibleTo: string,
+    isVisible: boolean,
+    token: string,
+  }
+}
+
+export class SetRankingVisibilityResponse extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): SetRankingVisibilityResponse;
+
+  getMessage(): string;
+  setMessage(value: string): SetRankingVisibilityResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SetRankingVisibilityResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: SetRankingVisibilityResponse): SetRankingVisibilityResponse.AsObject;
+  static serializeBinaryToWriter(message: SetRankingVisibilityResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SetRankingVisibilityResponse;
+  static deserializeBinaryFromReader(message: SetRankingVisibilityResponse, reader: jspb.BinaryReader): SetRankingVisibilityResponse;
+}
+
+export namespace SetRankingVisibilityResponse {
+  export type AsObject = {
+    success: boolean,
+    message: string,
   }
 }
 

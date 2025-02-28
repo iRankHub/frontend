@@ -9,6 +9,8 @@ import {
     PerformanceResponse,
     SchoolPerformanceResponse,
     SchoolRanking,
+    SetRankingVisibilityRequest,
+    SetRankingVisibilityResponse,
     StudentRanking,
     StudentTournamentStatsRequest,
     StudentTournamentStatsResponse,
@@ -47,6 +49,7 @@ export const getTournamentStudentRanking = async ({
 
         debateClient.getTournamentStudentRanking(request, {}, (err, response) => {
             if (err) {
+                console.log(err)
                 reject(err);
             } else {
                 resolve(response.toObject().rankingsList);
@@ -356,4 +359,36 @@ export const getTournamentVolunteerRanking = async ({
             }
         });
     });
+}
+
+export interface ActivateRanking {
+    isVisible: boolean;
+    ranking_type: "student" | "volunteer" | "school" | "team";
+    token: string;
+    tournament_id: number;
+    visible_to: "student" | "volunteer" | "school"; // who gets to see the ranking
+}
+export const activateRanking = async ({
+    token,
+    isVisible,
+    ranking_type,
+    tournament_id,
+    visible_to
+}: ActivateRanking): Promise<SetRankingVisibilityResponse.AsObject> => {
+    return new Promise((resolve, reject) => {
+        const request = new SetRankingVisibilityRequest();
+        request.setToken(token);
+        request.setIsVisible(isVisible);
+        request.setVisibleTo(visible_to);
+        request.setTournamentId(tournament_id)
+        request.setRankingType(ranking_type);
+
+        debateClient.setRankingVisibility(request, {}, (err, response) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(response.toObject());
+            }
+        });
+    })
 }
