@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Trash } from "lucide-react";
+import { Eye, Plus, Trash } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export interface Motion {
   text: string;
@@ -17,12 +19,15 @@ export interface Motions {
   elimination_motions: Motion[];
 }
 
+export type MotionManagementMode = 'edit' | 'view';
+
 interface MotionManagementProps {
   preliminaryRounds: number;
   eliminationRounds: number;
   motions: Motions;
-  setMotions: React.Dispatch<React.SetStateAction<Motions>>;
+  setMotions?: React.Dispatch<React.SetStateAction<Motions>>;
   disabled?: boolean;
+  mode?: MotionManagementMode;
 }
 
 type MotionType = 'preliminary' | 'elimination';
@@ -32,11 +37,22 @@ const MotionManagement: React.FC<MotionManagementProps> = ({
   eliminationRounds,
   motions,
   setMotions,
-  disabled,
+  disabled = false,
+  mode = 'edit', // Default to edit mode for backward compatibility
 }) => {
   const [activeTab, setActiveTab] = useState<MotionType>('preliminary');
+  const [open, setOpen] = useState(false);
+
+  const isViewOnly = mode === 'view';
+
+  // Ensure setMotions is available in edit mode
+  if (mode === 'edit' && !setMotions) {
+    console.warn('MotionManagement: setMotions is required in edit mode');
+  }
 
   const handleAddMotion = (type: MotionType) => {
+    if (isViewOnly || !setMotions) return;
+
     const maxRounds = type === 'preliminary' ? preliminaryRounds : eliminationRounds;
     const currentMotions = motions[`${type}_motions`];
 
@@ -57,6 +73,8 @@ const MotionManagement: React.FC<MotionManagementProps> = ({
   };
 
   const handleRemoveMotion = (type: MotionType, index: number) => {
+    if (isViewOnly || !setMotions) return;
+
     setMotions(prev => ({
       ...prev,
       [`${type}_motions`]: prev[`${type}_motions`].filter((_, i) => i !== index)
@@ -65,6 +83,8 @@ const MotionManagement: React.FC<MotionManagementProps> = ({
   };
 
   const handleMotionChange = (type: MotionType, index: number, field: keyof Motion, value: string | number) => {
+    if (isViewOnly || !setMotions) return;
+
     setMotions(prev => ({
       ...prev,
       [`${type}_motions`]: prev[`${type}_motions`].map((motion, i) =>
@@ -73,7 +93,45 @@ const MotionManagement: React.FC<MotionManagementProps> = ({
     }));
   };
 
-  const renderMotionInputs = (type: MotionType) => {
+  // View mode rendering - simple, clean cards for viewing motions
+  const renderViewMotions = (type: MotionType) => {
+    const currentMotions = motions[`${type}_motions`];
+
+    if (currentMotions.length === 0) {
+      return (
+        <div className="p-6 text-center text-muted-foreground">
+          No motions have been added for this round type.
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+        {currentMotions.map((motion, index) => (
+          <Card key={`${type}-motion-view-${index}`} className="border">
+            <CardHeader className="py-3 px-4 bg-muted/40 flex flex-row justify-between items-center">
+              <h4 className="font-medium">Round {motion.round_number}</h4>
+            </CardHeader>
+            <CardContent className="p-4 space-y-3">
+              <div>
+                <h5 className="text-sm font-medium text-muted-foreground mb-1">Motion</h5>
+                <p className="text-foreground">{motion.text || "No motion set"}</p>
+              </div>
+              {motion.info_slide && (
+                <div>
+                  <h5 className="text-sm font-medium text-muted-foreground mb-1">Description</h5>
+                  <p className="text-foreground text-sm">{motion.info_slide}</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  };
+
+  // Edit mode rendering - form inputs for editing motions
+  const renderEditMotions = (type: MotionType) => {
     const maxRounds = type === 'preliminary' ? preliminaryRounds : eliminationRounds;
     const currentMotions = motions[`${type}_motions`];
     const isMaxMotionsReached = currentMotions.length >= maxRounds;
@@ -83,7 +141,7 @@ const MotionManagement: React.FC<MotionManagementProps> = ({
         <div className="max-h-[60vh] overflow-y-auto pr-4 space-y-4">
           {currentMotions.map((motion, index) => (
             <div
-              key={`${type}-motion-${index}`}
+              key={`${type}-motion-edit-${index}`}
               className="flex gap-4 items-start bg-background p-4 rounded-lg border"
             >
               <div className="flex-1 space-y-2">
@@ -133,16 +191,37 @@ const MotionManagement: React.FC<MotionManagementProps> = ({
     );
   };
 
+  // Decide which rendering function to use based on mode
+  const renderMotions = isViewOnly ? renderViewMotions : renderEditMotions;
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" type="button" className="w-full">
-          Manage Motions
+        <Button
+          variant="outline"
+          type="button"
+          className={cn(
+            "w-full",
+            isViewOnly && "bg-background hover:bg-background/80"
+          )}
+        >
+          {isViewOnly ? (
+            <>
+              <Eye className="w-4 h-4 mr-2" />
+              View Motions
+            </>
+          ) : (
+            <>
+              Manage Motions
+            </>
+          )}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-3xl">
         <DialogHeader>
-          <DialogTitle>Manage Tournament Motions</DialogTitle>
+          <DialogTitle>
+            {isViewOnly ? "Tournament Motions" : "Manage Tournament Motions"}
+          </DialogTitle>
         </DialogHeader>
         <Tabs defaultValue="preliminary" className="w-full" onValueChange={(value) => setActiveTab(value as MotionType)}>
           <TabsList className="grid w-full grid-cols-2">
@@ -150,10 +229,10 @@ const MotionManagement: React.FC<MotionManagementProps> = ({
             <TabsTrigger value="elimination">Elimination Rounds</TabsTrigger>
           </TabsList>
           <TabsContent value="preliminary" className="mt-4">
-            {renderMotionInputs("preliminary")}
+            {renderMotions("preliminary")}
           </TabsContent>
           <TabsContent value="elimination" className="mt-4">
-            {renderMotionInputs("elimination")}
+            {renderMotions("elimination")}
           </TabsContent>
         </Tabs>
       </DialogContent>

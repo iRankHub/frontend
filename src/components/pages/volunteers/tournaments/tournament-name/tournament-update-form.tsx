@@ -32,15 +32,12 @@ import {
 } from "@/components/ui/select";
 import {
   Tournament,
-  TournamentFormat,
 } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { getTournamentFormat } from "@/core/tournament/formats";
-import { School, UserSummary } from "@/lib/grpc/proto/user_management/users_pb";
 import { TimePicker } from "@/components/ui/time-picker";
-import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
+import MotionManagement from "@/components/pages/admin/tournaments/create/motion-management";
 
 type Props = {
   tournament: Tournament.AsObject;
@@ -51,18 +48,28 @@ type Inputs = z.infer<typeof UpdateTournamentSchema>;
 function TournamentUpdateForm({ tournament }: Props) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [formatName, setFormatName] = useState<string>("");
-  const [formats, setFormats] = useState<TournamentFormat.AsObject[]>([]);
-  const [venues, setVenues] = useState<School.AsObject[]>([]);
   const { user } = useUserStore((state) => state);
   const [loading, setLoading] = useState<boolean>(false);
-  const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
-  const [coordinators, setCoordinators] = React.useState<
-    UserSummary.AsObject[]
-  >([]);
-  const router = useRouter();
-  const { toast } = useToast();
-  const [coordinatorId, setCoordinatorId] = useState<string>("");
+  const [motions, setMotions] = useState(() => {
+    // Map preliminary motions
+    const preliminary_motions = tournament.motions?.preliminaryMotionsList?.map(motion => ({
+      text: motion.text,
+      info_slide: motion.infoSlide,
+      round_number: motion.roundNumber
+    })) || [];
+
+    // Map elimination motions
+    const elimination_motions = tournament.motions?.eliminationMotionsList?.map(motion => ({
+      text: motion.text,
+      info_slide: motion.infoSlide,
+      round_number: motion.roundNumber
+    })) || [];
+
+    return {
+      preliminary_motions,
+      elimination_motions
+    };
+  });
 
   const formatStartDate = (): string => {
     // format return from api: 2023-07-15 09:00
@@ -644,6 +651,16 @@ function TournamentUpdateForm({ tournament }: Props) {
                       <FormMessage />
                     </FormItem>
                   )}
+                />
+              </div>
+
+              {/* Motion Management Component - View Only Mode */}
+              <div className="mt-10">
+                <MotionManagement
+                  preliminaryRounds={Number(form.watch("preliminaries_end_at") || 0)}
+                  eliminationRounds={Number(form.watch("preliminaries_start_from") || 0)}
+                  motions={motions}
+                  mode="view"
                 />
               </div>
 

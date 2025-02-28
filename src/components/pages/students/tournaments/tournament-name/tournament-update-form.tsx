@@ -2,7 +2,7 @@ import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarIcon, Clock, Trash2 } from "lucide-react";
+import { CalendarIcon, Clock } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -32,15 +32,12 @@ import {
 } from "@/components/ui/select";
 import {
   Tournament,
-  TournamentFormat,
 } from "@/lib/grpc/proto/tournament_management/tournament_pb";
 import { useUserStore } from "@/stores/auth/auth.store";
 import { getTournamentFormat } from "@/core/tournament/formats";
-import { School, UserSummary } from "@/lib/grpc/proto/user_management/users_pb";
 import { TimePicker } from "@/components/ui/time-picker";
-import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
+import MotionManagement, { Motion, Motions } from "@/components/pages/admin/tournaments/create/motion-management";
 
 type Props = {
   tournament: Tournament.AsObject;
@@ -53,12 +50,26 @@ function TournamentUpdateForm({ tournament }: Props) {
   const [formatName, setFormatName] = useState<string>("");
   const { user } = useUserStore((state) => state);
   const [loading, setLoading] = useState<boolean>(false);
-  const [coordinators, setCoordinators] = React.useState<
-    UserSummary.AsObject[]
-  >([]);
-  const router = useRouter();
-  const { toast } = useToast();
-  const [coordinatorId, setCoordinatorId] = useState<string>("");
+  const [motions, setMotions] = useState<Motions>(() => {
+    // Map preliminary motions
+    const preliminary_motions: Motion[] = tournament.motions?.preliminaryMotionsList?.map(motion => ({
+      text: motion.text,
+      info_slide: motion.infoSlide,
+      round_number: motion.roundNumber
+    })) || [];
+
+    // Map elimination motions
+    const elimination_motions: Motion[] = tournament.motions?.eliminationMotionsList?.map(motion => ({
+      text: motion.text,
+      info_slide: motion.infoSlide,
+      round_number: motion.roundNumber
+    })) || [];
+
+    return {
+      preliminary_motions,
+      elimination_motions
+    };
+  });
 
   const formatStartDate = (): string => {
     // format return from api: 2023-07-15 09:00
@@ -643,33 +654,15 @@ function TournamentUpdateForm({ tournament }: Props) {
                 />
               </div>
 
-              {isEditing && (
-                <div className="flex items-center justify-between mt-5 gap-3">
-                  <Button
-                    type="button"
-                    variant={"outline"}
-                    className="w-full"
-                    onClick={() => setIsEditing(false)}
-                  >
-                    Cancel
-                    <span className="sr-only">Cancel</span>
-                  </Button>
-                  <Button
-                    type="submit"
-                    variant={"default"}
-                    className="w-full hover:bg-primary"
-                  >
-                    Update Tournament
-                    {loading && (
-                      <Icons.spinner
-                        className="mr-2 h-4 w-4 animate-spin"
-                        aria-hidden="true"
-                      />
-                    )}
-                    <span className="sr-only">Update Tournament</span>
-                  </Button>
-                </div>
-              )}
+              {/* Motion Management Component - View Only Mode */}
+              <div className="mt-10">
+                <MotionManagement
+                  preliminaryRounds={Number(form.watch("preliminaries_end_at") || 0)}
+                  eliminationRounds={Number(form.watch("preliminaries_start_from") || 0)}
+                  motions={motions}
+                  mode="view"
+                />
+              </div>
             </div>
           </div>
         </form>
