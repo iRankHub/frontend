@@ -6,7 +6,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     <SWRConfig
       value={{
         errorRetryCount: 3,
-        // You can add more global SWR config here
       }}
     >
       {children}
