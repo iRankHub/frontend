@@ -10,12 +10,6 @@ import AppLoader from "@/lib/loader";
 import { GetAllUsers } from "@/types/user_management/users";
 import { Table } from "@tanstack/react-table";
 
-interface PaginationState {
-  pageSize: number;
-  pageIndex: number;
-  totalCount: number;
-}
-
 function Users() {
   const { user } = useUserStore((state) => state);
   const { users, setUsers, pagination, setPagination } = useUsersStore(

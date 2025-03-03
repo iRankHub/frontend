@@ -78,6 +78,7 @@
     "shart": "^0.0.4",
     "shiki": "^1.24.4",
     "sonner": "^1.4.41",
+    "swr": "^2.3.2",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^10.0.0",
