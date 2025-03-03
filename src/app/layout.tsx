@@ -7,6 +7,7 @@ import ElectronInitializer from "./electron";
 import ServiceWorkerRegistration from "./registerSW";
 import { OnboardingProvider } from "@/context/OnboardingContext";
 import { OnboardingWrapper } from "@/components/onboarding/OnboardingWrapper";
+import { AuthProvider } from "@/providers/auth-provider";
 
 const rubik = Lato({
   weight: "400",
@@ -83,14 +84,16 @@ export default function RootLayout({
     <html lang="en">
       <body className={rubik.className}>
         <ElectronInitializer />
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <OnboardingProvider>
-            <OnboardingWrapper>
-              <main className="min-h-screen h-full">{children}</main>
-              <Toaster />
-            </OnboardingWrapper>
-          </OnboardingProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <OnboardingProvider>
+              <OnboardingWrapper>
+                <main className="min-h-screen h-full">{children}</main>
+                <Toaster />
+              </OnboardingWrapper>
+            </OnboardingProvider>
+          </ThemeProvider>
+        </AuthProvider>
         <ServiceWorkerRegistration />
       </body>
     </html>

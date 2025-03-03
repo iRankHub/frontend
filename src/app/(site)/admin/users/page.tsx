@@ -1,6 +1,5 @@
 'use client'
 
-import { ContentLayout } from "@/components/layout/admin-panel/content-layout";
 import Users from "@/components/pages/admin/users";
 import {
   Breadcrumb,
