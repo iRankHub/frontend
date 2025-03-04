@@ -71,8 +71,8 @@ function Schools({ tournamentId }: Props) {
       return false;
     }
 
-    // If we've reached our max page limit (add a reasonable limit)
-    const MAX_PAGES = 10; // Adjust based on your needs
+    // If we've reached our max page limit
+    const MAX_PAGES = 10;
     if (currentPage >= MAX_PAGES) {
       return false;
     }

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { DataTable } from "@/components/tables/data-table";
@@ -22,12 +22,54 @@ function Volunteers({ tournamentId }: Props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [noMoreData, setNoMoreData] = useState(false);
   const pageSize = 10;
+
+  // Use refs to prevent multiple resets and loading cycles
+  const didInitialLoadRef = useRef(false);
+  const prevTournamentIdRef = useRef<number | null>(null);
+  const loadedPagesRef = useRef<Set<number>>(new Set([1]));
+  const isMountedRef = useRef(true);
+
   const { user } = useUserStore((state) => state);
 
-  const fetchVolunteers = async (page: number) => {
-    if (!user || isLoading) return;
-    setIsLoading(true);
+  // Reset mount state on unmount
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      console.log('Component unmounting');
+    };
+  }, []);
+
+  const fetchVolunteers = useCallback(async (page: number) => {
+    // Prevent the same page from being loaded multiple times
+    if (loadedPagesRef.current.has(page) && page > 1) {
+      console.log(`Page ${page} already loaded, skipping`);
+      return;
+    }
+
+    // Don't load more if we've detected no more data is available
+    if (noMoreData && page > 1) {
+      console.log(`No more data available, skipping page ${page}`);
+      return;
+    }
+
+    // Don't proceed without user token or tournament ID
+    if (!user?.token || !tournamentId) {
+      console.log('Missing user token or tournament ID');
+      return;
+    }
+
+    // Set appropriate loading state
+    if (page === 1) {
+      setIsLoading(true);
+    } else {
+      setIsLoadingMore(true);
+    }
+
+    console.log(`Fetching volunteers for page ${page}`);
 
     try {
       const options = {
@@ -38,46 +80,126 @@ function Volunteers({ tournamentId }: Props) {
       };
 
       const res = await getTournamentVolunteerRanking(options);
+      console.log('Volunteers response:', res);
+
+      // Mark this page as loaded
+      loadedPagesRef.current.add(page);
+
+      // Exit if component unmounted
+      if (!isMountedRef.current) return;
 
       if (!res || !res.rankingsList) {
+        console.log('No rankings data received');
+        if (page > 1) {
+          setNoMoreData(true);
+        }
         return;
       }
 
+      // Set total count
       setTotalCount(res.totalCount || 0);
 
+      // If we receive an empty array, mark that we have no more data
+      if (res.rankingsList.length === 0) {
+        console.log('Empty rankings list received, no more data');
+        setNoMoreData(true);
+        return;
+      }
+
+      // Update volunteer rankings
       setVolunteerRankings(prev => {
         if (page === 1) {
           return res.rankingsList;
         } else {
-          // Keep top 3 from first page and append new data
-          const topVolunteers = prev.slice(0, 3);
-          const newVolunteers = res.rankingsList.filter(volunteer =>
-            !prev.some(p => p.volunteerId === volunteer.volunteerId)
+          // Keep only unique items
+          const uniqueNewVolunteers = res.rankingsList.filter(
+            newVolunteer => !prev.some(existingVolunteer => existingVolunteer.volunteerId === newVolunteer.volunteerId)
           );
-          return [...topVolunteers, ...prev.slice(3), ...newVolunteers];
+
+          // If we receive no new unique volunteers, mark that we have no more data
+          if (uniqueNewVolunteers.length === 0) {
+            console.log('No new unique volunteers received, no more data');
+            setNoMoreData(true);
+            return prev;
+          }
+
+          // For pages after the first, append new data after existing data
+          return [...prev, ...uniqueNewVolunteers];
         }
       });
 
     } catch (err) {
-      console.error(err);
+      console.error('Error fetching volunteers:', err);
+      if (page > 1) {
+        setNoMoreData(true);
+      }
     } finally {
-      setIsLoading(false);
+      if (isMountedRef.current) {
+        if (page === 1) {
+          setIsLoading(false);
+        } else {
+          setIsLoadingMore(false);
+        }
+      }
     }
-  };
+  }, [user, tournamentId, pageSize, noMoreData]);
 
+  // Initial data fetch with safeguards against multiple loading cycles
   useEffect(() => {
-    setCurrentPage(1);
-    setVolunteerRankings([]);
-    fetchVolunteers(1);
-  }, [user, tournamentId]);
-
-  const handleLoadMore = () => {
-    if (!isLoading && volunteerRankings.length < totalCount) {
-      const nextPage = currentPage + 1;
-      setCurrentPage(nextPage);
-      fetchVolunteers(nextPage);
+    // Skip if no tournament ID or no user token
+    if (!tournamentId || !user?.token) {
+      return;
     }
-  };
+
+    // Only reset and fetch if tournament ID changes
+    if (prevTournamentIdRef.current !== tournamentId) {
+      console.log(`Tournament ID changed: ${prevTournamentIdRef.current} -> ${tournamentId}`);
+
+      // Reset state
+      setCurrentPage(1);
+      setVolunteerRankings([]);
+      setNoMoreData(false);
+      loadedPagesRef.current = new Set();
+      didInitialLoadRef.current = false;
+      prevTournamentIdRef.current = tournamentId;
+    }
+
+    // Only do initial load once per tournament ID
+    if (!didInitialLoadRef.current) {
+      console.log('Initial volunteer data fetch trigger');
+      didInitialLoadRef.current = true;
+      fetchVolunteers(1);
+    }
+  }, [user, tournamentId, fetchVolunteers]);
+
+  const handleLoadMore = useCallback(() => {
+    // Don't load more if we already know there's no more data
+    if (noMoreData) {
+      console.log('No more data available, skipping load more');
+      return;
+    }
+
+    // Guard against duplicate requests
+    if (isLoading || isLoadingMore) {
+      console.log('Already loading, skipping load more');
+      return;
+    }
+
+    // Check if we have more data to load
+    if (volunteerRankings.length >= totalCount && totalCount > 0) {
+      console.log('Reached total count, no more data');
+      setNoMoreData(true);
+      return;
+    }
+
+    // Update page and fetch
+    const nextPage = currentPage + 1;
+    console.log(`Loading more volunteer data: page ${nextPage}`);
+    setCurrentPage(nextPage);
+
+    fetchVolunteers(nextPage);
+
+  }, [isLoading, isLoadingMore, volunteerRankings.length, totalCount, currentPage, fetchVolunteers, noMoreData]);
 
   // If no volunteers data yet, show loading or empty state
   if (volunteerRankings.length === 0) {
@@ -127,8 +249,8 @@ function Volunteers({ tournamentId }: Props) {
           data={volunteerRankings.slice(3)}
           columns={columns}
           infiniteScroll={true}
-          isLoading={isLoading}
-          hasMore={volunteerRankings.length < totalCount}
+          isLoading={isLoading || isLoadingMore}
+          hasMore={!noMoreData && volunteerRankings.length < totalCount}
           onLoadMore={handleLoadMore}
         />
       </div>
