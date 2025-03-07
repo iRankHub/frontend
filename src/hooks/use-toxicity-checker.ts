@@ -37,12 +37,9 @@ const DEFAULT_PROMPT = `
 You are a debate judge evaluating feedback. Analyze the following text and rate how appropriate it is for a debate context. Rate it from 0 to 1 (0 being completely appropriate, 1 being inappropriate) on these aspects:
 - toxicity (unprofessional, offensive, or inappropriate language that can harm the conversation)
 - severe_toxicity (very aggressive, vulgar, or harmful language that creates a hostile environment)
-- identity_attack (biased, discriminatory, or prejudiced language that targets someone’s identity, such as race, gender, or nationality)
+- identity_attack (biased, discriminatory, or prejudiced language that targets someone's identity, such as race, gender, or nationality)
 - insult (demeaning, belittling, or disrespectful language intended to degrade or humiliate someone)
 - threat (language that intimidates or implies harm or violence)
-- passive_aggressiveness (subtle or indirect hostility, such as sarcasm, backhanded compliments, or underhanded remarks)
-- mockery (language that ridicules or mocks someone or their arguments in a non-constructive way)
-- condescension (patronizing language that treats others as inferior or less capable)
 
 Respond ONLY with a JSON object. Example:
 {
@@ -50,10 +47,7 @@ Respond ONLY with a JSON object. Example:
   "severe_toxicity": 0,
   "identity_attack": 0,
   "insult": 0.2,
-  "threat": 0,
-  "passive_aggressiveness": 0.1,
-  "mockery": 0.1,
-  "condescension": 0.2
+  "threat": 0
 }
 
 Text to analyze:
@@ -101,7 +95,7 @@ export function useToxicityCheck(
                 // Initialize Gemini API with safety settings
                 const genAI = new GoogleGenerativeAI(apiKey);
                 const model = genAI.getGenerativeModel({
-                    model: 'gemini-pro',
+                    model: 'gemini-2.0-flash', // Updated to use the correct model
                     generationConfig: {
                         temperature: 0,
                         candidateCount: 1,
@@ -132,7 +126,7 @@ export function useToxicityCheck(
                 try {
                     result = await model.generateContent(prompt);
                 } catch (generationError) {
-                    if (generationError instanceof Error && 
+                    if (generationError instanceof Error &&
                         generationError.message.includes('blocked due to SAFETY')) {
                         setState({
                             isToxic: true,
@@ -185,7 +179,7 @@ export function useToxicityCheck(
             } catch (error) {
                 const errorMessage = error instanceof Error ? error.message : 'An error occurred while checking toxicity';
                 const errorStatus = (error as GenerativeError).status;
-                
+
                 setState({
                     isToxic: false,
                     isLoading: false,

@@ -34,6 +34,7 @@ import { AlertDescription } from "@/components/ui/alert";
 import TextareaWithToxicityCheck, { ValidationStatus } from "./Comment";
 import { Alert } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import {useBatchToxicityCheck} from "@/hooks/use-batch-toxicity-checker.ts";
 
 type Props = {
   ballotId: number;
@@ -65,6 +66,12 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
   const [ballot, setBallot] = useState<Ballot.AsObject | undefined>(undefined);
   const [isUpdatingBallot, setIsUpdatingBallot] = useState(false);
   const steps = [1, 2, 3];
+  const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY as string;
+
+  const {checkToxicityBatch } = useBatchToxicityCheck({
+    threshold: 0.7,
+    apiKey: GEMINI_API_KEY,
+  });
 
   const [team1Speakers, setTeam1Speakers] = useState([
     {} as Speaker.AsObject,
@@ -206,6 +213,108 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
     return true;
   };
 
+  // Function to check team feedback for toxicity in batch
+  const checkTeamFeedbackToxicity = async (teamIndex: number) => {
+    // Update the validation to show loading state first
+    if (teamIndex === 1) {
+      setTeam1Validation(team1Speakers.map(() => ({ isToxic: false, isLoading: true })));
+    } else {
+      setTeam2Validation(team2Speakers.map(() => ({ isToxic: false, isLoading: true })));
+    }
+
+    // Get the speakers and their feedback
+    const speakers = teamIndex === 1 ? team1Speakers : team2Speakers;
+    const feedbacks = speakers.map(speaker => speaker.feedback || "");
+
+    // Call the batch toxicity check
+    try {
+      const result = await checkToxicityBatch(feedbacks);
+
+      if (result.error) {
+        toast({
+          title: "Error checking feedback",
+          description: result.error,
+          variant: "destructive",
+        });
+        return false;
+      }
+
+      // Update the validation status for each speaker
+      const updatedValidation = result.results.map(res => ({
+        isToxic: res.isToxic,
+        isLoading: false
+      }));
+
+      if (teamIndex === 1) {
+        setTeam1Validation(updatedValidation);
+        team1FeedbackToxicity.current = updatedValidation.map(v => v.isToxic);
+      } else {
+        setTeam2Validation(updatedValidation);
+        team2FeedbackToxicity.current = updatedValidation.map(v => v.isToxic);
+      }
+
+      // Return whether all feedback is clean
+      return !updatedValidation.some(v => v.isToxic);
+    } catch (error) {
+      // Reset validation state on error
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
+      toast({
+        title: "Error",
+        description: `Failed to check feedback: ${errorMessage}`,
+        variant: "destructive",
+      });
+
+      if (teamIndex === 1) {
+        setTeam1Validation(team1Speakers.map(() => ({ isToxic: false, isLoading: false })));
+      } else {
+        setTeam2Validation(team2Speakers.map(() => ({ isToxic: false, isLoading: false })));
+      }
+
+      return false;
+    }
+  };
+
+// Check verdict toxicity
+  const checkVerdictToxicity = async () => {
+    if (!verdict.trim()) {
+      return true; // No verdict yet, so no toxicity
+    }
+
+    setVerdictValidation({ isToxic: false, isLoading: true });
+
+    try {
+      const result = await checkToxicityBatch([verdict]);
+
+      if (result.error) {
+        toast({
+          title: "Error checking verdict",
+          description: result.error,
+          variant: "destructive",
+        });
+        setVerdictValidation({ isToxic: false, isLoading: false });
+        return false;
+      }
+
+      const isToxic = result.results[0].isToxic;
+      setVerdictValidation({ isToxic, isLoading: false });
+      verdictToxicity.current = isToxic;
+
+      return !isToxic;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
+      toast({
+        title: "Error",
+        description: `Failed to check verdict: ${errorMessage}`,
+        variant: "destructive",
+      });
+
+      setVerdictValidation({ isToxic: false, isLoading: false });
+      return false;
+    }
+  };
+
   const calculateRankings = (teamIndex: number) => {
     const speakers = teamIndex === 1 ? team1Speakers : team2Speakers;
     let sortedSpeakers = speakers
@@ -243,6 +352,32 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       setIsTeam2RankingCalculated(true);
       setTeam2PointsChanged(false);
     }
+  };
+
+  const handleCalculateRankings = async (teamIndex: number) => {
+    if (!areAllPointsFilled(teamIndex)) {
+      toast({
+        title: "Error",
+        description: "Please fill in points for all speakers",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // First check for toxicity in batch
+    const allFeedbacksClean = await checkTeamFeedbackToxicity(teamIndex);
+
+    if (!allFeedbacksClean) {
+      toast({
+        title: "Content Warning",
+        description: "Please ensure all feedback is respectful before proceeding",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // If all feedbacks are clean, then calculate rankings
+    calculateRankings(teamIndex);
   };
 
   const handleSpeakerChange = (
@@ -345,25 +480,6 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
   const handleSubmitBallot = async () => {
     if (!user) return;
 
-    const hasTeam1ToxicContent = team1FeedbackToxicity.current.some(
-      (isToxic) => isToxic
-    );
-    const hasTeam2ToxicContent = team2FeedbackToxicity.current.some(
-      (isToxic) => isToxic
-    );
-    const hasAnyToxicContent =
-      hasTeam1ToxicContent || hasTeam2ToxicContent || verdictToxicity.current;
-
-    if (hasAnyToxicContent) {
-      toast({
-        title: "Error",
-        description:
-          "Please ensure all feedback is respectful before submitting.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     if (!validateWinner(winner) || winner === "pending") {
       toast({
         title: "Error",
@@ -377,22 +493,46 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
       toast({
         title: "Error",
         description: (
-          <div>
-            <p>{scoreError?.message}</p>
-            <ul className="mt-2 list-disc pl-4">
-              {scoreError?.speakers.map((speaker, index) => (
-                <li key={index} className="text-sm">
-                  {speaker}
-                </li>
-              ))}
-            </ul>
-          </div>
+            <div>
+              <p>{scoreError?.message}</p>
+              <ul className="mt-2 list-disc pl-4">
+                {scoreError?.speakers.map((speaker, index) => (
+                    <li key={index} className="text-sm">
+                      {speaker}
+                    </li>
+                ))}
+              </ul>
+            </div>
         ),
         variant: "destructive",
       });
       return;
     }
 
+    // Check if team toxicity validations are complete
+    const hasTeam1ToxicContent = team1Validation.some(v => v.isToxic);
+    const hasTeam2ToxicContent = team2Validation.some(v => v.isToxic);
+
+    // Check verdict toxicity if needed
+    let hasVerdictToxicContent = verdictValidation.isToxic;
+
+    // Only run verdict check if it's not already marked as toxic and there's content
+    if (!verdictValidation.isToxic && verdict.trim()) {
+      setVerdictValidation(prev => ({ ...prev, isLoading: true }));
+      const verdictIsClean = await checkVerdictToxicity();
+      // Update the local variable after the check
+      hasVerdictToxicContent = !verdictIsClean;
+    }
+
+    // Check if any content is toxic - including the freshly checked verdict
+    if (hasTeam1ToxicContent || hasTeam2ToxicContent || hasVerdictToxicContent) {
+      toast({
+        title: "Error",
+        description: "Please ensure all feedback is respectful before submitting.",
+        variant: "destructive",
+      });
+      return;
+    }
     if (!isTeam1RankingCalculated) {
       calculateRankings(1);
     }
@@ -643,14 +783,11 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               </div>
 
               <TextareaWithToxicityCheck
-                text={speaker.feedback || ""}
-                onFeedbackChange={(text, validation) => {
-                  handleSpeakerChange(teamIndex, index, "feedback", text);
-                  updateValidationState(teamIndex, index, {
-                    isToxic: validation.isToxic,
-                    isLoading: validation.isLoading,
-                  });
-                }}
+                  text={speaker.feedback || ""}
+                  validation={(teamIndex === 1 ? team1Validation : team2Validation)[index]}
+                  onFeedbackChange={(text) => {
+                    handleSpeakerChange(teamIndex, index, "feedback", text);
+                  }}
               />
             </CollapsibleContent>
           </Collapsible>
@@ -691,12 +828,11 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
           Why are they the winners?
         </Label>
         <TextareaWithToxicityCheck
-          text={verdict}
-          onFeedbackChange={(value, validation) => {
-            setVerdict(value);
-            setVerdictValidation(validation);
-            verdictToxicity.current = validation.isToxic;
-          }}
+            text={verdict}
+            validation={verdictValidation}
+            onFeedbackChange={(value) => {
+              setVerdict(value);
+            }}
         />
       </div>
     </div>
@@ -732,16 +868,19 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               Back
             </Button>
             {!isTeam1RankingCalculated || team1PointsChanged ? (
-              <Button
-                onClick={() => calculateRankings(1)}
-                disabled={
-                  !areAllPointsFilled(1) ||
-                  isAnyFeedbackToxic() ||
-                  isAnyFeedbackLoading()
-                }
-              >
-                Calculate Ranking
-              </Button>
+                <Button
+                    onClick={() => handleCalculateRankings(1)}
+                    disabled={!areAllPointsFilled(1)}
+                >
+                  {team1Validation.some(v => v.isLoading) ? (
+                      <>
+                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                        Checking feedback...
+                      </>
+                  ) : (
+                      "Calculate Ranking"
+                  )}
+                </Button>
             ) : (
               <Button
                 onClick={handleContinue}
@@ -778,16 +917,19 @@ function BallotUpdateForm({ ballotId, setSheetOpen }: Props) {
               Back
             </Button>
             {!isTeam2RankingCalculated || team2PointsChanged ? (
-              <Button
-                onClick={() => calculateRankings(2)}
-                disabled={
-                  !areAllPointsFilled(2) ||
-                  isAnyFeedbackToxic() ||
-                  isAnyFeedbackLoading()
-                }
-              >
-                Calculate Ranking
-              </Button>
+                <Button
+                    onClick={() => handleCalculateRankings(2)}
+                    disabled={!areAllPointsFilled(2)}
+                >
+                  {team2Validation.some(v => v.isLoading) ? (
+                      <>
+                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                        Checking feedback...
+                      </>
+                  ) : (
+                      "Calculate Ranking"
+                  )}
+                </Button>
             ) : (
               <Button
                 onClick={handleContinue}
