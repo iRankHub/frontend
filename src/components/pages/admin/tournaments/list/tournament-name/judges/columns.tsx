@@ -403,7 +403,7 @@ const RoomAssignmentPanel = ({ row }: { row: Judge.AsObject }) => {
           variant: "success",
           title: "Success",
           description:
-            "Your account is pending approval. You will be notified once your account is approved.",
+            "Judge Assignment has been updated successfully for the tournament.",
           action: (
             <ToastAction altText="Close" className="bg-primary text-white">
               Close
