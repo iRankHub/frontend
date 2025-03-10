@@ -14,6 +14,8 @@ export type BatchToxicityResult = {
     }[];
     isLoading: boolean;
     error: string | null;
+    // Flag to indicate if the error is critical (should block submission) or non-critical
+    isErrorCritical: boolean;
 };
 
 interface BatchToxicityOptions {
@@ -22,15 +24,15 @@ interface BatchToxicityOptions {
 }
 
 const BATCH_PROMPT = `
-You are a debate judge evaluating feedback. Analyze each of the following texts and rate how appropriate they are for a debate context. 
-For each text, rate it from 0 to 1 (0 being completely appropriate, 1 being inappropriate) on these aspects:
-- toxicity (unprofessional, offensive, or inappropriate language)
-- severe_toxicity (very aggressive, vulgar, or harmful language)
-- identity_attack (biased or discriminatory language)
-- insult (demeaning or disrespectful language)
-- threat (language that intimidates or implies harm)
+You are a debate judge evaluating feedback. Analyze each text and rate it from 0 to 1 (0 = appropriate, 1 = inappropriate) based on the following aspects:
 
-Respond ONLY with a JSON array where each element corresponds to the analysis of each text. Example for 3 texts:
+Toxicity – Language that is unprofessional, offensive, or undermines constructive discussion, including subtle negativity or rude remarks.
+Severe Toxicity – Extremely aggressive, vulgar, or harmful language, such as hate speech or any language meant to incite violence or provoke significant harm.
+Identity Attack – Discriminatory or biased language targeting someone based on their race, gender, sexuality, religion, or other protected identities, including stereotyping or dehumanizing language.
+Insult – Demeaning, belittling, or disrespectful language intended to humiliate or degrade others.
+Threat – Language that implies harm, intimidation, or coercion, including direct or indirect threats of violence or psychological harm.
+
+Respond ONLY with a JSON array where each element corresponds to the analysis of each text. Example:
 [
   {
     "isToxic": false,
@@ -39,26 +41,6 @@ Respond ONLY with a JSON array where each element corresponds to the analysis of
       "severe_toxicity": 0,
       "identity_attack": 0,
       "insult": 0.2,
-      "threat": 0
-    }
-  },
-  {
-    "isToxic": true,
-    "metrics": {
-      "toxicity": 0.8,
-      "severe_toxicity": 0.3,
-      "identity_attack": 0.1,
-      "insult": 0.7,
-      "threat": 0.1
-    }
-  },
-  {
-    "isToxic": false,
-    "metrics": {
-      "toxicity": 0.2,
-      "severe_toxicity": 0,
-      "identity_attack": 0,
-      "insult": 0.1,
       "threat": 0
     }
   }
@@ -71,7 +53,8 @@ export function useBatchToxicityCheck({ threshold = 0.7, apiKey }: BatchToxicity
     const [state, setState] = useState<BatchToxicityResult>({
         results: [],
         isLoading: false,
-        error: null
+        error: null,
+        isErrorCritical: false
     });
 
     const checkToxicityBatch = useCallback(async (texts: string[]) => {
@@ -79,11 +62,12 @@ export function useBatchToxicityCheck({ threshold = 0.7, apiKey }: BatchToxicity
             return {
                 results: texts.map(() => ({ isToxic: false, metrics: null })),
                 isLoading: false,
-                error: null
+                error: null,
+                isErrorCritical: false
             };
         }
 
-        setState(prev => ({ ...prev, isLoading: true, error: null }));
+        setState(prev => ({ ...prev, isLoading: true, error: null, isErrorCritical: false }));
 
         try {
             // Clean out empty texts to reduce token usage
@@ -127,56 +111,66 @@ export function useBatchToxicityCheck({ threshold = 0.7, apiKey }: BatchToxicity
                 const responseText = response.text();
 
                 try {
+                    // Remove code block markers if present
                     const cleanedText = responseText.replace(/```json\n?|```/g, '').trim();
                     const parsedResults = JSON.parse(cleanedText);
 
-                    // Ensure we have the correct format and apply threshold
-                    if (!Array.isArray(parsedResults) || parsedResults.length !== validTexts.length) {
-                        throw new Error('Invalid response format from API');
+                    // Ensure we have the correct format
+                    if (!Array.isArray(parsedResults)) {
+                        throw new Error('Invalid response format from API - not an array');
                     }
 
-                    // Apply the threshold to determine what's toxic
-                    const processedResults = parsedResults.map((item: any) => {
-                        // If API already determined toxicity, use it
-                        if (typeof item.isToxic === 'boolean') {
-                            return item;
+                    // Handling case where we might get fewer results than expected
+                    const normalizedResults = [];
+                    for (let i = 0; i < texts.length; i++) {
+                        if (i < parsedResults.length) {
+                            const item = parsedResults[i];
+
+                            // If API already determined toxicity, use it
+                            if (typeof item.isToxic === 'boolean') {
+                                normalizedResults.push(item);
+                                continue;
+                            }
+
+                            // Otherwise calculate based on metrics and threshold
+                            if (item.metrics) {
+                                const isToxic = Object.values(item.metrics).some(
+                                    (value: any) => typeof value === 'number' && value > threshold
+                                );
+                                normalizedResults.push({ ...item, isToxic });
+                                continue;
+                            }
+
+                            // Fallback for items without expected structure
+                            normalizedResults.push({ isToxic: false, metrics: null });
+                        } else {
+                            // Fill in missing results
+                            normalizedResults.push({ isToxic: false, metrics: null });
                         }
+                    }
 
-                        // Otherwise calculate based on metrics and threshold
-                        if (item.metrics) {
-                            const isToxic = Object.values(item.metrics).some(
-                                (value: any) => typeof value === 'number' && value > threshold
-                            );
-                            return { ...item, isToxic };
-                        }
-
-                        return { isToxic: false, metrics: null };
-                    });
-
-                    setState({
-                        results: processedResults,
+                    const result = {
+                        results: normalizedResults,
                         isLoading: false,
-                        error: null
-                    });
-
-                    return {
-                        results: processedResults,
-                        isLoading: false,
-                        error: null
+                        error: null,
+                        isErrorCritical: false
                     };
+
+                    setState(result);
+                    return result;
                 } catch (parseError) {
                     console.error('Parse error:', parseError, 'Response was:', responseText);
-                    const error = 'Failed to parse API response';
-                    setState({
+                    const error = 'Content check unavailable (technical issue)';
+
+                    const result = {
                         results: texts.map(() => ({ isToxic: false, metrics: null })),
                         isLoading: false,
-                        error
-                    });
-                    return {
-                        results: texts.map(() => ({ isToxic: false, metrics: null })),
-                        isLoading: false,
-                        error
+                        error,
+                        isErrorCritical: false // Non-critical because it's a technical issue
                     };
+
+                    setState(result);
+                    return result;
                 }
             } catch (apiError) {
                 // If the API blocks the content, assume it's toxic
@@ -191,42 +185,44 @@ export function useBatchToxicityCheck({ threshold = 0.7, apiKey }: BatchToxicity
                             threat: 0.0
                         }
                     }));
-                    setState({
+
+                    const result = {
                         results,
                         isLoading: false,
-                        error: null
-                    });
-                    return {
-                        results,
-                        isLoading: false,
-                        error: null
+                        error: "Content was flagged by safety systems",
+                        isErrorCritical: true // Critical because content was flagged
                     };
+
+                    setState(result);
+                    return result;
                 }
 
                 const errorMessage = apiError instanceof Error ? apiError.message : 'API error';
-                setState({
+
+                const result = {
                     results: texts.map(() => ({ isToxic: false, metrics: null })),
                     isLoading: false,
-                    error: errorMessage
-                });
-                return {
-                    results: texts.map(() => ({ isToxic: false, metrics: null })),
-                    isLoading: false,
-                    error: errorMessage
+                    error: `Content check unavailable`,
+                    isErrorCritical: false // Non-critical because it's a technical issue
                 };
+
+                console.error('API error:', errorMessage);
+                setState(result);
+                return result;
             }
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-            setState({
+
+            const result = {
                 results: texts.map(() => ({ isToxic: false, metrics: null })),
                 isLoading: false,
-                error: errorMessage
-            });
-            return {
-                results: texts.map(() => ({ isToxic: false, metrics: null })),
-                isLoading: false,
-                error: errorMessage
+                error: `Content check unavailable`,
+                isErrorCritical: false // Non-critical because it's an unexpected issue
             };
+
+            console.error('Unexpected error:', errorMessage);
+            setState(result);
+            return result;
         }
     }, [apiKey, threshold]);
 

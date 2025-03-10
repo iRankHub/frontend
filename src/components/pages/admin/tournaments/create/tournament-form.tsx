@@ -828,7 +828,7 @@ function TournamentForm({ selectedLeague, coordinators }: Props) {
                           <SelectContent>
                             <SelectItem value="1">Final</SelectItem>
                             <SelectItem value="2">Semi Final</SelectItem>
-                            <SelectItem value="3">Quater Final</SelectItem>
+                            <SelectItem value="3">Quarter Final</SelectItem>
                             <SelectItem value="4">Octal Final</SelectItem>
                             <SelectItem value="5">Round of 32</SelectItem>
                             <SelectItem value="6">Round of 64</SelectItem>
